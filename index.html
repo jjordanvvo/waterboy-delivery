@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ===== SEO META ===== -->
+  <title>Waterboy Delivery | Pure 5-Gallon Water Delivery &amp; Dispensers</title>
+  <meta name="description" content="Premium 5-gallon water delivery for homes and offices. Shop or rent Brio water dispensers. Free delivery, no contracts, pure hydration. Order today." />
+  <meta name="keywords" content="water delivery, 5-gallon water, water dispenser, water cooler rental, office water delivery, home water delivery, Brio dispenser" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://waterboydelivery.com/" />
+
+  <!-- ===== OPEN GRAPH ===== -->
+  <meta property="og:title" content="Waterboy Delivery | Pure Water. Delivered." />
+  <meta property="og:description" content="Premium 5-gallon water delivery for homes and offices. Shop or rent Brio water dispensers. Free delivery, no contracts." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://waterboydelivery.com/" />
+  <meta property="og:image" content="social-share.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Waterboy Delivery" />
+
+  <!-- ===== TWITTER CARD ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Waterboy Delivery | Pure Water. Delivered." />
+  <meta name="twitter:description" content="Premium 5-gallon water delivery for homes and offices. Shop or rent Brio water dispensers." />
+  <meta name="twitter:image" content="social-share.png" />
+
+  <!-- ===== FAVICON ===== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+  <!-- ===== FONTS ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- ===== STYLES ===== -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- ===== SCHEMA.ORG LOCAL BUSINESS ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Waterboy Delivery",
+    "description": "Premium 5-gallon water delivery service and water dispenser sales and rentals for homes, offices, and businesses.",
+    "url": "https://waterboydelivery.com/",
+    "logo": "https://waterboydelivery.com/logo.png",
+    "image": "https://waterboydelivery.com/social-share.png",
+    "telephone": "[PHONE NUMBER HERE]",
+    "email": "[EMAIL HERE]",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "[ADDRESS HERE]",
+      "addressLocality": "[CITY HERE]",
+      "addressRegion": "[STATE HERE]",
+      "postalCode": "[ZIP HERE]",
+      "addressCountry": "US"
+    },
+    "areaServed": "[SERVICE AREA HERE]",
+    "priceRange": "$$",
+    "openingHours": "[HOURS HERE]"
+  }
+  </script>
+</head>
+<body>
+
+<!-- ============================================================
+     LOADING SCREEN
+     ============================================================ -->
+<div id="loading-screen" aria-hidden="true">
+  <div class="loading-inner">
+    <!-- Logo: place logo.png in project root -->
+    <img src="logo.png" alt="Waterboy Delivery" class="loading-logo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <!-- Fallback if logo.png missing -->
+    <div style="display:none;flex-direction:column;align-items:center;gap:10px;">
+      <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#00D4FF;opacity:0;animation:logoReveal 0.9s ease forwards 0.4s;">WATERBOY</div>
+      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:#8BB8D4;opacity:0;animation:logoReveal 0.9s ease forwards 0.7s;">DELIVERY</div>
+    </div>
+    <div class="loading-glow-ring"></div>
+    <div class="loading-droplet"></div>
+    <div class="loading-ripple-1"></div>
+    <div class="loading-ripple-2"></div>
+  </div>
+  <div class="loading-curtain-left"></div>
+  <div class="loading-curtain-right"></div>
+</div>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="Waterboy Delivery home">
+    <!-- Use logo.png — mix-blend-mode:screen removes white bg on dark navbar -->
+    <img src="logo.png" alt="Waterboy Delivery logo"
+         onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
+  </a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#delivery">Delivery</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Order Now</a></li>
+  </ul>
+
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile full-screen menu -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="#hero">Home</a>
+  <a href="#products">Products</a>
+  <a href="#delivery">Delivery</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#about">About</a>
+  <a href="#faq">FAQ</a>
+  <a href="#contact" class="nav-cta">Order Now</a>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero" aria-label="Hero section">
+  <div class="hero-bg-img" aria-hidden="true"></div>
+  <div class="hero-glow-right" aria-hidden="true"></div>
+  <div class="hero-glow-left" aria-hidden="true"></div>
+  <!-- Particles canvas -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+  <!-- Ripple canvas -->
+  <canvas id="ripple-canvas" aria-hidden="true"></canvas>
+
+  <div class="hero-container container">
+    <!-- LEFT: Copy -->
+    <div class="hero-content">
+      <div class="hero-badge">🧊 Pure Water Delivered to Your Door</div>
+
+      <h1 class="hero-title">
+        Stay Hydrated.<br />
+        Stay <span class="gradient-text">Refreshed.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Premium 5-gallon water delivery straight to your home or office. Plus water dispensers
+        available for purchase or rent. Pure, clean, cold — every time.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">
+          Start Your Delivery
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#products" class="btn-secondary">
+          Shop Dispensers
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Product Image -->
+    <div class="hero-image-wrap">
+      <div class="frost-crystal-tl" aria-hidden="true"></div>
+      <div class="frost-crystal-br" aria-hidden="true"></div>
+      <!--
+        PRODUCT IMAGE: Place dispenser1.png in the project root.
+        This is the Brio bottom-load dispenser (blue background).
+        Expected filename: dispenser1.png
+      -->
+      <img
+        src="dispenser1.png"
+        alt="Brio bottom-load water dispenser — Waterboy Delivery's featured product"
+        class="hero-image-float"
+        loading="eager"
+        onerror="this.style.display='none';document.getElementById('hero-placeholder').style.display='flex';"
+      />
+      <div id="hero-placeholder" class="hero-image-placeholder" style="display:none;">
+        <svg width="64" height="80" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="2" width="16" height="26" rx="3"/>
+          <path d="M8 8h8M8 12h8"/>
+          <circle cx="12" cy="20" r="2.5"/>
+        </svg>
+        <span>dispenser1.png</span>
+        <small style="opacity:0.5;font-size:9px;">Place Brio bottom-load<br>image here</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#what-we-deliver" class="hero-scroll-cue" aria-label="Scroll down">
+    <div class="scroll-line"><div class="scroll-dot"></div></div>
+    <span class="scroll-label">Scroll</span>
+  </a>
+</section>
+
+<!-- ============================================================
+     WAVE DIVIDER — Hero → What We Deliver
+     ============================================================ -->
+<div class="wave-section" style="background:var(--bg-primary);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,55 C360,20 720,80 1080,45 C1260,28 1380,65 1440,55 C1620,35 1800,75 2160,50 C2340,38 2520,70 2880,55 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     WHAT WE DELIVER
+     ============================================================ -->
+<section id="what-we-deliver" class="section section-light frost-corner-section" aria-labelledby="deliver-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">What We Deliver</span>
+      <h2 id="deliver-title" class="section-title light">Everything You Need to Stay Hydrated</h2>
+      <p class="section-subtitle light">
+        From crystal-clear 5-gallon water jugs to premium dispensers — we bring it all to your door.
+      </p>
+    </div>
+
+    <div class="cards-grid-3">
+      <!-- Card 1 -->
+      <article class="service-card reveal reveal-delay-1">
+        <div class="service-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/>
+          </svg>
+        </div>
+        <h3>5-Gallon Water Jugs</h3>
+        <p>Fresh, purified water in BPA-free 5-gallon jugs. Delivered on your schedule — weekly, bi-weekly, or on-demand. Never run out again.</p>
+        <a href="#delivery" class="card-link">
+          Order Water
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="service-card reveal reveal-delay-2">
+        <div class="service-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="2" width="12" height="20" rx="3"/>
+            <path d="M9 8h6M9 11h6"/>
+            <circle cx="12" cy="16" r="1.5"/>
+          </svg>
+        </div>
+        <h3>Water Dispensers</h3>
+        <p>Top-load, bottom-load, and countertop dispensers from top brands. Hot, cold, and room temperature at the press of a button. Available for purchase.</p>
+        <a href="#products" class="card-link">
+          Shop Dispensers
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="service-card reveal reveal-delay-3">
+        <div class="service-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+        </div>
+        <h3>Dispenser Rentals</h3>
+        <p>Don't want to buy? Rent a premium water dispenser for your home or office. Flexible monthly plans with free setup and maintenance.</p>
+        <a href="#pricing" class="card-link">
+          View Rental Plans
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <div><span class="coming-soon-badge">COMING SOON — Pricing TBD</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Wave Divider — light → dark -->
+<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0B1B2B"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,35 C360,80 720,10 1080,50 C1260,70 1380,20 1440,40 C1620,60 1800,10 2160,45 C2340,65 2520,15 2880,40 L2880,90 L0,90 Z" fill="#0B1B2B" opacity="0.6"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     PRODUCTS SHOWCASE
+     ============================================================ -->
+<section id="products" class="section section-dark frost-corner-section" aria-labelledby="products-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Our Dispensers</span>
+      <h2 id="products-title" class="section-title dark">Premium Water Dispensers</h2>
+      <p class="section-subtitle dark">
+        Sleek, modern, and built to deliver ice-cold or piping-hot water whenever you need it.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <article class="product-card reveal reveal-delay-1">
+        <div class="product-image-wrap">
+          <div class="product-image-glow" aria-hidden="true"></div>
+          <!--
+            PRODUCT IMAGE: Place dispenser1.png in project root.
+            Brio 430 Series — bottom-load, blue background.
+          -->
+          <img src="dispenser1.png"
+               alt="Brio 430 Series bottom-load water dispenser"
+               loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="product-img-placeholder" style="display:none;">
+            <svg width="48" height="60" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="26" rx="3"/><circle cx="12" cy="19" r="2"/></svg>
+            <span>dispenser1.png</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-tag">Best Seller</span>
+          <h3>Brio 430 Series — Bottom Load</h3>
+          <p>No heavy lifting — load from the bottom. Hot, cold, and room temp. Sleek stainless steel finish. The premium choice for homes and offices.</p>
+          <div class="product-price">[PRICE TBD]</div>
+          <a href="#contact" class="product-link">
+            Learn More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Product 2 -->
+      <article class="product-card reveal reveal-delay-2">
+        <div class="product-image-wrap">
+          <div class="product-image-glow" aria-hidden="true"></div>
+          <!--
+            PRODUCT IMAGE: Place dispenser2.png in project root.
+            Brio Self-Cleaning — stainless with filtration system visible.
+          -->
+          <img src="dispenser2.png"
+               alt="Brio self-cleaning bottleless water dispenser with filtration"
+               loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="product-img-placeholder" style="display:none;">
+            <svg width="48" height="60" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="26" rx="3"/><circle cx="12" cy="19" r="2"/></svg>
+            <span>dispenser2.png</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-tag">Bottleless</span>
+          <h3>Brio Self-Cleaning — Filtration</h3>
+          <p>Built-in multi-stage filtration for the purest water possible. Self-cleaning UV technology. No bottles needed — connects directly to your water line.</p>
+          <div class="product-price">[PRICE TBD]</div>
+          <a href="#contact" class="product-link">
+            Learn More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Product 3 -->
+      <article class="product-card reveal reveal-delay-3">
+        <div class="product-image-wrap">
+          <div class="product-image-glow" aria-hidden="true"></div>
+          <!--
+            PRODUCT IMAGE: Place dispenser3.png in project root.
+            Brio 400 Series — classic black and stainless model.
+          -->
+          <img src="dispenser3.png"
+               alt="Brio 400 Series classic black and stainless water dispenser"
+               loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="product-img-placeholder" style="display:none;">
+            <svg width="48" height="60" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="26" rx="3"/><circle cx="12" cy="19" r="2"/></svg>
+            <span>dispenser3.png</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-tag">Popular</span>
+          <h3>Brio 400 Series — Classic</h3>
+          <p>The tried-and-true classic. Bottom-load convenience, three temperature settings, compact design. Perfect for any space.</p>
+          <div class="product-price">[PRICE TBD]</div>
+          <a href="#contact" class="product-link">
+            Learn More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <p class="products-footer reveal">
+      Interested in renting? Rental plans coming soon —
+      <a href="#contact">contact us for early access</a>.
+    </p>
+  </div>
+</section>
+
+<!-- Wave Divider — dark → light -->
+<div class="wave-section" style="background:var(--bg-primary);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 C360,20 720,80 1080,40 C1260,22 1380,68 1440,50 C1620,28 1800,72 2160,45 C2340,28 2520,68 2880,55 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section id="delivery" class="section section-light frost-corner-section" aria-labelledby="hiw-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">How It Works</span>
+      <h2 id="hiw-title" class="section-title light">Getting Started Takes 5 Minutes</h2>
+      <p class="section-subtitle light">Pure water at your door — four simple steps stand between you and cold, clean hydration.</p>
+    </div>
+
+    <div class="process-wrap">
+      <div class="process-connector" aria-hidden="true"></div>
+      <div class="process-grid">
+        <!-- Step 1 -->
+        <div class="process-step reveal reveal-delay-1">
+          <div class="process-number">1</div>
+          <div class="process-step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <h3>Choose Your Plan</h3>
+          <p>Pick your delivery frequency — weekly, bi-weekly, or on-demand. Select the number of jugs you need.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="process-step reveal reveal-delay-2">
+          <div class="process-number">2</div>
+          <div class="process-step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13" rx="2"/>
+              <path d="m16 8 5 3-5 3V8Z"/>
+              <path d="M1 16h15"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          </div>
+          <h3>We Deliver</h3>
+          <p>Our team delivers fresh 5-gallon jugs straight to your door. We pick up your empty jugs at the same time.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="process-step reveal reveal-delay-3">
+          <div class="process-number">3</div>
+          <div class="process-step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/>
+            </svg>
+          </div>
+          <h3>Stay Refreshed</h3>
+          <p>Load your dispenser, press the button, enjoy crystal-clear water — hot, cold, or room temperature.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="process-step reveal reveal-delay-4">
+          <div class="process-number">4</div>
+          <div class="process-step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+          </div>
+          <h3>We Handle the Rest</h3>
+          <p>Automatic refills on your schedule. Adjust, pause, or cancel anytime. Zero hassle, pure hydration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Strip -->
+<div class="stats-strip frost-corner-section" aria-label="Key statistics">
+  <div class="stats-grid container">
+    <div class="stat-item reveal reveal-delay-1">
+      <span class="stat-number" data-count="100" data-suffix="+">0+</span>
+      <span class="stat-label">Happy Customers</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <span class="stat-number" data-count="99" data-suffix="%">0%</span>
+      <span class="stat-label">On-Time Delivery</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <span class="stat-number" data-count="5" data-float="true" data-suffix="★">0★</span>
+      <span class="stat-label">Customer Rating</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-4">
+      <span class="stat-number" data-count="0" data-suffix=" Contracts">0 Contracts</span>
+      <span class="stat-label">No Long-Term Lock-In</span>
+    </div>
+  </div>
+</div>
+
+<!-- Wave Divider — light → dark -->
+<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0D2137"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,55 C360,20 720,75 1080,40 C1260,22 1380,65 1440,50 C1620,32 1800,70 2160,45 C2340,28 2520,68 2880,50 L2880,90 L0,90 Z" fill="#0D2137" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section id="pricing" class="section section-darker frost-corner-section" aria-labelledby="pricing-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Pricing</span>
+      <h2 id="pricing-title" class="section-title dark">Simple, Transparent Pricing</h2>
+      <p class="section-subtitle dark">No hidden fees. No long contracts. Just pure water, delivered.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <span class="pricing-tier-label">Plan</span>
+        <h3>Starter</h3>
+        <p class="pricing-card-desc">Perfect for households</p>
+        <div class="pricing-price">[PRICE TBD] <span>/ month</span></div>
+        <ul class="pricing-features" role="list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            2 jugs per delivery
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Bi-weekly delivery
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Free empty jug pickup
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Pause or cancel anytime
+          </li>
+        </ul>
+        <a href="#contact" class="pricing-btn outline">Get Started →</a>
+      </div>
+
+      <!-- Popular (highlighted) -->
+      <div class="pricing-card popular reveal reveal-delay-2">
+        <div class="popular-badge">MOST POPULAR</div>
+        <span class="pricing-tier-label">Plan</span>
+        <h3>Popular</h3>
+        <p class="pricing-card-desc">Most popular for homes &amp; small offices</p>
+        <div class="pricing-price">[PRICE TBD] <span>/ month</span></div>
+        <ul class="pricing-features" role="list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            4 jugs per delivery
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Weekly delivery
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Free empty jug pickup
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority scheduling
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Free first delivery
+          </li>
+        </ul>
+        <a href="#contact" class="pricing-btn filled">Get Started →</a>
+      </div>
+
+      <!-- Business -->
+      <div class="pricing-card reveal reveal-delay-3">
+        <span class="pricing-tier-label">Plan</span>
+        <h3>Business</h3>
+        <p class="pricing-card-desc">For offices, gyms &amp; large teams</p>
+        <div class="pricing-price">[PRICE TBD] <span>/ month</span></div>
+        <ul class="pricing-features" role="list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            8+ jugs per delivery
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Custom schedule
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Free empty jug pickup
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Dedicated account manager
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Dispenser rental included
+          </li>
+        </ul>
+        <a href="#contact" class="pricing-btn outline">Contact Us →</a>
+      </div>
+    </div>
+
+    <p class="pricing-note reveal">
+      All plans include free delivery and free empty jug pickup.<br />
+      Dispenser rentals available as an add-on — pricing coming soon.
+    </p>
+  </div>
+</section>
+
+<!-- Wave Divider — dark → light -->
+<div class="wave-section" style="background:var(--bg-secondary);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 C360,15 720,80 1080,38 C1260,18 1380,68 1440,48 C1620,25 1800,75 2160,42 C2340,22 2520,72 2880,48 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     WHY WATERBOY
+     ============================================================ -->
+<section id="about" class="section section-light frost-corner-section" aria-labelledby="why-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Why Waterboy</span>
+      <h2 id="why-title" class="section-title light">Why Choose Waterboy?</h2>
+      <p class="section-subtitle light">We're not just a water delivery service. We're your hydration partner.</p>
+    </div>
+
+    <div class="features-grid">
+      <article class="feature-card reveal reveal-delay-1">
+        <span class="feature-emoji" aria-hidden="true">💧</span>
+        <h3>Crystal-Clear Purity</h3>
+        <p>Multi-stage purified water that meets the highest safety standards. No chlorine taste, no impurities — just pure, clean hydration.</p>
+      </article>
+
+      <article class="feature-card reveal reveal-delay-2">
+        <span class="feature-emoji" aria-hidden="true">🚚</span>
+        <h3>Reliable Delivery</h3>
+        <p>We show up when we say we will. Consistent scheduling, friendly service, and we handle everything — including picking up your empties.</p>
+      </article>
+
+      <article class="feature-card reveal reveal-delay-3">
+        <span class="feature-emoji" aria-hidden="true">🧊</span>
+        <h3>Ice-Cold Every Time</h3>
+        <p>Our premium dispensers keep water at the perfect temperature — ice cold, room temp, or piping hot. Ready whenever you are.</p>
+      </article>
+
+      <article class="feature-card reveal reveal-delay-4">
+        <span class="feature-emoji" aria-hidden="true">💰</span>
+        <h3>No Surprise Fees</h3>
+        <p>Flat monthly pricing. No delivery surcharges, no fuel fees, no hidden costs. What you see is what you pay.</p>
+      </article>
+
+      <article class="feature-card reveal reveal-delay-5">
+        <span class="feature-emoji" aria-hidden="true">🔄</span>
+        <h3>Flexible Plans</h3>
+        <p>Change your delivery frequency, pause for vacation, or cancel anytime. No contracts, no commitments, no penalties.</p>
+      </article>
+
+      <article class="feature-card reveal reveal-delay-6">
+        <span class="feature-emoji" aria-hidden="true">🌱</span>
+        <h3>Eco-Friendly</h3>
+        <p>Reusable 5-gallon jugs mean less plastic waste. We sanitize and reuse every jug — better for you and better for the planet.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Wave Divider — light → dark -->
+<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0B1B2B"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,35 C360,80 720,10 1080,50 C1260,70 1380,20 1440,40 C1620,60 1800,10 2160,48 C2340,68 2520,18 2880,42 L2880,90 L0,90 Z" fill="#0B1B2B" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="section section-dark frost-corner-section" aria-labelledby="testimonials-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">What Customers Say</span>
+      <h2 id="testimonials-title" class="section-title dark">People Love Their Waterboy</h2>
+      <p class="section-subtitle dark">Real customers, real results — pure hydration at home and in the office.</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <article class="testimonial-card reveal reveal-delay-1">
+        <div class="stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"Switched from those flimsy plastic cases from the grocery store to Waterboy and it's a game changer. The water tastes incredible, delivery is always on time, and I love not having to lug heavy bottles from the car anymore."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">J</div>
+          <div>
+            <div class="author-name">Jessica M.</div>
+            <div class="author-role">Home Customer</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal reveal-delay-2">
+        <div class="stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"We put a Waterboy dispenser in our office break room and our team goes through 8 jugs a week now. Everyone loves it. The delivery guys are always friendly and the water is always cold. Best office upgrade we've made."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">R</div>
+          <div>
+            <div class="author-name">Robert K.</div>
+            <div class="author-role">Office Manager</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card reveal reveal-delay-3">
+        <div class="stars" aria-label="5 stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"I was renting a dispenser from another company and the water tasted like plastic. Switched to Waterboy — night and day difference. The Brio dispenser is beautiful and the water is pure. Can't recommend enough."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">M</div>
+          <div>
+            <div class="author-name">Maria L.</div>
+            <div class="author-role">Home Customer</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Wave Divider — dark → light -->
+<div class="wave-section" style="background:var(--bg-primary);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,55 C360,18 720,80 1080,42 C1260,22 1380,68 1440,50 C1620,30 1800,72 2160,44 C2340,24 2520,70 2880,50 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section id="faq" class="section section-light frost-corner-section" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">FAQ</span>
+      <h2 id="faq-title" class="section-title light">Questions? We've Got Answers.</h2>
+      <p class="section-subtitle light">Everything you need to know about water delivery and dispensers.</p>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>How does water delivery work?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>It's simple — choose your plan, tell us how many 5-gallon jugs you need, and we deliver on your schedule. We also pick up your empty jugs each time. You never have to think about it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>What kind of water do you deliver?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>We deliver multi-stage purified drinking water in BPA-free 5-gallon jugs. Our water goes through reverse osmosis, carbon filtration, and UV treatment to ensure the highest quality.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>Do I need to buy a dispenser?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>No — you can rent one from us (rental plans coming soon), buy one outright, or use your own existing dispenser. Any standard top-load or bottom-load cooler works with our 5-gallon jugs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>Can I change or cancel my plan?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>Absolutely. All plans are month-to-month with no contracts. You can change your delivery frequency, add or remove jugs, pause for vacation, or cancel anytime — no penalties.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>Do you deliver to businesses?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>Yes! We serve homes, offices, gyms, clinics, salons, and any business that wants clean, cold water for their team or customers. Our Business plan includes custom scheduling and a dedicated account manager.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>What areas do you serve?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>[SERVICE AREA TBD — Contact us to check if we deliver to your location.]</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>How much does delivery cost?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>Delivery is always free. It's included in every plan. No delivery surcharges, no fuel fees, no surprise costs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <h3>What brands of dispensers do you sell?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            <p>We currently carry Brio water dispensers — one of the top-rated brands on the market. We offer bottom-load, top-load, and bottleless filtration models. Contact us for current pricing and availability.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave Divider — light → dark -->
+<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0D2137"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,55 C360,18 720,82 1080,42 C1260,22 1380,70 1440,50 C1620,28 1800,75 2160,44 C2340,22 2520,72 2880,52 L2880,90 L0,90 Z" fill="#0D2137" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     CTA BANNER
+     ============================================================ -->
+<section id="cta-banner" aria-labelledby="cta-title">
+  <div class="cta-glow-left" aria-hidden="true"></div>
+  <div class="cta-glow-right" aria-hidden="true"></div>
+
+  <div class="container">
+    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Your Water, Your Way.</h2>
+    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">
+      Start your delivery today. Pure water, premium dispensers, zero hassle.
+    </p>
+    <div class="cta-buttons reveal">
+      <a href="#contact" class="btn-cta-large">
+        Get Started — It's Free to Sign Up
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    <p class="cta-fine-print reveal">No contracts. No commitments. Cancel anytime.</p>
+  </div>
+</section>
+
+<!-- Wave Divider — dark → light -->
+<div class="wave-section" style="background:var(--bg-secondary);" aria-hidden="true">
+  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 C360,15 720,80 1080,38 C1260,18 1380,68 1440,48 C1620,25 1800,75 2160,42 C2340,22 2520,72 2880,48 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contact" class="section section-light frost-corner-section" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Get In Touch</span>
+      <h2 id="contact-title" class="section-title light">Let's Get You Set Up</h2>
+      <p class="section-subtitle light">Tell us about your needs and we'll build the perfect hydration solution for you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- LEFT: Form -->
+      <div class="contact-form-wrap reveal">
+        <h3>Send Us a Message</h3>
+        <!--
+          NETLIFY FORMS: This form is configured for Netlify deployment.
+          On Netlify, form submissions are captured automatically.
+          Replace [EMAIL HERE] in netlify.toml if you want email notifications.
+        -->
+        <form
+          id="contact-form"
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/thank-you"
+        >
+          <!-- Netlify hidden fields -->
+          <input type="hidden" name="form-name" value="contact" />
+          <div style="display:none;">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="interest">I'm Interested In...</label>
+            <select id="interest" name="interest">
+              <option value="">Select an option</option>
+              <option value="water-delivery">Water Delivery</option>
+              <option value="dispenser-purchase">Dispenser Purchase</option>
+              <option value="dispenser-rental">Dispenser Rental</option>
+              <option value="business-account">Business Account</option>
+              <option value="general">General Question</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="jugs">Number of Jugs Needed</label>
+            <select id="jugs" name="jugs">
+              <option value="">Select quantity</option>
+              <option value="1-2">1–2 jugs</option>
+              <option value="3-4">3–4 jugs</option>
+              <option value="5-6">5–6 jugs</option>
+              <option value="7-8">7–8 jugs</option>
+              <option value="9+">9+ jugs</option>
+              <option value="not-sure">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message / Tell Us About Your Needs</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about yourself — home, office, how many people, etc."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">Send Message</button>
+        </form>
+
+        <div id="form-success" class="form-success" role="alert">
+          Thanks! We'll be in touch within 24 hours to get your water flowing. 💧
+        </div>
+      </div>
+
+      <!-- RIGHT: Contact Info -->
+      <div class="contact-info reveal reveal-delay-2">
+        <h3>Contact Information</h3>
+        <div class="contact-info-list">
+          <!-- REPLACE ALL [PLACEHOLDERS] WITH REAL INFO -->
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <strong>Phone</strong>
+              <span>[PHONE NUMBER HERE]</span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <strong>Email</strong>
+              <span>[EMAIL HERE]</span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <strong>Address</strong>
+              <span>[ADDRESS HERE]</span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <strong>Hours</strong>
+              <span>[HOURS HERE]</span>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 11 19-9-9 19-2-8-8-2z"/>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <strong>Service Area</strong>
+              <span>[SERVICE AREA HERE]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="footer" role="contentinfo">
+  <!-- Small wave at the very top of footer -->
+  <div class="wave-section" style="background:var(--bg-light);height:60px;" aria-hidden="true">
+    <svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 C1680,55 1920,5 2160,30 C2400,55 2640,5 2880,30 L2880,60 L0,60 Z" fill="#070F18"/>
+    </svg>
+  </div>
+
+  <div class="container footer-grid">
+    <!-- Brand -->
+    <div class="footer-brand">
+      <img src="logo.png" alt="Waterboy Delivery"
+           onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" />
+      <div class="footer-tagline">PURE WATER. DELIVERED.</div>
+      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses. Clean water, zero hassle.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#hero">Home</a>
+        <a href="#products">Products</a>
+        <a href="#delivery">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <div class="footer-contact-items">
+        <!-- REPLACE ALL [PLACEHOLDERS] WITH REAL INFO -->
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>[PHONE NUMBER HERE]</span>
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>[EMAIL HERE]</span>
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>[ADDRESS HERE]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="container">
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     BACK TO TOP
+     ============================================================ -->
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+    <path d="m18 15-6-6-6 6"/>
+  </svg>
+</button>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="script.js"></script>
+</body>
+</html>
