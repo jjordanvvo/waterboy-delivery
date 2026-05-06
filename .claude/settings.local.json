@@ -9,7 +9,15 @@
       "Bash(git remote *)",
       "Bash(git branch *)",
       "Bash(git push *)",
-      "Bash(Start-Process \"index.html\")"
+      "Bash(Start-Process \"index.html\")",
+      "Bash(dir *)",
+      "Bash(pip install *)",
+      "Bash(python3 *)",
+      "Bash(python *)",
+      "Bash(start \"C:/Users/silly/Desktop/waterboy-delivery/index.html\")",
+      "Bash(start \"C:/Users/silly/Desktop/waterboy-delivery/products.html\")",
+      "Bash(start *)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\"; Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")"
     ]
   }
 }
