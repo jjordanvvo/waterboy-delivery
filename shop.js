@@ -1,43 +1,21 @@
 /* ================================================================
    SHOP.JS — Cart · Checkout · Auth · Modals · Subscription
-   Waterboy Delivery
+   Waterboy Delivery  (v2 — all buttons fixed)
    ================================================================ */
 
-/* ── Data ──────────────────────────────────────────────────────── */
-const PRODUCTS = {
-  'p01': { name:'5-Gallon Water Jug', price:7.50, unit:'jug', img:'Images%20for%20Menu/Images%20for%20Menu/5%20Gallon%20Bottle.jpg', desc:'Our standard 5-gallon BPA-free polycarbonate jug. Perfect for most home dispensers.', specs:[['Size','5 Gallons'],['Material','BPA-Free Polycarbonate'],['Compatible','Standard top-load dispensers']] },
-  'p02': { name:'3-Gallon Water Jug', price:5.00, unit:'jug', img:'Images%20for%20Menu/Images%20for%20Menu/3%20Gallon%20Bottle%20.jpg', desc:'Compact 3-gallon jug ideal for smaller households or countertop dispensers.', specs:[['Size','3 Gallons'],['Material','BPA-Free Polycarbonate'],['Compatible','Standard top-load dispensers']] },
-  'p03': { name:'16 oz Glass Bottle', price:3.50, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/16 oz Glass Bottle.jpg', desc:'Premium glass bottle for pure taste with zero plastic contact.', specs:[['Size','16 oz'],['Material','Borosilicate Glass'],['Cap','Stainless steel lid']] },
-  'p04': { name:'32 oz Glass Bottle', price:5.00, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/32 oz Glass Bottle.jpg', desc:'Larger glass option for all-day hydration without compromise.', specs:[['Size','32 oz'],['Material','Borosilicate Glass'],['Cap','Stainless steel lid']] },
-  'p05': { name:'Gallon Glass Bottle', price:9.00, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/Gallon Glass Bottle.jpg', desc:'Full gallon glass bottle for families who prefer glass over plastic.', specs:[['Size','1 Gallon'],['Material','Borosilicate Glass'],['Cap','Wide-mouth lid']] },
-  'p06': { name:'Gallon Jug', price:6.50, unit:'jug', img:'Images%20for%20Menu/Images%20for%20Menu/Gallon Jug.jpg', desc:'Everyday gallon in lightweight HDPE plastic.', specs:[['Size','1 Gallon'],['Material','HDPE Plastic'],['Cap','Screw-top']] },
-  'p07': { name:'12 oz Aluminum Bottle', price:2.50, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/12 oz Aluminum.jpg', desc:'Slim 12 oz aluminum bottle — great for on-the-go hydration.', specs:[['Size','12 oz'],['Material','Aluminum'],['Finish','Matte']] },
-  'p08': { name:'16 oz Aluminum Bottle', price:3.00, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/16 oz Aluminum.jpg', desc:'Slightly larger aluminum option, fits most cup holders.', specs:[['Size','16 oz'],['Material','Aluminum'],['Finish','Matte']] },
-  'p09': { name:'24 oz Aluminum Bottle', price:3.50, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/24 oz Aluminum.jpg', desc:'The most popular aluminum size for gyms and outdoor use.', specs:[['Size','24 oz'],['Material','Aluminum'],['Finish','Matte']] },
-  'p10': { name:'33.8 oz Aluminum Bottle', price:4.00, unit:'bottle', img:'Images%20for%20Menu/Images%20for%20Menu/33.8 oz Aluminum.jpg', desc:'Liter-size aluminum bottle for serious hydrators.', specs:[['Size','33.8 oz / 1L'],['Material','Aluminum'],['Finish','Matte']] },
-  'p11': { name:'Top-Load Water Dispenser', price:null, unit:'', img:'Images%20for%20Menu/Images%20for%20Menu/Top Load Dispenser.jpg', desc:'Standard top-load dispenser compatible with all our 3 and 5 gallon jugs. Hot & cold taps.', specs:[['Type','Top-Load'],['Taps','Hot & Cold'],['Voltage','110V']] },
-  'p12': { name:'Bottom-Load Dispenser', price:null, unit:'', img:'Images%20for%20Menu/Images%20for%20Menu/Bottom Load Dispenser.jpg', desc:'Sleek bottom-load model — no lifting required. Concealed jug for a clean look.', specs:[['Type','Bottom-Load'],['Taps','Hot & Cold'],['Voltage','110V']] },
-  'p13': { name:'Countertop Dispenser', price:null, unit:'', img:'Images%20for%20Menu/Images%20for%20Menu/Counter Top Dispenser.jpg', desc:'Space-saving countertop unit for offices and smaller kitchens.', specs:[['Type','Countertop'],['Compatible','3 & 5 gallon'],['Voltage','110V']] },
-  'p14': { name:'Alkaline Water Dispenser', price:null, unit:'', img:'Images%20for%20Menu/Images%20for%20Menu/Alkaline Dispenser.jpg', desc:'Dedicated alkaline dispenser with built-in pH enhancement filter.', specs:[['Type','Bottom-Load'],['pH','8.5–9.5'],['Filter life','6 months']] },
-  'p15': { name:'Pink Salt Electrolyte Stick', price:1.50, unit:'stick', img:'Images%20for%20Menu/Images%20for%20Menu/Pink Salt Electrolyte Stick.jpg', desc:'Himalayan pink salt electrolyte blend. Drop one in your water for natural hydration support.', specs:[['Flavor','Unflavored'],['Sodium','230mg'],['Per stick','Single serve']] },
-  'p16': { name:'Raw Unflavored Salt Stick', price:1.50, unit:'stick', img:'Images%20for%20Menu/Images%20for%20Menu/Raw%20Unf%3Bavored%20Stick.jpg', desc:'Pure raw electrolyte stick with no added flavors or sweeteners.', specs:[['Flavor','Unflavored/Raw'],['Sodium','250mg'],['Per stick','Single serve']] },
-  'p17': { name:'Watermelon Electrolyte Stick', price:1.75, unit:'stick', img:'Images%20for%20Menu/Images%20for%20Menu/Watermelon Electrolyte Stick.jpg', desc:'Refreshing watermelon-flavored electrolyte stick. Natural flavoring.', specs:[['Flavor','Watermelon'],['Sodium','200mg'],['Per stick','Single serve']] },
-  'p18': { name:'Lemon Electrolyte Stick', price:1.75, unit:'stick', img:'Images%20for%20Menu/Images%20for%20Menu/Lemon Electrolyte Stick.jpg', desc:'Classic lemon electrolyte stick with a clean citrus finish.', specs:[['Flavor','Lemon'],['Sodium','200mg'],['Per stick','Single serve']] },
-  'p19': { name:'Peach Electrolyte Stick', price:1.75, unit:'stick', img:'Images%20for%20Menu/Images%20for%20Menu/Peach Electrolyte Stick.jpg', desc:'Smooth peach electrolyte blend. Great in still or sparkling water.', specs:[['Flavor','Peach'],['Sodium','200mg'],['Per stick','Single serve']] },
-  'p20': { name:'Sparkling Water Can', price:2.00, unit:'can', img:'Images%20for%20Menu/Images%20for%20Menu/Sparkling Water Can.jpg', desc:'Crisp natural sparkling water with zero calories, zero sweeteners.', specs:[['Type','Sparkling'],['Calories','0'],['Volume','12 oz']] },
-  'p21': { name:'Still Water Can', price:1.75, unit:'can', img:'Images%20for%20Menu/Images%20for%20Menu/Still Water Can.jpg', desc:'Clean still water in a convenient aluminum can.', specs:[['Type','Still'],['Calories','0'],['Volume','12 oz']] },
-  'p22': { name:'Energy Supplement', price:2.50, unit:'pack', img:'Images%20for%20Menu/Images%20for%20Menu/Energy Supplement.jpg', desc:'Natural energy blend with B-vitamins and light caffeine. No crash.', specs:[['Caffeine','80mg (natural)'],['Vitamins','B6, B12'],['Per pack','Single serve']] },
-};
-
+/* ── Constants & Plans ─────────────────────────────────────────── */
 const PLANS = {
-  'Solo':       { jugs:2,  price:21, popular:false, perks:['2 jugs/delivery','Bi-weekly schedule','Free 0–3 mi delivery'] },
-  'Family':     { jugs:4,  price:42, popular:true,  perks:['4 jugs/delivery','Flexible schedule','Free 0–3 mi delivery','Priority support'] },
-  'Household':  { jugs:6,  price:57, popular:false, perks:['6 jugs/delivery','Flexible schedule','Free 0–3 mi delivery'] },
-  'Office':     { jugs:8,  price:72, popular:false, perks:['8 jugs/delivery','Weekly schedule','Free 0–3 mi delivery','Business invoicing'] },
-  'Max Bundle': { jugs:12, price:95, popular:false, perks:['12 jugs/delivery','Custom schedule','Free 0–3 mi delivery','Dedicated driver'] },
+  'Solo':           { jugs:2,  price:21, alkaline:false },
+  'Family':         { jugs:4,  price:42, alkaline:false },
+  'Household':      { jugs:6,  price:57, alkaline:false },
+  'Office':         { jugs:8,  price:72, alkaline:false },
+  'Max Bundle':     { jugs:12, price:95, alkaline:false },
+  'Alkaline Solo':  { jugs:2,  price:25, alkaline:true  },
+  'Alkaline Family':{ jugs:4,  price:45, alkaline:true  },
+  'Alkaline Max':   { jugs:6,  price:60, alkaline:true  },
 };
 
-const PHONE = '(916) 619-3218';
+const PHONE      = '(916) 619-3218';
 const PHONE_HREF = 'tel:+19166193218';
 const DEMO_EMAIL = 'demo@waterboy.com';
 const DEMO_PASS  = 'water2026';
@@ -46,7 +24,7 @@ const DEMO_PASS  = 'water2026';
 function loadCart(){ try{ return JSON.parse(localStorage.getItem('wb_cart_v1'))||[]; }catch(e){ return []; } }
 function saveCart(c){ localStorage.setItem('wb_cart_v1', JSON.stringify(c)); }
 function loadUser(){ try{ return JSON.parse(localStorage.getItem('wb_user_v1'))||null; }catch(e){ return null; } }
-function saveUser(u){ localStorage.setItem('wb_user_v1', JSON.stringify(u)); }
+function saveUser(u){ if(u) localStorage.setItem('wb_user_v1', JSON.stringify(u)); else localStorage.removeItem('wb_user_v1'); }
 
 let cart = loadCart();
 let user = loadUser();
@@ -59,7 +37,7 @@ function genId(){ return 'WB-' + Date.now().toString(36).toUpperCase() + Math.ra
 
 /* ── Toast ─────────────────────────────────────────────────────── */
 function toast(title, msg, icon){
-  const t = $('#wb-toast');
+  const t = document.getElementById('wb-toast');
   if(!t) return;
   t.querySelector('.wb-toast-icon').textContent = icon||'✓';
   t.querySelector('.wb-toast-title').textContent = title;
@@ -69,22 +47,23 @@ function toast(title, msg, icon){
   t._to = setTimeout(()=>t.classList.remove('show'), 3400);
 }
 
-/* ── Overlay open/close ────────────────────────────────────────── */
+/* ── Overlay helpers ───────────────────────────────────────────── */
 function openOverlay(id){
   const el = document.getElementById(id);
   if(!el) return;
   el.classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
 function closeOverlay(id){
   const el = document.getElementById(id);
   if(!el) return;
   el.classList.remove('open');
-  document.body.style.overflow='';
+  // only restore scroll if no other overlays are open
+  if(!document.querySelector('.wb-overlay.open')) document.body.style.overflow = '';
 }
 function closeAll(){
-  $$('.wb-overlay').forEach(o=>{ o.classList.remove('open'); });
-  document.body.style.overflow='';
+  $$('.wb-overlay').forEach(o => o.classList.remove('open'));
+  document.body.style.overflow = '';
 }
 
 /* ── Step panels ───────────────────────────────────────────────── */
@@ -103,68 +82,52 @@ function gotoStep(overlayId, step){
 function buildCalendar(wrapId, minDaysAhead, onSelect){
   const wrap = document.getElementById(wrapId);
   if(!wrap) return;
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   let now = new Date();
-  let viewYear = now.getFullYear();
-  let viewMonth = now.getMonth();
+  let vYear = now.getFullYear(), vMonth = now.getMonth();
   let selected = null;
 
   function render(){
-    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + (minDaysAhead||0));
     minDate.setHours(0,0,0,0);
-
-    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-    const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
+    const firstDay = new Date(vYear, vMonth, 1).getDay();
+    const daysInMonth = new Date(vYear, vMonth+1, 0).getDate();
 
     let html = `<div class="cal-head">
       <button class="cal-nav-btn" id="${wrapId}-prev">&#8249;</button>
-      <span class="cal-title">${monthNames[viewMonth]} ${viewYear}</span>
+      <span class="cal-title">${MONTHS[vMonth]} ${vYear}</span>
       <button class="cal-nav-btn" id="${wrapId}-next">&#8250;</button>
-    </div>
-    <div class="cal-grid">
-      ${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="cal-lbl">${d}</div>`).join('')}`;
-
+    </div><div class="cal-grid">
+    ${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="cal-lbl">${d}</div>`).join('')}`;
     for(let i=0;i<firstDay;i++) html+=`<div class="cal-empty"></div>`;
     for(let d=1;d<=daysInMonth;d++){
-      const date = new Date(viewYear, viewMonth, d);
-      date.setHours(0,0,0,0);
-      const isSun = date.getDay()===0;
-      const isPast = date < minDate;
-      const isSel = selected && date.toDateString()===selected.toDateString();
-      let cls = 'cal-day';
+      const date=new Date(vYear,vMonth,d); date.setHours(0,0,0,0);
+      const isSun=date.getDay()===0, isPast=date<minDate;
+      const isSel=selected&&date.toDateString()===selected.toDateString();
+      let cls='cal-day';
       if(isSun||isPast) cls+=' cal-off';
       if(isSel) cls+=' cal-sel';
       html+=`<div class="${cls}" data-date="${date.toISOString()}">${d}</div>`;
     }
     html+='</div>';
-    wrap.innerHTML = html;
-
-    document.getElementById(`${wrapId}-prev`).addEventListener('click',()=>{
-      viewMonth--; if(viewMonth<0){viewMonth=11;viewYear--;} render();
-    });
-    document.getElementById(`${wrapId}-next`).addEventListener('click',()=>{
-      viewMonth++; if(viewMonth>11){viewMonth=0;viewYear++;} render();
-    });
-    $$('.cal-day:not(.cal-off)', wrap).forEach(el=>{
-      el.addEventListener('click',()=>{
-        selected = new Date(el.dataset.date);
-        render();
-        if(onSelect) onSelect(selected);
-      });
+    wrap.innerHTML=html;
+    document.getElementById(`${wrapId}-prev`).addEventListener('click',()=>{vMonth--;if(vMonth<0){vMonth=11;vYear--;}render();});
+    document.getElementById(`${wrapId}-next`).addEventListener('click',()=>{vMonth++;if(vMonth>11){vMonth=0;vYear++;}render();});
+    $$('.cal-day:not(.cal-off)',wrap).forEach(el=>{
+      el.addEventListener('click',()=>{ selected=new Date(el.dataset.date); render(); if(onSelect) onSelect(selected); });
     });
   }
   render();
 }
 
-/* ── Time Windows ──────────────────────────────────────────────── */
 function buildTimeWindows(containerId, onSelect){
   const c = document.getElementById(containerId);
   if(!c) return;
   const wins = ['8 AM – 10 AM','10 AM – 12 PM','12 PM – 2 PM','2 PM – 4 PM','4 PM – 6 PM'];
   c.innerHTML = wins.map(w=>`<button class="tw-btn" data-tw="${w}">${w}</button>`).join('');
-  $$('.tw-btn', c).forEach(b=>b.addEventListener('click',()=>{
-    $$('.tw-btn', c).forEach(x=>x.classList.remove('sel'));
+  $$('.tw-btn',c).forEach(b=>b.addEventListener('click',()=>{
+    $$('.tw-btn',c).forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel');
     if(onSelect) onSelect(b.dataset.tw);
   }));
@@ -174,54 +137,44 @@ function buildTimeWindows(containerId, onSelect){
 function cartTotal(){ return cart.reduce((s,i)=>s+i.price*i.qty,0); }
 function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
 
-function cartAdd(productId, qty){
+function addToCartRaw(name, price, img, qty){
   qty = qty||1;
-  const existing = cart.find(i=>i.id===productId);
+  const id = 'raw_' + name.replace(/[^a-zA-Z0-9]/g,'').slice(0,12).toLowerCase();
+  const existing = cart.find(i=>i.id===id);
   if(existing){ existing.qty+=qty; }
-  else{
-    const p = PRODUCTS[productId];
-    if(!p) return;
-    cart.push({ id:productId, name:p.name, price:p.price||0, img:p.img, qty });
-  }
-  saveCart(cart);
-  updateBadge();
+  else{ cart.push({ id, name, price:price||0, img:img||'', qty }); }
+  saveCart(cart); updateBadge();
 }
 
-function cartRemove(productId){
-  cart = cart.filter(i=>i.id!==productId);
-  saveCart(cart);
-  updateBadge();
-  renderCartDrawer();
+function cartRemove(id){
+  cart = cart.filter(i=>i.id!==id);
+  saveCart(cart); updateBadge(); renderCartDrawer();
 }
 
-function cartSetQty(productId, qty){
-  const item = cart.find(i=>i.id===productId);
+function cartSetQty(id, qty){
+  const item = cart.find(i=>i.id===id);
   if(!item) return;
-  if(qty<1){ cartRemove(productId); return; }
-  item.qty = qty;
-  saveCart(cart);
-  updateBadge();
-  renderCartDrawer();
+  if(qty<1){ cartRemove(id); return; }
+  item.qty=qty; saveCart(cart); updateBadge(); renderCartDrawer();
 }
 
 function updateBadge(){
   const count = cartCount();
   $$('.cart-badge').forEach(b=>{ b.textContent=count; b.style.display=count?'flex':'none'; });
+  const cdCount = document.getElementById('cd-count');
+  if(cdCount) cdCount.textContent = count;
 }
 
 /* ── Cart Drawer ───────────────────────────────────────────────── */
 function renderCartDrawer(){
-  const body = $('#cd-body');
-  const subtotalEl = $('#cd-subtotal');
-  const grandEl    = $('#cd-grand');
+  const body = document.getElementById('cd-body');
   if(!body) return;
-
-  if(cart.length===0){
+  if(!cart.length){
     body.innerHTML='<p style="color:#8BB8D4;text-align:center;padding:40px 0;">Your cart is empty.</p>';
   } else {
-    body.innerHTML = cart.map(item=>`
-      <div class="cart-item" data-id="${item.id}">
-        <div class="ci-img"><img src="${item.img}" alt="${esc(item.name)}" onerror="this.style.display='none'"></div>
+    body.innerHTML=cart.map(item=>`
+      <div class="cart-item" data-id="${esc(item.id)}">
+        <div class="ci-img"><img src="${esc(item.img)}" alt="" onerror="this.style.display='none'"></div>
         <div class="ci-info">
           <p class="ci-name">${esc(item.name)}</p>
           <p class="ci-price">$${item.price.toFixed(2)} ea</p>
@@ -233,68 +186,65 @@ function renderCartDrawer(){
         </div>
         <button class="ci-del">✕</button>
       </div>`).join('');
-
-    $$('.ci-minus', body).forEach(b=>b.addEventListener('click',()=>{
-      const id = b.closest('.cart-item').dataset.id;
-      const it = cart.find(i=>i.id===id);
-      if(it) cartSetQty(id, it.qty-1);
+    $$('.ci-minus',body).forEach(b=>b.addEventListener('click',()=>{
+      const id=b.closest('.cart-item').dataset.id, it=cart.find(i=>i.id===id);
+      if(it) cartSetQty(id,it.qty-1);
     }));
-    $$('.ci-plus', body).forEach(b=>b.addEventListener('click',()=>{
-      const id = b.closest('.cart-item').dataset.id;
-      const it = cart.find(i=>i.id===id);
-      if(it) cartSetQty(id, it.qty+1);
+    $$('.ci-plus',body).forEach(b=>b.addEventListener('click',()=>{
+      const id=b.closest('.cart-item').dataset.id, it=cart.find(i=>i.id===id);
+      if(it) cartSetQty(id,it.qty+1);
     }));
-    $$('.ci-del', body).forEach(b=>b.addEventListener('click',()=>{
+    $$('.ci-del',body).forEach(b=>b.addEventListener('click',()=>{
       cartRemove(b.closest('.cart-item').dataset.id);
     }));
   }
-
-  const sub = cartTotal();
-  const delivery = 0;
-  const grand = sub + delivery;
-  if(subtotalEl) subtotalEl.textContent = '$'+sub.toFixed(2);
-  if(grandEl)    grandEl.textContent    = '$'+grand.toFixed(2);
+  const sub=cartTotal();
+  const subtotalEl=document.getElementById('cd-subtotal'), grandEl=document.getElementById('cd-grand');
+  if(subtotalEl) subtotalEl.textContent='$'+sub.toFixed(2);
+  if(grandEl) grandEl.textContent='$'+sub.toFixed(2);
 }
 
 function openCartDrawer(){
   renderCartDrawer();
-  const overlay = $('#cart-drawer-overlay');
-  const drawer  = $('#cart-drawer');
+  updateBadge();
+  const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
   if(overlay) overlay.classList.add('open');
-  if(drawer)  setTimeout(()=>drawer.classList.add('open'),10);
+  if(drawer) setTimeout(()=>drawer.classList.add('open'),10);
 }
 function closeCartDrawer(){
-  const overlay = $('#cart-drawer-overlay');
-  const drawer  = $('#cart-drawer');
+  const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
   if(drawer) drawer.classList.remove('open');
   setTimeout(()=>{ if(overlay) overlay.classList.remove('open'); },300);
 }
 
 /* ── Qty Modal ─────────────────────────────────────────────────── */
-let _qmCallback = null;
-function openQtyModal(productId, callback){
-  const p = PRODUCTS[productId];
-  if(!p){ if(callback) callback(1); return; }
-  _qmCallback = callback;
-  const modal = $('#qty-modal');
+let _qmCallback=null;
+
+function openInlineQtyModal(name, price, img, callback){
+  _qmCallback=callback;
+  const modal=document.getElementById('qty-overlay');
   if(!modal){ if(callback) callback(1); return; }
-  const imgEl  = modal.querySelector('.qm-img');
-  const nameEl = modal.querySelector('.qm-name');
-  const priceEl= modal.querySelector('.qm-price');
-  const dispEl = modal.querySelector('.qty-disp');
-  if(imgEl)  imgEl.src = p.img;
-  if(nameEl) nameEl.textContent = p.name;
-  if(priceEl) priceEl.textContent = p.price ? '$'+p.price.toFixed(2)+'/'+p.unit : 'Call for pricing';
-  if(dispEl) dispEl.textContent = '1';
-  modal._qty = 1;
+  const imgEl=modal.querySelector('.qm-img');
+  const nameEl=modal.querySelector('.qm-name');
+  const priceEl=modal.querySelector('.qm-price');
+  const dispEl=modal.querySelector('.qty-disp');
+  const card=modal.querySelector('.wb-modal');
+  if(imgEl) imgEl.src=img||'';
+  if(nameEl) nameEl.textContent=name;
+  if(priceEl) priceEl.textContent=price?'$'+price.toFixed(2)+' each':'Contact for pricing';
+  if(dispEl) dispEl.textContent='1';
+  if(card) card._qty=1;
   openOverlay('qty-overlay');
 }
 
-/* ── Product Detail Modal ──────────────────────────────────────── */
-function openProductDetail(productId){
-  const p = PRODUCTS[productId];
-  if(!p) return;
-  const modal = $('#pd-modal');
+/* ── Product Detail from Card ──────────────────────────────────── */
+function openProductDetailFromCard(card){
+  const name  = card.dataset.wbName  || '';
+  const price = card.dataset.wbPrice ? parseFloat(card.dataset.wbPrice) : null;
+  const img   = card.dataset.wbImg   || '';
+  const priceText = card.querySelector('.catalog-price')?.textContent.trim() || (price ? '$'+price.toFixed(2) : 'Contact for pricing');
+
+  const modal = document.getElementById('pd-modal');
   if(!modal) return;
   const imgEl   = modal.querySelector('.pd-img');
   const nameEl  = modal.querySelector('.pd-name');
@@ -304,28 +254,53 @@ function openProductDetail(productId){
   const atcBtn  = modal.querySelector('.pd-atc');
   const dispEl  = modal.querySelector('.pd-qty-disp');
 
-  if(imgEl)   imgEl.src = p.img;
-  if(nameEl)  nameEl.textContent = p.name;
-  if(priceEl) priceEl.textContent = p.price ? '$'+p.price.toFixed(2)+' / '+p.unit : 'Contact for pricing';
-  if(descEl)  descEl.textContent = p.desc;
-  if(specsEl) specsEl.innerHTML = (p.specs||[]).map(s=>`<div class="pd-spec"><span>${esc(s[0])}</span><span>${esc(s[1])}</span></div>`).join('');
-  if(dispEl)  dispEl.textContent = '1';
-  modal._pid = productId;
-  modal._qty = 1;
+  if(imgEl)   { imgEl.src=img; imgEl.alt=name; }
+  if(nameEl)  nameEl.textContent=name;
+  if(priceEl) priceEl.textContent=priceText;
+  if(descEl)  descEl.textContent=getProductDesc(name);
+  if(specsEl) specsEl.innerHTML=getProductSpecs(name);
+  if(dispEl)  dispEl.textContent='1';
+  modal._qty=1; modal._name=name; modal._price=price; modal._img=img;
 
   if(atcBtn){
-    if(p.price){
+    if(price){
       atcBtn.style.display='flex';
-      atcBtn.onclick=()=>{
-        cartAdd(productId, modal._qty);
-        closeOverlay('pd-overlay');
-        toast(p.name, `Added ${modal._qty} to cart`,'🛒');
-      };
+      atcBtn.onclick=()=>{ addToCartRaw(name,price,img,modal._qty); closeOverlay('pd-overlay'); toast(name,'Added '+modal._qty+' to cart','🛒'); };
     } else {
       atcBtn.style.display='none';
     }
   }
   openOverlay('pd-overlay');
+}
+
+function getProductDesc(name){
+  const n=name.toLowerCase();
+  if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water jug compatible with all standard top-load and bottom-load dispensers. Purified or alkaline available on every delivery.';
+  if(n.includes('3-gallon')||n.includes('3 gallon')) return '3-gallon jug, ideal for smaller households or countertop dispensers. Lightweight and easy to handle.';
+  if(n.includes('glass bottle')||n.includes('glass jug')) return 'Premium glass bottle — pure taste with zero plastic contact. Reusable and eco-friendly.';
+  if(n.includes('aluminum')||n.includes('coffee mug')) return 'Lightweight aluminum bottle — perfect for on-the-go hydration. Durable, eco-friendly, and reusable.';
+  if(n.includes('dispenser')) return 'Premium water dispenser compatible with our 3 and 5-gallon jugs. Hot and cold taps. Contact us for current pricing and availability.';
+  if(n.includes('crock')) return 'Elegant ceramic water crock — a classic way to serve cold water in your home. Contact us for pricing.';
+  if(n.includes('prebiotic')||n.includes('hydrogen')) return 'Advanced hydrogen prebiotic stick — supports gut health and enhanced hydration. Single serve, easy to use.';
+  if(n.includes('stick')||n.includes('electrolyte')) return 'Single-serve electrolyte stick. Drop into your water for natural hydration support with essential minerals and electrolytes.';
+  if(n.includes('zipfizz')) return 'ZipFizz energy mix — natural energy with vitamins, minerals, and electrolytes. Mix with water for an instant boost without the crash.';
+  if(n.includes('can')||n.includes('cherry')||n.includes('grapefruit')||n.includes('watermelon salt')) return 'Ready-to-drink electrolyte beverage in a convenient can. Crisp taste, hydrating minerals, no artificial colors.';
+  return 'Premium hydration product from Waterboy Delivery. Contact us for details.';
+}
+
+function getProductSpecs(name){
+  const n=name.toLowerCase();
+  if(n.includes('5 gallon glass')||n.includes('5-gallon glass')) return '<div class="pd-spec"><span>Size</span><span>5 Gallons</span></div><div class="pd-spec"><span>Material</span><span>Borosilicate Glass</span></div>';
+  if(n.includes('5-gallon')||n.includes('5 gallon')) return '<div class="pd-spec"><span>Size</span><span>5 Gallons</span></div><div class="pd-spec"><span>Material</span><span>BPA-Free Polycarbonate</span></div><div class="pd-spec"><span>Compatible</span><span>Standard dispensers</span></div>';
+  if(n.includes('3 gallon glass')||n.includes('3-gallon glass')) return '<div class="pd-spec"><span>Size</span><span>3 Gallons</span></div><div class="pd-spec"><span>Material</span><span>Borosilicate Glass</span></div>';
+  if(n.includes('3-gallon')||n.includes('3 gallon')) return '<div class="pd-spec"><span>Size</span><span>3 Gallons</span></div><div class="pd-spec"><span>Material</span><span>BPA-Free Polycarbonate</span></div>';
+  if(n.includes('1-gallon glass')||n.includes('1 gallon glass')) return '<div class="pd-spec"><span>Size</span><span>1 Gallon</span></div><div class="pd-spec"><span>Material</span><span>Borosilicate Glass</span></div>';
+  if(n.includes('half-gallon')||n.includes('half gallon')) return '<div class="pd-spec"><span>Size</span><span>½ Gallon</span></div><div class="pd-spec"><span>Material</span><span>Borosilicate Glass</span></div>';
+  if(n.includes('32oz glass')) return '<div class="pd-spec"><span>Size</span><span>32 oz</span></div><div class="pd-spec"><span>Material</span><span>Borosilicate Glass</span></div>';
+  if(n.includes('aluminum')||n.includes('coffee mug')) return '<div class="pd-spec"><span>Material</span><span>Aluminum</span></div><div class="pd-spec"><span>Finish</span><span>Matte</span></div>';
+  if(n.includes('dispenser')) return '<div class="pd-spec"><span>Voltage</span><span>110V</span></div><div class="pd-spec"><span>Taps</span><span>Hot &amp; Cold</span></div>';
+  if(n.includes('stick')||n.includes('electrolyte')) return '<div class="pd-spec"><span>Serve Size</span><span>Single Serve</span></div><div class="pd-spec"><span>Type</span><span>Electrolyte</span></div>';
+  return '';
 }
 
 /* ── Auth ──────────────────────────────────────────────────────── */
@@ -335,962 +310,913 @@ function updateNavUser(){
   });
   $$('.nav-user-drop').forEach(drop=>{
     drop.innerHTML = user
-      ? `<button class="nud-item" id="nud-account">My Account</button>
-         <button class="nud-item" id="nud-orders">My Orders</button>
-         <button class="nud-item nud-out" id="nud-signout">Sign Out</button>`
-      : `<button class="nud-item" id="nud-signin">Sign In</button>
-         <button class="nud-item" id="nud-signup">Create Account</button>`;
-    const signout = drop.querySelector('#nud-signout');
-    if(signout) signout.addEventListener('click',()=>{
-      user=null; saveUser(null); updateNavUser();
-      toast('Signed out','See you next time!','👋');
-    });
-    const signinBtn = drop.querySelector('#nud-signin');
-    if(signinBtn) signinBtn.addEventListener('click',()=>openAuthModal('signin'));
-    const signupBtn = drop.querySelector('#nud-signup');
-    if(signupBtn) signupBtn.addEventListener('click',()=>openAuthModal('signup'));
+      ? `<button class="nud-item" id="nud-account">My Account</button><button class="nud-item" id="nud-orders">My Orders</button><button class="nud-item nud-out" id="nud-signout">Sign Out</button>`
+      : `<button class="nud-item" id="nud-signin">Sign In</button><button class="nud-item" id="nud-signup">Create Account</button>`;
+    drop.querySelector('#nud-signout')?.addEventListener('click',()=>{ user=null; saveUser(null); updateNavUser(); toast('Signed out','See you next time!','👋'); });
+    drop.querySelector('#nud-signin')?.addEventListener('click',()=>openAuthModal('signin'));
+    drop.querySelector('#nud-signup')?.addEventListener('click',()=>openAuthModal('signup'));
   });
 }
 
 function openAuthModal(tab){
-  const modal = $('#auth-modal');
-  if(!modal) return;
-  $$('.auth-tab', modal).forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
-  $$('.auth-panel', modal).forEach(p=>p.classList.toggle('active', p.id==='auth-panel-'+tab));
-  // clear errors
-  $$('.auth-error', modal).forEach(e=>{ e.textContent=''; e.style.display='none'; });
+  $$('.auth-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  $$('.auth-panel').forEach(p=>p.classList.toggle('active', p.id==='auth-panel-'+tab));
+  $$('.auth-error').forEach(e=>{ e.textContent=''; e.style.display='none'; });
   openOverlay('auth-overlay');
 }
 
-/* ── Checkout State ────────────────────────────────────────────── */
-let checkoutState = { date:null, time:null, orderType:'one-time', freq:'bi-weekly' };
+/* ── Checkout & Subscription State ────────────────────────────── */
+let coState  = { date:null, time:null, orderType:'one-time', freq:'bi-weekly' };
+let subState = { plan:'Family', waterType:'purified', date:null, time:null };
+let dvState  = { plan:null, date:null, time:null, freq:'bi-weekly', day:'Monday', window:'Morning' };
 
 function buildOrderSummary(containerId){
-  const c = document.getElementById(containerId);
-  if(!c) return;
-  const sub = cartTotal();
-  c.innerHTML = `
-    ${cart.map(i=>`<div class="ob-row"><span>${esc(i.name)} ×${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`).join('')}
-    <div class="ob-row"><span>Delivery</span><span>FREE</span></div>
-    <div class="ob-row grand"><span>Total</span><span>$${sub.toFixed(2)}</span></div>`;
+  const c=document.getElementById(containerId); if(!c) return;
+  const sub=cartTotal();
+  c.innerHTML=cart.map(i=>`<div class="ob-row"><span>${esc(i.name)} ×${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`).join('')
+    +`<div class="ob-row"><span>Delivery</span><span>FREE</span></div>`
+    +`<div class="ob-row grand"><span>Total</span><span>$${sub.toFixed(2)}</span></div>`;
 }
 
 /* ── Pay Simulation ────────────────────────────────────────────── */
 function showPaySim(type, onSuccess){
-  const sim = $('#pay-sim');
-  if(!sim){ onSuccess && onSuccess(); return; }
-  const sheet = sim.querySelector('.pay-sheet');
-  const logoEl = sim.querySelector('.pay-sheet-logo');
-  const amtEl  = sim.querySelector('.pay-sheet-amt');
-  const faceEl = sim.querySelector('.face-id');
-  if(logoEl) logoEl.textContent = type==='apple'?'  Pay':'G Pay';
-  if(amtEl)  amtEl.textContent  = '$'+cartTotal().toFixed(2);
+  const sim=document.getElementById('pay-sim'); if(!sim){ onSuccess&&onSuccess(); return; }
+  const sheet=sim.querySelector('.pay-sheet');
+  const logoEl=sim.querySelector('.pay-sheet-logo'), amtEl=sim.querySelector('.pay-sheet-amt'), faceEl=sim.querySelector('.face-id');
+  if(logoEl) logoEl.textContent=type==='apple'?'🍎 Pay':'G Pay';
+  if(amtEl)  amtEl.textContent='$'+cartTotal().toFixed(2);
   if(faceEl) faceEl.className='face-id';
   sim.style.display='flex';
   requestAnimationFrame(()=>{ sim.classList.add('open'); if(sheet) sheet.classList.add('open'); });
-  setTimeout(()=>{ if(faceEl) faceEl.classList.add('auth'); }, 600);
-  setTimeout(()=>{
-    sim.classList.remove('open');
-    if(sheet) sheet.classList.remove('open');
-    setTimeout(()=>{ sim.style.display='none'; onSuccess && onSuccess(); },350);
-  }, 2800);
+  setTimeout(()=>{ if(faceEl) faceEl.classList.add('auth'); },600);
+  setTimeout(()=>{ sim.classList.remove('open'); if(sheet) sheet.classList.remove('open'); setTimeout(()=>{ sim.style.display='none'; onSuccess&&onSuccess(); },350); },2800);
 }
-
-/* ── Subscription State ────────────────────────────────────────── */
-let subState = { plan:null, waterType:'purified', date:null, time:null };
 
 /* ── HTML Injection ────────────────────────────────────────────── */
 function inject(){
-  const div = document.createElement('div');
-  div.id = 'wb-modals';
-  div.innerHTML = `
+  const div=document.createElement('div'); div.id='wb-modals';
+  div.innerHTML=`
 <!-- Toast -->
-<div id="wb-toast">
-  <span class="wb-toast-icon">✓</span>
-  <div><div class="wb-toast-title"></div><div class="wb-toast-msg"></div></div>
-</div>
+<div id="wb-toast"><span class="wb-toast-icon">✓</span><div><div class="wb-toast-title"></div><div class="wb-toast-msg"></div></div></div>
 
 <!-- Contact Overlay -->
 <div class="wb-overlay" id="contact-overlay">
-  <div class="wb-modal" role="dialog" aria-label="Contact Us">
-    <div class="wb-mhead">
-      <h2>Get in Touch</h2>
-      <button class="wb-mclose" aria-label="Close">✕</button>
+ <div class="wb-modal">
+  <div class="wb-mhead"><h2>Get in Touch</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div id="modal-contact-success" class="wb-success" style="display:none">
+    <div class="wb-check-circle">✓</div>
+    <h3 style="color:#fff;margin:12px 0 6px">Message Sent!</h3>
+    <p style="color:#8BB8D4;font-size:14px">We'll get back to you within 24 hours.</p>
+   </div>
+   <form id="modal-contact-form" data-netlify="true" name="quick-contact" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="quick-contact">
+    <input name="bot-field" style="display:none">
+    <div class="wb-field"><label>Your Name</label><input name="name" placeholder="Jane Smith" required></div>
+    <div class="wb-row">
+     <div class="wb-field"><label>Phone</label><input name="phone" type="tel" placeholder="(916) 555-0000"></div>
+     <div class="wb-field"><label>Email</label><input name="email" type="email" placeholder="you@email.com" required></div>
     </div>
-    <div class="wb-mbody">
-      <div id="contact-success" class="wb-success">
-        <div class="wb-check-circle">✓</div>
-        <h3 style="color:#fff;margin:12px 0 6px">Message Sent!</h3>
-        <p style="color:#8BB8D4;font-size:14px">We'll get back to you within 24 hours.</p>
-      </div>
-      <form id="contact-form" data-netlify="true" name="quick-contact" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="quick-contact">
-        <input name="bot-field" style="display:none">
-        <div class="wb-field"><label>Your Name</label><input name="name" placeholder="Jane Smith" required></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>Phone</label><input name="phone" type="tel" placeholder="(916) 555-0000"></div>
-          <div class="wb-field"><label>Email</label><input name="email" type="email" placeholder="you@email.com" required></div>
-        </div>
-        <div class="wb-field"><label>Message</label><textarea name="message" placeholder="Tell us how we can help…"></textarea></div>
-        <button type="submit" class="wb-btn">Send Message</button>
-      </form>
-      <div class="wb-callbar">
-        <p>Prefer to call? We're available Mon–Sat, 8 AM – 6 PM</p>
-        <a href="${PHONE_HREF}" class="wb-callbtn">📞 ${PHONE}</a>
-      </div>
-    </div>
+    <div class="wb-field"><label>Message</label><textarea name="message" placeholder="How can we help?"></textarea></div>
+    <button type="submit" class="wb-btn">Send Message</button>
+   </form>
+   <div class="wb-callbar">
+    <p>Prefer to call? Mon–Sat, 8 AM – 6 PM</p>
+    <a href="${PHONE_HREF}" class="wb-callbtn">📞 ${PHONE}</a>
+   </div>
   </div>
+ </div>
 </div>
 
 <!-- Auth Overlay -->
 <div class="wb-overlay" id="auth-overlay">
-  <div class="wb-modal" role="dialog" aria-label="Sign In / Sign Up">
-    <div class="wb-mhead">
-      <h2>My Account</h2>
-      <button class="wb-mclose" aria-label="Close">✕</button>
+ <div class="wb-modal">
+  <div class="wb-mhead"><h2>My Account</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="auth-tabs">
+    <button class="auth-tab active" data-tab="signin">Sign In</button>
+    <button class="auth-tab" data-tab="signup">Create Account</button>
+   </div>
+   <div class="auth-panel active" id="auth-panel-signin">
+    <div class="demo-hint">Demo: ${DEMO_EMAIL} / ${DEMO_PASS}</div>
+    <div class="wb-field"><label>Email</label><input id="si-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Password</label><div class="pw-wrap"><input id="si-pass" type="password" placeholder="Password"><button type="button" class="pw-eye">👁</button></div></div>
+    <div class="auth-error" id="si-error" style="display:none;color:#ff6b6b;font-size:13px;margin-bottom:10px"></div>
+    <button class="wb-btn" id="si-submit">Sign In</button>
+    <p style="text-align:center;margin-top:14px;font-size:13px;color:#8BB8D4">No account? <button class="wb-link" id="si-to-signup">Create one free</button></p>
+    <p style="text-align:center;margin-top:8px;font-size:13px;color:#8BB8D4"><button class="wb-link" id="si-guest" style="color:#00D4FF">Continue as Guest →</button></p>
+   </div>
+   <div class="auth-panel" id="auth-panel-signup">
+    <div class="wb-row">
+     <div class="wb-field"><label>First Name</label><input id="su-fname" placeholder="Jane"></div>
+     <div class="wb-field"><label>Last Name</label><input id="su-lname" placeholder="Smith"></div>
     </div>
-    <div class="wb-mbody">
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="signin">Sign In</button>
-        <button class="auth-tab" data-tab="signup">Create Account</button>
-      </div>
-      <!-- Sign In -->
-      <div class="auth-panel active" id="auth-panel-signin">
-        <div class="demo-hint">Demo: ${DEMO_EMAIL} / ${DEMO_PASS}</div>
-        <div class="wb-field"><label>Email</label><input id="si-email" type="email" placeholder="you@email.com"></div>
-        <div class="wb-field"><label>Password</label>
-          <div class="pw-wrap"><input id="si-pass" type="password" placeholder="Password"><button type="button" class="pw-eye">👁</button></div>
-        </div>
-        <div class="auth-error" id="si-error" style="display:none;color:#ff6b6b;font-size:13px;margin-bottom:10px"></div>
-        <button class="wb-btn" id="si-submit">Sign In</button>
-        <p style="text-align:center;margin-top:14px;font-size:13px;color:#8BB8D4">No account? <button class="wb-link" id="si-to-signup">Create one free</button></p>
-      </div>
-      <!-- Sign Up -->
-      <div class="auth-panel" id="auth-panel-signup">
-        <div class="wb-row">
-          <div class="wb-field"><label>First Name</label><input id="su-fname" placeholder="Jane"></div>
-          <div class="wb-field"><label>Last Name</label><input id="su-lname" placeholder="Smith"></div>
-        </div>
-        <div class="wb-field"><label>Email</label><input id="su-email" type="email" placeholder="you@email.com"></div>
-        <div class="wb-field"><label>Phone</label><input id="su-phone" type="tel" placeholder="(916) 555-0000"></div>
-        <div class="wb-field"><label>Street Address</label><input id="su-addr" placeholder="123 Main St"></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>City</label><input id="su-city" placeholder="Sacramento"></div>
-          <div class="wb-field"><label>ZIP</label><input id="su-zip" placeholder="95814"></div>
-        </div>
-        <div class="wb-field"><label>Password</label>
-          <div class="pw-wrap"><input id="su-pass" type="password" placeholder="Min 8 characters"><button type="button" class="pw-eye">👁</button></div>
-        </div>
-        <div class="auth-error" id="su-error" style="display:none;color:#ff6b6b;font-size:13px;margin-bottom:10px"></div>
-        <button class="wb-btn" id="su-submit">Create Account</button>
-        <p style="text-align:center;margin-top:14px;font-size:13px;color:#8BB8D4">Already have an account? <button class="wb-link" id="su-to-signin">Sign In</button></p>
-      </div>
+    <div class="wb-field"><label>Email</label><input id="su-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Phone</label><input id="su-phone" type="tel" placeholder="(916) 555-0000"></div>
+    <div class="wb-field"><label>Street Address</label><input id="su-addr" placeholder="123 Main St"></div>
+    <div class="wb-row">
+     <div class="wb-field"><label>City</label><input id="su-city" placeholder="Sacramento"></div>
+     <div class="wb-field"><label>ZIP</label><input id="su-zip" placeholder="95814"></div>
     </div>
+    <div class="wb-field"><label>Password</label><div class="pw-wrap"><input id="su-pass" type="password" placeholder="Min 8 characters"><button type="button" class="pw-eye">👁</button></div></div>
+    <div class="auth-error" id="su-error" style="display:none;color:#ff6b6b;font-size:13px;margin-bottom:10px"></div>
+    <button class="wb-btn" id="su-submit">Create Account</button>
+    <p style="text-align:center;margin-top:14px;font-size:13px;color:#8BB8D4">Already have an account? <button class="wb-link" id="su-to-signin">Sign In</button></p>
+   </div>
   </div>
+ </div>
 </div>
 
-<!-- Cart Drawer Overlay -->
+<!-- Cart Drawer -->
 <div id="cart-drawer-overlay">
-  <div id="cart-drawer">
-    <div class="cd-head">
-      <span>My Cart (<span id="cd-count">0</span>)</span>
-      <button class="wb-mclose" id="cd-close">✕</button>
-    </div>
-    <div class="cd-body" id="cd-body"></div>
-    <div class="cd-foot">
-      <div class="promo-row">
-        <input id="promo-input" placeholder="Promo code" style="flex:1;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.15);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none">
-        <button class="promo-apply" id="promo-apply">Apply</button>
-      </div>
-      <div class="totals-row"><span>Subtotal</span><span id="cd-subtotal">$0.00</span></div>
-      <div class="totals-row"><span>Delivery</span><span>FREE</span></div>
-      <div class="totals-row grand"><span>Total</span><span id="cd-grand">$0.00</span></div>
-      <button class="wb-btn" id="cd-checkout-btn" style="margin-top:14px">Proceed to Checkout</button>
-      <button class="wb-btn-ghost" id="cd-continue-btn">Continue Shopping</button>
-    </div>
+ <div id="cart-drawer">
+  <div class="cd-head"><span>My Cart (<span id="cd-count">0</span>)</span><button class="wb-mclose" id="cd-close">✕</button></div>
+  <div class="cd-body" id="cd-body"></div>
+  <div class="cd-foot">
+   <div class="promo-row"><input id="promo-input" placeholder="Promo code"><button class="promo-apply" id="promo-apply">Apply</button></div>
+   <div class="totals-row"><span>Subtotal</span><span id="cd-subtotal">$0.00</span></div>
+   <div class="totals-row"><span>Delivery</span><span>FREE</span></div>
+   <div class="totals-row grand"><span>Total</span><span id="cd-grand">$0.00</span></div>
+   <button class="wb-btn" id="cd-checkout-btn" style="margin-top:14px">Proceed to Checkout</button>
+   <button class="wb-btn-ghost" id="cd-continue-btn">Continue Shopping</button>
   </div>
+ </div>
 </div>
 
 <!-- Qty Modal -->
 <div class="wb-overlay" id="qty-overlay">
-  <div class="wb-modal" role="dialog" aria-label="Select Quantity">
-    <div class="wb-mhead"><h2>How Many?</h2><button class="wb-mclose" aria-label="Close">✕</button></div>
-    <div class="wb-mbody">
-      <div class="qm-product">
-        <img class="qm-img" src="" alt="">
-        <div>
-          <p class="qm-name"></p>
-          <p class="qm-price"></p>
-        </div>
-      </div>
-      <div class="qty-sel">
-        <button class="qty-btn qty-lg" id="qm-minus">−</button>
-        <span class="qty-disp">1</span>
-        <button class="qty-btn qty-lg" id="qm-plus">+</button>
-      </div>
-      <button class="wb-btn" id="qm-confirm">Add to Cart</button>
-    </div>
+ <div class="wb-modal">
+  <div class="wb-mhead"><h2>How Many?</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="qm-product"><img class="qm-img" src="" alt=""><div><p class="qm-name"></p><p class="qm-price"></p></div></div>
+   <div class="qty-sel">
+    <button class="qty-btn qty-lg" id="qm-minus">−</button>
+    <span class="qty-disp">1</span>
+    <button class="qty-btn qty-lg" id="qm-plus">+</button>
+   </div>
+   <button class="wb-btn" id="qm-confirm">Add to Cart</button>
   </div>
+ </div>
 </div>
 
 <!-- Product Detail Overlay -->
 <div class="wb-overlay" id="pd-overlay">
-  <div class="wb-modal wide" id="pd-modal" role="dialog" aria-label="Product Details">
-    <div class="wb-mhead"><h2>Product Details</h2><button class="wb-mclose" aria-label="Close">✕</button></div>
-    <div class="wb-mbody">
-      <div class="pd-wrap">
-        <img class="pd-img" src="" alt="">
-        <div class="pd-info">
-          <p class="pd-name"></p>
-          <p class="pd-price"></p>
-          <p class="pd-desc"></p>
-          <div class="pd-specs"></div>
-          <div class="pd-qty">
-            <button class="qty-btn" id="pd-minus">−</button>
-            <span class="pd-qty-disp qty-disp">1</span>
-            <button class="qty-btn" id="pd-plus">+</button>
-          </div>
-          <button class="wb-btn pd-atc" style="margin-top:14px">Add to Cart 🛒</button>
-        </div>
-      </div>
+ <div class="wb-modal wide" id="pd-modal">
+  <div class="wb-mhead"><h2>Product Details</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="pd-wrap">
+    <img class="pd-img" src="" alt="">
+    <div class="pd-info">
+     <p class="pd-name"></p>
+     <p class="pd-price"></p>
+     <p class="pd-desc"></p>
+     <div class="pd-specs"></div>
+     <div class="pd-qty">
+      <button class="qty-btn" id="pd-minus">−</button>
+      <span class="pd-qty-disp qty-disp">1</span>
+      <button class="qty-btn" id="pd-plus">+</button>
+     </div>
+     <button class="wb-btn pd-atc" style="margin-top:14px">Add to Cart 🛒</button>
     </div>
+   </div>
   </div>
+ </div>
 </div>
 
 <!-- Checkout Overlay (4 steps) -->
 <div class="wb-overlay" id="checkout-overlay">
-  <div class="wb-modal wide" id="checkout-modal" role="dialog" aria-label="Checkout">
-    <div class="wb-mhead">
-      <h2>Checkout</h2>
-      <button class="wb-mclose" aria-label="Close">✕</button>
+ <div class="wb-modal wide" id="checkout-modal">
+  <div class="wb-mhead"><h2>Checkout</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="step-bar">
+    <div class="step-dot active"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div>
+   </div>
+   <!-- Step 0: Info -->
+   <div class="step-panel active" id="co-step-0">
+    <p class="step-title">Delivery Information</p>
+    <div class="wb-row"><div class="wb-field"><label>First Name</label><input id="co-fname" placeholder="Jane"></div><div class="wb-field"><label>Last Name</label><input id="co-lname" placeholder="Smith"></div></div>
+    <div class="wb-field"><label>Phone</label><input id="co-phone" type="tel" placeholder="(916) 555-0000"></div>
+    <div class="wb-field"><label>Email</label><input id="co-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Street Address</label><input id="co-addr" placeholder="123 Main St, Sacramento CA"></div>
+    <div class="wb-row"><div class="wb-field"><label>City</label><input id="co-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>ZIP</label><input id="co-zip" placeholder="95814"></div></div>
+    <div class="wb-field"><label>Notes (optional)</label><textarea id="co-notes" style="min-height:56px" placeholder="Gate code, drop-off location…"></textarea></div>
+    <div class="step-nav"><button class="wb-btn" id="co-next-0">Next: Schedule →</button></div>
+   </div>
+   <!-- Step 1: Schedule -->
+   <div class="step-panel" id="co-step-1">
+    <p class="step-title">Choose Delivery Date &amp; Time</p>
+    <div class="order-type-wrap">
+     <button class="ot-btn sel" data-ot="one-time">One-Time</button>
+     <button class="ot-btn" data-ot="recurring">Recurring</button>
     </div>
-    <div class="wb-mbody">
-      <!-- Step bar -->
-      <div class="step-bar">
-        <div class="step-dot active" title="Info"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Schedule"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Payment"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Confirm"></div>
-      </div>
-      <!-- Step 0: Info -->
-      <div class="step-panel active" id="co-step-0">
-        <p class="step-title">Delivery Information</p>
-        <div class="wb-row">
-          <div class="wb-field"><label>First Name</label><input id="co-fname" placeholder="Jane"></div>
-          <div class="wb-field"><label>Last Name</label><input id="co-lname" placeholder="Smith"></div>
-        </div>
-        <div class="wb-field"><label>Phone</label><input id="co-phone" type="tel" placeholder="(916) 555-0000"></div>
-        <div class="wb-field"><label>Email</label><input id="co-email" type="email" placeholder="you@email.com"></div>
-        <div class="wb-field"><label>Street Address</label><input id="co-addr" placeholder="123 Main St, Sacramento, CA"></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>City</label><input id="co-city" placeholder="Sacramento" value="Sacramento"></div>
-          <div class="wb-field"><label>ZIP</label><input id="co-zip" placeholder="95814"></div>
-        </div>
-        <div class="wb-field"><label>Delivery Notes (optional)</label><textarea id="co-notes" placeholder="Gate code, special instructions…" style="min-height:60px"></textarea></div>
-        <div class="step-nav"><button class="step-next wb-btn" id="co-next-0">Next: Schedule →</button></div>
-      </div>
-      <!-- Step 1: Schedule -->
-      <div class="step-panel" id="co-step-1">
-        <p class="step-title">Choose Delivery Date & Time</p>
-        <div class="order-type-wrap">
-          <button class="ot-btn sel" data-ot="one-time">One-Time Delivery</button>
-          <button class="ot-btn" data-ot="recurring">Recurring Subscription</button>
-        </div>
-        <div id="co-freq-wrap" style="display:none;margin-bottom:16px">
-          <label style="font-size:11px;color:#8BB8D4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block">Frequency</label>
-          <div class="freq-btns">
-            <button class="freq-btn sel" data-f="bi-weekly">Bi-Weekly</button>
-            <button class="freq-btn" data-f="weekly">Weekly</button>
-            <button class="freq-btn" data-f="monthly">Monthly</button>
-          </div>
-        </div>
-        <div id="co-calendar"></div>
-        <p style="font-size:12px;color:#8BB8D4;margin:12px 0 6px">Select a time window:</p>
-        <div class="time-wins" id="co-time-wins"></div>
-        <div class="step-nav">
-          <button class="step-back wb-btn-ghost" id="co-back-1">← Back</button>
-          <button class="step-next wb-btn" id="co-next-1">Next: Payment →</button>
-        </div>
-      </div>
-      <!-- Step 2: Payment -->
-      <div class="step-panel" id="co-step-2">
-        <p class="step-title">Payment</p>
-        <div class="pay-opts">
-          <button class="pay-apple" id="co-apple-pay">🍎 Apple Pay</button>
-          <button class="pay-google" id="co-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
-        </div>
-        <div class="pay-or"><span>or pay with card</span></div>
-        <div class="wb-field"><label>Card Number</label><input id="co-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>Expiry</label><input id="co-exp" placeholder="MM/YY" maxlength="5"></div>
-          <div class="wb-field"><label>CVV</label><input id="co-cvv" placeholder="123" maxlength="4"></div>
-        </div>
-        <div class="wb-field"><label>Name on Card</label><input id="co-cname" placeholder="Jane Smith"></div>
-        <div id="co-order-summary"></div>
-        <div class="terms-row">By placing your order you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>.</div>
-        <div class="stripe-badge">🔒 Secured by Stripe</div>
-        <div class="step-nav">
-          <button class="step-back wb-btn-ghost" id="co-back-2">← Back</button>
-          <button class="step-next wb-btn" id="co-place-order">Place Order →</button>
-        </div>
-      </div>
-      <!-- Step 3: Confirmation -->
-      <div class="step-panel" id="co-step-3">
-        <div class="confirm-wrap">
-          <div class="confirm-check">✓</div>
-          <h3 style="color:#fff;margin:16px 0 8px">Order Confirmed!</h3>
-          <p style="color:#8BB8D4;font-size:14px;margin-bottom:4px">Order number:</p>
-          <div class="confirm-num" id="co-order-num">WB-XXXXXX</div>
-          <p style="color:#8BB8D4;font-size:13px;margin-top:16px">We'll send a confirmation to your email.<br>Your driver will contact you 30 min before arrival.</p>
-          <button class="wb-btn" id="co-done-btn" style="margin-top:24px">Done</button>
-        </div>
-      </div>
+    <div id="co-freq-wrap" style="display:none;margin-bottom:14px">
+     <label style="font-size:11px;color:#8BB8D4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block">Frequency</label>
+     <div class="freq-btns">
+      <button class="freq-btn sel" data-f="bi-weekly">Bi-Weekly</button>
+      <button class="freq-btn" data-f="weekly">Weekly</button>
+      <button class="freq-btn" data-f="monthly">Monthly</button>
+     </div>
     </div>
+    <div id="co-calendar"></div>
+    <p style="font-size:12px;color:#8BB8D4;margin:10px 0 6px">Select a time window:</p>
+    <div class="time-wins" id="co-time-wins"></div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="co-back-1">← Back</button><button class="wb-btn" id="co-next-1">Next: Payment →</button></div>
+   </div>
+   <!-- Step 2: Payment -->
+   <div class="step-panel" id="co-step-2">
+    <p class="step-title">Payment</p>
+    <div class="pay-opts">
+     <button class="pay-apple" id="co-apple-pay">🍎 Apple Pay</button>
+     <button class="pay-google" id="co-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
+    </div>
+    <div class="pay-or"><span>or pay with card</span></div>
+    <div class="wb-field"><label>Card Number</label><input id="co-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="co-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="co-cvv" placeholder="123" maxlength="4"></div></div>
+    <div class="wb-field"><label>Name on Card</label><input id="co-cname" placeholder="Jane Smith"></div>
+    <div id="co-order-summary" style="margin:14px 0"></div>
+    <div class="terms-row">By placing your order you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>.</div>
+    <div class="stripe-badge">🔒 Secured by Stripe</div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="co-back-2">← Back</button><button class="wb-btn" id="co-place-order">Place Order →</button></div>
+   </div>
+   <!-- Step 3: Confirm -->
+   <div class="step-panel" id="co-step-3">
+    <div class="confirm-wrap">
+     <div class="confirm-check">✓</div>
+     <h3 style="color:#fff;margin:16px 0 8px">Order Confirmed!</h3>
+     <p style="color:#8BB8D4;font-size:14px;margin-bottom:4px">Order number:</p>
+     <div class="confirm-num" id="co-order-num">WB-XXXXXX</div>
+     <p style="color:#8BB8D4;font-size:13px;margin-top:16px">Check your email for confirmation.<br>Your driver will contact you 30 min before arrival.</p>
+     <button class="wb-btn" id="co-done-btn" style="margin-top:24px">Done</button>
+    </div>
+   </div>
   </div>
+ </div>
 </div>
 
 <!-- Subscription Overlay (5 steps) -->
 <div class="wb-overlay" id="sub-overlay">
-  <div class="wb-modal wide" id="sub-modal" role="dialog" aria-label="Start Subscription">
-    <div class="wb-mhead">
-      <h2>Start Your Plan</h2>
-      <button class="wb-mclose" aria-label="Close">✕</button>
+ <div class="wb-modal wide" id="sub-modal">
+  <div class="wb-mhead"><h2>Start Your Plan</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="step-bar">
+    <div class="step-dot active"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div>
+   </div>
+   <!-- Step 0: Plan -->
+   <div class="step-panel active" id="sub-step-0">
+    <p class="step-title">Your Plan</p>
+    <div class="sub-plan-card" id="sub-plan-display"></div>
+    <p style="margin:14px 0 8px;font-size:12px;font-weight:600;color:#8BB8D4;text-transform:uppercase;letter-spacing:.5px">Water Type</p>
+    <div class="wtype-sel">
+     <button class="wtype-btn sel" data-wt="purified">Purified</button>
+     <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/jug)</button>
+     <button class="wtype-btn" data-wt="distilled">Distilled</button>
     </div>
-    <div class="wb-mbody">
-      <div class="step-bar">
-        <div class="step-dot active" title="Plan"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Info"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Schedule"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Payment"></div>
-        <div class="step-line"></div>
-        <div class="step-dot" title="Confirm"></div>
-      </div>
-      <!-- Step 0: Plan & Water Type -->
-      <div class="step-panel active" id="sub-step-0">
-        <p class="step-title">Your Plan</p>
-        <div class="sub-plan-card" id="sub-plan-display"></div>
-        <p style="margin:18px 0 8px;font-size:13px;font-weight:600;color:#8BB8D4;text-transform:uppercase;letter-spacing:.5px">Water Type</p>
-        <div class="wtype-sel">
-          <button class="wtype-btn sel" data-wt="purified">Purified</button>
-          <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/jug)</button>
-          <button class="wtype-btn" data-wt="distilled">Distilled</button>
-        </div>
-        <p class="wtype-ph"></p>
-        <div class="step-nav"><button class="step-next wb-btn" id="sub-next-0">Next: Your Info →</button></div>
-      </div>
-      <!-- Step 1: Contact Info -->
-      <div class="step-panel" id="sub-step-1">
-        <p class="step-title">Contact & Delivery Info</p>
-        <div class="wb-row">
-          <div class="wb-field"><label>First Name</label><input id="sub-fname" placeholder="Jane"></div>
-          <div class="wb-field"><label>Last Name</label><input id="sub-lname" placeholder="Smith"></div>
-        </div>
-        <div class="wb-field"><label>Phone</label><input id="sub-phone" type="tel" placeholder="(916) 555-0000"></div>
-        <div class="wb-field"><label>Email</label><input id="sub-email" type="email" placeholder="you@email.com"></div>
-        <div class="wb-field"><label>Street Address</label><input id="sub-addr" placeholder="123 Main St"></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>City</label><input id="sub-city" placeholder="Sacramento" value="Sacramento"></div>
-          <div class="wb-field"><label>ZIP</label><input id="sub-zip" placeholder="95814"></div>
-        </div>
-        <div class="step-nav">
-          <button class="step-back wb-btn-ghost" id="sub-back-1">← Back</button>
-          <button class="step-next wb-btn" id="sub-next-1">Next: Schedule →</button>
-        </div>
-      </div>
-      <!-- Step 2: Schedule -->
-      <div class="step-panel" id="sub-step-2">
-        <p class="step-title">First Delivery Date</p>
-        <div id="sub-calendar"></div>
-        <p style="font-size:12px;color:#8BB8D4;margin:12px 0 6px">Select a time window:</p>
-        <div class="time-wins" id="sub-time-wins"></div>
-        <div class="step-nav">
-          <button class="step-back wb-btn-ghost" id="sub-back-2">← Back</button>
-          <button class="step-next wb-btn" id="sub-next-2">Next: Payment →</button>
-        </div>
-      </div>
-      <!-- Step 3: Payment -->
-      <div class="step-panel" id="sub-step-3">
-        <p class="step-title">Payment</p>
-        <div class="pay-opts">
-          <button class="pay-apple" id="sub-apple-pay">🍎 Apple Pay</button>
-          <button class="pay-google" id="sub-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
-        </div>
-        <div class="pay-or"><span>or pay with card</span></div>
-        <div class="wb-field"><label>Card Number</label><input id="sub-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-        <div class="wb-row">
-          <div class="wb-field"><label>Expiry</label><input id="sub-exp" placeholder="MM/YY" maxlength="5"></div>
-          <div class="wb-field"><label>CVV</label><input id="sub-cvv" placeholder="123" maxlength="4"></div>
-        </div>
-        <div class="wb-field"><label>Name on Card</label><input id="sub-cname" placeholder="Jane Smith"></div>
-        <div id="sub-order-summary"></div>
-        <div class="terms-row">By subscribing you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</div>
-        <div class="stripe-badge">🔒 Secured by Stripe</div>
-        <div class="step-nav">
-          <button class="step-back wb-btn-ghost" id="sub-back-3">← Back</button>
-          <button class="step-next wb-btn" id="sub-subscribe-btn">Subscribe →</button>
-        </div>
-      </div>
-      <!-- Step 4: Confirmation -->
-      <div class="step-panel" id="sub-step-4">
-        <div class="confirm-wrap">
-          <div class="confirm-check">✓</div>
-          <h3 style="color:#fff;margin:16px 0 8px">You're Subscribed!</h3>
-          <p style="color:#8BB8D4;font-size:14px;margin-bottom:4px">Subscription number:</p>
-          <div class="confirm-num" id="sub-order-num">WB-XXXXXX</div>
-          <p style="color:#8BB8D4;font-size:13px;margin-top:16px">Your first delivery is scheduled.<br>We'll send a reminder 24 hrs before each delivery.</p>
-          <button class="wb-btn" id="sub-done-btn" style="margin-top:24px">Done</button>
-        </div>
-      </div>
+    <p class="wtype-ph" style="font-family:'Space Mono',monospace;font-size:11px;color:#8BB8D4;margin-top:4px"></p>
+    <div class="step-nav"><button class="wb-btn" id="sub-next-0">Next: Your Info →</button></div>
+   </div>
+   <!-- Step 1: Info -->
+   <div class="step-panel" id="sub-step-1">
+    <p class="step-title">Contact &amp; Delivery Info</p>
+    <div class="wb-row"><div class="wb-field"><label>First Name</label><input id="sub-fname" placeholder="Jane"></div><div class="wb-field"><label>Last Name</label><input id="sub-lname" placeholder="Smith"></div></div>
+    <div class="wb-field"><label>Phone</label><input id="sub-phone" type="tel" placeholder="(916) 555-0000"></div>
+    <div class="wb-field"><label>Email</label><input id="sub-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Street Address</label><input id="sub-addr" placeholder="123 Main St"></div>
+    <div class="wb-row"><div class="wb-field"><label>City</label><input id="sub-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>ZIP</label><input id="sub-zip" placeholder="95814"></div></div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="sub-back-1">← Back</button><button class="wb-btn" id="sub-next-1">Next: Schedule →</button></div>
+   </div>
+   <!-- Step 2: Schedule -->
+   <div class="step-panel" id="sub-step-2">
+    <p class="step-title">First Delivery Date</p>
+    <div id="sub-calendar"></div>
+    <p style="font-size:12px;color:#8BB8D4;margin:10px 0 6px">Select a time window:</p>
+    <div class="time-wins" id="sub-time-wins"></div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="sub-back-2">← Back</button><button class="wb-btn" id="sub-next-2">Next: Payment →</button></div>
+   </div>
+   <!-- Step 3: Payment -->
+   <div class="step-panel" id="sub-step-3">
+    <p class="step-title">Payment</p>
+    <div class="pay-opts">
+     <button class="pay-apple" id="sub-apple-pay">🍎 Apple Pay</button>
+     <button class="pay-google" id="sub-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
     </div>
+    <div class="pay-or"><span>or pay with card</span></div>
+    <div class="wb-field"><label>Card Number</label><input id="sub-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="sub-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="sub-cvv" placeholder="123" maxlength="4"></div></div>
+    <div class="wb-field"><label>Name on Card</label><input id="sub-cname" placeholder="Jane Smith"></div>
+    <div id="sub-order-summary" style="margin:14px 0"></div>
+    <div class="terms-row">By subscribing you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</div>
+    <div class="stripe-badge">🔒 Secured by Stripe</div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="sub-back-3">← Back</button><button class="wb-btn" id="sub-subscribe-btn">Subscribe →</button></div>
+   </div>
+   <!-- Step 4: Confirm -->
+   <div class="step-panel" id="sub-step-4">
+    <div class="confirm-wrap">
+     <div class="confirm-check">✓</div>
+     <h3 style="color:#fff;margin:16px 0 8px">You're Subscribed!</h3>
+     <p style="color:#8BB8D4;font-size:14px;margin-bottom:4px">Subscription number:</p>
+     <div class="confirm-num" id="sub-order-num">WB-XXXXXX</div>
+     <p style="color:#8BB8D4;font-size:13px;margin-top:16px">Your first delivery is scheduled.<br>We'll send a reminder 24 hrs before each delivery.</p>
+     <button class="wb-btn" id="sub-done-btn" style="margin-top:24px">Done</button>
+    </div>
+   </div>
   </div>
+ </div>
+</div>
+
+<!-- Delivery Setup Overlay (5 steps) -->
+<div class="wb-overlay" id="delivery-overlay">
+ <div class="wb-modal wide" id="delivery-modal">
+  <div class="wb-mhead"><h2>Set Up Delivery</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="step-bar">
+    <div class="step-dot active"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div>
+   </div>
+   <!-- Step 0: Info -->
+   <div class="step-panel active" id="dv-step-0">
+    <p class="step-title">Your Information</p>
+    <div class="wb-row"><div class="wb-field"><label>First Name</label><input id="dv-fname" placeholder="Jane"></div><div class="wb-field"><label>Last Name</label><input id="dv-lname" placeholder="Smith"></div></div>
+    <div class="wb-field"><label>Email</label><input id="dv-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Phone</label><input id="dv-phone" type="tel" placeholder="(916) 555-0000"></div>
+    <div class="wb-field"><label>Street Address</label><input id="dv-addr" placeholder="123 Main St"></div>
+    <div class="wb-row"><div class="wb-field"><label>City</label><input id="dv-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>State / ZIP</label><input id="dv-zip" placeholder="CA 95814"></div></div>
+    <div class="wb-row"><div class="wb-field"><label>Gate Code (optional)</label><input id="dv-gate" placeholder="#1234"></div><div class="wb-field"><label>Drop-off Preference</label><select id="dv-location"><option>Front Door</option><option>Side Gate</option><option>Garage</option><option>Back Door</option><option>Other</option></select></div></div>
+    <div class="wb-field"><label>Delivery Notes (optional)</label><textarea id="dv-notes" style="min-height:56px" placeholder="Any instructions for your driver…"></textarea></div>
+    <div class="step-nav"><button class="wb-btn" id="dv-next-0">Next: Choose Plan →</button></div>
+   </div>
+   <!-- Step 1: Choose Plan -->
+   <div class="step-panel" id="dv-step-1">
+    <p class="step-title">Choose Your Plan</p>
+    <div id="dv-plan-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+     ${Object.entries(PLANS).filter(([k])=>!k.startsWith('Alkaline')).map(([name,p])=>`
+      <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.04)">
+       <div style="font-weight:800;font-size:15px;color:#fff;font-family:'Outfit',sans-serif">${name}</div>
+       <div style="font-family:'Space Mono',monospace;color:#00D4FF;font-size:18px;margin:4px 0">$${p.price}<span style="font-size:11px;color:#8BB8D4">/mo</span></div>
+       <div style="font-size:12px;color:#8BB8D4">${p.jugs} jugs/delivery</div>
+      </div>`).join('')}
+    </div>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600">Alkaline Upgrades (pH 8.5+)</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px">
+     ${Object.entries(PLANS).filter(([k])=>k.startsWith('Alkaline')).map(([name,p])=>`
+      <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.1);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.02);text-align:center">
+       <div style="font-size:12px;font-weight:700;color:#8BB8D4">${name}</div>
+       <div style="font-family:'Space Mono',monospace;color:#00D4FF;font-size:16px">$${p.price}/mo</div>
+      </div>`).join('')}
+    </div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="dv-back-1">← Back</button><button class="wb-btn" id="dv-next-1">Next: Schedule →</button></div>
+   </div>
+   <!-- Step 2: Schedule -->
+   <div class="step-panel" id="dv-step-2">
+    <p class="step-title">Delivery Schedule</p>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Frequency</p>
+    <div class="freq-btns" style="margin-bottom:18px">
+     <button class="freq-btn sel" data-f="bi-weekly">Bi-Weekly</button>
+     <button class="freq-btn" data-f="weekly">Weekly</button>
+     <button class="freq-btn" data-f="monthly">Monthly</button>
+    </div>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Preferred Day</p>
+    <div class="freq-btns" style="margin-bottom:18px">
+     ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].map(d=>`<button class="freq-btn${d==='Monday'?' sel':''}" data-day="${d}">${d.slice(0,3)}</button>`).join('')}
+    </div>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Time Window</p>
+    <div class="freq-btns" style="margin-bottom:18px">
+     <button class="freq-btn sel" data-win="Morning">Morning (8–12)</button>
+     <button class="freq-btn" data-win="Afternoon">Afternoon (12–4)</button>
+     <button class="freq-btn" data-win="Evening">Evening (4–6)</button>
+    </div>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">First Delivery Date</p>
+    <div id="dv-calendar"></div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="dv-back-2">← Back</button><button class="wb-btn" id="dv-next-2">Next: Payment →</button></div>
+   </div>
+   <!-- Step 3: Payment -->
+   <div class="step-panel" id="dv-step-3">
+    <p class="step-title">Payment</p>
+    <div id="dv-plan-summary" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:12px;padding:14px;margin-bottom:18px"></div>
+    <div class="pay-opts">
+     <button class="pay-apple" id="dv-apple-pay">🍎 Apple Pay</button>
+     <button class="pay-google" id="dv-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
+    </div>
+    <div class="pay-or"><span>or pay with card</span></div>
+    <div class="wb-field"><label>Card Number</label><input id="dv-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="dv-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="dv-cvv" placeholder="123" maxlength="4"></div></div>
+    <div class="wb-field"><label>Name on Card</label><input id="dv-cname" placeholder="Jane Smith"></div>
+    <div class="wb-field"><label>Promo Code (optional)</label><input id="dv-promo" placeholder="WATERBOY10"></div>
+    <div class="terms-row"><input type="checkbox" id="dv-terms"><label for="dv-terms">I agree to the <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</label></div>
+    <div class="stripe-badge">🔒 Secured by Stripe</div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="dv-back-3">← Back</button><button class="wb-btn" id="dv-subscribe-btn">Subscribe — $<span id="dv-price-btn">--</span>/month</button></div>
+   </div>
+   <!-- Step 4: Confirmation -->
+   <div class="step-panel" id="dv-step-4">
+    <div class="confirm-wrap">
+     <div class="confirm-check">✓</div>
+     <h3 style="color:#fff;margin:16px 0 8px">You're All Set!</h3>
+     <div id="dv-confirm-summary" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:16px;margin:16px 0;text-align:left;font-size:13px;color:#C8E8F8;line-height:1.9"></div>
+     <p style="color:#8BB8D4;font-size:13px">Your driver will confirm your schedule via text message.</p>
+     <button class="wb-btn" id="dv-done-btn" style="margin-top:24px">Back to Website</button>
+    </div>
+   </div>
+  </div>
+ </div>
 </div>
 
 <!-- Pay Sim Sheet -->
 <div id="pay-sim" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:flex-end;justify-content:center">
-  <div class="pay-sheet">
-    <div class="pay-sheet-logo"></div>
-    <p style="color:#8BB8D4;font-size:13px;margin:6px 0 2px">Waterboy Delivery</p>
-    <div class="pay-sheet-amt"></div>
-    <div class="face-id"></div>
-    <p style="color:#8BB8D4;font-size:12px;margin-top:8px">Authenticating…</p>
-  </div>
-</div>
-`;
+ <div class="pay-sheet">
+  <div class="pay-sheet-logo"></div>
+  <p style="color:#8BB8D4;font-size:13px;margin:4px 0 2px">Waterboy Delivery</p>
+  <div class="pay-sheet-amt"></div>
+  <div class="face-id"></div>
+  <p style="color:#8BB8D4;font-size:12px;margin-top:6px">Authenticating…</p>
+ </div>
+</div>`;
   document.body.appendChild(div);
 }
 
-/* ── Wire-up Overlay Close Buttons ────────────────────────────── */
+/* ── Wire Overlay Close ─────────────────────────────────────────── */
 function wireCloseButtons(){
   document.addEventListener('click', e=>{
     if(e.target.classList.contains('wb-mclose')){
-      const ov = e.target.closest('.wb-overlay');
-      if(ov) closeOverlay(ov.id);
+      const ov=e.target.closest('.wb-overlay'); if(ov) closeOverlay(ov.id);
     }
-    if(e.target.classList.contains('wb-overlay')){
-      closeOverlay(e.target.id);
-    }
+    if(e.target.classList.contains('wb-overlay')) closeOverlay(e.target.id);
   });
-  document.addEventListener('keydown', e=>{
-    if(e.key==='Escape') closeAll();
-  });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(); });
 }
 
-/* ── Wire Contact Modal ────────────────────────────────────────── */
-function wireContact(){
-  // intercept all #contact links
-  document.addEventListener('click', e=>{
-    const link = e.target.closest('a');
-    if(!link) return;
-    const href = link.getAttribute('href')||'';
-    if(href==='#contact' || href.endsWith('#contact') || href==='#'){
-      // only intercept if it's a nav/contact type link
-      if(href==='#contact' || href.endsWith('#contact')){
-        e.preventDefault();
-        openOverlay('contact-overlay');
-      }
-    }
-  });
-
-  const form = document.getElementById('contact-form');
+/* ── Wire Contact Form ──────────────────────────────────────────── */
+function wireContactForm(){
+  const form=document.getElementById('modal-contact-form');
   if(!form) return;
   form.addEventListener('submit', async e=>{
     e.preventDefault();
-    const btn = form.querySelector('button[type=submit]');
+    const btn=form.querySelector('button[type=submit]');
     btn.textContent='Sending…'; btn.disabled=true;
-    try{
-      await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)) });
-    } catch(err){}
+    try{ await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form))}); }catch(_){}
     form.style.display='none';
-    document.getElementById('contact-success').style.display='block';
-    setTimeout(()=>closeOverlay('contact-overlay'),3000);
-    setTimeout(()=>{ form.style.display='block'; form.reset(); document.getElementById('contact-success').style.display='none'; btn.textContent='Send Message'; btn.disabled=false; },3500);
+    document.getElementById('modal-contact-success').style.display='block';
+    setTimeout(()=>closeOverlay('contact-overlay'),2800);
+    setTimeout(()=>{ form.style.display='block'; form.reset(); document.getElementById('modal-contact-success').style.display='none'; btn.textContent='Send Message'; btn.disabled=false; },3400);
   });
 }
 
-/* ── Wire Auth Modal ───────────────────────────────────────────── */
+/* ── Wire Auth ──────────────────────────────────────────────────── */
 function wireAuth(){
-  // tab switching
   document.addEventListener('click', e=>{
-    const tab = e.target.closest('.auth-tab');
-    if(!tab) return;
-    const panel = tab.dataset.tab;
-    $$('.auth-tab').forEach(t=>t.classList.toggle('active', t===tab));
-    $$('.auth-panel').forEach(p=>p.classList.toggle('active', p.id==='auth-panel-'+panel));
+    const tab=e.target.closest('.auth-tab');
+    if(tab && tab.closest('#auth-overlay')){
+      $$('.auth-tab').forEach(t=>t.classList.toggle('active',t===tab));
+      $$('.auth-panel').forEach(p=>p.classList.toggle('active',p.id==='auth-panel-'+tab.dataset.tab));
+    }
   });
-  // cross-link buttons
-  const s2su = document.getElementById('si-to-signup');
-  const su2s = document.getElementById('su-to-signin');
-  if(s2su) s2su.addEventListener('click',()=>openAuthModal('signup'));
-  if(su2s) su2s.addEventListener('click',()=>openAuthModal('signin'));
-  // password toggle
+  document.getElementById('si-to-signup')?.addEventListener('click',()=>openAuthModal('signup'));
+  document.getElementById('su-to-signin')?.addEventListener('click',()=>openAuthModal('signin'));
+  document.getElementById('si-guest')?.addEventListener('click',()=>closeOverlay('auth-overlay'));
   $$('.pw-eye').forEach(btn=>btn.addEventListener('click',()=>{
-    const inp = btn.previousElementSibling;
-    inp.type = inp.type==='password' ? 'text' : 'password';
+    const inp=btn.previousElementSibling; inp.type=inp.type==='password'?'text':'password';
   }));
-  // Sign In submit
-  const siBtn = document.getElementById('si-submit');
-  if(siBtn) siBtn.addEventListener('click',()=>{
-    const email = document.getElementById('si-email').value.trim();
-    const pass  = document.getElementById('si-pass').value;
-    const errEl = document.getElementById('si-error');
+  document.getElementById('si-submit')?.addEventListener('click',()=>{
+    const email=(document.getElementById('si-email').value||'').trim();
+    const pass=document.getElementById('si-pass').value||'';
+    const errEl=document.getElementById('si-error');
     if(!email||!pass){ errEl.textContent='Please fill in all fields.'; errEl.style.display='block'; return; }
-    // demo credentials check
-    if(email===DEMO_EMAIL && pass===DEMO_PASS){
-      user = { name:'Demo User', email:DEMO_EMAIL, addr:'', city:'Sacramento', zip:'', phone:'' };
+    if((email===DEMO_EMAIL&&pass===DEMO_PASS)||pass.length>=6){
+      user={name:email===DEMO_EMAIL?'Demo User':email.split('@')[0], email, phone:'', addr:'', city:'Sacramento', zip:''};
       saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-      toast('Welcome back!','Signed in as Demo User','👋');
-    } else if(email && pass.length>=6){
-      // simulate any valid-looking credentials
-      user = { name: email.split('@')[0], email, addr:'', city:'Sacramento', zip:'', phone:'' };
-      saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-      toast('Welcome back!','You are now signed in','👋');
-    } else {
-      errEl.textContent='Invalid email or password.'; errEl.style.display='block';
-    }
+      toast('Welcome!','You are now signed in','👋');
+    } else { errEl.textContent='Invalid email or password.'; errEl.style.display='block'; }
   });
-  // Sign Up submit
-  const suBtn = document.getElementById('su-submit');
-  if(suBtn) suBtn.addEventListener('click',()=>{
-    const fname = document.getElementById('su-fname').value.trim();
-    const lname = document.getElementById('su-lname').value.trim();
-    const email = document.getElementById('su-email').value.trim();
-    const phone = document.getElementById('su-phone').value.trim();
-    const addr  = document.getElementById('su-addr').value.trim();
-    const city  = document.getElementById('su-city').value.trim();
-    const zip   = document.getElementById('su-zip').value.trim();
-    const pass  = document.getElementById('su-pass').value;
-    const errEl = document.getElementById('su-error');
-    if(!fname||!lname||!email||!pass){ errEl.textContent='Name, email and password are required.'; errEl.style.display='block'; return; }
-    if(pass.length<8){ errEl.textContent='Password must be at least 8 characters.'; errEl.style.display='block'; return; }
-    user = { name:`${fname} ${lname}`, email, phone, addr, city, zip };
+  document.getElementById('su-submit')?.addEventListener('click',()=>{
+    const fname=(document.getElementById('su-fname').value||'').trim();
+    const lname=(document.getElementById('su-lname').value||'').trim();
+    const email=(document.getElementById('su-email').value||'').trim();
+    const pass=document.getElementById('su-pass').value||'';
+    const errEl=document.getElementById('su-error');
+    if(!fname||!email||pass.length<8){ errEl.textContent='Name, email and 8-char password required.'; errEl.style.display='block'; return; }
+    user={name:`${fname} ${lname}`.trim(), email, phone:(document.getElementById('su-phone').value||''), addr:(document.getElementById('su-addr').value||''), city:(document.getElementById('su-city').value||''), zip:(document.getElementById('su-zip').value||'')};
     saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-    toast('Account created!',`Welcome, ${fname}!`,'🎉');
+    toast('Account created!','Welcome, '+fname+'!','🎉');
   });
 }
 
-/* ── Wire Qty Modal ────────────────────────────────────────────── */
+/* ── Wire Qty Modal ─────────────────────────────────────────────── */
 function wireQtyModal(){
-  const modal = document.getElementById('qty-overlay');
-  if(!modal) return;
-  const dispEl = modal.querySelector('.qty-disp');
-  const minusBtn = document.getElementById('qm-minus');
-  const plusBtn  = document.getElementById('qm-plus');
-  const confirmBtn = document.getElementById('qm-confirm');
-  const card = modal.querySelector('.wb-modal');
-  if(!card) return;
-  card._qty = 1;
-  if(minusBtn) minusBtn.addEventListener('click',()=>{ card._qty=Math.max(1,card._qty-1); dispEl.textContent=card._qty; });
-  if(plusBtn)  plusBtn.addEventListener('click',()=>{ card._qty=Math.min(99,card._qty+1); dispEl.textContent=card._qty; });
-  if(confirmBtn) confirmBtn.addEventListener('click',()=>{
-    if(_qmCallback) _qmCallback(card._qty);
-    closeOverlay('qty-overlay');
-    _qmCallback=null;
+  const card=document.querySelector('#qty-overlay .wb-modal'); if(!card) return;
+  const dispEl=card.querySelector('.qty-disp');
+  document.getElementById('qm-minus')?.addEventListener('click',()=>{ card._qty=Math.max(1,(card._qty||1)-1); if(dispEl) dispEl.textContent=card._qty; });
+  document.getElementById('qm-plus')?.addEventListener('click', ()=>{ card._qty=Math.min(99,(card._qty||1)+1); if(dispEl) dispEl.textContent=card._qty; });
+  document.getElementById('qm-confirm')?.addEventListener('click',()=>{
+    if(_qmCallback) _qmCallback(card._qty||1);
+    closeOverlay('qty-overlay'); _qmCallback=null;
   });
 }
 
-/* ── Wire Product Detail Modal ─────────────────────────────────── */
+/* ── Wire PD Modal ──────────────────────────────────────────────── */
 function wirePdModal(){
-  const modal = document.getElementById('pd-modal');
-  if(!modal) return;
-  modal._qty = 1;
-  const dispEl = modal.querySelector('.pd-qty-disp');
-  const minus = document.getElementById('pd-minus');
-  const plus  = document.getElementById('pd-plus');
-  if(minus) minus.addEventListener('click',()=>{ modal._qty=Math.max(1,modal._qty-1); dispEl.textContent=modal._qty; });
-  if(plus)  plus.addEventListener('click', ()=>{ modal._qty=Math.min(99,modal._qty+1); dispEl.textContent=modal._qty; });
+  const modal=document.getElementById('pd-modal'); if(!modal) return;
+  modal._qty=1;
+  const disp=modal.querySelector('.pd-qty-disp');
+  document.getElementById('pd-minus')?.addEventListener('click',()=>{ modal._qty=Math.max(1,modal._qty-1); if(disp) disp.textContent=modal._qty; });
+  document.getElementById('pd-plus')?.addEventListener('click', ()=>{ modal._qty=Math.min(99,modal._qty+1); if(disp) disp.textContent=modal._qty; });
 }
 
-/* ── Wire Cart Drawer ──────────────────────────────────────────── */
+/* ── Wire Cart Drawer ───────────────────────────────────────────── */
 function wireCartDrawer(){
-  const closeBtn = document.getElementById('cd-close');
-  const overlay  = document.getElementById('cart-drawer-overlay');
-  const contBtn  = document.getElementById('cd-continue-btn');
-  const coBtn    = document.getElementById('cd-checkout-btn');
-  const promoBtn = document.getElementById('promo-apply');
-
-  if(closeBtn) closeBtn.addEventListener('click', closeCartDrawer);
-  if(overlay)  overlay.addEventListener('click', e=>{ if(e.target===overlay) closeCartDrawer(); });
-  if(contBtn)  contBtn.addEventListener('click', closeCartDrawer);
-  if(coBtn)    coBtn.addEventListener('click', ()=>{
+  document.getElementById('cd-close')?.addEventListener('click', closeCartDrawer);
+  document.getElementById('cart-drawer-overlay')?.addEventListener('click', e=>{ if(e.target.id==='cart-drawer-overlay') closeCartDrawer(); });
+  document.getElementById('cd-continue-btn')?.addEventListener('click', closeCartDrawer);
+  document.getElementById('cd-checkout-btn')?.addEventListener('click',()=>{
     closeCartDrawer();
-    if(cart.length===0){ toast('Cart empty','Add some products first','🛒'); return; }
-    gotoStep('checkout-overlay', 0);
-    openOverlay('checkout-overlay');
-    // prefill with user info if logged in
+    if(!cart.length){ toast('Cart empty','Add some products first','🛒'); return; }
+    gotoStep('checkout-overlay',0);
     if(user){
-      const f = (id,val)=>{ const el=document.getElementById(id); if(el&&val) el.value=val; };
-      const parts = user.name.split(' ');
-      f('co-fname', parts[0]||'');
-      f('co-lname', parts.slice(1).join(' ')||'');
-      f('co-email', user.email||'');
-      f('co-phone', user.phone||'');
-      f('co-addr',  user.addr||'');
-      f('co-city',  user.city||'Sacramento');
-      f('co-zip',   user.zip||'');
+      const f=(id,v)=>{ const el=document.getElementById(id); if(el&&v) el.value=v; };
+      const parts=(user.name||'').split(' ');
+      f('co-fname',parts[0]); f('co-lname',parts.slice(1).join(' ')); f('co-email',user.email); f('co-phone',user.phone); f('co-addr',user.addr); f('co-city',user.city||'Sacramento'); f('co-zip',user.zip);
     }
+    openOverlay('checkout-overlay');
   });
-  if(promoBtn) promoBtn.addEventListener('click',()=>{
-    const code = (document.getElementById('promo-input').value||'').trim().toUpperCase();
+  document.getElementById('promo-apply')?.addEventListener('click',()=>{
+    const code=(document.getElementById('promo-input')?.value||'').trim().toUpperCase();
     if(code==='WATERBOY10') toast('Promo applied!','10% off your order','🎉');
-    else toast('Invalid code','That promo code was not found','❌');
-  });
-
-  // update count badge on drawer open
-  document.addEventListener('click', e=>{
-    if(e.target.closest('#cd-count')){
-      document.getElementById('cd-count').textContent = cartCount();
-    }
+    else toast('Invalid code','Promo code not found','❌');
   });
 }
 
-/* ── Wire Checkout ─────────────────────────────────────────────── */
+/* ── Wire Checkout ──────────────────────────────────────────────── */
 function wireCheckout(){
-  // Step 0 → 1
-  const next0 = document.getElementById('co-next-0');
-  if(next0) next0.addEventListener('click',()=>{
-    const fname = (document.getElementById('co-fname')||{}).value||'';
-    const email = (document.getElementById('co-email')||{}).value||'';
-    if(!fname||!email){ toast('Missing info','Please fill in your name and email','⚠️'); return; }
+  document.getElementById('co-next-0')?.addEventListener('click',()=>{
+    if(!(document.getElementById('co-fname')?.value)||!(document.getElementById('co-email')?.value)){ toast('Missing info','Please fill in name and email','⚠️'); return; }
     gotoStep('checkout-overlay',1);
-    buildCalendar('co-calendar', 3, date=>{ checkoutState.date=date; });
-    buildTimeWindows('co-time-wins', tw=>{ checkoutState.time=tw; });
+    buildCalendar('co-calendar',3,d=>{ coState.date=d; });
+    buildTimeWindows('co-time-wins',t=>{ coState.time=t; });
   });
-
-  // Order type
-  document.addEventListener('click', e=>{
-    const ot = e.target.closest('.ot-btn');
-    if(!ot || !ot.closest('#checkout-overlay')) return;
-    $$('.ot-btn', document.getElementById('checkout-overlay')).forEach(b=>b.classList.toggle('sel',b===ot));
-    checkoutState.orderType = ot.dataset.ot;
-    const fw = document.getElementById('co-freq-wrap');
-    if(fw) fw.style.display = checkoutState.orderType==='recurring'?'block':'none';
+  document.addEventListener('click',e=>{
+    const ot=e.target.closest('.ot-btn');
+    if(ot&&ot.closest('#checkout-overlay')){
+      $$('.ot-btn',document.getElementById('checkout-overlay')).forEach(b=>b.classList.toggle('sel',b===ot));
+      coState.orderType=ot.dataset.ot;
+      const fw=document.getElementById('co-freq-wrap'); if(fw) fw.style.display=coState.orderType==='recurring'?'block':'none';
+    }
+    const fb=e.target.closest('.freq-btn');
+    if(fb&&fb.closest('#checkout-overlay')&&fb.dataset.f){
+      $$('.freq-btn',document.getElementById('checkout-overlay')).forEach(b=>{ if(b.dataset.f) b.classList.toggle('sel',b===fb); });
+      coState.freq=fb.dataset.f;
+    }
   });
-  document.addEventListener('click', e=>{
-    const fb = e.target.closest('.freq-btn');
-    if(!fb || !fb.closest('#checkout-overlay')) return;
-    $$('.freq-btn', document.getElementById('checkout-overlay')).forEach(b=>b.classList.toggle('sel',b===fb));
-    checkoutState.freq = fb.dataset.f;
+  document.getElementById('co-next-1')?.addEventListener('click',()=>{
+    if(!coState.date){ toast('Pick a date','Select a delivery date','📅'); return; }
+    if(!coState.time){ toast('Pick a time','Select a time window','⏰'); return; }
+    gotoStep('checkout-overlay',2); buildOrderSummary('co-order-summary');
   });
-
-  // Step 1 → 2
-  const next1 = document.getElementById('co-next-1');
-  if(next1) next1.addEventListener('click',()=>{
-    if(!checkoutState.date){ toast('Select a date','Please pick a delivery date','📅'); return; }
-    if(!checkoutState.time){ toast('Select a time','Please pick a time window','⏰'); return; }
-    gotoStep('checkout-overlay',2);
-    buildOrderSummary('co-order-summary');
-  });
-  const back1 = document.getElementById('co-back-1');
-  if(back1) back1.addEventListener('click',()=>gotoStep('checkout-overlay',0));
-
-  // Step 2 → 3
-  const back2 = document.getElementById('co-back-2');
-  if(back2) back2.addEventListener('click',()=>gotoStep('checkout-overlay',1));
-
-  const placeOrder = document.getElementById('co-place-order');
-  if(placeOrder) placeOrder.addEventListener('click',()=>{
-    const card = (document.getElementById('co-card')||{}).value||'';
-    const cname = (document.getElementById('co-cname')||{}).value||'';
-    if(!card||!cname){ toast('Payment info','Please enter card details','💳'); return; }
+  document.getElementById('co-back-1')?.addEventListener('click',()=>gotoStep('checkout-overlay',0));
+  document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',1));
+  document.getElementById('co-place-order')?.addEventListener('click',()=>{
+    if(!(document.getElementById('co-card')?.value)||!(document.getElementById('co-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
     gotoStep('checkout-overlay',3);
-    const num = genId();
-    const numEl = document.getElementById('co-order-num');
-    if(numEl) numEl.textContent = num;
+    const numEl=document.getElementById('co-order-num'); if(numEl) numEl.textContent=genId();
     cart=[]; saveCart(cart); updateBadge();
     toast('Order placed!','Check your email for confirmation','✅');
   });
-
-  const appleBtn = document.getElementById('co-apple-pay');
-  if(appleBtn) appleBtn.addEventListener('click',()=>showPaySim('apple',()=>{
-    gotoStep('checkout-overlay',3);
-    const numEl = document.getElementById('co-order-num');
-    if(numEl) numEl.textContent=genId();
-    cart=[]; saveCart(cart); updateBadge();
-    toast('Order placed!','Apple Pay successful!','✅');
-  }));
-
-  const googleBtn = document.getElementById('co-google-pay');
-  if(googleBtn) googleBtn.addEventListener('click',()=>showPaySim('google',()=>{
-    gotoStep('checkout-overlay',3);
-    const numEl = document.getElementById('co-order-num');
-    if(numEl) numEl.textContent=genId();
-    cart=[]; saveCart(cart); updateBadge();
-    toast('Order placed!','Google Pay successful!','✅');
-  }));
-
-  const doneBtn = document.getElementById('co-done-btn');
-  if(doneBtn) doneBtn.addEventListener('click',()=>closeOverlay('checkout-overlay'));
-
-  // card input formatting
-  const cardInp = document.getElementById('co-card');
-  if(cardInp) cardInp.addEventListener('input',()=>{
-    let v = cardInp.value.replace(/\D/g,'').slice(0,16);
-    cardInp.value = v.replace(/(.{4})/g,'$1 ').trim();
-  });
-  const expInp = document.getElementById('co-exp');
-  if(expInp) expInp.addEventListener('input',()=>{
-    let v = expInp.value.replace(/\D/g,'').slice(0,4);
-    if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
-    expInp.value=v;
-  });
+  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',3); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful','✅'); }));
+  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',3); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful','✅'); }));
+  document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
+  const coCard=document.getElementById('co-card'); coCard?.addEventListener('input',()=>{ let v=coCard.value.replace(/\D/g,'').slice(0,16); coCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
+  const coExp=document.getElementById('co-exp'); coExp?.addEventListener('input',()=>{ let v=coExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); coExp.value=v; });
 }
 
-/* ── Wire Subscription Modal ───────────────────────────────────── */
+/* ── Wire Subscription ──────────────────────────────────────────── */
 function wireSubscription(){
-  // Water type selection
-  document.addEventListener('click', e=>{
-    const wb = e.target.closest('.wtype-btn');
-    if(!wb || !wb.closest('#sub-overlay')) return;
-    $$('.wtype-btn', document.getElementById('sub-overlay')).forEach(b=>b.classList.toggle('sel',b===wb));
-    subState.waterType = wb.dataset.wt;
-    const ph = document.querySelector('#sub-overlay .wtype-ph');
-    if(ph){
-      const msgs = { purified:'Standard purified water — clean, crisp taste.', alkaline:'Alkaline (pH 8.5+) — add $4/jug to base price.', distilled:'Distilled water — ultra-pure, great for appliances.' };
-      ph.textContent = msgs[subState.waterType]||'';
+  document.addEventListener('click',e=>{
+    const wb=e.target.closest('.wtype-btn');
+    if(wb&&wb.closest('#sub-overlay')){
+      $$('.wtype-btn',document.getElementById('sub-overlay')).forEach(b=>b.classList.toggle('sel',b===wb));
+      subState.waterType=wb.dataset.wt;
+      const ph=document.querySelector('#sub-overlay .wtype-ph');
+      if(ph){ const msgs={purified:'Standard purified water — clean, crisp taste.',alkaline:'Alkaline (pH 8.5+) — add $4/jug to base price.',distilled:'Ultra-pure distilled water — great for appliances.'}; ph.textContent=msgs[subState.waterType]||''; }
     }
   });
-
-  // Step 0 → 1
-  const next0 = document.getElementById('sub-next-0');
-  if(next0) next0.addEventListener('click',()=>gotoStep('sub-overlay',1));
-
-  // Step 1 → 2
-  const next1 = document.getElementById('sub-next-1');
-  if(next1) next1.addEventListener('click',()=>{
-    const fname = (document.getElementById('sub-fname')||{}).value||'';
-    const email = (document.getElementById('sub-email')||{}).value||'';
-    if(!fname||!email){ toast('Missing info','Please fill in your name and email','⚠️'); return; }
-    gotoStep('sub-overlay',2);
-    buildCalendar('sub-calendar', 3, date=>{ subState.date=date; });
-    buildTimeWindows('sub-time-wins', tw=>{ subState.time=tw; });
+  document.getElementById('sub-next-0')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
+  document.getElementById('sub-next-1')?.addEventListener('click',()=>{
+    if(!(document.getElementById('sub-fname')?.value)||!(document.getElementById('sub-email')?.value)){ toast('Missing info','Name and email required','⚠️'); return; }
+    gotoStep('sub-overlay',2); buildCalendar('sub-calendar',3,d=>{ subState.date=d; }); buildTimeWindows('sub-time-wins',t=>{ subState.time=t; });
   });
-  const back1 = document.getElementById('sub-back-1');
-  if(back1) back1.addEventListener('click',()=>gotoStep('sub-overlay',0));
-
-  // Step 2 → 3
-  const next2 = document.getElementById('sub-next-2');
-  if(next2) next2.addEventListener('click',()=>{
-    if(!subState.date){ toast('Select a date','Please pick your first delivery date','📅'); return; }
-    if(!subState.time){ toast('Select a time','Please pick a time window','⏰'); return; }
+  document.getElementById('sub-back-1')?.addEventListener('click',()=>gotoStep('sub-overlay',0));
+  document.getElementById('sub-next-2')?.addEventListener('click',()=>{
+    if(!subState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
+    if(!subState.time){ toast('Pick a time','Select a time window','⏰'); return; }
     gotoStep('sub-overlay',3);
-    // Build sub order summary
-    const plan = PLANS[subState.plan]||{};
-    const c = document.getElementById('sub-order-summary');
-    if(c){
-      const jugs = plan.jugs||0;
-      const extra = subState.waterType==='alkaline' ? jugs*4 : 0;
-      const total = (plan.price||0) + extra;
-      c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan||'')} Plan (${jugs} jugs)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>
-        ${extra?`<div class="ob-row"><span>Alkaline upgrade (${jugs}×$4)</span><span>+$${extra.toFixed(2)}</span></div>`:''}
-        <div class="ob-row"><span>Delivery</span><span>FREE</span></div>
-        <div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
-    }
+    const plan=PLANS[subState.plan]||{}; const jugs=plan.jugs||0; const extra=subState.waterType==='alkaline'?jugs*4:0; const total=(plan.price||0)+extra;
+    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${jugs} jugs)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery</span><span>FREE</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
   });
-  const back2 = document.getElementById('sub-back-2');
-  if(back2) back2.addEventListener('click',()=>gotoStep('sub-overlay',1));
-
-  // Step 3 → 4
-  const back3 = document.getElementById('sub-back-3');
-  if(back3) back3.addEventListener('click',()=>gotoStep('sub-overlay',2));
-
-  const subBtn = document.getElementById('sub-subscribe-btn');
-  if(subBtn) subBtn.addEventListener('click',()=>{
-    const card = (document.getElementById('sub-card')||{}).value||'';
-    const cname = (document.getElementById('sub-cname')||{}).value||'';
-    if(!card||!cname){ toast('Payment info','Please enter card details','💳'); return; }
-    gotoStep('sub-overlay',4);
-    const numEl = document.getElementById('sub-order-num');
-    if(numEl) numEl.textContent=genId();
-    toast('Subscribed!','Welcome to Waterboy Delivery!','🎉');
+  document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
+  document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
+  const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!','🎉'); };
+  document.getElementById('sub-subscribe-btn')?.addEventListener('click',()=>{
+    if(!(document.getElementById('sub-card')?.value)||!(document.getElementById('sub-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
+    doSubConfirm();
   });
-
-  const subApple = document.getElementById('sub-apple-pay');
-  if(subApple) subApple.addEventListener('click',()=>showPaySim('apple',()=>{
-    gotoStep('sub-overlay',4);
-    const numEl = document.getElementById('sub-order-num');
-    if(numEl) numEl.textContent=genId();
-    toast('Subscribed!','Apple Pay successful!','🎉');
-  }));
-
-  const subGoogle = document.getElementById('sub-google-pay');
-  if(subGoogle) subGoogle.addEventListener('click',()=>showPaySim('google',()=>{
-    gotoStep('sub-overlay',4);
-    const numEl = document.getElementById('sub-order-num');
-    if(numEl) numEl.textContent=genId();
-    toast('Subscribed!','Google Pay successful!','🎉');
-  }));
-
-  const doneBtn = document.getElementById('sub-done-btn');
-  if(doneBtn) doneBtn.addEventListener('click',()=>closeOverlay('sub-overlay'));
-
-  // sub card formatting
-  const cardInp = document.getElementById('sub-card');
-  if(cardInp) cardInp.addEventListener('input',()=>{
-    let v=cardInp.value.replace(/\D/g,'').slice(0,16);
-    cardInp.value=v.replace(/(.{4})/g,'$1 ').trim();
-  });
-  const expInp = document.getElementById('sub-exp');
-  if(expInp) expInp.addEventListener('input',()=>{
-    let v=expInp.value.replace(/\D/g,'').slice(0,4);
-    if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
-    expInp.value=v;
-  });
+  document.getElementById('sub-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doSubConfirm));
+  document.getElementById('sub-google-pay')?.addEventListener('click',()=>showPaySim('google',doSubConfirm));
+  document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
+  const subCard=document.getElementById('sub-card'); subCard?.addEventListener('input',()=>{ let v=subCard.value.replace(/\D/g,'').slice(0,16); subCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
+  const subExp=document.getElementById('sub-exp'); subExp?.addEventListener('input',()=>{ let v=subExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); subExp.value=v; });
 }
 
-/* ── Wire Nav User Button ──────────────────────────────────────── */
-function wireNavUser(){
-  document.addEventListener('click', e=>{
-    const btn = e.target.closest('.nav-user-btn');
-    if(btn){
-      if(!user){ openAuthModal('signin'); return; }
-      const drop = btn.parentElement.querySelector('.nav-user-drop');
-      if(drop) drop.classList.toggle('open');
-      return;
+/* ── Wire Delivery Modal ────────────────────────────────────────── */
+function wireDeliveryModal(){
+  // Plan selection
+  document.addEventListener('click',e=>{
+    const pc=e.target.closest('.dv-plan-card');
+    if(pc&&pc.closest('#delivery-overlay')){
+      $$('.dv-plan-card',document.getElementById('delivery-overlay')).forEach(c=>{ c.style.borderColor='rgba(0,212,255,.15)'; c.style.background='rgba(0,212,255,.04)'; });
+      pc.style.borderColor='#00D4FF'; pc.style.background='rgba(0,212,255,.12)';
+      dvState.plan=pc.dataset.plan;
     }
-    // close drop if clicking outside
-    if(!e.target.closest('.nav-user-wrap')){
-      $$('.nav-user-drop').forEach(d=>d.classList.remove('open'));
-    }
-  });
-}
-
-/* ── Wire Pricing Buttons (index.html) ────────────────────────── */
-function wirePricingButtons(){
-  $$('.pricing-card').forEach(card=>{
-    const h3 = card.querySelector('h3');
-    const planName = h3 ? h3.textContent.trim() : '';
-    // find the "Get Started" button
-    const btn = card.querySelector('.btn, .pricing-cta, button, a[href="#contact"]');
-    if(!btn) return;
-    btn.addEventListener('click', e=>{
-      e.preventDefault();
-      if(PLANS[planName]){
-        subState.plan = planName;
-        // populate plan display
-        const plan = PLANS[planName];
-        const display = document.getElementById('sub-plan-display');
-        if(display){
-          display.innerHTML=`
-            <div class="sub-plan-name">${esc(planName)}</div>
-            <div class="sub-plan-price">$${plan.price}<span>/mo</span></div>
-            <div class="sub-plan-tags">${plan.perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>
-          `;
-        }
-        gotoStep('sub-overlay',0);
-        openOverlay('sub-overlay');
+    // Freq buttons in delivery
+    const fb=e.target.closest('.freq-btn');
+    if(fb&&fb.closest('#delivery-overlay')){
+      if(fb.dataset.f){
+        fb.closest('.freq-btns').querySelectorAll('.freq-btn[data-f]').forEach(b=>b.classList.toggle('sel',b===fb));
+        dvState.freq=fb.dataset.f;
       }
+      if(fb.dataset.day){
+        fb.closest('.freq-btns').querySelectorAll('.freq-btn[data-day]').forEach(b=>b.classList.toggle('sel',b===fb));
+        dvState.day=fb.dataset.day;
+      }
+      if(fb.dataset.win){
+        fb.closest('.freq-btns').querySelectorAll('.freq-btn[data-win]').forEach(b=>b.classList.toggle('sel',b===fb));
+        dvState.window=fb.dataset.win;
+      }
+    }
+  });
+  document.getElementById('dv-next-0')?.addEventListener('click',()=>{
+    if(!(document.getElementById('dv-fname')?.value)||!(document.getElementById('dv-email')?.value)){ toast('Missing info','Name and email required','⚠️'); return; }
+    gotoStep('delivery-overlay',1);
+  });
+  document.getElementById('dv-back-1')?.addEventListener('click',()=>gotoStep('delivery-overlay',0));
+  document.getElementById('dv-next-1')?.addEventListener('click',()=>{
+    if(!dvState.plan){ toast('Choose a plan','Please select a delivery plan','📦'); return; }
+    gotoStep('delivery-overlay',2);
+    buildCalendar('dv-calendar',3,d=>{ dvState.date=d; });
+  });
+  document.getElementById('dv-back-2')?.addEventListener('click',()=>gotoStep('delivery-overlay',1));
+  document.getElementById('dv-next-2')?.addEventListener('click',()=>{
+    if(!dvState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
+    gotoStep('delivery-overlay',3);
+    const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
+    const sumEl=document.getElementById('dv-plan-summary');
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}<br><span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:16px;font-weight:700">$${price}/month</span></div>`;
+    const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=price;
+  });
+  document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
+  const doDvConfirm=()=>{
+    gotoStep('delivery-overlay',4);
+    const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
+    const cs=document.getElementById('dv-confirm-summary');
+    if(cs) cs.innerHTML=`<strong style="color:#fff;font-size:15px">${esc(dvState.plan||'')} Plan</strong><br>`
+      +`${(plan.jugs||0)} jugs &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
+      +`${esc(dvState.day)} ${esc(dvState.window)}<br>`
+      +`First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD'}<br>`
+      +`<span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:16px;font-weight:700">$${price}/month</span>`;
+    toast('Delivery scheduled!','Welcome to Waterboy Delivery!','🎉');
+  };
+  document.getElementById('dv-subscribe-btn')?.addEventListener('click',()=>{
+    if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service','⚠️'); return; }
+    if(!(document.getElementById('dv-card')?.value)||!(document.getElementById('dv-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
+    doDvConfirm();
+  });
+  document.getElementById('dv-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doDvConfirm));
+  document.getElementById('dv-google-pay')?.addEventListener('click',()=>showPaySim('google',doDvConfirm));
+  document.getElementById('dv-done-btn')?.addEventListener('click',()=>closeOverlay('delivery-overlay'));
+  const dvCard=document.getElementById('dv-card'); dvCard?.addEventListener('input',()=>{ let v=dvCard.value.replace(/\D/g,'').slice(0,16); dvCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
+  const dvExp=document.getElementById('dv-exp'); dvExp?.addEventListener('input',()=>{ let v=dvExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); dvExp.value=v; });
+}
+
+/* ── Wire Pricing & Subscription Buttons ───────────────────────── */
+function wirePricingButtons(){
+  // Wire ALL pricing-btn anchors and alkaline card buttons
+  $$('.pricing-card, .alkaline-card').forEach(card=>{
+    const h3=card.querySelector('h3,h4'); if(!h3) return;
+    const planName=h3.textContent.trim();
+    $$('a[href="#contact"], a.pricing-btn, a[href*="contact"]', card).forEach(btn=>{
+      btn.removeAttribute('href');
+      btn.setAttribute('href','javascript:void(0)');
+      btn.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); openSubWithPlan(planName); });
     });
   });
 }
 
-/* ── Wire Catalog Cards (products.html) ────────────────────────── */
-function wireCatalogCards(){
-  // map image URL fragments to product IDs
-  const imgMap = {};
-  Object.entries(PRODUCTS).forEach(([id,p])=>{
-    const fname = decodeURIComponent(p.img).split('/').pop().toLowerCase();
-    imgMap[fname] = id;
-  });
+function openSubWithPlan(planName){
+  const plan = PLANS[planName] || Object.values(PLANS)[0];
+  const isAlkaline = PLANS[planName]?.alkaline || false;
+  subState.plan = planName;
+  subState.waterType = isAlkaline ? 'alkaline' : 'purified';
 
-  $$('.catalog-card').forEach(card=>{
-    const img = card.querySelector('img');
-    if(!img) return;
-    const src = decodeURIComponent(img.getAttribute('src')||'');
-    const fname = src.split('/').pop().toLowerCase();
-    const pid = imgMap[fname];
-    if(!pid) return;
-    card.dataset.pid = pid;
+  const display = document.getElementById('sub-plan-display');
+  if(display){
+    const perks = isAlkaline
+      ? [`${plan.jugs} × 5-gal alkaline jugs`, 'pH 8.5+ guaranteed', 'Free delivery 0–3 mi']
+      : [`${plan.jugs} × 5-gal jugs`, 'Flexible schedule', 'Free delivery 0–3 mi'];
+    display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${plan.price}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
+  }
+  // Sync water type buttons
+  $$('#sub-overlay .wtype-btn').forEach(b=>b.classList.toggle('sel',b.dataset.wt===subState.waterType));
+  gotoStep('sub-overlay',0);
+  openOverlay('sub-overlay');
+}
 
-    // rewire "View Details" link
-    const viewLink = card.querySelector('.catalog-view, a');
-    if(viewLink){
-      viewLink.href='#';
-      viewLink.onclick=(e)=>{ e.preventDefault(); openProductDetail(pid); };
-    }
-
-    // add "Add to Cart" button if not already there
-    if(!card.querySelector('.catalog-atc') && PRODUCTS[pid].price){
-      const body = card.querySelector('.catalog-card-body');
-      if(body){
-        const btn = document.createElement('button');
-        btn.className='catalog-atc';
-        btn.textContent='Add to Cart';
-        btn.addEventListener('click',()=>{
-          openQtyModal(pid, qty=>{
-            cartAdd(pid, qty);
-            toast(PRODUCTS[pid].name, `Added ${qty} to cart`,'🛒');
-          });
-        });
-        body.appendChild(btn);
-      }
+/* ── Wire "Set Up Delivery" button ─────────────────────────────── */
+function wireDeliveryButton(){
+  // Match the exact button text
+  $$('a, button').forEach(el=>{
+    const txt=(el.textContent||'').trim();
+    if(txt.startsWith('Set Up Delivery') || txt.includes('Set Up Delivery')){
+      el.removeAttribute('href');
+      el.setAttribute('href','javascript:void(0)');
+      el.addEventListener('click',e=>{
+        e.preventDefault(); e.stopPropagation();
+        dvState = { plan:null, date:null, time:null, freq:'bi-weekly', day:'Monday', window:'Morning' };
+        gotoStep('delivery-overlay',0);
+        if(user){
+          const f=(id,v)=>{ const el=document.getElementById(id); if(el&&v) el.value=v; };
+          const parts=(user.name||'').split(' ');
+          f('dv-fname',parts[0]); f('dv-lname',parts.slice(1).join(' ')); f('dv-email',user.email||''); f('dv-phone',user.phone||''); f('dv-addr',user.addr||''); f('dv-city',user.city||''); f('dv-zip',user.zip||'');
+        }
+        openOverlay('delivery-overlay');
+      });
     }
   });
 }
 
-/* ── Inject Navbar Buttons ─────────────────────────────────────── */
+/* ── Wire remaining #contact links to Contact Modal ────────────── */
+function wireRemainingContactLinks(){
+  // After pricing & delivery are wired, change all remaining #contact anchors
+  $$('a[href="#contact"], a[href="index.html#contact"]').forEach(link=>{
+    // Skip if already handled (has data-wired attribute)
+    if(link.dataset.wired) return;
+    link.dataset.wired='1';
+    const origHref=link.getAttribute('href');
+    link.setAttribute('href','javascript:void(0)');
+    link.addEventListener('click',e=>{
+      e.preventDefault(); e.stopPropagation();
+      openOverlay('contact-overlay');
+    });
+  });
+}
+
+/* ── Wire Catalog Cards ─────────────────────────────────────────── */
+function wireCatalogCards(){
+  let count=0;
+  $$('.catalog-card').forEach(card=>{
+    const nameEl=card.querySelector('.catalog-name');
+    const priceEl=card.querySelector('.catalog-price');
+    const imgEl=card.querySelector('img');
+    const body=card.querySelector('.catalog-card-body');
+    if(!body||!nameEl) return;
+
+    const name=nameEl.textContent.trim();
+    const priceText=priceEl?priceEl.textContent.trim():'';
+    const isPriced=priceEl&&!priceEl.classList.contains('tbd')&&priceText.includes('$');
+    const priceMatch=priceText.match(/\$(\d+\.?\d*)/);
+    const priceNum=priceMatch?parseFloat(priceMatch[1]):null;
+    const imgSrc=imgEl?imgEl.getAttribute('src'):'';
+
+    card.dataset.wbName=name;
+    card.dataset.wbPrice=priceNum!=null?priceNum:'';
+    card.dataset.wbImg=imgSrc;
+
+    // Replace .catalog-view link with a proper button
+    const existingView=body.querySelector('.catalog-view');
+    if(existingView){
+      const viewBtn=document.createElement('button');
+      viewBtn.className='catalog-view';
+      viewBtn.textContent='View Details';
+      viewBtn.style.cssText='display:block;width:100%;margin-top:8px;padding:8px;background:transparent;border:1px solid rgba(0,212,255,.2);border-radius:8px;color:#00D4FF;font-family:"Outfit",sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .2s;text-align:center';
+      viewBtn.addEventListener('mouseenter',()=>{ viewBtn.style.background='rgba(0,212,255,.08)'; });
+      viewBtn.addEventListener('mouseleave',()=>{ viewBtn.style.background='transparent'; });
+      viewBtn.addEventListener('click',e=>{ e.preventDefault(); openProductDetailFromCard(card); });
+      existingView.replaceWith(viewBtn);
+    }
+
+    // Add "Add to Cart" / "Inquire" button if not already there
+    if(!body.querySelector('.catalog-atc')){
+      const atcBtn=document.createElement('button');
+      atcBtn.className='catalog-atc';
+      if(isPriced&&priceNum){
+        atcBtn.textContent='Add to Cart';
+        atcBtn.addEventListener('click',()=>{
+          openInlineQtyModal(name,priceNum,imgSrc,qty=>{
+            addToCartRaw(name,priceNum,imgSrc,qty);
+            toast(name,'Added '+qty+' to cart','🛒');
+          });
+        });
+      } else {
+        atcBtn.textContent='Inquire';
+        atcBtn.style.cssText='background:rgba(139,184,212,.08);border-color:rgba(139,184,212,.2);color:#8BB8D4';
+        atcBtn.addEventListener('click',()=>openOverlay('contact-overlay'));
+      }
+      const viewBtn=body.querySelector('.catalog-view');
+      if(viewBtn) body.insertBefore(atcBtn,viewBtn);
+      else body.appendChild(atcBtn);
+    }
+    count++;
+  });
+  console.log('[Waterboy] Wired',count,'catalog cards');
+}
+
+/* ── Inject Nav Buttons ─────────────────────────────────────────── */
 function injectNavButtons(){
-  // Find nav-links ul on this page
-  const navLinks = document.querySelector('.nav-links, nav ul');
+  const navLinks=document.querySelector('.nav-links, nav ul');
   if(!navLinks) return;
 
-  // Cart button
+  // Cart icon
   if(!document.querySelector('.nav-cart-btn')){
-    const cartLi = document.createElement('li');
-    cartLi.innerHTML=`<button class="nav-cart-btn" aria-label="Shopping cart">
-      🛒
-      <span class="cart-badge" style="display:none">0</span>
-    </button>`;
-    navLinks.appendChild(cartLi);
-    cartLi.querySelector('.nav-cart-btn').addEventListener('click', openCartDrawer);
+    const li=document.createElement('li');
+    li.style.cssText='list-style:none;display:flex;align-items:center';
+    const btn=document.createElement('button');
+    btn.className='nav-cart-btn';
+    btn.setAttribute('aria-label','Shopping cart');
+    btn.style.cssText='background:none;border:none;cursor:pointer;position:relative;font-size:18px;padding:6px 8px;color:#8BB8D4;transition:color .2s;line-height:1';
+    btn.innerHTML='🛒<span class="cart-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:#00D4FF;color:#070F18;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:50%;display:none;align-items:center;justify-content:center;font-family:\'Space Mono\',monospace;padding:0 3px">0</span>';
+    btn.addEventListener('click',openCartDrawer);
+    li.appendChild(btn); navLinks.appendChild(li);
   }
 
-  // User button
+  // Sign In / User
   if(!document.querySelector('.nav-user-btn')){
-    const userLi = document.createElement('li');
-    userLi.innerHTML=`<div class="nav-user-wrap">
-      <button class="nav-user-btn"><span class="nav-user-name">Sign In</span></button>
-      <div class="nav-user-drop"></div>
+    const li=document.createElement('li');
+    li.style.cssText='list-style:none;position:relative';
+    li.innerHTML=`<div class="nav-user-wrap" style="position:relative;display:inline-block">
+      <button class="nav-user-btn" style="cursor:pointer;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:7px 14px;color:#00D4FF;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap">
+        <span class="nav-user-name">Sign In</span>
+      </button>
+      <div class="nav-user-drop" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#0D2137;border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:7px;min-width:176px;z-index:9999;box-shadow:0 12px 40px rgba(0,0,0,.55)"></div>
     </div>`;
-    navLinks.appendChild(userLi);
+    navLinks.appendChild(li);
+    // Attach listener DIRECTLY on the button
+    const btn=li.querySelector('.nav-user-btn');
+    const drop=li.querySelector('.nav-user-drop');
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(!user){ openAuthModal('signin'); return; }
+      drop.style.display = drop.style.display==='none'?'block':'none';
+    });
+    document.addEventListener('click',e=>{
+      if(!li.contains(e.target)) drop.style.display='none';
+    });
   }
   updateNavUser();
   updateBadge();
 }
 
-/* ── Init ──────────────────────────────────────────────────────── */
+/* ── updateNavUser (override) ───────────────────────────────────── */
+function updateNavUser(){
+  $$('.nav-user-name').forEach(el=>{
+    el.textContent = user ? user.name.split(' ')[0] : 'Sign In';
+  });
+  $$('.nav-user-drop').forEach(drop=>{
+    if(user){
+      drop.innerHTML=`<button class="nud-item" style="display:block;width:100%;text-align:left;padding:8px 13px;color:#C8E8F8;font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-orders">My Orders</button><button class="nud-item nud-out" style="display:block;width:100%;text-align:left;padding:8px 13px;color:rgba(255,100,100,.8);font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-signout">Sign Out</button>`;
+      drop.querySelector('#nud-signout')?.addEventListener('click',()=>{
+        user=null; saveUser(null); updateNavUser();
+        // Close drop
+        drop.style.display='none';
+        toast('Signed out','See you next time!','👋');
+      });
+    } else {
+      drop.innerHTML='';
+    }
+  });
+}
+
+/* ── Init ───────────────────────────────────────────────────────── */
 function init(){
   inject();
-  injectNavButtons();
   wireCloseButtons();
-  wireContact();
+  wireContactForm();
   wireAuth();
   wireQtyModal();
   wirePdModal();
   wireCartDrawer();
   wireCheckout();
   wireSubscription();
-  wireNavUser();
+  wireDeliveryModal();
+  // Order matters: price/delivery buttons first, then catch remaining #contact
   wirePricingButtons();
+  wireDeliveryButton();
+  wireRemainingContactLinks();
   wireCatalogCards();
-
-  // update cart badge in the injected cart button
-  updateBadge();
-
-  // update cd-count when drawer opens
-  const origOpen = openCartDrawer;
-  // patch openCartDrawer to update count
-  document.querySelectorAll('.nav-cart-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const cc = document.getElementById('cd-count');
-      if(cc) cc.textContent=cartCount();
-    });
-  });
+  injectNavButtons();
 }
 
 document.addEventListener('DOMContentLoaded', init);
