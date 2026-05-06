@@ -3,6 +3,10 @@
    Waterboy Delivery
    ================================================================ */
 
+/* ── Nav App Pill ─────────────────────────────────────────────── */
+.nav-app-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border:1.5px solid rgba(0,212,255,.45);border-radius:20px;color:var(--cyan)!important;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.4px;white-space:nowrap;transition:background .2s,border-color .2s}
+.nav-app-pill:hover{background:rgba(0,212,255,.1);border-color:var(--cyan)}
+
 /* ── Overlay ──────────────────────────────────────────────────── */
 .wb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s ease;pointer-events:none}
 .wb-overlay.open{opacity:1;pointer-events:all}
