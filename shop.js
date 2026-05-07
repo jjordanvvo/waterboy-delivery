@@ -1203,6 +1203,19 @@ function updateNavUser(){
   });
 }
 
+/* ── Frequency Tabs ─────────────────────────────────────────────── */
+function wireFreqTabs(){
+  $$('.freq-tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      $$('.freq-tab-btn').forEach(b=>b.classList.remove('active'));
+      $$('.freq-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel=document.getElementById(btn.dataset.panel);
+      if(panel) panel.classList.add('active');
+    });
+  });
+}
+
 /* ── Init ───────────────────────────────────────────────────────── */
 function init(){
   inject();
@@ -1221,6 +1234,7 @@ function init(){
   wireRemainingContactLinks();
   wireCatalogCards();
   injectNavButtons();
+  wireFreqTabs();
 }
 
 document.addEventListener('DOMContentLoaded', init);

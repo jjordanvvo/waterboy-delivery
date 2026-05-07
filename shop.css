@@ -3,6 +3,51 @@
    Waterboy Delivery
    ================================================================ */
 
+/* ── Pricing Overhaul ────────────────────────────────────────── */
+.px-sub-head{margin:0 0 40px;text-align:center}
+.px-sub-title{font-family:'Outfit',sans-serif;font-size:26px;font-weight:900;color:#fff;margin:0 0 12px}
+.px-sub-desc{color:#8BB8D4;font-size:15px;max-width:680px;margin:0 auto;line-height:1.7}
+.px-save-badge{display:inline-block;background:rgba(76,175,80,.14);border:1px solid rgba(76,175,80,.4);color:#6DCF70;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 11px;border-radius:20px;margin:10px 0 8px}
+.px-save-badge--special{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.35);color:#00D4FF}
+.px-vs-line{font-size:11px;color:#5A7A96;font-family:'Space Mono',monospace;margin:8px 0 4px;line-height:1.6}
+.px-freq-note{font-family:'Space Mono',monospace;font-size:11px;color:#00D4FF;letter-spacing:1px;text-transform:uppercase;margin:12px 0 8px;padding:3px 10px;background:rgba(0,212,255,.07);border-radius:20px;display:inline-block}
+.px-avail-yes{color:#6DCF70!important}
+/* Freq tabs */
+.freq-tabs{display:flex;gap:8px;margin-bottom:28px;justify-content:center}
+.freq-tab-btn{padding:10px 32px;border-radius:24px;border:1.5px solid rgba(0,212,255,.25);background:transparent;color:#8BB8D4;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all .2s}
+.freq-tab-btn.active{background:#00D4FF;border-color:#00D4FF;color:#0B1B2B;font-weight:700}
+.freq-panel{display:none}
+.freq-panel.active{display:block}
+/* 3-col pricing grid */
+.pricing-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+/* Purified vs Alkaline */
+.px-compare-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:580px;margin:0 auto}
+.px-compare-card{background:#132E4A;border:1px solid rgba(0,212,255,.12);border-radius:16px;padding:28px 24px}
+.px-compare-card--alkaline{border-color:rgba(0,212,255,.45);box-shadow:0 0 28px rgba(0,212,255,.1)}
+.px-compare-label{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:18px;text-align:center;letter-spacing:.5px}
+.px-compare-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(0,212,255,.07)}
+.px-compare-row:last-child{border-bottom:none}
+.px-cr-key{color:#8BB8D4;font-size:13px}
+.px-cr-val{color:#fff;font-size:13px;font-weight:600;text-align:right}
+/* Us vs Water.com table */
+.px-vs-table-wrap{overflow-x:auto;border-radius:16px;border:2px solid rgba(0,212,255,.2);box-shadow:0 0 40px rgba(0,212,255,.08)}
+.px-vs-table{width:100%;border-collapse:collapse;min-width:400px}
+.px-vs-table thead tr{background:rgba(0,212,255,.1)}
+.px-vs-table th{padding:16px 22px;font-family:'Space Mono',monospace;font-size:12px;color:#00D4FF;text-align:left;letter-spacing:.5px;border-bottom:1px solid rgba(0,212,255,.15)}
+.px-vs-table td{padding:15px 22px;font-size:14px;color:#C5DFF0;border-bottom:1px solid rgba(0,212,255,.06)}
+.px-vs-table tbody tr:last-child td{border-bottom:none}
+.px-vs-table tbody tr:nth-child(odd){background:rgba(255,255,255,.025)}
+.px-vs-table tbody tr:hover{background:rgba(0,212,255,.05)}
+.px-our-price{color:#00D4FF!important;font-weight:800;font-family:'Space Mono',monospace;font-size:15px!important}
+.px-their-price{color:#4A6B8A!important}
+.px-their-price s{text-decoration-color:rgba(255,80,80,.5)}
+.px-you-save{color:#6DCF70!important;font-weight:700;font-family:'Space Mono',monospace}
+.px-footnote{color:#3A5A76;font-size:11px;font-family:'Space Mono',monospace;margin-top:12px;text-align:center;padding:0 16px}
+@media(max-width:768px){
+  .pricing-grid-3{grid-template-columns:1fr}
+  .px-compare-pair{grid-template-columns:1fr;max-width:100%}
+}
+
 /* ── Nav App Pill ─────────────────────────────────────────────── */
 .nav-app-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border:1.5px solid rgba(0,212,255,.45);border-radius:20px;color:var(--cyan)!important;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.4px;white-space:nowrap;transition:background .2s,border-color .2s}
 .nav-app-pill:hover{background:rgba(0,212,255,.1);border-color:var(--cyan)}
