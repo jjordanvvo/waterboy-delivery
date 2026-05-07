@@ -15,6 +15,95 @@ const PLANS = {
   'Alkaline Max':   { jugs:6,  price:60, alkaline:true  },
 };
 
+/* ── Zone Calculation ───────────────────────────────────────────── */
+const STORE_LAT=38.4088, STORE_LNG=-121.4208;
+const ZIP_COORDS={
+  '95758':{lat:38.4088,lng:-121.4208},
+  '95757':{lat:38.3930,lng:-121.4490},
+  '95624':{lat:38.4380,lng:-121.3850},
+  '95759':{lat:38.3780,lng:-121.4300},
+  '95830':{lat:38.4750,lng:-121.4350},
+  '95829':{lat:38.4700,lng:-121.3900},
+  '95828':{lat:38.4900,lng:-121.4100},
+  '95823':{lat:38.5100,lng:-121.4500},
+  '95822':{lat:38.5200,lng:-121.4900},
+  '95832':{lat:38.4600,lng:-121.4800},
+  '95630':{lat:38.5800,lng:-121.2700},
+  '95670':{lat:38.5900,lng:-121.2800},
+  '95826':{lat:38.5400,lng:-121.3800},
+  '95831':{lat:38.4900,lng:-121.5200},
+  '95655':{lat:38.3500,lng:-121.5000},
+  '95693':{lat:38.3200,lng:-121.3500},
+  '95242':{lat:38.2000,lng:-121.2700},
+  '95820':{lat:38.5300,lng:-121.4600},
+  '95825':{lat:38.5700,lng:-121.4000},
+};
+
+let currentZone={zone:0,fee:0,outside:false,unknown:true};
+
+function haversine(lat1,lng1,lat2,lng2){
+  const R=3959,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function getZoneForZip(zip){
+  const c=ZIP_COORDS[zip];
+  if(!c) return {zone:0,fee:0,outside:false,unknown:true};
+  const d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);
+  if(d<=3)  return {zone:1,fee:0,   dist:d,outside:false,unknown:false};
+  if(d<=6)  return {zone:2,fee:4.99,dist:d,outside:false,unknown:false};
+  if(d<=9)  return {zone:3,fee:9.99,dist:d,outside:false,unknown:false};
+  return {zone:4,fee:0,dist:d,outside:true,unknown:false};
+}
+
+function zoneFeeDisplay(zr){
+  if(zr.unknown) return {text:'TBD',color:'#8BB8D4',tag:'',fee:0};
+  if(zr.outside) return {text:'Contact us',color:'#ff6b6b',tag:'',fee:0};
+  if(zr.zone===1) return {text:'FREE',color:'#6DCF70',tag:'Zone 1 — Free',fee:0};
+  if(zr.zone===2) return {text:'$4.99',color:'#C5DFF0',tag:'Zone 2',fee:4.99};
+  if(zr.zone===3) return {text:'$9.99',color:'#FFD700',tag:'Zone 3',fee:9.99};
+  return {text:'TBD',color:'#8BB8D4',tag:'',fee:0};
+}
+
+function renderZoneResult(zr,resEl,nextBtn){
+  if(!resEl) return;
+  currentZone=zr;
+  if(zr.unknown){
+    resEl.innerHTML='<div class="zone-inline zone-unk">📦 Delivery fee will be confirmed after order is placed</div>';
+    if(nextBtn) nextBtn.disabled=false;
+  } else if(zr.outside){
+    resEl.innerHTML='<div class="zone-inline zone-out">⚠ Outside delivery area — call <a href="tel:+19166193218">(916) 619-3218</a> for options</div>';
+    if(nextBtn) nextBtn.disabled=true;
+  } else {
+    const msgs={
+      1:'<div class="zone-inline zone-z1">✓ Free delivery — you\'re in our core area!</div>',
+      2:'<div class="zone-inline zone-z2">📍 Zone 2 — $4.99 delivery fee (Laguna, Rancho area)</div>',
+      3:'<div class="zone-inline zone-z3">📍 Zone 3 — $9.99 delivery fee (extended area)</div>',
+    };
+    resEl.innerHTML=msgs[zr.zone]||'';
+    if(nextBtn) nextBtn.disabled=false;
+  }
+}
+
+function wireZipField(inputId,resultId,nextBtnId){
+  const inp=document.getElementById(inputId);
+  if(!inp) return;
+  let resEl=document.getElementById(resultId);
+  if(!resEl){
+    resEl=document.createElement('div'); resEl.id=resultId;
+    const f=inp.closest('.wb-field'); if(f) f.after(resEl); else inp.after(resEl);
+  }
+  const run=()=>{
+    const zip=(inp.value||'').replace(/\D/g,'').slice(0,5);
+    const nextBtn=nextBtnId?document.getElementById(nextBtnId):null;
+    if(zip.length<5){ resEl.innerHTML=''; return; }
+    renderZoneResult(getZoneForZip(zip),resEl,nextBtn);
+  };
+  inp.addEventListener('blur',run);
+  inp.addEventListener('input',()=>{ if((inp.value||'').replace(/\D/g,'').length>=5) run(); });
+}
+
 const PHONE      = '(916) 619-3218';
 const PHONE_HREF = 'tel:+19166193218';
 const DEMO_EMAIL = 'demo@waterboy.com';
@@ -333,9 +422,12 @@ let dvState  = { plan:null, date:null, time:null, freq:'bi-weekly', day:'Monday'
 function buildOrderSummary(containerId){
   const c=document.getElementById(containerId); if(!c) return;
   const sub=cartTotal();
+  const zd=zoneFeeDisplay(currentZone);
+  const total=sub+zd.fee;
+  const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
   c.innerHTML=cart.map(i=>`<div class="ob-row"><span>${esc(i.name)} ×${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`).join('')
-    +`<div class="ob-row"><span>Delivery</span><span>FREE</span></div>`
-    +`<div class="ob-row grand"><span>Total</span><span>$${sub.toFixed(2)}</span></div>`;
+    +`<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div>`
+    +`<div class="ob-row grand"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
 }
 
 /* ── Pay Simulation ────────────────────────────────────────────── */
@@ -892,6 +984,7 @@ function wireCheckout(){
   document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
   const coCard=document.getElementById('co-card'); coCard?.addEventListener('input',()=>{ let v=coCard.value.replace(/\D/g,'').slice(0,16); coCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
   const coExp=document.getElementById('co-exp'); coExp?.addEventListener('input',()=>{ let v=coExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); coExp.value=v; });
+  wireZipField('co-zip','co-zone-result','co-next-0');
 }
 
 /* ── Wire Subscription ──────────────────────────────────────────── */
@@ -915,8 +1008,10 @@ function wireSubscription(){
     if(!subState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
     if(!subState.time){ toast('Pick a time','Select a time window','⏰'); return; }
     gotoStep('sub-overlay',3);
-    const plan=PLANS[subState.plan]||{}; const jugs=plan.jugs||0; const extra=subState.waterType==='alkaline'?jugs*4:0; const total=(plan.price||0)+extra;
-    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${jugs} jugs)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery</span><span>FREE</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
+    const plan=PLANS[subState.plan]||{}; const jugs=plan.jugs||0; const extra=subState.waterType==='alkaline'?jugs*4:0;
+    const zd=zoneFeeDisplay(currentZone); const total=(plan.price||0)+extra+zd.fee;
+    const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
+    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${jugs} jugs)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
   });
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
@@ -930,6 +1025,7 @@ function wireSubscription(){
   document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
   const subCard=document.getElementById('sub-card'); subCard?.addEventListener('input',()=>{ let v=subCard.value.replace(/\D/g,'').slice(0,16); subCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
   const subExp=document.getElementById('sub-exp'); subExp?.addEventListener('input',()=>{ let v=subExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); subExp.value=v; });
+  wireZipField('sub-zip','sub-zone-result','sub-next-1');
 }
 
 /* ── Wire Delivery Modal ────────────────────────────────────────── */
@@ -974,9 +1070,11 @@ function wireDeliveryModal(){
     if(!dvState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
     gotoStep('delivery-overlay',3);
     const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
+    const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
+    const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
     const sumEl=document.getElementById('dv-plan-summary');
-    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}<br><span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:16px;font-weight:700">$${price}/month</span></div>`;
-    const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=price;
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Mono',monospace;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Mono',monospace;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
+    const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
   });
   document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
   const doDvConfirm=()=>{
@@ -1000,6 +1098,7 @@ function wireDeliveryModal(){
   document.getElementById('dv-done-btn')?.addEventListener('click',()=>closeOverlay('delivery-overlay'));
   const dvCard=document.getElementById('dv-card'); dvCard?.addEventListener('input',()=>{ let v=dvCard.value.replace(/\D/g,'').slice(0,16); dvCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
   const dvExp=document.getElementById('dv-exp'); dvExp?.addEventListener('input',()=>{ let v=dvExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); dvExp.value=v; });
+  wireZipField('dv-zip','dv-zone-result','dv-next-0');
 }
 
 /* ── Wire Pricing & Subscription Buttons ───────────────────────── */

@@ -3,6 +3,15 @@
    Waterboy Delivery
    ================================================================ */
 
+/* ── Zone Inline Results ─────────────────────────────────────── */
+.zone-inline{font-family:'Space Mono',monospace;font-size:12px;padding:8px 12px;border-radius:8px;margin-top:8px;line-height:1.5}
+.zone-z1{background:rgba(109,207,112,.12);border:1px solid rgba(109,207,112,.35);color:#6DCF70}
+.zone-z2{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);color:#00D4FF}
+.zone-z3{background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);color:#FFD700}
+.zone-out{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);color:#ff6b6b}
+.zone-out a{color:#ff6b6b;text-decoration:underline}
+.zone-unk{background:rgba(139,184,212,.08);border:1px solid rgba(139,184,212,.2);color:#8BB8D4}
+
 /* ── Pricing Overhaul ────────────────────────────────────────── */
 .px-sub-head{margin:0 0 40px;text-align:center}
 .px-sub-title{font-family:'Outfit',sans-serif;font-size:26px;font-weight:900;color:#fff;margin:0 0 12px}
