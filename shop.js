@@ -1123,7 +1123,11 @@ function wireCatalogCards(){
       } else {
         atcBtn.textContent='Inquire';
         atcBtn.style.cssText='background:rgba(139,184,212,.08);border-color:rgba(139,184,212,.2);color:#8BB8D4';
-        atcBtn.addEventListener('click',()=>openOverlay('contact-overlay'));
+        atcBtn.addEventListener('click',()=>{
+          const msgEl=document.querySelector('#modal-contact-form textarea[name="message"]');
+          if(msgEl) msgEl.value="I'd like pricing information for "+name+".";
+          openOverlay('contact-overlay');
+        });
       }
       const viewBtn=body.querySelector('.catalog-view');
       if(viewBtn) body.insertBefore(atcBtn,viewBtn);
