@@ -57,8 +57,9 @@
   .px-compare-pair{grid-template-columns:1fr;max-width:100%}
 }
 
+
 /* ── Nav App Pill ─────────────────────────────────────────────── */
-.nav-app-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border:1.5px solid rgba(0,212,255,.45);border-radius:20px;color:var(--cyan)!important;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.4px;white-space:nowrap;transition:background .2s,border-color .2s}
+.nav-app-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border:1.5px solid rgba(0,212,255,.45);border-radius:20px;color:var(--cyan)!important;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.4px;white-space:nowrap;transition:background .2s,border-color .2s;cursor:pointer}
 .nav-app-pill:hover{background:rgba(0,212,255,.1);border-color:var(--cyan)}
 
 /* ── Overlay ──────────────────────────────────────────────────── */
