@@ -17,7 +17,10 @@
       "Bash(start \"C:/Users/silly/Desktop/waterboy-delivery/index.html\")",
       "Bash(start \"C:/Users/silly/Desktop/waterboy-delivery/products.html\")",
       "Bash(start *)",
-      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\"; Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")"
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\"; Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")"
     ]
   }
 }
