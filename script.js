@@ -68,43 +68,11 @@ function initNavbar() {
 }
 
 // ============================================================
-// MOBILE MENU
+// MOBILE MENU — left menu now handled by shop.js wireLeftMenu()
+// This stub prevents errors if old mobile-menu HTML is absent
 // ============================================================
 function initMobileMenu() {
-  const hamburger = document.getElementById('nav-hamburger');
-  const menu = document.getElementById('mobile-menu');
-  if (!hamburger || !menu) return;
-
-  hamburger.addEventListener('click', () => {
-    const isOpen = menu.classList.contains('open');
-    if (isOpen) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('open');
-      document.body.style.overflow = '';
-    } else {
-      menu.classList.add('open');
-      hamburger.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-  });
-
-  // Close on link click
-  menu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('open');
-      hamburger.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // Close on outside click
-  menu.addEventListener('click', (e) => {
-    if (e.target === menu) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
+  // Left menu is wired in shop.js wireLeftMenu(); nothing to do here.
 }
 
 // ============================================================
@@ -116,7 +84,7 @@ function initParticles() {
 
   const ctx = canvas.getContext('2d');
   const isMobile = window.innerWidth < 768;
-  const COUNT = isMobile ? 8 : 18;
+  const COUNT = isMobile ? 5 : 11; // reduced 40% from original 8/18
   let particles = [];
   let animId;
 

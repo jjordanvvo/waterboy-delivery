@@ -3,6 +3,69 @@
    Waterboy Delivery  (v2 — all buttons fixed)
    ================================================================ */
 
+/* ── Water Type Pricing — Single Source of Truth ───────────────── */
+const WATERBOY_PRICING = {
+  bundles: {
+    'Solo':       { jugs:2,  ro:21,  alkaline:25,  hydrogen:30  },
+    'Family':     { jugs:4,  ro:42,  alkaline:47,  hydrogen:55  },
+    'Household':  { jugs:6,  ro:57,  alkaline:63,  hydrogen:72  },
+    'Office':     { jugs:8,  ro:72,  alkaline:79,  hydrogen:90  },
+    'Max Bundle': { jugs:12, ro:95,  alkaline:103, hydrogen:118 },
+  },
+  perJug: { ro:7.50, alkaline:9.00, hydrogen:11.00 },
+};
+
+/* ── Global Water State ────────────────────────────────────────── */
+window.WaterboyState = (function(){
+  const stored = localStorage.getItem('waterboy_water_type');
+  let _type = (stored === 'alkaline' || stored === 'hydrogen') ? stored : 'ro';
+  return {
+    get waterType(){ return _type; },
+    setType(t){
+      _type = t;
+      localStorage.setItem('waterboy_water_type', t);
+      renderPriceTags();
+      syncWaterPillsUI();
+      window.dispatchEvent(new CustomEvent('watertype:changed', { detail: { type: t } }));
+    },
+    getPlanPrice(planId){
+      const p = WATERBOY_PRICING.bundles[planId];
+      return p ? p[_type] : 0;
+    },
+  };
+})();
+
+function renderPriceTags(){
+  const type = window.WaterboyState.waterType;
+  document.querySelectorAll('.price-tag').forEach(el => {
+    const id   = el.dataset.productId;
+    const kind = el.dataset.productType;
+    if(kind === 'bundle' && WATERBOY_PRICING.bundles[id]){
+      el.textContent = '$' + WATERBOY_PRICING.bundles[id][type];
+    } else if(kind === 'per-jug'){
+      el.textContent = '$' + WATERBOY_PRICING.perJug[type].toFixed(2);
+    }
+  });
+  // Update delivery modal plan cards if open
+  document.querySelectorAll('.dv-plan-price-live').forEach(el => {
+    const id = el.dataset.plan;
+    if(id && WATERBOY_PRICING.bundles[id]){
+      el.textContent = '$' + WATERBOY_PRICING.bundles[id][type] + '/mo';
+    }
+  });
+}
+
+function syncWaterPillsUI(){
+  const type = window.WaterboyState.waterType;
+  document.querySelectorAll('.wt-pill[data-type]').forEach(p => {
+    p.classList.toggle('active', p.dataset.type === type);
+  });
+  document.querySelectorAll('.wt-card[data-type]').forEach(c => {
+    c.classList.toggle('selected', c.dataset.type === type);
+    c.setAttribute('aria-pressed', String(c.dataset.type === type));
+  });
+}
+
 /* ── Constants & Plans ─────────────────────────────────────────── */
 const PLANS = {
   'Solo':           { jugs:2,  price:21, alkaline:false },
@@ -14,6 +77,14 @@ const PLANS = {
   'Alkaline Family':{ jugs:4,  price:45, alkaline:true  },
   'Alkaline Max':   { jugs:6,  price:60, alkaline:true  },
 };
+
+/* Checkout add-on data */
+const CHECKOUT_ADDONS = [
+  { id:'ice-bags',       name:'Ice Bags',          price:4.99,  desc:'10lb bag. Parties and coolers.', img:'' },
+  { id:'lmnt-cans',      name:'LMNT Cans',          price:2.50,  desc:'Electrolyte drink. Hydration boost.', img:'' },
+  { id:'hydrogen-sticks',name:'Hydrogen Sticks',    price:29.99, desc:'Month of H2-infused water on the go.', img:'' },
+  { id:'h2-tabs',        name:'H2 Tabs',            price:1.00,  desc:'Fast-dissolving hydrogen tablets.', img:'' },
+];
 
 /* ── Zone Calculation ───────────────────────────────────────────── */
 const STORE_LAT=38.4088, STORE_LNG=-121.4208;
@@ -575,13 +646,14 @@ function inject(){
  </div>
 </div>
 
-<!-- Checkout Overlay (4 steps) -->
+<!-- Checkout Overlay (5 steps) -->
 <div class="wb-overlay" id="checkout-overlay">
  <div class="wb-modal wide" id="checkout-modal">
   <div class="wb-mhead"><h2>Checkout</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
    <div class="step-bar">
     <div class="step-dot active"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
     <div class="step-dot"></div><div class="step-line"></div>
     <div class="step-dot"></div><div class="step-line"></div>
     <div class="step-dot"></div>
@@ -604,6 +676,20 @@ function inject(){
      <button class="ot-btn sel" data-ot="one-time">One-Time</button>
      <button class="ot-btn" data-ot="recurring">Recurring</button>
     </div>
+    <!-- Bottle return for one-time orders -->
+    <div id="co-bottle-return-section" class="bottle-return-step" style="display:none">
+     <p class="step-title" style="font-size:13px;margin-bottom:8px">How will you return empty jugs?</p>
+     <div class="br-radio-group">
+      <label class="br-radio"><input type="radio" name="br-return" value="dropoff"><div><div class="br-radio-label">Drop off at facility (Free)</div><div class="br-radio-sub">7119 Elk Grove Blvd during business hours</div></div></label>
+      <label class="br-radio"><input type="radio" name="br-return" value="pickup"><div><div class="br-radio-label">Schedule pickup (+$4.99)</div><div class="br-radio-sub">We come to you — Mon–Sat</div></div></label>
+      <label class="br-radio"><input type="radio" name="br-return" value="keep"><div><div class="br-radio-label">I'll keep the jugs and accept the $8/jug fee if not returned in 30 days</div></div></label>
+     </div>
+    </div>
+    <!-- Recurring reminder -->
+    <div id="co-recurring-note" class="br-recurring-note" style="display:none">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+     <p>Empty jugs swapped on every delivery — nothing for you to do.</p>
+    </div>
     <div id="co-freq-wrap" style="display:none;margin-bottom:14px">
      <label style="font-size:11px;color:#8BB8D4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block">Frequency</label>
      <div class="freq-btns">
@@ -617,6 +703,24 @@ function inject(){
     <div class="time-wins" id="co-time-wins"></div>
     <div class="step-nav"><button class="wb-btn-ghost step-back" id="co-back-1">← Back</button><button class="wb-btn" id="co-next-1">Next: Payment →</button></div>
    </div>
+   <!-- Step 1b: Add-Ons -->
+   <div class="step-panel" id="co-step-addons">
+    <p class="step-title">Add to Your Order</p>
+    <div class="co-addons-section">
+     <div class="co-addons-scroll" id="co-addon-row">
+      ${CHECKOUT_ADDONS.map(a=>`
+      <div class="co-addon-card" data-addon-id="${a.id}">
+       <div class="co-addon-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg></div>
+       <div class="co-addon-name">${esc(a.name)}</div>
+       <div class="co-addon-desc">${esc(a.desc)}</div>
+       <div class="co-addon-price">$${a.price.toFixed(2)}</div>
+       <div class="co-addon-ctrl"><button class="co-addon-add" data-addon="${a.id}">Add</button></div>
+      </div>`).join('')}
+     </div>
+    </div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="co-back-addons">← Back</button><button class="wb-btn" id="co-next-addons">Next: Payment →</button></div>
+   </div>
+
    <!-- Step 2: Payment -->
    <div class="step-panel" id="co-step-2">
     <p class="step-title">Payment</p>
@@ -633,8 +737,8 @@ function inject(){
     <div class="stripe-badge">🔒 Secured by Stripe</div>
     <div class="step-nav"><button class="wb-btn-ghost step-back" id="co-back-2">← Back</button><button class="wb-btn" id="co-place-order">Place Order →</button></div>
    </div>
-   <!-- Step 3: Confirm -->
-   <div class="step-panel" id="co-step-3">
+   <!-- Step 3 (payment) steps renumbered, Step 4: Confirm -->
+   <div class="step-panel" id="co-step-4">
     <div class="confirm-wrap">
      <div class="confirm-check">✓</div>
      <h3 style="color:#fff;margin:16px 0 8px">Order Confirmed!</h3>
@@ -945,6 +1049,8 @@ function wireCartDrawer(){
 }
 
 /* ── Wire Checkout ──────────────────────────────────────────────── */
+let coAddonQtys = {}; // addon id → qty
+
 function wireCheckout(){
   document.getElementById('co-next-0')?.addEventListener('click',()=>{
     if(!(document.getElementById('co-fname')?.value)||!(document.getElementById('co-email')?.value)){ toast('Missing info','Please fill in name and email','⚠️'); return; }
@@ -952,35 +1058,75 @@ function wireCheckout(){
     buildCalendar('co-calendar',3,d=>{ coState.date=d; });
     buildTimeWindows('co-time-wins',t=>{ coState.time=t; });
   });
+
+  // Show/hide bottle return section based on order type
   document.addEventListener('click',e=>{
     const ot=e.target.closest('.ot-btn');
     if(ot&&ot.closest('#checkout-overlay')){
       $$('.ot-btn',document.getElementById('checkout-overlay')).forEach(b=>b.classList.toggle('sel',b===ot));
       coState.orderType=ot.dataset.ot;
-      const fw=document.getElementById('co-freq-wrap'); if(fw) fw.style.display=coState.orderType==='recurring'?'block':'none';
+      const fw=document.getElementById('co-freq-wrap');
+      const brSection=document.getElementById('co-bottle-return-section');
+      const brNote=document.getElementById('co-recurring-note');
+      if(fw) fw.style.display=coState.orderType==='recurring'?'block':'none';
+      if(brSection) brSection.style.display=coState.orderType==='one-time'?'block':'none';
+      if(brNote) brNote.style.display=coState.orderType==='recurring'?'flex':'none';
     }
     const fb=e.target.closest('.freq-btn');
     if(fb&&fb.closest('#checkout-overlay')&&fb.dataset.f){
       $$('.freq-btn',document.getElementById('checkout-overlay')).forEach(b=>{ if(b.dataset.f) b.classList.toggle('sel',b===fb); });
       coState.freq=fb.dataset.f;
     }
+    // Bottle return radio highlight
+    const br=e.target.closest('.br-radio');
+    if(br&&br.closest('#checkout-overlay')){
+      $$('.br-radio',br.closest('#checkout-overlay')).forEach(r=>r.classList.remove('checked'));
+      br.classList.add('checked');
+      const inp=br.querySelector('input[type=radio]');
+      if(inp) inp.checked=true;
+      coState.bottleReturn=inp?inp.value:null;
+      if(inp?.value==='pickup'){
+        const note=br.closest('#co-bottle-return-section')?.querySelector('.br-pickup-note');
+        if(note) note.style.display='block';
+      }
+    }
+    // Add-on add buttons
+    const addonBtn=e.target.closest('.co-addon-add');
+    if(addonBtn&&addonBtn.closest('#co-addon-row')){
+      const id=addonBtn.dataset.addon;
+      const addon=CHECKOUT_ADDONS.find(a=>a.id===id);
+      if(addon){
+        coAddonQtys[id]=(coAddonQtys[id]||0)+1;
+        addonBtn.classList.add('in-cart');
+        addonBtn.textContent='Added ('+coAddonQtys[id]+')';
+        addToCartRaw(addon.name, addon.price, '', coAddonQtys[id]>1?1:1);
+        if(coAddonQtys[id]===1) toast(addon.name,'Added to your order','✓');
+      }
+    }
   });
+
   document.getElementById('co-next-1')?.addEventListener('click',()=>{
     if(!coState.date){ toast('Pick a date','Select a delivery date','📅'); return; }
     if(!coState.time){ toast('Pick a time','Select a time window','⏰'); return; }
-    gotoStep('checkout-overlay',2); buildOrderSummary('co-order-summary');
+    if(coState.orderType==='one-time'&&!coState.bottleReturn){
+      toast('Bottle return','Please select how you\'ll return empty jugs','♻️'); return;
+    }
+    // Step 1 → add-ons step → payment
+    gotoStep('checkout-overlay',2);
   });
+  document.getElementById('co-back-addons')?.addEventListener('click',()=>gotoStep('checkout-overlay',1));
+  document.getElementById('co-next-addons')?.addEventListener('click',()=>{ gotoStep('checkout-overlay',3); buildOrderSummary('co-order-summary'); });
   document.getElementById('co-back-1')?.addEventListener('click',()=>gotoStep('checkout-overlay',0));
-  document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',1));
+  document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',2));
   document.getElementById('co-place-order')?.addEventListener('click',()=>{
     if(!(document.getElementById('co-card')?.value)||!(document.getElementById('co-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
-    gotoStep('checkout-overlay',3);
+    gotoStep('checkout-overlay',4);
     const numEl=document.getElementById('co-order-num'); if(numEl) numEl.textContent=genId();
-    cart=[]; saveCart(cart); updateBadge();
+    cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
     toast('Order placed!','Check your email for confirmation','✅');
   });
-  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',3); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful','✅'); }));
-  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',3); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful','✅'); }));
+  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful','✅'); }));
+  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful','✅'); }));
   document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
   const coCard=document.getElementById('co-card'); coCard?.addEventListener('input',()=>{ let v=coCard.value.replace(/\D/g,'').slice(0,16); coCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
   const coExp=document.getElementById('co-exp'); coExp?.addEventListener('input',()=>{ let v=coExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); coExp.value=v; });
@@ -1119,14 +1265,18 @@ function openSubWithPlan(planName){
   const plan = PLANS[planName] || Object.values(PLANS)[0];
   const isAlkaline = PLANS[planName]?.alkaline || false;
   subState.plan = planName;
-  subState.waterType = isAlkaline ? 'alkaline' : 'purified';
+  subState.waterType = isAlkaline ? 'alkaline' : window.WaterboyState.waterType;
+
+  // Use water type pricing from WaterboyState
+  const bundleData = WATERBOY_PRICING.bundles[planName];
+  const displayPrice = bundleData ? bundleData[window.WaterboyState.waterType] : (plan.price||0);
+  const jugs = bundleData ? bundleData.jugs : (plan.jugs||0);
+  const waterLabel = { ro:'RO', alkaline:'Alkaline', hydrogen:'Hydrogen' }[window.WaterboyState.waterType] || 'RO';
 
   const display = document.getElementById('sub-plan-display');
   if(display){
-    const perks = isAlkaline
-      ? [`${plan.jugs} × 5-gal alkaline jugs`, 'pH 8.5+ guaranteed', 'Free delivery 0–3 mi']
-      : [`${plan.jugs} × 5-gal jugs`, 'Flexible schedule', 'Free delivery 0–3 mi'];
-    display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${plan.price}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
+    const perks = [`${jugs} × 5-gal ${waterLabel} jugs`, 'Flexible schedule', 'Free delivery 0–3 mi'];
+    display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${displayPrice}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
   }
   // Sync water type buttons
   $$('#sub-overlay .wtype-btn').forEach(b=>b.classList.toggle('sel',b.dataset.wt===subState.waterType));
@@ -1237,6 +1387,128 @@ function wireCatalogCards(){
   console.log('[Waterboy] Wired',count,'catalog cards');
 }
 
+/* ── Wire Water Type Modal ──────────────────────────────────────── */
+function wireWaterTypeModal(){
+  const overlay=document.getElementById('water-type-overlay');
+  if(!overlay) return;
+
+  // Show modal on first visit (no localStorage key set)
+  const saved=localStorage.getItem('waterboy_water_type');
+  if(!saved){
+    setTimeout(()=>{ overlay.classList.add('open'); document.body.style.overflow='hidden'; }, 900);
+  }
+
+  // Sync initial pill state
+  syncWaterPillsUI();
+
+  // Card selection
+  overlay.querySelectorAll('.wt-card').forEach(card=>{
+    const activate=()=>{
+      overlay.querySelectorAll('.wt-card').forEach(c=>{ c.classList.remove('selected'); c.setAttribute('aria-pressed','false'); });
+      card.classList.add('selected');
+      card.setAttribute('aria-pressed','true');
+      overlay._pendingType=card.dataset.type;
+      const btn=document.getElementById('wt-confirm');
+      if(btn){ btn.disabled=false; btn.setAttribute('aria-disabled','false'); btn.classList.add('ready'); }
+    };
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
+  });
+
+  // Confirm button
+  document.getElementById('wt-confirm')?.addEventListener('click',()=>{
+    const t=overlay._pendingType;
+    if(!t) return;
+    window.WaterboyState.setType(t);
+    overlay.classList.remove('open');
+    document.body.style.overflow='';
+  });
+
+  // Browse link — close without saving
+  document.getElementById('wt-browse')?.addEventListener('click',()=>{
+    overlay.classList.remove('open');
+    document.body.style.overflow='';
+    // Default to RO rendering without saving to localStorage
+    renderPriceTags();
+    syncWaterPillsUI();
+  });
+
+  // ESC closes
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'&&overlay.classList.contains('open')){
+      overlay.classList.remove('open');
+      document.body.style.overflow='';
+    }
+  });
+}
+
+/* ── Wire Left Menu ─────────────────────────────────────────────── */
+function wireLeftMenu(){
+  const menu=document.getElementById('left-menu');
+  const panel=document.getElementById('left-menu-panel');
+  const backdrop=document.getElementById('left-menu-backdrop');
+  const closeBtn=document.getElementById('left-menu-close');
+  const hamburger=document.getElementById('nav-hamburger');
+  if(!menu) return;
+
+  function openMenu(){
+    menu.classList.add('open');
+    hamburger?.setAttribute('aria-expanded','true');
+    document.body.style.overflow='hidden';
+    // Focus first focusable element in panel
+    setTimeout(()=>{ closeBtn?.focus(); }, 350);
+  }
+  function closeMenu(){
+    menu.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+    hamburger?.focus();
+  }
+
+  hamburger?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  backdrop?.addEventListener('click', closeMenu);
+
+  // ESC closes
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'&&menu.classList.contains('open')) closeMenu();
+  });
+
+  // Close on nav link click
+  menu.querySelectorAll('.lm-nav a').forEach(link=>{
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Water type pills in menu
+  document.querySelectorAll('#lm-water-pills .wt-pill').forEach(pill=>{
+    pill.addEventListener('click',()=>{
+      window.WaterboyState.setType(pill.dataset.type);
+    });
+  });
+
+  // Sync pills on water type change
+  window.addEventListener('watertype:changed', ()=>syncWaterPillsUI());
+
+  // Initial sync
+  syncWaterPillsUI();
+}
+
+/* ── Wire Dispenser Rental CTAs ─────────────────────────────────── */
+function wireDispenserRental(){
+  document.querySelectorAll('.dr-cta[data-rental]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const type=btn.dataset.rental==='top-load'?'Top-Load Dispenser Rental':'Bottom-Load Dispenser Rental';
+      const price=btn.dataset.rental==='top-load'?10:25;
+      addToCartRaw(type, price, '', 1);
+      btn.textContent='Added to Order ✓';
+      btn.style.background='rgba(109,207,112,.14)';
+      btn.style.borderColor='rgba(109,207,112,.35)';
+      btn.style.color='#6DCF70';
+      toast(type,'Added to your order','✓');
+    });
+  });
+}
+
 /* ── Inject Nav Buttons ─────────────────────────────────────────── */
 function injectNavButtons(){
   const navLinks=document.querySelector('.nav-links, nav ul');
@@ -1334,6 +1606,13 @@ function init(){
   wireCatalogCards();
   injectNavButtons();
   wireFreqTabs();
+  // New for v3
+  wireWaterTypeModal();
+  wireLeftMenu();
+  wireDispenserRental();
+  // Render prices for saved water type on page load
+  renderPriceTags();
+  syncWaterPillsUI();
 }
 
 document.addEventListener('DOMContentLoaded', init);

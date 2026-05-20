@@ -163,17 +163,17 @@ button { font-family: inherit; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  padding: 22px 48px;
+  padding: 18px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: all 0.4s ease;
 }
 #navbar.scrolled {
-  background: rgba(11,27,43,0.93);
+  background: rgba(11,27,43,0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 14px 48px;
+  padding: 12px 28px;
   border-bottom: 1px solid rgba(0,212,255,0.1);
   box-shadow: 0 4px 40px rgba(0,0,0,0.4);
 }
@@ -230,57 +230,11 @@ button { font-family: inherit; }
   transform: translateY(-1px);
 }
 
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 1002;
-  background: none;
-  border: none;
-}
-.nav-hamburger span {
-  display: block;
-  width: 26px; height: 2px;
-  background: var(--text-on-dark);
-  transition: all 0.3s ease;
-  transform-origin: center;
-}
-.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* Old hamburger — hidden; new hamburger-new used instead */
+.nav-hamburger { display: none; }
 
-/* Mobile full-screen menu */
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  z-index: 1001;
-  background: rgba(7,15,24,0.97);
-  backdrop-filter: blur(30px);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-.mobile-menu.open { display: flex; opacity: 1; }
-.mobile-menu a {
-  font-family: var(--f-head);
-  font-size: 30px;
-  font-weight: 700;
-  color: var(--text-on-dark);
-  transition: color 0.3s;
-}
-.mobile-menu a:hover { color: var(--cyan); }
-.mobile-menu .nav-cta {
-  font-size: 17px !important;
-  padding: 18px 40px !important;
-  border-radius: 12px !important;
-  margin-top: 16px;
-}
+/* Mobile full-screen menu — replaced by left menu, kept for safety */
+.mobile-menu { display: none !important; }
 
 /* ============================================================
    HERO

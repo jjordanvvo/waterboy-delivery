@@ -322,3 +322,185 @@
   .wb-mbody{padding:18px 18px 22px}
   .wb-mhead{padding:18px 18px 12px}
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   WATER TYPE SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Water Type Modal ─────────────────────────────────────────── */
+.wt-overlay{position:fixed;inset:0;z-index:10100;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s ease;pointer-events:none;background:rgba(7,15,24,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.wt-overlay.open{opacity:1;pointer-events:all}
+.wt-modal{background:linear-gradient(160deg,#0D2137 0%,#0B1B2B 100%);border:1px solid rgba(0,212,255,.18);border-radius:20px;width:92%;max-width:720px;padding:40px 36px 32px;position:relative;box-shadow:0 0 80px rgba(0,212,255,.12),0 32px 64px rgba(0,0,0,.5);transform:scale(.97) translateY(8px);transition:transform .4s cubic-bezier(.34,1.2,.64,1)}
+.wt-overlay.open .wt-modal{transform:scale(1) translateY(0)}
+.wt-browse-link{position:absolute;top:16px;right:20px;font-size:11px;color:rgba(139,184,212,.6);cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:color .2s;background:none;border:none;padding:0;letter-spacing:.3px}
+.wt-browse-link:hover{color:#8BB8D4}
+.wt-head{text-align:center;margin-bottom:32px}
+.wt-head h2{font-family:'Outfit',sans-serif;font-size:clamp(22px,3vw,30px);font-weight:900;color:#fff;margin:0 0 10px;letter-spacing:-.5px}
+.wt-head p{font-size:14px;color:#8BB8D4;margin:0;line-height:1.6}
+.wt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.wt-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(0,212,255,.12);border-radius:14px;padding:22px 18px;cursor:pointer;transition:all .25s ease;position:relative;text-align:center}
+.wt-card:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.3);transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,212,255,.1)}
+.wt-card.selected{background:rgba(0,212,255,.1);border-color:#00D4FF;box-shadow:0 0 0 2px rgba(0,212,255,.3),0 12px 30px rgba(0,212,255,.15);transform:translateY(-3px)}
+.wt-card-tag{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;color:#00D4FF;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:14px}
+.wt-card h3{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#fff;margin:0 0 8px}
+.wt-card p{font-size:12px;color:#8BB8D4;margin:0;line-height:1.6}
+.wt-card-icon{width:44px;height:44px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.wt-card-icon svg{width:100%;height:100%;stroke:#00D4FF;opacity:.7}
+.wt-card.selected .wt-card-icon svg{opacity:1}
+.wt-footer{display:flex;justify-content:flex-end}
+.wt-confirm{width:auto;padding:13px 36px;font-size:14px;opacity:.45;cursor:not-allowed;transition:all .25s}
+.wt-confirm.ready{opacity:1;cursor:pointer;box-shadow:0 0 24px rgba(0,212,255,.3)}
+@media(max-width:600px){
+  .wt-modal{padding:28px 20px 24px}
+  .wt-cards{grid-template-columns:1fr}
+  .wt-footer{justify-content:stretch}
+  .wt-confirm{width:100%}
+}
+
+/* ── Water Type Pill Switcher (left menu + per-item) ──────────── */
+.wt-pills{display:flex;gap:6px;flex-wrap:wrap}
+.wt-pill{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(0,212,255,.2);background:transparent;color:#8BB8D4;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s}
+.wt-pill:hover{border-color:rgba(0,212,255,.45);color:#C8E8F8}
+.wt-pill.active{border-color:#00D4FF;background:rgba(0,212,255,.12);color:#00D4FF}
+.wt-pill-label{font-size:11px;font-weight:600;color:#8BB8D4;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;display:block;font-family:'Inter',sans-serif}
+.wt-pill-sub{font-size:10px;color:rgba(139,184,212,.6);margin-top:5px;line-height:1.4}
+
+/* Per-item water type selector on product cards */
+.item-wt-wrap{margin:10px 0 0;padding-top:10px;border-top:1px solid rgba(0,212,255,.07)}
+.item-wt-pills{display:flex;gap:5px}
+.item-wt-pill{padding:5px 10px;border-radius:16px;border:1px solid rgba(0,212,255,.15);background:transparent;color:#8BB8D4;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s}
+.item-wt-pill.active{border-color:#00D4FF;background:rgba(0,212,255,.1);color:#00D4FF}
+
+/* ═══════════════════════════════════════════════════════════════
+   LEFT HAMBURGER MENU
+   ═══════════════════════════════════════════════════════════════ */
+#left-menu{position:fixed;inset:0;z-index:2000;pointer-events:none}
+#left-menu.open{pointer-events:all}
+#left-menu-backdrop{position:absolute;inset:0;background:rgba(7,15,24,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .35s ease}
+#left-menu.open #left-menu-backdrop{opacity:1}
+#left-menu-panel{position:absolute;top:0;left:0;bottom:0;width:360px;max-width:85vw;background:linear-gradient(180deg,#081320 0%,#0B1B2B 100%);border-right:1px solid rgba(0,212,255,.1);display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,212,255,.15) transparent}
+#left-menu.open #left-menu-panel{transform:translateX(0)}
+#left-menu-close{position:absolute;top:18px;right:16px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:none;border-radius:8px;color:#8BB8D4;font-size:18px;cursor:pointer;transition:all .2s;z-index:1}
+#left-menu-close:hover{background:rgba(0,212,255,.12);color:#00D4FF}
+.lm-water-type{padding:64px 24px 20px}
+.lm-water-label{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:.2px}
+.lm-water-sub{font-family:'Inter',sans-serif;font-size:11px;color:rgba(139,184,212,.6);margin-top:8px;line-height:1.5}
+.lm-divider{border:none;border-top:1px solid rgba(0,212,255,.07);margin:4px 0}
+.lm-nav{padding:8px 0}
+.lm-nav a{display:flex;align-items:center;padding:0 24px;height:56px;font-family:'Inter',sans-serif;font-size:15px;font-weight:500;color:#C8E8F8;text-decoration:none;transition:all .2s;border-left:2px solid transparent}
+.lm-nav a:hover{color:#00D4FF;background:rgba(0,212,255,.04);border-left-color:rgba(0,212,255,.3)}
+.lm-footer{padding:16px 24px 32px;margin-top:auto}
+.lm-phone{display:block;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#00D4FF;text-decoration:none;margin-bottom:6px;transition:opacity .2s}
+.lm-phone:hover{opacity:.8}
+.lm-hours{font-size:11px;color:#5A8AAC}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIMPLIFIED NAVBAR
+   ═══════════════════════════════════════════════════════════════ */
+#navbar.slim{padding:16px 28px}
+#navbar.slim.scrolled{padding:12px 28px}
+.nav-left{display:flex;align-items:center;gap:14px}
+.nav-hamburger-new{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;flex-shrink:0;border-radius:8px;transition:background .2s}
+.nav-hamburger-new:hover{background:rgba(0,212,255,.07)}
+.nav-hamburger-new span{display:block;width:22px;height:2px;background:#C8E8F8;transition:all .3s ease;transform-origin:center}
+.nav-right{display:flex;align-items:center;gap:6px}
+.nav-phone-link{font-family:'Space Mono',monospace;font-size:12px;color:#8BB8D4;text-decoration:none;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;transition:all .2s;border:1px solid transparent;white-space:nowrap}
+.nav-phone-link:hover{color:#00D4FF;border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.04)}
+.nav-phone-link svg{stroke:currentColor;flex-shrink:0}
+@media(max-width:600px){.nav-phone-text{display:none}}
+@media(max-width:900px){.nav-links{display:none!important}}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTTLE RETURNS SECTION
+   ═══════════════════════════════════════════════════════════════ */
+#bottle-returns{padding:96px 48px;background:#0B1B2B}
+.bottle-returns-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:48px 0}
+.bottle-return-card{background:rgba(255,255,255,.025);border:1px solid rgba(0,212,255,.1);border-radius:16px;padding:28px 24px;transition:all .25s ease;position:relative}
+.bottle-return-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.2)}
+.br-card-icon{width:46px;height:46px;background:rgba(0,212,255,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.br-card-icon svg{width:24px;height:24px;stroke:#00D4FF}
+.br-card-tag{position:absolute;top:20px;right:20px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;color:#6DCF70;background:rgba(109,207,112,.1);border:1px solid rgba(109,207,112,.25);border-radius:20px;padding:3px 9px}
+.br-card-tag.amber{color:#FF9E5C;background:rgba(255,158,92,.1);border-color:rgba(255,158,92,.25)}
+.br-card-tag.price{color:#00D4FF;background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.25)}
+.br-card h3{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#fff;margin:0 0 10px}
+.br-card p{font-size:13px;color:#8BB8D4;line-height:1.7;margin:0}
+.bottle-return-policy{background:rgba(255,158,92,.05);border:1px solid rgba(255,158,92,.2);border-radius:14px;padding:24px 28px;position:relative}
+.bottle-return-policy::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#FF9E5C,transparent);border-radius:14px 14px 0 0}
+.brp-head{font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:#FF9E5C;margin:0 0 10px}
+.brp-body{font-size:13px;color:#C8E8F8;line-height:1.75;margin:0 0 10px}
+.brp-sub{font-size:12px;color:#8BB8D4;font-style:italic;margin:0}
+@media(max-width:768px){
+  #bottle-returns{padding:72px 24px}
+  .bottle-returns-grid{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DISPENSER RENTAL SECTION
+   ═══════════════════════════════════════════════════════════════ */
+#dispenser-rental{padding:80px 48px;background:#0D2137}
+.dispenser-rental-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:40px 0 24px}
+.dr-card{background:rgba(19,46,74,.7);border:1px solid rgba(0,212,255,.1);border-radius:14px;padding:28px 24px;transition:all .25s;position:relative}
+.dr-card:hover{border-color:rgba(0,212,255,.28);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.dr-card-popular{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;color:#0B1B2B;background:#00D4FF;border-radius:20px;padding:4px 12px;white-space:nowrap}
+.dr-price{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#00D4FF;margin:0 0 4px}
+.dr-price-sub{font-size:11px;color:#5A8AAC;margin:0 0 20px}
+.dr-name{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#fff;margin:0 0 16px}
+.dr-features{list-style:none;padding:0;margin:0 0 20px}
+.dr-features li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#8BB8D4;padding:4px 0;line-height:1.5}
+.dr-features li svg{flex-shrink:0;width:14px;height:14px;stroke:#00D4FF;margin-top:2px}
+.dr-cta{display:block;width:100%;padding:12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.28);border-radius:9px;color:#00D4FF;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;text-align:center}
+.dr-cta:hover{background:rgba(0,212,255,.18);border-color:#00D4FF;transform:none}
+.dr-note{text-align:center;font-size:12px;color:#5A8AAC;margin:0}
+@media(max-width:640px){
+  #dispenser-rental{padding:60px 24px}
+  .dispenser-rental-cards{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WATERHOUSE AFFILIATION (in About section)
+   ═══════════════════════════════════════════════════════════════ */
+.waterhouse-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:50px;padding:8px 18px 8px 10px;margin-bottom:40px}
+.waterhouse-badge-dot{width:8px;height:8px;border-radius:50%;background:#00D4FF;flex-shrink:0;box-shadow:0 0 8px rgba(0,212,255,.5)}
+.waterhouse-badge span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#00D4FF;font-weight:700;text-transform:uppercase}
+.waterhouse-sub{margin-top:40px;padding-top:36px;border-top:1px solid rgba(0,212,255,.08)}
+.waterhouse-sub h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#C8E8F8;margin:0 0 12px}
+.waterhouse-sub p{font-size:14px;color:#8BB8D4;line-height:1.8;max-width:640px}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHECKOUT ADD-ONS
+   ═══════════════════════════════════════════════════════════════ */
+.co-addons-section{margin:18px 0}
+.co-addons-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:#fff;margin:0 0 12px}
+.co-addons-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:rgba(0,212,255,.15) transparent}
+.co-addons-scroll::-webkit-scrollbar{height:3px}
+.co-addons-scroll::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);border-radius:2px}
+.co-addon-card{flex-shrink:0;width:130px;background:rgba(0,0,0,.25);border:1px solid rgba(0,212,255,.1);border-radius:12px;padding:12px;transition:all .2s}
+.co-addon-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.co-addon-img{width:100%;height:72px;background:rgba(0,212,255,.05);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden}
+.co-addon-img img{width:100%;height:100%;object-fit:contain;padding:6px}
+.co-addon-img svg{stroke:rgba(0,212,255,.3);width:28px;height:28px}
+.co-addon-name{font-size:11px;font-weight:700;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:3px;line-height:1.3}
+.co-addon-desc{font-size:9px;color:#5A8AAC;line-height:1.4;margin-bottom:7px}
+.co-addon-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#00D4FF;margin-bottom:8px}
+.co-addon-ctrl{display:flex;align-items:center;gap:5px}
+.co-addon-add{flex:1;padding:6px 8px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22);border-radius:6px;color:#00D4FF;font-size:11px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;transition:all .15s;text-align:center}
+.co-addon-add:hover{background:rgba(0,212,255,.18)}
+.co-addon-add.in-cart{background:rgba(109,207,112,.1);border-color:rgba(109,207,112,.3);color:#6DCF70}
+@media(max-width:600px){
+  .co-addons-scroll{display:grid;grid-template-columns:1fr 1fr;overflow-x:visible}
+  .co-addon-card{width:auto}
+}
+
+/* ── Bottle Return Step ───────────────────────────────────────── */
+.bottle-return-step{margin:14px 0}
+.bottle-return-step .step-title{margin-bottom:10px}
+.br-radio-group{display:flex;flex-direction:column;gap:8px}
+.br-radio{display:flex;align-items:flex-start;gap:11px;padding:12px 14px;border:1.5px solid rgba(0,212,255,.12);border-radius:10px;cursor:pointer;transition:all .2s}
+.br-radio:hover{border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.03)}
+.br-radio input{accent-color:#00D4FF;margin-top:2px;flex-shrink:0;cursor:pointer}
+.br-radio.checked{border-color:#00D4FF;background:rgba(0,212,255,.07)}
+.br-radio-label{font-size:13px;color:#C8E8F8;font-weight:500}
+.br-radio-sub{font-size:11px;color:#5A8AAC;margin-top:2px}
+.br-recurring-note{background:rgba(109,207,112,.07);border:1px solid rgba(109,207,112,.2);border-radius:10px;padding:13px 16px;display:flex;align-items:flex-start;gap:10px;margin:14px 0}
+.br-recurring-note svg{stroke:#6DCF70;flex-shrink:0;width:16px;height:16px;margin-top:1px}
+.br-recurring-note p{font-size:12px;color:#6DCF70;margin:0;line-height:1.6}
