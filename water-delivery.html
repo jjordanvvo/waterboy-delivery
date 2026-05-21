@@ -65,8 +65,12 @@
       background:var(--cyan); color:#0B1B2B; border-color:var(--cyan);
     }
     .wt-page-btn.alkaline-btn.active {
-      background:linear-gradient(135deg,#00D4FF,#38BDF8); border-color:#38BDF8;
+      background:linear-gradient(135deg,#00D4FF,#8B5CF6); border-color:#8B5CF6;
     }
+    .wt-page-btn.ro-btn.active {
+      background:#38BDF8; color:#0B1B2B; border-color:#38BDF8;
+    }
+    .wt-page-btn { display:inline-flex; align-items:center; gap:6px; }
 
     .pricing-panel { display:none; }
     .pricing-panel.active { display:block; }
@@ -163,31 +167,53 @@
 <!-- WATER TYPE STICKY BAR -->
 <div id="wt-sticky-bar" role="navigation" aria-label="Water type selector">
   <span id="wt-bar-label">Water Type:</span>
-  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">💧 Regular</button>
+  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+    Regular
+  </button>
   <button class="wt-bar-btn" data-type="alkaline" aria-pressed="false">
-    ⚡ Alkaline <span class="wt-bar-badge">Only Us!</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    Alkaline <span class="wt-bar-badge">Only Us!</span>
+  </button>
+  <button class="wt-bar-btn" data-type="ro" aria-pressed="false">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
+    RO
   </button>
 </div>
 
 <!-- WATER TYPE MODAL -->
 <div id="wt-modal" role="dialog" aria-modal="true" aria-labelledby="wt-modal-title">
   <div id="wt-modal-card">
-    <span class="wt-modal-icon" aria-hidden="true">💧</span>
+    <div class="wt-modal-header-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+    </div>
     <h2 class="wt-modal-title" id="wt-modal-title">Choose Your Water</h2>
-    <p class="wt-modal-sub">Tell us what you drink — we'll tailor pricing and recommendations just for you.</p>
+    <p class="wt-modal-sub">Tell us what you drink &mdash; we'll tailor pricing and recommendations just for you.</p>
     <div class="wt-modal-options">
       <div class="wt-modal-option" data-type="regular" role="button" tabindex="0" aria-label="Select Regular water">
-        <span class="wt-modal-option-icon" aria-hidden="true">💧</span>
+        <div class="wt-modal-option-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+        </div>
         <div class="wt-modal-option-name">Regular</div>
-        <div class="wt-modal-option-desc">Multi-stage purified · pH 7.0</div>
+        <div class="wt-modal-option-desc">Multi-stage purified &middot; pH 7.0</div>
         <div class="wt-modal-option-price">From $21/mo</div>
       </div>
-      <div class="wt-modal-option alkaline-opt" data-type="alkaline" role="button" tabindex="0" aria-label="Select Alkaline water">
+      <div class="wt-modal-option wt-alkaline-opt" data-type="alkaline" role="button" tabindex="0" aria-label="Select Alkaline water">
         <span class="wt-modal-option-badge">Only Us!</span>
-        <span class="wt-modal-option-icon" aria-hidden="true">⚡</span>
+        <div class="wt-modal-option-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
         <div class="wt-modal-option-name">Alkaline pH 8.5+</div>
-        <div class="wt-modal-option-desc">Smooth taste · Fitness-ready</div>
+        <div class="wt-modal-option-desc">Smooth taste &middot; Fitness-ready</div>
         <div class="wt-modal-option-price">From $25/mo</div>
+      </div>
+      <div class="wt-modal-option wt-ro-opt" data-type="ro" role="button" tabindex="0" aria-label="Select Reverse Osmosis water">
+        <div class="wt-modal-option-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
+        </div>
+        <div class="wt-modal-option-name">Reverse Osmosis</div>
+        <div class="wt-modal-option-desc">Ultra-pure &middot; 99% contaminants removed</div>
+        <div class="wt-modal-option-price">Pricing TBD</div>
       </div>
     </div>
   </div>
@@ -195,6 +221,10 @@
 
 <!-- NAVBAR -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    <span>Menu</span>
+  </button>
   <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
     <img src="logo.png" alt="Waterboy Delivery logo"
          onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
@@ -216,7 +246,7 @@
         <li><a href="alkaline-water.html">Alkaline Water</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="faq.html">FAQ</a></li><li><a href="reverse-osmosis-water.html">Reverse Osmosis Water</a></li>
       </ul>
     </li>
   </ul>
@@ -241,6 +271,7 @@
   <a href="alkaline-water.html">Alkaline Water</a>
   <a href="about.html">About Us</a>
   <a href="faq.html">FAQ</a>
+  <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
   <a href="contact.html" class="mobile-cta">Contact Us</a>
 </div>
 
@@ -275,8 +306,18 @@
 
     <!-- Water type toggle -->
     <div class="wt-page-toggle reveal" role="tablist" aria-label="Water type">
-      <button class="wt-page-btn active" data-panel="regular" role="tab" aria-selected="true" aria-controls="panel-regular">💧 Regular Purified</button>
-      <button class="wt-page-btn alkaline-btn" data-panel="alkaline" role="tab" aria-selected="false" aria-controls="panel-alkaline">⚡ Alkaline pH 8.5+</button>
+      <button class="wt-page-btn active" data-panel="regular" role="tab" aria-selected="true" aria-controls="panel-regular">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+        Regular Purified
+      </button>
+      <button class="wt-page-btn alkaline-btn" data-panel="alkaline" role="tab" aria-selected="false" aria-controls="panel-alkaline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Alkaline pH 8.5+
+      </button>
+      <button class="wt-page-btn ro-btn" data-panel="ro" role="tab" aria-selected="false" aria-controls="panel-ro">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
+        Reverse Osmosis
+      </button>
     </div>
 
     <!-- Frequency tabs -->
@@ -406,7 +447,85 @@
       </div>
     </div>
 
-    <p class="freq-note reveal" style="margin-top:24px;">* Bi-weekly and weekly discounts applied at checkout. All prices shown are monthly base rates.</p>
+    <!-- RO Panel -->
+    <div id="panel-ro" class="pricing-panel" role="tabpanel" aria-labelledby="tab-ro">
+      <div class="text-center" style="margin-bottom:24px;">
+        <span class="section-label" style="color:#38BDF8;">Ultra-Pure Water</span>
+        <p class="section-subtitle dark" style="margin-top:8px;">99% of contaminants removed through reverse osmosis filtration. The purest water we offer.</p>
+        <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:12px;padding:14px 20px;max-width:480px;margin:20px auto 0;font-size:13px;color:#38BDF8;font-family:'Space Grotesk',sans-serif;font-weight:600;">
+          RO pricing is coming soon &mdash; contact us for current rates.
+        </div>
+      </div>
+      <div class="pricing-grid reveal">
+        <div class="pricing-card">
+          <div class="pricing-card-name">Solo</div>
+          <div class="pricing-card-jugs">2 &times; 5-gallon RO jugs</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="24" data-placeholder="true">24</span><sub>/mo</sub></div>
+          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
+          <ul class="pricing-card-bullets">
+            <li>99% contaminants removed</li>
+            <li>Empty jug swap included</li>
+            <li>Free delivery within 3 mi</li>
+            <li>Pause or cancel anytime</li>
+          </ul>
+          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-name">Family</div>
+          <div class="pricing-card-jugs">4 &times; 5-gallon RO jugs</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="46" data-placeholder="true">46</span><sub>/mo</sub></div>
+          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
+          <ul class="pricing-card-bullets">
+            <li>99% contaminants removed</li>
+            <li>Great for families</li>
+            <li>Empty jug swap included</li>
+            <li>Free delivery within 3 mi</li>
+          </ul>
+          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        </div>
+        <div class="pricing-card featured" style="border-color:#38BDF8;box-shadow:0 0 0 1px #38BDF8,0 12px 40px rgba(56,189,248,0.15);">
+          <div class="pricing-card-name">Household</div>
+          <div class="pricing-card-jugs">6 &times; 5-gallon RO jugs</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="63" data-placeholder="true">63</span><sub>/mo</sub></div>
+          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
+          <ul class="pricing-card-bullets">
+            <li>99% contaminants removed</li>
+            <li>Ideal for large families</li>
+            <li>Empty jug swap included</li>
+            <li>Priority scheduling</li>
+          </ul>
+          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-name">Office</div>
+          <div class="pricing-card-jugs">8 &times; 5-gallon RO jugs</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="80" data-placeholder="true">80</span><sub>/mo</sub></div>
+          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
+          <ul class="pricing-card-bullets">
+            <li>99% contaminants removed</li>
+            <li>Small teams &amp; offices</li>
+            <li>Empty jug swap included</li>
+            <li>Dedicated account rep</li>
+          </ul>
+          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-card-name">Max Bundle</div>
+          <div class="pricing-card-jugs">12 &times; 5-gallon RO jugs</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="108" data-placeholder="true">108</span><sub>/mo</sub></div>
+          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
+          <ul class="pricing-card-bullets">
+            <li>99% contaminants removed</li>
+            <li>Large offices &amp; events</li>
+            <li>Empty jug swap included</li>
+            <li>Priority scheduling</li>
+          </ul>
+          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="freq-note reveal" style="margin-top:24px;">* Bi-weekly and weekly discounts applied at checkout. All prices shown are monthly base rates. RO prices are placeholders — contact us for current rates.</p>
   </div>
 </section>
 
@@ -525,6 +644,7 @@
         <a href="shop.html">In-Store Products</a>
         <a href="delivery-areas.html">Service Area</a>
         <a href="alkaline-water.html">Alkaline Water</a>
+        <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
       </nav>
     </div>
     <div class="footer-col">
@@ -577,13 +697,51 @@
   </div>
 </footer>
 
-<button id="back-to-top" aria-label="Back to top">
+<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
+  <div class="left-drawer-header">
+    <span class="left-drawer-title">Navigation</span>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="left-drawer-nav" aria-label="Full site navigation">
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Shop &amp; Services</div>
+      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+      <a href="shop.html" class="left-drawer-link">Shop Products</a>
+      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+      <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Learn</div>
+      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+      <a href="compare.html" class="left-drawer-link">Compare to Water.com</a>
+      <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
+      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Company</div>
+      <a href="about.html" class="left-drawer-link">About</a>
+      <a href="contact.html" class="left-drawer-link">Contact</a>
+      <a href="faq.html" class="left-drawer-link">FAQ</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Account</div>
+      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
+      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
+    </div>
+  </nav>
+</aside><button id="back-to-top" aria-label="Back to top">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
 </button>
 
 <script src="script.js"></script>
 <script src="shop.js"></script>
 <script src="water-type-selector.js"></script>
+<script src="left-menu.js"></script>
 <script src="shared.js"></script>
 <script>
 (function () {
@@ -609,12 +767,13 @@
 
   /* Sync with global water type selection */
   document.addEventListener('waterTypeChanged', function (e) {
-    switchPanel(e.detail === 'alkaline' ? 'alkaline' : 'regular');
+    var t = e.detail;
+    switchPanel(t === 'alkaline' ? 'alkaline' : t === 'ro' ? 'ro' : 'regular');
   });
 
   /* On load, sync to saved selection */
   var saved = sessionStorage.getItem('wb_water_type') || localStorage.getItem('wb_water_type');
-  if (saved) switchPanel(saved === 'alkaline' ? 'alkaline' : 'regular');
+  if (saved) switchPanel(saved === 'alkaline' ? 'alkaline' : saved === 'ro' ? 'ro' : 'regular');
 
   /* ── Frequency tabs ── */
   var freqTabs = document.querySelectorAll('.freq-tab');

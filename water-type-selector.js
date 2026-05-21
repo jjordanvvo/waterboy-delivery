@@ -2,6 +2,7 @@
   'use strict';
 
   var STORAGE_KEY = 'wb_water_type';
+  var VALID_TYPES = ['regular', 'alkaline', 'ro'];
 
   function isSignedIn() {
     try { return !!localStorage.getItem('wb_user'); } catch (_) { return false; }
@@ -12,7 +13,10 @@
   }
 
   function getSaved() {
-    try { return getStore().getItem(STORAGE_KEY); } catch (_) { return null; }
+    try {
+      var v = getStore().getItem(STORAGE_KEY);
+      return VALID_TYPES.indexOf(v) !== -1 ? v : null;
+    } catch (_) { return null; }
   }
 
   function setSaved(type) {
