@@ -20,7 +20,15 @@
       "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\"; Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")",
       "Bash(git pull *)",
       "Bash(git merge *)",
-      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")"
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")",
+      "Bash(Start-Process msedge *)",
+      "PowerShell(Start-Process \"msedge\" -ArgumentList \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")",
+      "PowerShell(Start-Process \"msedge\" -ArgumentList \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\"; Start-Sleep -Milliseconds 800; Start-Process \"msedge\" -ArgumentList \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\products.html\")",
+      "Bash(Get-Content \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\styles.css\")",
+      "Bash(Select-Object -Last 40)",
+      "PowerShell(& \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\_batch_update.ps1\")",
+      "Bash(grep -v \"class\\\\|CSS\\\\|--\\\\|^\\\\s*$\")",
+      "PowerShell(Start-Process \"msedge\" \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")"
     ]
   }
 }
