@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How We Filter Our Water | Waterboy Delivery Elk Grove</title>
+  <meta name="description" content="Learn how Waterboy Delivery purifies its 5-gallon water. Multi-stage sediment, carbon, and reverse osmosis filtration with UV sterilization — clean, safe, great-tasting water." />
+  <meta name="keywords" content="water filtration Elk Grove, purified water delivery, reverse osmosis water, clean water delivery Sacramento" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://waterboydelivery.com/water-filtration.html" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="shop.css" />
+  <link rel="stylesheet" href="water-type-selector.css" />
+  <style>
+    .filtration-stage { display:flex; gap:32px; align-items:flex-start; margin-bottom:48px; }
+    .filtration-stage:last-child { margin-bottom:0; }
+    @media (max-width:600px) { .filtration-stage { flex-direction:column; gap:16px; } }
+    .filtration-stage-num { width:56px; height:56px; border-radius:50%; background:rgba(0,212,255,0.1); border:2px solid rgba(0,212,255,0.35); display:flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-size:20px; font-weight:800; color:var(--cyan); flex-shrink:0; }
+    .filtration-stage h3 { font-family:'Outfit',sans-serif; font-size:18px; font-weight:700; color:var(--frost); margin:4px 0 8px; }
+    .filtration-stage p { font-size:15px; color:var(--text-muted-dark); line-height:1.7; margin:0; }
+    .water-quality-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:20px; }
+    .water-quality-stat { background:rgba(15,39,64,0.6); border:1px solid rgba(0,212,255,0.12); border-radius:14px; padding:24px; text-align:center; }
+    .water-quality-stat .stat-val { font-family:'Outfit',sans-serif; font-size:32px; font-weight:800; color:var(--cyan); }
+    .water-quality-stat .stat-label { font-size:13px; color:var(--text-muted-dark); margin-top:6px; }
+  </style>
+</head>
+<body>
+
+<div id="wt-sticky-bar" role="navigation" aria-label="Water type selector">
+  <span id="wt-bar-label">Water Type:</span>
+  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">💧 Regular</button>
+  <button class="wt-bar-btn" data-type="alkaline" aria-pressed="false">⚡ Alkaline <span class="wt-bar-badge">Only Us!</span></button>
+</div>
+<div id="wt-modal" role="dialog" aria-modal="true" aria-labelledby="wt-modal-title">
+  <div id="wt-modal-card">
+    <span class="wt-modal-icon">💧</span>
+    <h2 class="wt-modal-title" id="wt-modal-title">Choose Your Water</h2>
+    <p class="wt-modal-sub">Tell us what you drink — we'll tailor pricing and recommendations just for you.</p>
+    <div class="wt-modal-options">
+      <div class="wt-modal-option" data-type="regular" role="button" tabindex="0"><span class="wt-modal-option-icon">💧</span><div class="wt-modal-option-name">Regular</div><div class="wt-modal-option-desc">Multi-stage purified · pH 7.0</div><div class="wt-modal-option-price">From $21/mo</div></div>
+      <div class="wt-modal-option alkaline-opt" data-type="alkaline" role="button" tabindex="0"><span class="wt-modal-option-badge">Only Us!</span><span class="wt-modal-option-icon">⚡</span><div class="wt-modal-option-name">Alkaline pH 8.5+</div><div class="wt-modal-option-desc">Smooth taste · Fitness-ready</div><div class="wt-modal-option-price">From $25/mo</div></div>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="Waterboy Delivery logo" onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" /></a>
+  <ul class="nav-links" role="list" style="display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0">
+    <li><a href="water-delivery.html" class="nav-link">Water Delivery</a></li>
+    <li><a href="dispensers.html" class="nav-link">Dispensers</a></li>
+    <li><a href="bottle-pickup.html" class="nav-link">Bottle Pickup</a></li>
+    <li><a href="shop.html" class="nav-link">Shop</a></li>
+    <li><a href="delivery-areas.html" class="nav-link">Service Area</a></li>
+    <li class="nav-more-item">
+      <button class="nav-more-btn" aria-expanded="false" aria-haspopup="true">More <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg></button>
+      <ul class="nav-more-dropdown">
+        <li><a href="how-it-works.html">How It Works</a></li><li><a href="compare.html">vs Water.com</a></li><li><a href="water-filtration.html">Water Filtration</a></li><li><a href="alkaline-water.html">Alkaline Water</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li>
+      </ul>
+    </li>
+  </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Site navigation">
+  <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  <a href="index.html">Home</a><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">Shop</a><a href="delivery-areas.html">Service Area</a>
+  <hr class="mobile-menu-divider"><a href="how-it-works.html">How It Works</a><a href="compare.html">vs Water.com</a><a href="water-filtration.html">Water Filtration</a><a href="alkaline-water.html">Alkaline Water</a><a href="about.html">About Us</a><a href="faq.html">FAQ</a>
+  <a href="contact.html" class="mobile-cta">Contact Us</a>
+</div>
+
+<nav class="breadcrumb-nav"><div class="container"><ol class="breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Water Filtration</li></ol></div></nav>
+
+<header class="page-hero" aria-labelledby="page-hero-title">
+  <div class="page-hero-glow"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <span class="section-label">Purity First</span>
+    <h1 id="page-hero-title" class="page-hero-title">How We Purify Our Water</h1>
+    <p class="page-hero-sub">Every drop in our 5-gallon jugs passes through a rigorous multi-stage filtration process before it reaches your home or office. Here's exactly what that process looks like.</p>
+  </div>
+</header>
+
+<section class="section section-dark" aria-labelledby="stages-heading">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:56px;">
+      <span class="section-label">The Process</span>
+      <h2 id="stages-heading" class="section-title dark">Multi-Stage Filtration</h2>
+    </div>
+    <div style="max-width:680px;margin:0 auto;" class="reveal">
+      <div class="filtration-stage">
+        <div class="filtration-stage-num">1</div>
+        <div>
+          <h3>Sediment Pre-Filtration</h3>
+          <p>Source water passes through a 5-micron sediment filter that captures visible particles — dirt, rust, sand, and other suspended solids. This protects the downstream filtration stages and extends their lifespan.</p>
+        </div>
+      </div>
+      <div class="filtration-stage">
+        <div class="filtration-stage-num">2</div>
+        <div>
+          <h3>Activated Carbon Block Filter</h3>
+          <p>A high-density carbon block filter removes chlorine, chloramines, volatile organic compounds (VOCs), and taste and odor compounds. This stage is what gives our water its clean, neutral flavor — no chemical aftertaste.</p>
+        </div>
+      </div>
+      <div class="filtration-stage">
+        <div class="filtration-stage-num">3</div>
+        <div>
+          <h3>Reverse Osmosis (RO) Membrane</h3>
+          <p>Water is pushed through a semi-permeable RO membrane at high pressure, removing up to 99% of dissolved solids, heavy metals (lead, arsenic), nitrates, fluoride, and other contaminants. This is the heart of the purification process.</p>
+        </div>
+      </div>
+      <div class="filtration-stage">
+        <div class="filtration-stage-num">4</div>
+        <div>
+          <h3>Post-Carbon Polishing Filter</h3>
+          <p>After RO, the water passes through a final carbon polish filter to remove any residual taste or odor from the storage and dispensing system. The result is water that tastes perfectly neutral and clean.</p>
+        </div>
+      </div>
+      <div class="filtration-stage">
+        <div class="filtration-stage-num">5</div>
+        <div>
+          <h3>UV Sterilization</h3>
+          <p>Before filling, all water passes under germicidal UV light that eliminates any remaining bacteria, viruses, and microorganisms — without any added chemicals or byproducts. Safe, pure, and ready to drink.</p>
+        </div>
+      </div>
+      <div class="filtration-stage" style="margin-bottom:0;">
+        <div class="filtration-stage-num" style="border-color:rgba(56,189,248,0.35);color:#38BDF8;">⚡</div>
+        <div>
+          <h3>Alkaline Ionization (Alkaline Water Only)</h3>
+          <p>For our alkaline water, a final ionization stage adds trace minerals (calcium, magnesium, potassium) and raises the pH to 8.5 or above. This is what gives alkaline water its smooth, slightly mineral taste and elevated pH.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light" aria-labelledby="quality-heading">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:48px;">
+      <span class="section-label">By the Numbers</span>
+      <h2 id="quality-heading" class="section-title">Water Quality at a Glance</h2>
+    </div>
+    <div class="water-quality-grid reveal">
+      <div class="water-quality-stat"><div class="stat-val">99%</div><div class="stat-label">Dissolved solids removed by RO</div></div>
+      <div class="water-quality-stat"><div class="stat-val">pH 7.0</div><div class="stat-label">Regular purified water</div></div>
+      <div class="water-quality-stat"><div class="stat-val">pH 8.5+</div><div class="stat-label">Alkaline water, certified</div></div>
+      <div class="water-quality-stat"><div class="stat-val">5-stage</div><div class="stat-label">Filtration process</div></div>
+      <div class="water-quality-stat"><div class="stat-val">0 PPM</div><div class="stat-label">Chlorine after carbon filtration</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta-banner" aria-labelledby="cta-title">
+  <div class="cta-glow-left"></div><div class="cta-glow-right"></div>
+  <div class="container">
+    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Taste the Difference</h2>
+    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">Start a delivery plan and experience clean, pure water at home or the office.</p>
+    <div class="cta-buttons reveal"><a href="water-delivery.html" class="btn-cta-large">View Plans &amp; Pricing <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+    <p class="cta-fine-print reveal">No contracts. Cancel anytime.</p>
+  </div>
+</section>
+
+<footer id="footer" role="contentinfo">
+  <div class="wave-section" style="background:var(--bg-secondary);height:60px;"><svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg></div>
+  <div class="container footer-grid">
+    <div class="footer-brand"><img src="logo.png" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
+    <div class="footer-col"><h4>Services</h4><nav class="footer-links"><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">In-Store Products</a><a href="delivery-areas.html">Service Area</a><a href="alkaline-water.html">Alkaline Water</a></nav></div>
+    <div class="footer-col"><h4>Learn</h4><nav class="footer-links"><a href="how-it-works.html">How It Works</a><a href="compare.html">vs Water.com</a><a href="water-filtration.html">Water Filtration</a><a href="faq.html">FAQ</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav></div>
+    <div class="footer-col"><h4>Contact</h4><div class="footer-contact-items"><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+19166193218" style="color:var(--text-muted-dark);">(916) 619-3218</a></div><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>Mon–Sat 8 AM – 6 PM</span></div></div><div class="payment-methods"><span class="payment-methods-label">We Accept</span><div class="payment-badges"><span class="payment-badge">Apple Pay</span><span class="payment-badge">Google Pay</span><span class="payment-badge">Visa</span><span class="payment-badge">Mastercard</span><span class="payment-badge">Debit</span></div></div></div>
+  </div>
+  <div class="container"><div class="footer-bottom"><p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved.</p><nav class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></nav></div></div>
+</footer>
+<button id="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg></button>
+<script src="script.js"></script><script src="shop.js"></script><script src="water-type-selector.js"></script><script src="shared.js"></script>
+</body>
+</html>

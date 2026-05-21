@@ -774,7 +774,7 @@ function inject(){
      <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/jug)</button>
      <button class="wtype-btn" data-wt="distilled">Distilled</button>
     </div>
-    <p class="wtype-ph" style="font-family:'Space Mono',monospace;font-size:11px;color:#8BB8D4;margin-top:4px"></p>
+    <p class="wtype-ph" style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:#8BB8D4;margin-top:4px"></p>
     <div class="step-nav"><button class="wb-btn" id="sub-next-0">Next: Your Info →</button></div>
    </div>
    <!-- Step 1: Info -->
@@ -857,7 +857,7 @@ function inject(){
      ${Object.entries(PLANS).filter(([k])=>!k.startsWith('Alkaline')).map(([name,p])=>`
       <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.04)">
        <div style="font-weight:800;font-size:15px;color:#fff;font-family:'Outfit',sans-serif">${name}</div>
-       <div style="font-family:'Space Mono',monospace;color:#00D4FF;font-size:18px;margin:4px 0">$${p.price}<span style="font-size:11px;color:#8BB8D4">/mo</span></div>
+       <div style="font-family:'Space Grotesk',sans-serif;color:#00D4FF;font-size:18px;margin:4px 0">$${p.price}<span style="font-size:11px;color:#8BB8D4">/mo</span></div>
        <div style="font-size:12px;color:#8BB8D4">${p.jugs} jugs/delivery</div>
       </div>`).join('')}
     </div>
@@ -866,7 +866,7 @@ function inject(){
      ${Object.entries(PLANS).filter(([k])=>k.startsWith('Alkaline')).map(([name,p])=>`
       <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.1);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.02);text-align:center">
        <div style="font-size:12px;font-weight:700;color:#8BB8D4">${name}</div>
-       <div style="font-family:'Space Mono',monospace;color:#00D4FF;font-size:16px">$${p.price}/mo</div>
+       <div style="font-family:'Space Grotesk',sans-serif;color:#00D4FF;font-size:16px">$${p.price}/mo</div>
       </div>`).join('')}
     </div>
     <div class="step-nav"><button class="wb-btn-ghost step-back" id="dv-back-1">← Back</button><button class="wb-btn" id="dv-next-1">Next: Schedule →</button></div>
@@ -1219,7 +1219,7 @@ function wireDeliveryModal(){
     const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
     const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
     const sumEl=document.getElementById('dv-plan-summary');
-    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Mono',monospace;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Mono',monospace;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
     const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
   });
   document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
@@ -1231,7 +1231,7 @@ function wireDeliveryModal(){
       +`${(plan.jugs||0)} jugs &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
       +`${esc(dvState.day)} ${esc(dvState.window)}<br>`
       +`First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD'}<br>`
-      +`<span style="color:#00D4FF;font-family:'Space Mono',monospace;font-size:16px;font-weight:700">$${price}/month</span>`;
+      +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
     toast('Delivery scheduled!','Welcome to Waterboy Delivery!','🎉');
   };
   document.getElementById('dv-subscribe-btn')?.addEventListener('click',()=>{

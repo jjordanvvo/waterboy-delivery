@@ -1,52 +1,41 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ===== SEO META ===== -->
-  <title>Waterboy Delivery | Water Delivery, Softeners &amp; Filtration in Elk Grove, CA</title>
-  <meta name="description" content="Premium 5-gallon water delivery, whole house water softeners, under-sink filtration, and Brio dispenser sales &amp; rentals in Elk Grove, CA. Serving Sacramento County. Free delivery, no contracts." />
-  <meta name="keywords" content="water delivery Elk Grove, 5-gallon water delivery Sacramento, water softener Elk Grove CA, under-sink filtration, water dispenser rental, water refill station, Elk Grove water service" />
+  <title>Waterboy Delivery | Water Delivery, Dispensers & Filtration in Elk Grove, CA</title>
+  <meta name="description" content="Premium 5-gallon water delivery, Brio dispenser sales & rentals, empty bottle pickup, and in-store products in Elk Grove, CA. Regular and alkaline water — no contracts, free delivery." />
+  <meta name="keywords" content="water delivery Elk Grove, alkaline water delivery Sacramento, 5-gallon water delivery, water dispenser rental, bottle pickup Elk Grove" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://waterboydelivery.com/" />
 
-  <!-- ===== OPEN GRAPH ===== -->
   <meta property="og:title" content="Waterboy Delivery | Pure Water. Delivered." />
-  <meta property="og:description" content="Premium 5-gallon water delivery for homes and offices. Shop or rent Brio water dispensers. Free delivery, no contracts." />
+  <meta property="og:description" content="Premium 5-gallon water delivery for homes and offices. Alkaline and regular. Free delivery, no contracts." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://waterboydelivery.com/" />
-  <meta property="og:image" content="social-share.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
   <meta property="og:site_name" content="Waterboy Delivery" />
-
-  <!-- ===== TWITTER CARD ===== -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Waterboy Delivery | Pure Water. Delivered." />
-  <meta name="twitter:description" content="Premium 5-gallon water delivery for homes and offices. Shop or rent Brio water dispensers." />
-  <meta name="twitter:image" content="social-share.png" />
+  <meta name="twitter:description" content="Premium 5-gallon water delivery for homes and offices. Alkaline and regular." />
+  <meta name="twitter:image" content="https://waterboydelivery.com/social-share.png" />
 
-  <!-- ===== FAVICON ===== -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-
-  <!-- ===== FONTS ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-
-  <!-- ===== STYLES ===== -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
+  <link rel="stylesheet" href="water-type-selector.css" />
 
-  <!-- ===== SCHEMA.ORG LOCAL BUSINESS ===== -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Waterboy Delivery",
-    "description": "Premium 5-gallon water delivery service and water dispenser sales and rentals for homes, offices, and businesses.",
+    "description": "Premium 5-gallon water delivery service, dispenser sales and rentals, bottle pickup, and in-store water products.",
     "url": "https://waterboydelivery.com/",
     "logo": "https://waterboydelivery.com/logo.png",
     "image": "https://waterboydelivery.com/social-share.png",
@@ -68,17 +57,52 @@
 <body>
 
 <!-- ============================================================
+     WATER TYPE STICKY BAR
+     ============================================================ -->
+<div id="wt-sticky-bar" role="navigation" aria-label="Water type selector">
+  <span id="wt-bar-label">Water Type:</span>
+  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">💧 Regular</button>
+  <button class="wt-bar-btn" data-type="alkaline" aria-pressed="false">
+    ⚡ Alkaline <span class="wt-bar-badge">Only Us!</span>
+  </button>
+</div>
+
+<!-- ============================================================
+     WATER TYPE MODAL
+     ============================================================ -->
+<div id="wt-modal" role="dialog" aria-modal="true" aria-labelledby="wt-modal-title">
+  <div id="wt-modal-card">
+    <span class="wt-modal-icon" aria-hidden="true">💧</span>
+    <h2 class="wt-modal-title" id="wt-modal-title">Choose Your Water</h2>
+    <p class="wt-modal-sub">Tell us what you drink — we'll tailor pricing and recommendations just for you.</p>
+    <div class="wt-modal-options">
+      <div class="wt-modal-option" data-type="regular" role="button" tabindex="0" aria-label="Select Regular water">
+        <span class="wt-modal-option-icon" aria-hidden="true">💧</span>
+        <div class="wt-modal-option-name">Regular</div>
+        <div class="wt-modal-option-desc">Multi-stage purified · pH 7.0</div>
+        <div class="wt-modal-option-price">From $21/mo</div>
+      </div>
+      <div class="wt-modal-option alkaline-opt" data-type="alkaline" role="button" tabindex="0" aria-label="Select Alkaline water">
+        <span class="wt-modal-option-badge">Only Us!</span>
+        <span class="wt-modal-option-icon" aria-hidden="true">⚡</span>
+        <div class="wt-modal-option-name">Alkaline pH 8.5+</div>
+        <div class="wt-modal-option-desc">Smooth taste · Fitness-ready</div>
+        <div class="wt-modal-option-price">From $25/mo</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
      LOADING SCREEN
      ============================================================ -->
 <div id="loading-screen" aria-hidden="true">
   <div class="loading-inner">
-    <!-- Logo: place logo.png in project root -->
     <img src="logo.png" alt="Waterboy Delivery" class="loading-logo"
          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-    <!-- Fallback if logo.png missing -->
     <div style="display:none;flex-direction:column;align-items:center;gap:10px;">
       <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#00D4FF;opacity:0;animation:logoReveal 0.9s ease forwards 0.4s;">WATERBOY</div>
-      <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:#8BB8D4;opacity:0;animation:logoReveal 0.9s ease forwards 0.7s;">DELIVERY</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:3px;color:#8BB8D4;opacity:0;animation:logoReveal 0.9s ease forwards 0.7s;">DELIVERY</div>
     </div>
     <div class="loading-glow-ring"></div>
     <div class="loading-droplet"></div>
@@ -90,67 +114,56 @@
 </div>
 
 <!-- ============================================================
-     NAVBAR (simplified: hamburger · logo · phone · cart · account)
+     NAVBAR
      ============================================================ -->
-<nav id="navbar" class="slim" role="navigation" aria-label="Main navigation">
-  <div class="nav-left">
-    <button class="nav-hamburger-new" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="#hero" class="nav-logo" aria-label="Waterboy Delivery home">
-      <img src="logo.png" alt="Waterboy Delivery logo"
-           onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
-    </a>
-  </div>
-
-  <!-- nav-links: shop.js injects cart + user into this list -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
+    <img src="logo.png" alt="Waterboy Delivery logo"
+         onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
+  </a>
   <ul class="nav-links" role="list" style="display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0">
-    <li>
-      <a href="tel:+19166193218" class="nav-phone-link" aria-label="Call (916) 619-3218">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span class="nav-phone-text">(916) 619-3218</span>
-      </a>
+    <li><a href="water-delivery.html" class="nav-link">Water Delivery</a></li>
+    <li><a href="dispensers.html" class="nav-link">Dispensers</a></li>
+    <li><a href="bottle-pickup.html" class="nav-link">Bottle Pickup</a></li>
+    <li><a href="shop.html" class="nav-link">Shop</a></li>
+    <li><a href="delivery-areas.html" class="nav-link">Service Area</a></li>
+    <li class="nav-more-item">
+      <button class="nav-more-btn" aria-expanded="false" aria-haspopup="true">
+        More <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <ul class="nav-more-dropdown">
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="compare.html">vs Water.com</a></li>
+        <li><a href="water-filtration.html">Water Filtration</a></li>
+        <li><a href="alkaline-water.html">Alkaline Water</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul>
     </li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- Left slide-in menu -->
-<div id="left-menu" role="dialog" aria-label="Site navigation" aria-modal="true">
-  <div id="left-menu-backdrop" aria-hidden="true"></div>
-  <div id="left-menu-panel">
-    <button id="left-menu-close" aria-label="Close menu">✕</button>
-
-    <!-- Water type switcher -->
-    <div class="lm-water-type">
-      <div class="lm-water-label">Your Water Type</div>
-      <div class="wt-pills" id="lm-water-pills" role="group" aria-label="Select water type">
-        <button class="wt-pill" data-type="ro">RO</button>
-        <button class="wt-pill" data-type="alkaline">Alkaline</button>
-        <button class="wt-pill" data-type="hydrogen">Hydrogen</button>
-      </div>
-      <div class="lm-water-sub">Prices update instantly when you switch.</div>
-    </div>
-    <hr class="lm-divider" aria-hidden="true">
-
-    <nav class="lm-nav" aria-label="Site navigation links">
-      <a href="#pricing">Shop Bundles</a>
-      <a href="products.html">One-Time Orders</a>
-      <a href="#pricing">Subscriptions</a>
-      <a href="#bottle-returns">Bottle Returns &amp; Pickup</a>
-      <a href="#dispenser-rental">Dispenser Rental</a>
-      <a href="#about">About &amp; Waterhouse Partnership</a>
-      <a href="#pricing">Why Waterboy (vs Water.com)</a>
-      <a href="#why-filtration">Filtration Science</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <hr class="lm-divider" aria-hidden="true">
-
-    <div class="lm-footer">
-      <a href="tel:+19166193218" class="lm-phone">(916) 619-3218</a>
-      <div class="lm-hours">Mon–Sat 8 AM – 6 PM · Sun Closed</div>
-    </div>
-  </div>
+<!-- Mobile menu -->
+<div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Site navigation">
+  <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  <a href="index.html">Home</a>
+  <a href="water-delivery.html">Water Delivery</a>
+  <a href="dispensers.html">Dispensers</a>
+  <a href="bottle-pickup.html">Bottle Pickup</a>
+  <a href="shop.html">Shop</a>
+  <a href="delivery-areas.html">Service Area</a>
+  <hr class="mobile-menu-divider" aria-hidden="true">
+  <a href="how-it-works.html">How It Works</a>
+  <a href="compare.html">vs Water.com</a>
+  <a href="water-filtration.html">Water Filtration</a>
+  <a href="alkaline-water.html">Alkaline Water</a>
+  <a href="about.html">About Us</a>
+  <a href="faq.html">FAQ</a>
+  <a href="contact.html" class="mobile-cta">Contact Us</a>
 </div>
 
 <!-- ============================================================
@@ -160,1129 +173,263 @@
   <div class="hero-bg-img" aria-hidden="true"></div>
   <div class="hero-glow-right" aria-hidden="true"></div>
   <div class="hero-glow-left" aria-hidden="true"></div>
-  <!-- Particles canvas -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
-  <!-- Ripple canvas -->
   <canvas id="ripple-canvas" aria-hidden="true"></canvas>
 
   <div class="hero-container container">
-    <!-- LEFT: Copy -->
     <div class="hero-content">
       <div class="hero-badge">Pure Water Delivered to Your Door</div>
-
       <h1 class="hero-title">
         Stay Hydrated.<br />
         Stay <span class="gradient-text">Refreshed.</span>
       </h1>
-
       <p class="hero-subtitle">
-        Premium 5-gallon water delivery straight to your home or office. RO, Alkaline, and Hydrogen — choose what you drink.
+        Premium 5-gallon water delivery to Elk Grove and Sacramento County. Regular and alkaline — choose what you drink.
       </p>
-
       <div class="hero-buttons">
-        <a href="#pricing" class="btn-primary">
-          Start My Subscription
+        <a href="water-delivery.html" class="btn-primary">
+          View Plans &amp; Pricing
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
-        <a href="#pricing" class="btn-secondary">
-          Browse Bundles
+        <a href="delivery-areas.html" class="btn-secondary">
+          Check My Area
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
     </div>
-
-    <!-- RIGHT: Product Image -->
     <div class="hero-image-wrap">
       <div class="frost-crystal-tl" aria-hidden="true"></div>
       <div class="frost-crystal-br" aria-hidden="true"></div>
-      <!--
-        PRODUCT IMAGE: Place dispenser1.png in the project root.
-        This is the Brio bottom-load dispenser (blue background).
-        Expected filename: dispenser1.png
-      -->
-      <img
-        src="dispenser1.png"
-        alt="Brio bottom-load water dispenser — Waterboy Delivery's featured product"
-        class="hero-image-float"
-        loading="eager"
-        onerror="this.style.display='none';document.getElementById('hero-placeholder').style.display='flex';"
-      />
+      <img src="dispenser1.png" alt="Brio bottom-load water dispenser — Waterboy Delivery featured product"
+           class="hero-image-float" loading="eager"
+           onerror="this.style.display='none';document.getElementById('hero-placeholder').style.display='flex';" />
       <div id="hero-placeholder" class="hero-image-placeholder" style="display:none;">
-        <svg width="64" height="80" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="4" y="2" width="16" height="26" rx="3"/>
-          <path d="M8 8h8M8 12h8"/>
-          <circle cx="12" cy="20" r="2.5"/>
-        </svg>
+        <svg width="64" height="80" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="26" rx="3"/><path d="M8 8h8M8 12h8"/><circle cx="12" cy="20" r="2.5"/></svg>
         <span>dispenser1.png</span>
-        <small style="opacity:0.5;font-size:9px;">Place Brio bottom-load<br>image here</small>
       </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <a href="#what-we-deliver" class="hero-scroll-cue" aria-label="Scroll down">
+  <a href="#services" class="hero-scroll-cue" aria-label="Scroll to services">
     <div class="scroll-line"><div class="scroll-dot"></div></div>
-    <span class="scroll-label">Scroll</span>
+    <span class="scroll-label">Explore</span>
   </a>
 </section>
 
 <!-- ============================================================
-     WAVE DIVIDER — Hero → What We Deliver
+     HUB — 4 SERVICE BLOCKS
      ============================================================ -->
-<div class="wave-section" style="background:var(--bg-primary);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,55 C360,20 720,80 1080,45 C1260,28 1380,65 1440,55 C1620,35 1800,75 2160,50 C2340,38 2520,70 2880,55 L2880,90 L0,90 Z" fill="#F0F7FF"/>
-  </svg>
-</div>
-<!-- ============================================================
-     PRODUCTS TEASER
-     ============================================================ -->
-<section id="products" class="section section-light frost-corner-section" aria-labelledby="products-teaser-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Our Products</span>
-      <h2 id="products-teaser-title" class="section-title light">Everything You Need to Stay Hydrated</h2>
-      <p class="section-subtitle light">Water delivery, premium dispensers, in-store refills, home filtration systems, and more.</p>
-    </div>
-
-    <div class="products-teaser-grid">
-      <div class="products-teaser-card reveal reveal-delay-1">
-        <div class="products-teaser-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/>
-          </svg>
-        </div>
-        <h3>Water Delivery</h3>
-        <p>5-gallon alkaline &amp; RO jugs delivered to your door — weekly, bi-weekly, or one-time.</p>
-      </div>
-
-      <div class="products-teaser-card reveal reveal-delay-2">
-        <div class="products-teaser-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <rect x="6" y="2" width="12" height="20" rx="3"/>
-            <path d="M9 8h6M9 11h6"/>
-            <circle cx="12" cy="16" r="1.5"/>
-          </svg>
-        </div>
-        <h3>Dispensers</h3>
-        <p>Premium Brio water dispensers for purchase. Hot, cold &amp; room temp — from $129.99.</p>
-      </div>
-
-      <div class="products-teaser-card reveal reveal-delay-3">
-        <div class="products-teaser-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </div>
-        <h3>In-Store Products</h3>
-        <p>RO, alkaline &amp; hydrogen water refills, crystal clear ice, glass bottles, electrolytes.</p>
-      </div>
-
-      <div class="products-teaser-card reveal reveal-delay-4">
-        <div class="products-teaser-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <h3>Home Systems</h3>
-        <p>Whole house softeners, under-sink RO filtration, servicing, and free water testing.</p>
-      </div>
-    </div>
-
-    <div class="products-teaser-cta reveal">
-      <a href="products.html" class="btn-products-explore">
-        Explore All Products &amp; Services
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-    </div>
+<section id="services" class="hub-section" aria-labelledby="hub-heading">
+  <div class="text-center section" style="padding-bottom:0;">
+    <span class="section-label">Our Services</span>
+    <h2 id="hub-heading" class="section-title dark" style="margin-bottom:12px;">Everything You Need to Stay Hydrated</h2>
+    <p class="section-subtitle dark">Four ways we serve you — from doorstep delivery to in-store products.</p>
   </div>
-</section>
 
-<!-- thin separator -->
-<div style="height:2px;background:rgba(0,212,255,0.07);" aria-hidden="true"></div>
-<!-- ============================================================
-     HOW IT WORKS
-     ============================================================ -->
-<section id="delivery" class="section section-light frost-corner-section" aria-labelledby="hiw-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">How It Works</span>
-      <h2 id="hiw-title" class="section-title light">Getting Started Takes 5 Minutes</h2>
-      <p class="section-subtitle light">Pure water at your door — four simple steps stand between you and cold, clean hydration.</p>
-    </div>
-
-    <div class="process-wrap">
-      <div class="process-connector" aria-hidden="true"></div>
-      <div class="process-grid">
-        <!-- Step 1 -->
-        <div class="process-step reveal reveal-delay-1">
-          <div class="process-number">1</div>
-          <div class="process-step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 11l3 3L22 4"/>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-            </svg>
-          </div>
-          <h3>Choose Your Plan</h3>
-          <p>Pick your delivery frequency — weekly, bi-weekly, or on-demand. Select the number of jugs you need.</p>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="process-step reveal reveal-delay-2">
-          <div class="process-number">2</div>
-          <div class="process-step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="1" y="3" width="15" height="13" rx="2"/>
-              <path d="m16 8 5 3-5 3V8Z"/>
-              <path d="M1 16h15"/>
-              <circle cx="5.5" cy="18.5" r="2.5"/>
-              <circle cx="18.5" cy="18.5" r="2.5"/>
-            </svg>
-          </div>
-          <h3>We Deliver</h3>
-          <p>Our team delivers fresh 5-gallon jugs straight to your door. We pick up your empty jugs at the same time.</p>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="process-step reveal reveal-delay-3">
-          <div class="process-number">3</div>
-          <div class="process-step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/>
-            </svg>
-          </div>
-          <h3>Stay Refreshed</h3>
-          <p>Load your dispenser, press the button, enjoy crystal-clear water — hot, cold, or room temperature.</p>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="process-step reveal reveal-delay-4">
-          <div class="process-number">4</div>
-          <div class="process-step-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-              <path d="M3 3v5h5"/>
-            </svg>
-          </div>
-          <h3>We Handle the Rest</h3>
-          <p>Automatic refills on your schedule. Adjust, pause, or cancel anytime. Zero hassle, pure hydration.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottle tracking callout -->
-    <div class="bottle-tracking-note reveal">
-      <div class="bottle-tracking-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/>
-          <path d="M9 15l1.5 1.5L15 11"/>
-        </svg>
-      </div>
-      <p><strong>We track your bottles.</strong> Every delivery includes free empty jug pickup — no clutter, no waste. Your deposit is tracked automatically so you never have to think about it.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Stats Strip -->
-<div class="stats-strip frost-corner-section" aria-label="Key statistics">
-  <div class="stats-grid container">
-    <div class="stat-item reveal reveal-delay-1">
-      <span class="stat-number" data-count="100" data-suffix="+">0+</span>
-      <span class="stat-label">Happy Customers</span>
-    </div>
-    <div class="stat-item reveal reveal-delay-2">
-      <span class="stat-number" data-count="99" data-suffix="%">0%</span>
-      <span class="stat-label">On-Time Delivery</span>
-    </div>
-    <div class="stat-item reveal reveal-delay-3">
-      <span class="stat-number" data-count="5" data-float="true" data-suffix="★">0★</span>
-      <span class="stat-label">Customer Rating</span>
-    </div>
-    <div class="stat-item reveal reveal-delay-4">
-      <span class="stat-number" data-count="0" data-suffix=" Contracts">0 Contracts</span>
-      <span class="stat-label">No Long-Term Lock-In</span>
-    </div>
-  </div>
-</div>
-
-<!-- Wave Divider — light → dark -->
-<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0D2137"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,55 C360,20 720,75 1080,40 C1260,22 1380,65 1440,50 C1620,32 1800,70 2160,45 C2340,28 2520,68 2880,50 L2880,90 L0,90 Z" fill="#0D2137" opacity="0.5"/>
-  </svg>
-</div>
-
-<!-- ============================================================
-     SCHEDULE YOUR DELIVERY
-     ============================================================ -->
-<section id="schedule" class="section section-darker frost-corner-section" aria-labelledby="schedule-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Flexible Scheduling</span>
-      <h2 id="schedule-title" class="section-title dark">Delivery on Your Schedule</h2>
-      <p class="section-subtitle dark">
-        Choose how often you want fresh water delivered — we handle the rest.
-      </p>
-    </div>
-
-    <div class="schedule-grid">
-      <!-- Weekly -->
-      <div class="schedule-card reveal reveal-delay-1">
-        <div class="schedule-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/>
-            <path d="M16 2v4M8 2v4M3 10h18"/>
-            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
-          </svg>
-        </div>
-        <h3>Weekly</h3>
-        <p>Fresh water every week. Best for families and busy offices.</p>
-      </div>
-
-      <!-- Bi-Weekly — MOST POPULAR -->
-      <div class="schedule-card popular reveal reveal-delay-2">
-        <div class="schedule-popular-badge">MOST POPULAR</div>
-        <div class="schedule-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-            <path d="M12 7v5l4 2"/>
-          </svg>
-        </div>
-        <h3>Bi-Weekly</h3>
-        <p>Delivery every two weeks. Our most popular option.</p>
-      </div>
-
-      <!-- Monthly -->
-      <div class="schedule-card reveal reveal-delay-3">
-        <div class="schedule-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/>
-            <path d="M16 2v4M8 2v4M3 10h18"/>
-            <circle cx="12" cy="16" r="2"/>
-          </svg>
-        </div>
-        <h3>Monthly</h3>
-        <p>Once a month for lighter usage. Great for small households.</p>
-      </div>
-
-      <!-- One-Time -->
-      <div class="schedule-card reveal reveal-delay-4">
-        <div class="schedule-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 11l3 3L22 4"/>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-          </svg>
-        </div>
-        <h3>One-Time</h3>
-        <p>Just need water once? No subscription required.</p>
-      </div>
-    </div>
-
-    <div class="reveal" style="text-align:center;">
-      <p class="schedule-footer-text">Set up recurring delivery in minutes — no contracts, cancel anytime.</p>
-      <a href="#contact" class="btn-primary" style="display:inline-flex;">
-        Set Up Delivery
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Wave Divider — dark → dark (thin rule) -->
-<div style="height:1px;background:rgba(255,255,255,0.05);" aria-hidden="true"></div>
-
-<!-- ============================================================
-     PRICING
-     ============================================================ -->
-<section id="pricing" class="section section-darker frost-corner-section" aria-labelledby="pricing-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Pricing</span>
-      <h2 id="pricing-title" class="section-title dark">Simple, Transparent Pricing</h2>
-      <p class="section-subtitle dark">No hidden fees. No long contracts. Just pure water, delivered.</p>
-    </div>
-
-    <!-- ════ 1. MONTHLY BUNDLE PLANS ════ -->
-    <div class="px-sub-head reveal">
-      <h3 class="px-sub-title">Monthly Bundle Plans</h3>
-      <p class="px-sub-desc">Pre-bundled monthly deliveries — the most economical way to stay stocked year-round.</p>
-    </div>
-    <div class="pricing-grid-5">
-      <!-- Solo -->
-      <div class="pricing-card reveal reveal-delay-1">
-        <span class="pricing-tier-label">STARTER</span>
-        <h3>Solo Plan</h3>
-        <p class="pricing-card-desc">Perfect for 1–2 people</p>
-        <div class="pricing-price"><span class="price-tag" data-product-id="Solo" data-product-type="bundle">$21</span> <span>/ month</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>2 × 5-gallon jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Purified water</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Monthly schedule</li>
+  <!-- Block 1: Water Delivery -->
+  <article class="hub-block hub-block-1 reveal" aria-label="Water Delivery service">
+    <div class="hub-content">
+      <div class="hub-content-inner">
+        <span class="hub-label">Home &amp; Office</span>
+        <h3 class="hub-title">Water Delivery</h3>
+        <p class="hub-desc">Fresh 5-gallon jugs of regular purified or alkaline pH 8.5+ water, delivered on your schedule. We swap empty jugs for full ones on every visit — zero hassle, zero clutter.</p>
+        <ul class="hub-bullets">
+          <li>Regular from $21/mo · Alkaline from $25/mo</li>
+          <li>Weekly, bi-weekly, or monthly — no contracts</li>
+          <li>Free delivery within 3 miles of Elk Grove</li>
         </ul>
-        <div class="px-vs-line">Water.com charges $31.97 + $14.99 delivery</div>
-        <div class="px-save-badge">Save $26</div>
-        <a href="#contact" class="pricing-btn outline">Get Started →</a>
+        <a href="water-delivery.html" class="hub-cta" aria-label="View water delivery plans">
+          View Plans
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </div>
+    </div>
+    <div class="hub-visual" aria-hidden="true">
+      <div class="hub-visual-bg"></div>
+      <div class="hub-visual-glow"></div>
+      <div class="hub-visual-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+      </div>
+    </div>
+  </article>
 
-      <!-- Family — MOST POPULAR -->
-      <div class="pricing-card popular reveal reveal-delay-2">
-        <div class="popular-badge">MOST POPULAR</div>
-        <span class="pricing-tier-label">MOST POPULAR</span>
-        <h3>Family Plan</h3>
-        <p class="pricing-card-desc">Best for 3–4 people</p>
-        <div class="pricing-price"><span class="price-tag" data-product-id="Family" data-product-type="bundle">$42</span> <span>/ month</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>4 × 5-gallon jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Purified or Spring</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Priority scheduling</li>
+  <!-- Block 2: Dispensers (flip) -->
+  <article class="hub-block hub-block-2 flip reveal" aria-label="Dispenser purchase and rental">
+    <div class="hub-visual" aria-hidden="true">
+      <div class="hub-visual-bg"></div>
+      <div class="hub-visual-glow"></div>
+      <div class="hub-visual-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M9 8h6M9 11h6"/><circle cx="12" cy="16" r="1.5"/></svg>
+      </div>
+    </div>
+    <div class="hub-content">
+      <div class="hub-content-inner">
+        <span class="hub-label">Purchase &amp; Rental</span>
+        <h3 class="hub-title">Dispenser Purchase &amp; Rental</h3>
+        <p class="hub-desc">Own it or rent it — Brio bottom-load and top-load dispensers available for purchase or low monthly rental. Hot, cold, and room temperature at the push of a button.</p>
+        <ul class="hub-bullets">
+          <li>Top-load from $129.99 purchase · $10/mo rental</li>
+          <li>Bottom-load from $279.99 purchase · $25/mo rental</li>
+          <li>Free maintenance included with every rental</li>
         </ul>
-        <div class="px-vs-line">Water.com charges $33.96 + $14.99 delivery</div>
-        <div class="px-save-badge">Save $7</div>
-        <a href="#contact" class="pricing-btn filled">Get Started →</a>
+        <a href="dispensers.html" class="hub-cta" aria-label="Shop and rent dispensers">
+          Shop &amp; Rent Dispensers
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </div>
+    </div>
+  </article>
 
-      <!-- Household -->
-      <div class="pricing-card reveal reveal-delay-3">
-        <span class="pricing-tier-label">BEST VALUE</span>
-        <h3>Household Plan</h3>
-        <p class="pricing-card-desc">Large family or heavy use</p>
-        <div class="pricing-price"><span class="price-tag" data-product-id="Household" data-product-type="bundle">$57</span> <span>/ month</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>6 × 5-gallon jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Choice of water type</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Cooler rental add-on</li>
+  <!-- Block 3: Bottle Pickup -->
+  <article class="hub-block hub-block-3 reveal" aria-label="Bottle pickup service">
+    <div class="hub-content">
+      <div class="hub-content-inner">
+        <span class="hub-label">Hassle-Free Returns</span>
+        <h3 class="hub-title">Water Bottle Pickup</h3>
+        <p class="hub-desc">We handle your empty 5-gallon jugs so you don't have to. Automatic swap on every delivery, free drop-off at our facility, or scheduled pickup from your door for just $4.99.</p>
+        <ul class="hub-bullets">
+          <li>Auto swap included with every delivery — free</li>
+          <li>Drop off at 7119 Elk Grove Blvd — free</li>
+          <li>Scheduled pickup from home — $4.99 per visit</li>
         </ul>
-        <div class="px-vs-line">Water.com charges $50.94 + $14.99 delivery</div>
-        <div class="px-save-badge">Save $9</div>
-        <a href="#contact" class="pricing-btn outline">Get Started →</a>
+        <a href="bottle-pickup.html" class="hub-cta" aria-label="Schedule a bottle pickup">
+          Schedule a Pickup
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </div>
+    </div>
+    <div class="hub-visual" aria-hidden="true">
+      <div class="hub-visual-bg"></div>
+      <div class="hub-visual-glow"></div>
+      <div class="hub-visual-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </div>
+    </div>
+  </article>
 
-      <!-- Office -->
-      <div class="pricing-card reveal reveal-delay-4">
-        <span class="pricing-tier-label">OFFICE</span>
-        <h3>Office Plan</h3>
-        <p class="pricing-card-desc">Small team, 5–10 people</p>
-        <div class="pricing-price"><span class="price-tag" data-product-id="Office" data-product-type="bundle">$72</span> <span>/ month</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>8 × 5-gallon jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Bi-weekly option</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Invoice billing available</li>
+  <!-- Block 4: In-Store Products (flip) -->
+  <article class="hub-block hub-block-4 flip reveal" aria-label="In-store products">
+    <div class="hub-visual" aria-hidden="true">
+      <div class="hub-visual-bg"></div>
+      <div class="hub-visual-glow"></div>
+      <div class="hub-visual-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+    </div>
+    <div class="hub-content">
+      <div class="hub-content-inner">
+        <span class="hub-label">30+ Products</span>
+        <h3 class="hub-title">In-Store Products</h3>
+        <p class="hub-desc">Visit us at 7119 Elk Grove Blvd for RO, alkaline, and hydrogen water refills, crystal-clear ice, glass bottles, electrolytes, and more — all available to browse and add to cart.</p>
+        <ul class="hub-bullets">
+          <li>5-gallon and 3-gallon jugs · glass &amp; aluminum bottles</li>
+          <li>Electrolyte salt sticks, canned drinks, supplements</li>
+          <li>Ceramic crocks and water accessories</li>
         </ul>
-        <div class="px-vs-line">Water.com charges $67.92 + $14.99 delivery</div>
-        <div class="px-save-badge">Save $10+</div>
-        <a href="#contact" class="pricing-btn outline">Get Started →</a>
-      </div>
-
-      <!-- Max Bundle -->
-      <div class="pricing-card reveal reveal-delay-5">
-        <span class="pricing-tier-label">PREMIUM</span>
-        <h3>Max Bundle</h3>
-        <p class="pricing-card-desc">Full service experience</p>
-        <div class="pricing-price"><span class="price-tag" data-product-id="Max Bundle" data-product-type="bundle">$95</span> <span>/ month</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>12 × 5-gallon jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Alkaline or Spring</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Cooler rental INCLUDED</li>
-        </ul>
-        <div class="px-vs-line">Water.com charges $101.88 + $14.99 delivery</div>
-        <div class="px-save-badge">Save $22</div>
-        <a href="#contact" class="pricing-btn outline">Get Started →</a>
+        <a href="shop.html" class="hub-cta" aria-label="Browse in-store products">
+          Shop Products
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 2. DELIVERY FREQUENCY PLANS ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <h3 class="px-sub-title">Delivery Frequency Plans</h3>
-      <p class="px-sub-desc">Plans use the <span class="price-tag" data-product-id="per-jug" data-product-type="per-jug">$7.50</span>/jug rate for your chosen water type. Choose how often you want water dropped off — weekly keeps you fully stocked, bi-weekly is the sweet spot for most households.</p>
-    </div>
-    <div class="freq-tabs reveal">
-      <button class="freq-tab-btn active" data-panel="freq-weekly">Weekly</button>
-      <button class="freq-tab-btn" data-panel="freq-biweekly">Bi-Weekly</button>
-    </div>
-
-    <div id="freq-weekly" class="freq-panel active">
-      <div class="pricing-grid-3">
-        <div class="pricing-card reveal reveal-delay-1">
-          <span class="pricing-tier-label">WEEKLY</span>
-          <h3>Weekly Solo</h3>
-          <p class="pricing-card-desc">1–2 people · 4 deliveries/mo</p>
-          <div class="pricing-price">$30 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>1 jug per week · Every 7 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>4 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">Never run out</div>
-          <a href="#contact" class="pricing-btn outline">Get Started →</a>
-        </div>
-        <div class="pricing-card popular reveal reveal-delay-2">
-          <div class="popular-badge">MOST POPULAR</div>
-          <span class="pricing-tier-label">WEEKLY</span>
-          <h3>Weekly Family</h3>
-          <p class="pricing-card-desc">3–4 people · 4 deliveries/mo</p>
-          <div class="pricing-price">$60 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>2 jugs per week · Every 7 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>8 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">Always fresh</div>
-          <a href="#contact" class="pricing-btn filled">Get Started →</a>
-        </div>
-        <div class="pricing-card reveal reveal-delay-3">
-          <span class="pricing-tier-label">WEEKLY</span>
-          <h3>Weekly Max</h3>
-          <p class="pricing-card-desc">Large household / office</p>
-          <div class="pricing-price">$90 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>3 jugs per week · Every 7 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>12 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">High volume</div>
-          <a href="#contact" class="pricing-btn outline">Get Started →</a>
-        </div>
-      </div>
-    </div>
-
-    <div id="freq-biweekly" class="freq-panel">
-      <div class="pricing-grid-3">
-        <div class="pricing-card reveal reveal-delay-1">
-          <span class="pricing-tier-label">BI-WEEKLY</span>
-          <h3>Bi-Weekly Solo</h3>
-          <p class="pricing-card-desc">1–2 people · 2 deliveries/mo</p>
-          <div class="pricing-price">$15 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>1 jug every 2 weeks · Every 14 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>2 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">Light use</div>
-          <a href="#contact" class="pricing-btn outline">Get Started →</a>
-        </div>
-        <div class="pricing-card popular reveal reveal-delay-2">
-          <div class="popular-badge">BEST VALUE</div>
-          <span class="pricing-tier-label">BI-WEEKLY</span>
-          <h3>Bi-Weekly Family</h3>
-          <p class="pricing-card-desc">3–4 people · 2 deliveries/mo</p>
-          <div class="pricing-price">$30 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>2 jugs every 2 weeks · Every 14 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>4 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">Sweet spot</div>
-          <a href="#contact" class="pricing-btn filled">Get Started →</a>
-        </div>
-        <div class="pricing-card reveal reveal-delay-3">
-          <span class="pricing-tier-label">BI-WEEKLY</span>
-          <h3>Bi-Weekly Max</h3>
-          <p class="pricing-card-desc">Large household / office</p>
-          <div class="pricing-price">$45 <span>/ month</span></div>
-          <ul class="pricing-features" role="list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>3 jugs every 2 weeks · Every 14 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>6 jugs total/mo</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          </ul>
-          <div class="px-freq-note">High volume</div>
-          <a href="#contact" class="pricing-btn outline">Get Started →</a>
-        </div>
-      </div>
-    </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 3. FREQUENCY PRICE CHART ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <h3 class="px-sub-title">Frequency Price Chart — All Plans</h3>
-    </div>
-    <div class="freq-table-wrap reveal">
-      <table class="freq-table" aria-label="Delivery frequency pricing chart">
-        <thead>
-          <tr>
-            <th>Jugs / Delivery</th>
-            <th>Weekly</th>
-            <th>Bi-Weekly</th>
-            <th>Monthly</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>1 jug</td><td>$30/mo</td><td>$15/mo</td><td>$7.50/mo</td></tr>
-          <tr><td>2 jugs</td><td>$60/mo</td><td>$30/mo</td><td>$15/mo</td></tr>
-          <tr><td>3 jugs</td><td>$90/mo</td><td>$45/mo</td><td>$22.50/mo</td></tr>
-          <tr><td>4 jugs</td><td>$120/mo</td><td>$60/mo</td><td>$30/mo</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 4. ALKALINE UPGRADE ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <h3 class="px-sub-title">Alkaline Upgrade</h3>
-      <p class="px-sub-desc"><strong style="color:#fff;">What is Alkaline Water?</strong> &nbsp;pH 8–9+ · Smoother taste · Hydration boost</p>
-      <p class="px-sub-desc" style="margin-top:10px;">Alkaline water has a higher pH than regular purified water. Many people prefer it for its smoother taste, and it's popular with fitness-focused households. Water.com can't even keep theirs in stock — we have it ready to deliver.</p>
-    </div>
-    <div class="alkaline-grid">
-      <div class="alkaline-card reveal reveal-delay-1">
-        <span class="alkaline-label">ALKALINE SOLO</span>
-        <h4>Alkaline Solo</h4>
-        <p class="pricing-card-desc">1–2 people · pH 8.5+</p>
-        <div class="alkaline-price">$25<span>/mo</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>2 × 5-gallon alkaline jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>pH 8.5+ guaranteed</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Monthly schedule</li>
-        </ul>
-        <div class="px-vs-line">Water.com alkaline: Out of stock + $14.99 delivery</div>
-        <div class="px-save-badge px-save-badge--special">Only us!</div>
-        <a href="#contact" class="pricing-btn outline" style="margin-top:16px;">Get Started →</a>
-      </div>
-      <div class="alkaline-card reveal reveal-delay-2">
-        <span class="alkaline-label">ALKALINE FAMILY</span>
-        <h4>Alkaline Family</h4>
-        <p class="pricing-card-desc">3–4 people · pH 8.5+</p>
-        <div class="alkaline-price">$45<span>/mo</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>4 × 5-gallon alkaline jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>pH 8.5+ guaranteed</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Priority scheduling</li>
-        </ul>
-        <div class="px-vs-line">Water.com alkaline: Out of stock + $14.99 delivery</div>
-        <div class="px-save-badge px-save-badge--special">Only us!</div>
-        <a href="#contact" class="pricing-btn outline" style="margin-top:16px;">Get Started →</a>
-      </div>
-      <div class="alkaline-card reveal reveal-delay-3">
-        <span class="alkaline-label">ALKALINE MAX</span>
-        <h4>Alkaline Max</h4>
-        <p class="pricing-card-desc">Heavy use · Best per-jug rate</p>
-        <div class="alkaline-price">$60<span>/mo</span></div>
-        <ul class="pricing-features" role="list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>6 × 5-gallon alkaline jugs</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>pH 8.5+ guaranteed</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Free delivery (0–3 mi)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Cooler rental add-on</li>
-        </ul>
-        <div class="px-vs-line">Water.com alkaline: Out of stock + $14.99 delivery</div>
-        <div class="px-save-badge px-save-badge--special">Only us!</div>
-        <a href="#contact" class="pricing-btn outline" style="margin-top:16px;">Get Started →</a>
-      </div>
-    </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 5. PURIFIED VS ALKALINE ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <h3 class="px-sub-title">Purified vs. Alkaline — At a Glance</h3>
-    </div>
-    <div class="px-compare-pair reveal">
-      <div class="px-compare-card">
-        <div class="px-compare-label">Purified</div>
-        <div class="px-compare-row"><span class="px-cr-key">pH Level</span><span class="px-cr-val">7.0</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Price / jug</span><span class="px-cr-val">$7.50</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Best for</span><span class="px-cr-val">Everyday drinking</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Available</span><span class="px-cr-val px-avail-yes">&#10003; Always</span></div>
-      </div>
-      <div class="px-compare-card px-compare-card--alkaline">
-        <div class="px-compare-label">Alkaline</div>
-        <div class="px-compare-row"><span class="px-cr-key">pH Level</span><span class="px-cr-val" style="color:var(--cyan);">8.5+</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Price / jug</span><span class="px-cr-val">$7.50</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Best for</span><span class="px-cr-val">Fitness &amp; wellness</span></div>
-        <div class="px-compare-row"><span class="px-cr-key">Available</span><span class="px-cr-val px-avail-yes">&#10003; Always</span></div>
-      </div>
-    </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 6. US VS WATER.COM ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <span class="section-label" style="display:block;margin-bottom:10px;">VS. WATER.COM</span>
-      <h3 class="px-sub-title">Us vs. Water.com</h3>
-      <p class="px-sub-desc">Same water. Better price. Free delivery.</p>
-    </div>
-    <div class="px-vs-table-wrap reveal">
-      <table class="px-vs-table" aria-label="Waterboy vs Water.com price comparison">
-        <thead>
-          <tr>
-            <th>Jugs / Month</th>
-            <th>Our Price</th>
-            <th>Water.com</th>
-            <th>You Save</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>2 jugs</td><td class="px-our-price">$21</td><td class="px-their-price"><s>$46.96</s></td><td class="px-you-save">$25.96</td></tr>
-          <tr><td>4 jugs</td><td class="px-our-price">$42</td><td class="px-their-price"><s>$48.95</s></td><td class="px-you-save">$6.95</td></tr>
-          <tr><td>6 jugs</td><td class="px-our-price">$57</td><td class="px-their-price"><s>$65.93</s></td><td class="px-you-save">$8.93</td></tr>
-          <tr><td>8 jugs</td><td class="px-our-price">$72</td><td class="px-their-price"><s>$82.91</s></td><td class="px-you-save">$10.91</td></tr>
-          <tr><td>12 jugs</td><td class="px-our-price">$95</td><td class="px-their-price"><s>$116.87</s></td><td class="px-you-save">$21.87</td></tr>
-        </tbody>
-      </table>
-      <p class="px-footnote">*Water.com prices based on $8.49/jug + $14.99 delivery fee per their app listing</p>
-    </div>
-
-    <div style="height:1px;background:rgba(0,212,255,0.08);margin:72px 0 0;" aria-hidden="true"></div>
-
-    <!-- ════ 7. DELIVERY ZONES ════ -->
-    <div class="px-sub-head reveal" style="margin-top:72px;">
-      <h3 class="px-sub-title">Delivery Zones</h3>
-    </div>
-    <div class="zones-grid reveal">
-      <div class="zone-card reveal reveal-delay-1">
-        <div class="zone-indicator zone-1"></div>
-        <div class="zone-info">
-          <span class="zone-name">Zone 1</span>
-          <span class="zone-range">0–3 Miles</span>
-          <span class="zone-area">Core delivery area · Elk Grove center</span>
-        </div>
-        <div class="zone-fee free">FREE</div>
-      </div>
-      <div class="zone-card reveal reveal-delay-2">
-        <div class="zone-indicator zone-2"></div>
-        <div class="zone-info">
-          <span class="zone-name">Zone 2</span>
-          <span class="zone-range">3–6 Miles</span>
-          <span class="zone-area">Extended area · Laguna, Rancho</span>
-        </div>
-        <div class="zone-fee">$4.99</div>
-      </div>
-      <div class="zone-card reveal reveal-delay-3">
-        <div class="zone-indicator zone-3"></div>
-        <div class="zone-info">
-          <span class="zone-name">Zone 3</span>
-          <span class="zone-range">6–9 Miles</span>
-          <span class="zone-area">Far zone · South Sac corridor</span>
-        </div>
-        <div class="zone-fee">$9.99</div>
-      </div>
-    </div>
-
-    <p class="pricing-note reveal">
-      No contracts &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; First delivery in 3–5 days<br />
-      <span style="color:var(--cyan);font-family:var(--f-mono);font-size:12px;letter-spacing:0.5px;">Have a promo code? Apply it when you place your order for exclusive savings.</span>
-    </p>
-  </div>
+  </article>
 </section>
 
 <!-- thin separator -->
 <div style="height:1px;background:rgba(0,212,255,0.07);" aria-hidden="true"></div>
 
 <!-- ============================================================
-     BOTTLE RETURNS & PICKUP
+     TRUST STRIP
      ============================================================ -->
-<section id="bottle-returns" class="section section-darker frost-corner-section" aria-labelledby="bottle-returns-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Bottle Returns</span>
-      <h2 id="bottle-returns-title" class="section-title dark">Bottle Returns Made Easy</h2>
-      <p class="section-subtitle dark">Every jug that leaves our hands comes back. Here's how.</p>
-    </div>
-
-    <div class="bottle-returns-grid">
-      <!-- Card 1 -->
-      <div class="bottle-return-card br-card reveal reveal-delay-1">
-        <span class="br-card-tag">INCLUDED</span>
-        <div class="br-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        </div>
-        <h3>We Handle It</h3>
-        <p>On every scheduled delivery, your driver swaps empty jugs for full ones. Nothing to think about, no fees, no extra steps. Leave the empties out — we take care of the rest.</p>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bottle-return-card br-card reveal reveal-delay-2">
-        <span class="br-card-tag">FREE</span>
-        <div class="br-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <h3>Drop Off at Our Facility</h3>
-        <p>Bring empty jugs to 7119 Elk Grove Blvd during business hours. Free, fast, and your deposit comes off your next order.</p>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bottle-return-card br-card reveal reveal-delay-3">
-        <span class="br-card-tag price">$4.99</span>
-        <div class="br-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="m16 8 5 3-5 3V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        </div>
-        <h3>We Pick Them Up</h3>
-        <p>Schedule a pickup from your home. $4.99 per pickup, no matter how many jugs. Mon–Sat.</p>
-      </div>
-    </div>
-
-    <!-- Policy callout -->
-    <div class="bottle-return-policy reveal">
-      <div class="brp-head">Unreturned Jug Policy</div>
-      <p class="brp-body">Empty jugs are property of Waterboy Delivery. If a jug isn't returned within 30 days of your last order — and you haven't scheduled a pickup — an $8 deposit fee per jug will be charged to your account. This keeps prices low for everyone.</p>
-      <p class="brp-sub">Recurring subscribers never pay this — your jugs are automatically swapped on delivery.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     DISPENSER RENTAL
-     ============================================================ -->
-<section id="dispenser-rental" class="section section-darker frost-corner-section" aria-labelledby="dispenser-rental-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Dispenser Rental</span>
-      <h2 id="dispenser-rental-title" class="section-title dark">Need a Dispenser? Rent One.</h2>
-      <p class="section-subtitle dark">No big upfront cost. Cancel anytime.</p>
-    </div>
-
-    <div class="dispenser-rental-cards">
-      <!-- Top-Load -->
-      <div class="dr-card reveal reveal-delay-1">
-        <div class="dr-name">Top-Load Dispenser</div>
-        <div class="dr-price">$10<span style="font-size:16px;font-weight:400;color:#5A8AAC">/month</span></div>
-        <div class="dr-price-sub">Or buy outright for $129.99</div>
-        <ul class="dr-features">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Hot and cold dispensing</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Easy 5-gallon load from top</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Compact countertop or floor design</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Cancel rental anytime</li>
-        </ul>
-        <button class="dr-cta" data-rental="top-load">Add to My Order</button>
-      </div>
-
-      <!-- Bottom-Load (MOST POPULAR) -->
-      <div class="dr-card reveal reveal-delay-2">
-        <div class="dr-card-popular">MOST POPULAR</div>
-        <div class="dr-name">Bottom-Load Dispenser</div>
-        <div class="dr-price">$25<span style="font-size:16px;font-weight:400;color:#5A8AAC">/month</span></div>
-        <div class="dr-price-sub">Or buy outright for $279.99</div>
-        <ul class="dr-features">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Hot, cold, and room temperature</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>No lifting — loads from bottom</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Premium modern design</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Cancel rental anytime</li>
-        </ul>
-        <button class="dr-cta" data-rental="bottom-load">Add to My Order</button>
-      </div>
-    </div>
-
-    <p class="dr-note reveal">Rentals include free maintenance and replacement if anything breaks. No setup fees.</p>
-  </div>
-</section>
-
-<!-- Wave Divider — dark → light -->
-<div class="wave-section" style="background:var(--bg-secondary);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,60 C360,15 720,80 1080,38 C1260,18 1380,68 1440,48 C1620,25 1800,75 2160,42 C2340,22 2520,72 2880,48 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
-  </svg>
-</div>
-
-<!-- ============================================================
-     WHY WATERBOY
-     ============================================================ -->
-<section id="about" class="section section-light frost-corner-section" aria-labelledby="why-title">
+<section class="section section-light" aria-label="Why choose Waterboy">
   <div class="container">
     <div class="text-center reveal">
       <span class="section-label">Why Waterboy</span>
-      <h2 id="why-title" class="section-title light">Why Choose Waterboy?</h2>
-      <p class="section-subtitle light">We're not just a water delivery service. We're your hydration partner.</p>
+      <h2 class="section-title light">Pure Water, Zero Hassle</h2>
+      <p class="section-subtitle light">Family-owned in Elk Grove. In partnership with Waterhouse.</p>
     </div>
-
-    <!-- Waterhouse trust badge -->
-    <div class="text-center reveal" style="margin-bottom:8px;">
-      <!-- TODO: Add Waterhouse logo when client provides -->
-      <div class="waterhouse-badge">
-        <div class="waterhouse-badge-dot"></div>
-        <span>In partnership with Waterhouse</span>
-      </div>
-    </div>
-
-    <div class="features-grid">
+    <div class="features-grid" style="margin-top:48px;">
       <article class="feature-card reveal reveal-delay-1">
         <span class="feature-emoji" aria-hidden="true">💧</span>
         <h3>Crystal-Clear Purity</h3>
-        <p>Multi-stage purified water that meets the highest safety standards. No chlorine taste, no impurities — just pure, clean hydration.</p>
+        <p>Multi-stage purified water that meets the highest safety standards. No chlorine taste, no impurities.</p>
       </article>
-
       <article class="feature-card reveal reveal-delay-2">
         <span class="feature-emoji" aria-hidden="true">🚚</span>
         <h3>Reliable Delivery</h3>
-        <p>We show up when we say we will. Consistent scheduling, friendly service, and we handle everything — including picking up your empties.</p>
+        <p>We show up when we say we will. Consistent scheduling and friendly service, every time.</p>
       </article>
-
       <article class="feature-card reveal reveal-delay-3">
-        <span class="feature-emoji" aria-hidden="true">🧊</span>
-        <h3>Ice-Cold Every Time</h3>
-        <p>Our premium dispensers keep water at the perfect temperature — ice cold, room temp, or piping hot. Ready whenever you are.</p>
-      </article>
-
-      <article class="feature-card reveal reveal-delay-4">
         <span class="feature-emoji" aria-hidden="true">💰</span>
         <h3>No Surprise Fees</h3>
-        <p>Flat monthly pricing. No delivery surcharges, no fuel fees, no hidden costs. What you see is what you pay.</p>
+        <p>Flat monthly pricing. No delivery surcharges, no fuel fees, no hidden costs. Save up to $26/mo vs Water.com.</p>
       </article>
-
+      <article class="feature-card reveal reveal-delay-4">
+        <span class="feature-emoji" aria-hidden="true">⚡</span>
+        <h3>Alkaline — Only Us</h3>
+        <p>pH 8.5+ alkaline water delivered in Elk Grove. Water.com can't keep theirs in stock — we have it ready.</p>
+      </article>
       <article class="feature-card reveal reveal-delay-5">
         <span class="feature-emoji" aria-hidden="true">🔄</span>
         <h3>Flexible Plans</h3>
-        <p>Change your delivery frequency, pause for vacation, or cancel anytime. No contracts, no commitments, no penalties.</p>
+        <p>Weekly, bi-weekly, or monthly. Pause, change frequency, or cancel anytime. No contracts.</p>
       </article>
-
       <article class="feature-card reveal reveal-delay-6">
         <span class="feature-emoji" aria-hidden="true">🌱</span>
         <h3>Eco-Friendly</h3>
-        <p>Reusable 5-gallon jugs mean less plastic waste. We sanitize and reuse every jug — better for you and better for the planet.</p>
+        <p>Reusable 5-gallon jugs mean less plastic waste. We sanitize and reuse every jug.</p>
       </article>
     </div>
-
-    <!-- Waterhouse Affiliation -->
-    <div class="waterhouse-sub reveal">
-      <h3>Powered by Waterhouse</h3>
-      <p>Waterboy is proudly affiliated with Waterhouse, one of the most trusted names in premium water. Our partnership means every jug we deliver meets Waterhouse's purity and quality standards — backed by decades of filtration expertise and the cleanest sourcing in the industry.</p>
+    <div class="reveal" style="text-align:center;margin-top:48px;">
+      <a href="about.html" class="btn-secondary">Learn About Us</a>
     </div>
   </div>
 </section>
 
-<!-- Wave Divider — light → dark -->
+<!-- Wave -->
 <div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
   <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0B1B2B"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,35 C360,80 720,10 1080,50 C1260,70 1380,20 1440,40 C1620,60 1800,10 2160,48 C2340,68 2520,18 2880,42 L2880,90 L0,90 Z" fill="#0B1B2B" opacity="0.5"/>
+    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 L1440,90 L0,90 Z" fill="#0D2137"/>
   </svg>
 </div>
 
 <!-- ============================================================
      TESTIMONIALS
      ============================================================ -->
-<section class="section section-dark frost-corner-section" aria-labelledby="testimonials-title">
+<section class="section section-darker frost-corner-section" aria-labelledby="testimonials-title">
   <div class="container">
     <div class="text-center reveal">
-      <span class="section-label">What Customers Say</span>
+      <span class="section-label">Reviews</span>
       <h2 id="testimonials-title" class="section-title dark">People Love Their Waterboy</h2>
-      <p class="section-subtitle dark">Real customers, real results — pure hydration at home and in the office.</p>
     </div>
-
-    <div class="testimonials-grid">
+    <div class="testimonials-grid" style="margin-top:48px;">
       <article class="testimonial-card reveal reveal-delay-1">
-        <div class="stars" aria-label="5 stars">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="testimonial-text">"Switched from those flimsy plastic cases from the grocery store to Waterboy and it's a game changer. The water tastes incredible, delivery is always on time, and I love not having to lug heavy bottles from the car anymore."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" aria-hidden="true">J</div>
-          <div>
-            <div class="author-name">Jessica M.</div>
-            <div class="author-role">Home Customer</div>
-          </div>
+        <div class="tc-stars" aria-label="5 stars">★★★★★</div>
+        <p class="tc-text">"Switched from Water.com and we're saving over $20 a month. The alkaline water is incredible — smooth taste, never going back."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" aria-hidden="true">JM</div>
+          <div><div class="tc-name">Jessica M.</div><div class="tc-role">Home Customer, Elk Grove</div></div>
         </div>
       </article>
-
       <article class="testimonial-card reveal reveal-delay-2">
-        <div class="stars" aria-label="5 stars">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="testimonial-text">"We put a Waterboy dispenser in our office break room and our team goes through 8 jugs a week now. Everyone loves it. The delivery guys are always friendly and the water is always cold. Best office upgrade we've made."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" aria-hidden="true">R</div>
-          <div>
-            <div class="author-name">Robert K.</div>
-            <div class="author-role">Office Manager</div>
-          </div>
+        <div class="tc-stars" aria-label="5 stars">★★★★★</div>
+        <p class="tc-text">"They always show up on time, swap the empties, and the water quality is excellent. The office team loves it. Couldn't be easier."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" aria-hidden="true">RK</div>
+          <div><div class="tc-name">Robert K.</div><div class="tc-role">Office Manager, Sacramento</div></div>
         </div>
       </article>
-
       <article class="testimonial-card reveal reveal-delay-3">
-        <div class="stars" aria-label="5 stars">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="testimonial-text">"I was renting a dispenser from another company and the water tasted like plastic. Switched to Waterboy — night and day difference. The Brio dispenser is beautiful and the water is pure. Can't recommend enough."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" aria-hidden="true">M</div>
-          <div>
-            <div class="author-name">Maria L.</div>
-            <div class="author-role">Home Customer</div>
-          </div>
+        <div class="tc-stars" aria-label="5 stars">★★★★★</div>
+        <p class="tc-text">"The Brio dispenser rental is a game-changer. Hot water for coffee, cold for the kids — all for $25 a month. Highly recommend."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" aria-hidden="true">ML</div>
+          <div><div class="tc-name">Maria L.</div><div class="tc-role">Home Customer, Elk Grove</div></div>
         </div>
       </article>
     </div>
   </div>
 </section>
-
-<!-- Wave Divider — dark → light -->
-<div class="wave-section" style="background:var(--bg-primary);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,55 C360,18 720,80 1080,42 C1260,22 1380,68 1440,50 C1620,30 1800,72 2160,44 C2340,24 2520,70 2880,50 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
-  </svg>
-</div>
-
-<!-- ============================================================
-     FAQ
-     ============================================================ -->
-<section id="faq" class="section section-light frost-corner-section" aria-labelledby="faq-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">FAQ</span>
-      <h2 id="faq-title" class="section-title light">Questions? We've Got Answers.</h2>
-      <p class="section-subtitle light">Everything you need to know about water delivery and dispensers.</p>
-    </div>
-
-    <div class="faq-list reveal">
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>How does water delivery work?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>It's simple — choose your plan, tell us how many 5-gallon jugs you need, and we deliver on your schedule. We also pick up your empty jugs each time. You never have to think about it.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>What kind of water do you deliver?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>We deliver multi-stage purified drinking water in BPA-free 5-gallon jugs. Our water goes through reverse osmosis, carbon filtration, and UV treatment to ensure the highest quality.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>Do I need to buy a dispenser?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>No — you can rent one from us (rental plans coming soon), buy one outright, or use your own existing dispenser. Any standard top-load or bottom-load cooler works with our 5-gallon jugs.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>Can I change or cancel my plan?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>Absolutely. All plans are month-to-month with no contracts. You can change your delivery frequency, add or remove jugs, pause for vacation, or cancel anytime — no penalties.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>Do you deliver to businesses?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>Yes! We serve homes, offices, gyms, clinics, salons, and any business that wants clean, cold water for their team or customers. Our Business plan includes custom scheduling and a dedicated account manager.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>What areas do you serve?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>We deliver within a <strong>10-mile radius</strong> of our Elk Grove location, serving Elk Grove, Sacramento, and surrounding Sacramento County communities. Not sure if you're in our zone? Contact us and we'll check for you — call <a href="tel:+19166193218" style="color:var(--cyan);">(916) 619-3218</a>.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>How much does delivery cost?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>Delivery is always free. It's included in every plan. No delivery surcharges, no fuel fees, no surprise costs.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
-          <h3>What brands of dispensers do you sell?</h3>
-          <button class="faq-toggle" aria-label="Toggle answer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div class="faq-answer" role="region">
-          <div class="faq-answer-inner">
-            <p>We currently carry Brio water dispensers — one of the top-rated brands on the market. We offer bottom-load, top-load, and bottleless filtration models. Contact us for current pricing and availability.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Wave Divider — light → dark -->
-<div class="wave-section" style="background:var(--bg-light);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,0 480,90 720,45 C960,0 1200,90 1440,45 C1680,0 1920,90 2160,45 C2400,0 2640,90 2880,45 L2880,90 L0,90 Z" fill="#0D2137"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,55 C360,18 720,82 1080,42 C1260,22 1380,70 1440,50 C1620,28 1800,75 2160,44 C2340,22 2520,72 2880,52 L2880,90 L0,90 Z" fill="#0D2137" opacity="0.5"/>
-  </svg>
-</div>
 
 <!-- ============================================================
      CTA BANNER
@@ -1290,15 +437,12 @@
 <section id="cta-banner" aria-labelledby="cta-title">
   <div class="cta-glow-left" aria-hidden="true"></div>
   <div class="cta-glow-right" aria-hidden="true"></div>
-
   <div class="container">
     <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Your Water, Your Way.</h2>
-    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">
-      Start your delivery today. Pure water, premium dispensers, zero hassle.
-    </p>
+    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">Start your delivery today. Pure water, premium dispensers, zero hassle.</p>
     <div class="cta-buttons reveal">
-      <a href="#contact" class="btn-cta-large">
-        Get Started — It's Free to Sign Up
+      <a href="water-delivery.html" class="btn-cta-large">
+        View Plans &amp; Start Delivery
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
@@ -1306,243 +450,47 @@
   </div>
 </section>
 
-<!-- Wave Divider — dark → light -->
-<div class="wave-section" style="background:var(--bg-secondary);" aria-hidden="true">
-  <svg class="wave-1" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 C1680,90 1920,0 2160,45 C2400,90 2640,0 2880,45 L2880,90 L0,90 Z" fill="#F0F7FF"/>
-  </svg>
-  <svg class="wave-2" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,60 C360,15 720,80 1080,38 C1260,18 1380,68 1440,48 C1620,25 1800,75 2160,42 C2340,22 2520,72 2880,48 L2880,90 L0,90 Z" fill="#F0F7FF" opacity="0.5"/>
-  </svg>
-</div>
-
-<!-- ============================================================
-     WATER FILTRATION ARTICLE
-     ============================================================ -->
-<section id="why-filtration" class="section section-light frost-corner-section" aria-labelledby="filtration-title">
-  <div class="container">
-    <div style="max-width:750px;margin:0 auto;line-height:1.9;">
-      <div class="text-center reveal" style="margin-bottom:36px;">
-        <span class="section-label">WHY IT MATTERS</span>
-        <h2 id="filtration-title" class="section-title light">Why Water Filtration Matters in Sacramento County</h2>
-      </div>
-      <div class="reveal" style="font-size:16px;color:var(--text-on-light);line-height:1.9;">
-        <p style="margin-bottom:22px;">City water throughout Sacramento County, including Elk Grove and surrounding communities, is treated to meet federal safety standards. However, that municipal treatment process often includes chlorine levels of up to <strong style="color:var(--cyan);">4.0 ppm</strong> — similar to what's found in <strong style="color:var(--cyan);">swimming pools</strong>. While chlorine is effective for disinfection, it can negatively impact the taste, smell, and overall feel of your water.</p>
-        <p style="margin-bottom:22px;">Many homeowners in Elk Grove and the greater Sacramento area notice <strong style="color:var(--cyan);">dry skin, dull hair, mineral buildup</strong>, and unpleasant odors as a result of untreated tap water.</p>
-        <p style="margin-bottom:22px;">Installing a professional <strong style="color:var(--cyan);">whole house water filtration system</strong> adds an extra layer of protection and comfort for your home. A properly designed water treatment system helps reduce excess chlorine, minimize mineral scale buildup, and improve overall water quality for bathing, cooking, and drinking.</p>
-        <p style="margin-bottom:36px;">Whether you're looking for improved drinking water, a complete home water treatment solution, or cleaner water throughout your entire property — the right system makes all the difference.</p>
-        <div style="text-align:center;">
-          <a href="#contact" class="btn-primary">
-            Get a Free Water Test
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- thin separator -->
-<div style="height:2px;background:rgba(0,212,255,0.07);" aria-hidden="true"></div>
-
-<!-- ============================================================
-     CONTACT
-     ============================================================ -->
-<section id="contact" class="section section-light frost-corner-section" aria-labelledby="contact-title">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="section-label">Get In Touch</span>
-      <h2 id="contact-title" class="section-title light">Let's Get You Set Up</h2>
-      <p class="section-subtitle light">Tell us about your needs and we'll build the perfect hydration solution for you.</p>
-    </div>
-
-    <div class="contact-grid">
-      <!-- LEFT: Form -->
-      <div class="contact-form-wrap reveal">
-        <h3>Send Us a Message</h3>
-        <!--
-          NETLIFY FORMS: This form is configured for Netlify deployment.
-          On Netlify, form submissions are captured automatically.
-          Replace [EMAIL HERE] in netlify.toml if you want email notifications.
-        -->
-        <form
-          id="contact-form"
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          action="/thank-you"
-        >
-          <!-- Netlify hidden fields -->
-          <input type="hidden" name="form-name" value="contact" />
-          <div style="display:none;">
-            <label>Don't fill this out: <input name="bot-field" /></label>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Full Name *</label>
-              <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name" />
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" autocomplete="tel" />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email Address *</label>
-            <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
-          </div>
-
-          <div class="form-group">
-            <label for="interest">I'm Interested In...</label>
-            <select id="interest" name="interest">
-              <option value="">Select an option</option>
-              <option value="water-delivery">Water Delivery</option>
-              <option value="dispenser-purchase">Dispenser Purchase</option>
-              <option value="dispenser-rental">Dispenser Rental</option>
-              <option value="business-account">Business Account</option>
-              <option value="general">General Question</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="jugs">Number of Jugs Needed</label>
-            <select id="jugs" name="jugs">
-              <option value="">Select quantity</option>
-              <option value="1-2">1–2 jugs</option>
-              <option value="3-4">3–4 jugs</option>
-              <option value="5-6">5–6 jugs</option>
-              <option value="7-8">7–8 jugs</option>
-              <option value="9+">9+ jugs</option>
-              <option value="not-sure">Not sure yet</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="message">Message / Tell Us About Your Needs</label>
-            <textarea id="message" name="message" placeholder="Tell us a bit about yourself — home, office, how many people, etc."></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit">Send Message</button>
-        </form>
-
-        <div id="form-success" class="form-success" role="alert">
-          Thanks! We'll be in touch within 24 hours to get your water flowing. 💧
-        </div>
-      </div>
-
-      <!-- RIGHT: Contact Info -->
-      <div class="contact-info reveal reveal-delay-2">
-        <h3>Contact Information</h3>
-        <div class="contact-info-list">
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-            </div>
-            <div class="contact-info-text">
-              <strong>Phone</strong>
-              <a href="tel:+19166193218" style="font-size:14px;color:var(--text-on-light);transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-on-light)'">(916) 619-3218</a>
-            </div>
-          </div>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-            </div>
-            <div class="contact-info-text">
-              <strong>Address</strong>
-              <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener" style="font-size:14px;color:var(--text-on-light);transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-on-light)'">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
-            </div>
-          </div>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 8v4l3 3"/>
-              </svg>
-            </div>
-            <div class="contact-info-text">
-              <strong>Hours</strong>
-              <span>Mon–Sat until 6 PM &nbsp;·&nbsp; Sunday Closed</span>
-            </div>
-          </div>
-
-          <div class="contact-info-item">
-            <div class="contact-info-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m3 11 19-9-9 19-2-8-8-2z"/>
-              </svg>
-            </div>
-            <div class="contact-info-text">
-              <strong>Service Area</strong>
-              <span>Within 10 miles of Elk Grove — Elk Grove, Sacramento &amp; surrounding areas</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Google Maps Embed -->
-        <div style="margin-top:24px;border-radius:12px;overflow:hidden;border:1px solid rgba(0,212,255,0.12);">
-          <iframe
-            title="Waterboy Delivery location map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3124.0!2d-121.3716!3d38.4088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ad6bfb6b6b6b7%3A0x1!2s7119+Elk+Grove+Blvd%2C+Elk+Grove%2C+CA+95758!5e0!3m2!1sen!2sus!4v1"
-            width="100%"
-            height="220"
-            style="border:0;display:block;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================================================
      FOOTER
      ============================================================ -->
 <footer id="footer" role="contentinfo">
-  <!-- Small wave at the very top of footer -->
-  <div class="wave-section" style="background:var(--bg-light);height:60px;" aria-hidden="true">
+  <div class="wave-section" style="background:var(--bg-secondary);height:60px;" aria-hidden="true">
     <svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 C1680,55 1920,5 2160,30 C2400,55 2640,5 2880,30 L2880,60 L0,60 Z" fill="#070F18"/>
+      <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/>
     </svg>
   </div>
-
   <div class="container footer-grid">
-    <!-- Brand -->
     <div class="footer-brand">
       <img src="logo.png" alt="Waterboy Delivery"
            onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" />
       <div class="footer-tagline">PURE WATER. DELIVERED.</div>
-      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses. Clean water, zero hassle.</p>
+      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p>
+      <a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a>
     </div>
-
-    <!-- Quick Links -->
     <div class="footer-col">
-      <h4>Quick Links</h4>
-      <nav class="footer-links" aria-label="Footer navigation">
-        <a href="#hero">Home</a>
-        <a href="products.html">Products</a>
-        <a href="#delivery">How It Works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#about">About</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
+      <h4>Services</h4>
+      <nav class="footer-links" aria-label="Service links">
+        <a href="water-delivery.html">Water Delivery</a>
+        <a href="dispensers.html">Dispensers</a>
+        <a href="bottle-pickup.html">Bottle Pickup</a>
+        <a href="shop.html">In-Store Products</a>
+        <a href="delivery-areas.html">Service Area</a>
+        <a href="alkaline-water.html">Alkaline Water</a>
       </nav>
     </div>
-
-    <!-- Contact -->
     <div class="footer-col">
-      <h4>Contact Us</h4>
+      <h4>Learn</h4>
+      <nav class="footer-links" aria-label="Info links">
+        <a href="how-it-works.html">How It Works</a>
+        <a href="compare.html">vs Water.com</a>
+        <a href="water-filtration.html">Water Filtration</a>
+        <a href="faq.html">FAQ</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
       <div class="footer-contact-items">
         <div class="footer-contact-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -1554,10 +502,9 @@
         </div>
         <div class="footer-contact-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          <span>Mon–Sat until 6 PM &nbsp;·&nbsp; Sun Closed</span>
+          <span>Mon–Sat 8 AM – 6 PM · Sun Closed</span>
         </div>
       </div>
-
       <div class="payment-methods">
         <span class="payment-methods-label">We Accept</span>
         <div class="payment-badges">
@@ -1570,11 +517,9 @@
       </div>
     </div>
   </div>
-
-  <!-- Bottom bar -->
   <div class="container">
     <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved.</p>
+      <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved. Serving Elk Grove &amp; Sacramento County.</p>
       <nav class="footer-legal" aria-label="Legal">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
@@ -1583,66 +528,13 @@
   </div>
 </footer>
 
-<!-- ============================================================
-     BACK TO TOP
-     ============================================================ -->
 <button id="back-to-top" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-    <path d="m18 15-6-6-6 6"/>
-  </svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
 </button>
 
-<!-- ============================================================
-     WATER TYPE MODAL (shown on first visit)
-     ============================================================ -->
-<div id="water-type-overlay" class="wt-overlay" role="dialog" aria-modal="true" aria-label="Choose your water type" aria-labelledby="wt-modal-title">
-  <div class="wt-modal">
-    <button class="wt-browse-link" id="wt-browse" aria-label="Close and browse with default pricing">Close, just browsing right now</button>
-
-    <div class="wt-head">
-      <h2 id="wt-modal-title">Choose Your Water</h2>
-      <p>We tailor pricing to the water you actually drink. Change anytime.</p>
-    </div>
-
-    <div class="wt-cards" id="wt-cards" role="group" aria-label="Water type options">
-      <div class="wt-card" data-type="ro" role="button" tabindex="0" aria-pressed="false">
-        <div class="wt-card-tag">STANDARD</div>
-        <div class="wt-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-        </div>
-        <h3>Reverse Osmosis</h3>
-        <p>Pure, clean, classic. Filtered to perfection.</p>
-      </div>
-
-      <div class="wt-card" data-type="alkaline" role="button" tabindex="0" aria-pressed="false">
-        <div class="wt-card-tag">PREMIUM</div>
-        <div class="wt-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/><path d="M9 15l1.5 1.5L15 11" stroke-width="2"/></svg>
-        </div>
-        <h3>Alkaline</h3>
-        <p>pH 8.5+. Smoother taste, deeper hydration.</p>
-      </div>
-
-      <div class="wt-card" data-type="hydrogen" role="button" tabindex="0" aria-pressed="false">
-        <div class="wt-card-tag">ELITE</div>
-        <div class="wt-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/><circle cx="12" cy="14" r="2" stroke-width="1.5"/><path d="M12 10v2"/></svg>
-        </div>
-        <h3>Hydrogen</h3>
-        <p>Antioxidant H2 infused. Our top tier.</p>
-      </div>
-    </div>
-
-    <div class="wt-footer">
-      <button class="wb-btn wt-confirm" id="wt-confirm" disabled aria-disabled="true">Confirm</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     SCRIPTS
-     ============================================================ -->
 <script src="script.js"></script>
 <script src="shop.js"></script>
+<script src="water-type-selector.js"></script>
+<script src="shared.js"></script>
 </body>
 </html>
