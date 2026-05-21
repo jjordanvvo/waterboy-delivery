@@ -2,7 +2,7 @@
   'use strict';
 
   var STORAGE_KEY = 'wb_water_type';
-  var VALID_TYPES = ['regular', 'alkaline', 'ro'];
+  var VALID_TYPES = ['ro', 'alkaline', 'hydrogen'];
 
   function isSignedIn() {
     try { return !!localStorage.getItem('wb_user'); } catch (_) { return false; }
@@ -15,6 +15,7 @@
   function getSaved() {
     try {
       var v = getStore().getItem(STORAGE_KEY);
+      if (v === 'regular') return 'hydrogen'; // backward compat
       return VALID_TYPES.indexOf(v) !== -1 ? v : null;
     } catch (_) { return null; }
   }
@@ -32,54 +33,30 @@
     } catch (_) {}
   }
 
-  function updateBar(type) {
-    document.querySelectorAll('.wt-bar-btn').forEach(function (btn) {
+  function updateNav(type) {
+    document.querySelectorAll('.nav-wt-btn').forEach(function (btn) {
       var active = btn.dataset.type === type;
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-pressed', String(active));
     });
   }
 
-  function hideModal() {
-    var modal = document.getElementById('wt-modal');
-    if (!modal || modal.classList.contains('wt-modal-out')) return;
-    modal.classList.add('wt-modal-out');
-    setTimeout(function () { modal.style.display = 'none'; }, 380);
-  }
-
   function select(type) {
     setSaved(type);
-    updateBar(type);
+    updateNav(type);
     dispatchChange(type);
-    hideModal();
   }
 
   function init() {
-    // Sticky bar pill buttons
-    document.querySelectorAll('.wt-bar-btn').forEach(function (btn) {
+    document.querySelectorAll('.nav-wt-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { select(btn.dataset.type); });
-    });
-
-    // Modal option cards — click and keyboard
-    document.querySelectorAll('.wt-modal-option').forEach(function (opt) {
-      opt.addEventListener('click', function () { select(opt.dataset.type); });
-      opt.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          select(opt.dataset.type);
-        }
-      });
     });
 
     var saved = getSaved();
     if (saved) {
-      // User already chose this session/account — apply immediately, skip modal
-      updateBar(saved);
-      var modal = document.getElementById('wt-modal');
-      if (modal) modal.style.display = 'none';
+      updateNav(saved);
     } else {
-      // First visit — show modal, pre-highlight regular in bar
-      updateBar('regular');
+      select('hydrogen');
     }
   }
 

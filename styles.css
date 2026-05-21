@@ -163,10 +163,10 @@ button { font-family: inherit; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  padding: 18px 28px;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   transition: all 0.4s ease;
 }
 #navbar.scrolled {
@@ -384,6 +384,15 @@ button { font-family: inherit; }
   box-shadow: 0 0 28px rgba(0,212,255,0.18);
   color: var(--cyan);
   transform: translateY(-2px);
+}
+.section-light .btn-secondary {
+  color: #1E3A5F;
+  border-color: rgba(30,58,95,0.4);
+}
+.section-light .btn-secondary:hover {
+  color: #0B1B2B;
+  border-color: #1E3A5F;
+  box-shadow: 0 0 20px rgba(30,58,95,0.15);
 }
 
 /* Hero image */

@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Water Delivery Plans & Pricing | Waterboy Delivery — Elk Grove, CA</title>
-  <meta name="description" content="5-gallon water delivery in Elk Grove & Sacramento County. Regular purified from $21/mo, alkaline pH 8.5+ from $25/mo. Weekly, bi-weekly, or monthly. No contracts." />
+  <meta name="description" content="Water delivery in Elk Grove & Sacramento County. RO from $6.99, Alkaline from $7.99, Hydrogen from $12.99 per bottle. Empty jug swap included. No contracts." />
   <meta name="keywords" content="water delivery Elk Grove, 5 gallon water delivery, water delivery Sacramento, alkaline water delivery, water subscription" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://waterboydelivery.com/water-delivery.html" />
 
   <meta property="og:title" content="Water Delivery Plans & Pricing | Waterboy Delivery" />
-  <meta property="og:description" content="Regular from $21/mo · Alkaline from $25/mo. Free delivery within 3 miles. No contracts." />
+  <meta property="og:description" content="RO from $6.99 · Alkaline from $7.99 · Hydrogen from $12.99 per bottle. Free delivery within 3 miles. No contracts." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://waterboydelivery.com/water-delivery.html" />
   <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
@@ -43,11 +43,15 @@
         "addressCountry": "US"
       }
     },
-    "description": "Premium 5-gallon water delivery service offering regular purified and alkaline water to homes and offices in Elk Grove and Sacramento County.",
+    "description": "Premium water delivery service offering RO, alkaline, and hydrogen water to homes and offices in Elk Grove and Sacramento County.",
     "areaServed": "Elk Grove, Sacramento County",
     "offers": [
-      { "@type": "Offer", "name": "Regular Solo Plan", "price": "21.00", "priceCurrency": "USD", "description": "2 × 5-gallon jugs per month" },
-      { "@type": "Offer", "name": "Alkaline Solo Plan", "price": "25.00", "priceCurrency": "USD", "description": "2 × 5-gallon alkaline jugs per month" }
+      { "@type": "Offer", "name": "RO Water — 1 Gallon", "price": "6.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "RO Water — 5 Gallon", "price": "10.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Alkaline Water — 1 Gallon", "price": "7.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Alkaline Water — 5 Gallon", "price": "13.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Hydrogen Water — 1 Gallon", "price": "12.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Hydrogen Water — 5 Gallon", "price": "24.99", "priceCurrency": "USD" }
     ]
   }
   </script>
@@ -122,16 +126,6 @@
     .alkaline-card.featured::before { background:linear-gradient(135deg,#00D4FF,#38BDF8); }
     .alkaline-card .pricing-card-cta { background:linear-gradient(135deg,#00D4FF,#38BDF8); }
 
-    .freq-tabs { display:flex; gap:8px; justify-content:center; margin:0 0 40px; flex-wrap:wrap; }
-    .freq-tab {
-      padding:8px 20px; border-radius:8px; border:1px solid rgba(0,212,255,0.2);
-      background:transparent; color:var(--text-muted-dark); cursor:pointer;
-      font-family:'Outfit',sans-serif; font-size:14px; font-weight:600;
-      transition:all 0.2s;
-    }
-    .freq-tab.active { background:rgba(0,212,255,0.12); color:var(--cyan); border-color:rgba(0,212,255,0.4); }
-
-    .freq-note { text-align:center; font-size:13px; color:var(--text-muted-dark); margin:-28px 0 40px; }
 
     .delivery-zone-table { width:100%; border-collapse:collapse; }
     .delivery-zone-table th, .delivery-zone-table td {
@@ -164,60 +158,11 @@
 </head>
 <body>
 
-<!-- WATER TYPE STICKY BAR -->
-<div id="wt-sticky-bar" role="navigation" aria-label="Water type selector">
-  <span id="wt-bar-label">Water Type:</span>
-  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-    Regular
-  </button>
-  <button class="wt-bar-btn" data-type="alkaline" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-    Alkaline <span class="wt-bar-badge">Only Us!</span>
-  </button>
-  <button class="wt-bar-btn" data-type="ro" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-    RO
-  </button>
-</div>
 
-<!-- WATER TYPE MODAL -->
-<div id="wt-modal" role="dialog" aria-modal="true" aria-labelledby="wt-modal-title">
-  <div id="wt-modal-card">
-    <div class="wt-modal-header-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-    </div>
-    <h2 class="wt-modal-title" id="wt-modal-title">Choose Your Water</h2>
-    <p class="wt-modal-sub">Tell us what you drink &mdash; we'll tailor pricing and recommendations just for you.</p>
-    <div class="wt-modal-options">
-      <div class="wt-modal-option" data-type="regular" role="button" tabindex="0" aria-label="Select Regular water">
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Regular</div>
-        <div class="wt-modal-option-desc">Multi-stage purified &middot; pH 7.0</div>
-        <div class="wt-modal-option-price">From $21/mo</div>
-      </div>
-      <div class="wt-modal-option wt-alkaline-opt" data-type="alkaline" role="button" tabindex="0" aria-label="Select Alkaline water">
-        <span class="wt-modal-option-badge">Only Us!</span>
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Alkaline pH 8.5+</div>
-        <div class="wt-modal-option-desc">Smooth taste &middot; Fitness-ready</div>
-        <div class="wt-modal-option-price">From $25/mo</div>
-      </div>
-      <div class="wt-modal-option wt-ro-opt" data-type="ro" role="button" tabindex="0" aria-label="Select Reverse Osmosis water">
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Reverse Osmosis</div>
-        <div class="wt-modal-option-desc">Ultra-pure &middot; 99% contaminants removed</div>
-        <div class="wt-modal-option-price">Pricing TBD</div>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+
+
 
 <!-- NAVBAR -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
@@ -226,54 +171,17 @@
     <span>Menu</span>
   </button>
   <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo"
-         onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
+    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
   </a>
-  <ul class="nav-links" role="list" style="display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0">
-    <li><a href="water-delivery.html" class="nav-link">Water Delivery</a></li>
-    <li><a href="dispensers.html" class="nav-link">Dispensers</a></li>
-    <li><a href="bottle-pickup.html" class="nav-link">Bottle Pickup</a></li>
-    <li><a href="shop.html" class="nav-link">Shop</a></li>
-    <li><a href="delivery-areas.html" class="nav-link">Service Area</a></li>
-    <li class="nav-more-item">
-      <button class="nav-more-btn" aria-expanded="false" aria-haspopup="true">
-        More <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <ul class="nav-more-dropdown">
-        <li><a href="how-it-works.html">How It Works</a></li>
-        <li><a href="compare.html">vs Water.com</a></li>
-        <li><a href="water-filtration.html">Water Filtration</a></li>
-        <li><a href="alkaline-water.html">Alkaline Water</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ</a></li><li><a href="reverse-osmosis-water.html">Reverse Osmosis Water</a></li>
-      </ul>
-    </li>
-  </ul>
-  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
+    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  </div>
+  <ul class="nav-links" role="list" style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:8px;"></ul>
 </nav>
 
-<!-- Mobile menu -->
-<div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Site navigation">
-  <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
-  <a href="index.html">Home</a>
-  <a href="water-delivery.html">Water Delivery</a>
-  <a href="dispensers.html">Dispensers</a>
-  <a href="bottle-pickup.html">Bottle Pickup</a>
-  <a href="shop.html">Shop</a>
-  <a href="delivery-areas.html">Service Area</a>
-  <hr class="mobile-menu-divider" aria-hidden="true">
-  <a href="how-it-works.html">How It Works</a>
-  <a href="compare.html">vs Water.com</a>
-  <a href="water-filtration.html">Water Filtration</a>
-  <a href="alkaline-water.html">Alkaline Water</a>
-  <a href="about.html">About Us</a>
-  <a href="faq.html">FAQ</a>
-  <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
-  <a href="contact.html" class="mobile-cta">Contact Us</a>
-</div>
+
 
 <!-- BREADCRUMB -->
 <nav class="breadcrumb-nav" aria-label="Breadcrumb">
@@ -291,7 +199,7 @@
   <div class="container" style="position:relative;z-index:1;">
     <span class="section-label">Elk Grove &amp; Sacramento County</span>
     <h1 id="page-hero-title" class="page-hero-title">Water Delivery Plans &amp; Pricing</h1>
-    <p class="page-hero-sub">Fresh 5-gallon jugs delivered to your door. Regular purified or alkaline pH 8.5+ — your choice, your schedule, no contracts.</p>
+    <p class="page-hero-sub">Fresh water delivered to your door. RO, alkaline, or hydrogen — choose your type and size. No contracts.</p>
   </div>
 </header>
 
@@ -299,233 +207,128 @@
 <section class="section section-dark" aria-labelledby="pricing-heading">
   <div class="container">
     <div class="text-center reveal" style="margin-bottom:40px;">
-      <span class="section-label">Subscription Plans</span>
-      <h2 id="pricing-heading" class="section-title dark">Choose Your Water &amp; Plan</h2>
-      <p class="section-subtitle dark">All plans include empty jug swap. No contracts — pause or cancel anytime.</p>
+      <span class="section-label">Per-Bottle Pricing</span>
+      <h2 id="pricing-heading" class="section-title dark">Choose Your Water Type</h2>
+      <p class="section-subtitle dark">Simple per-bottle pricing. Empty jug swap included. No contracts.</p>
     </div>
 
     <!-- Water type toggle -->
     <div class="wt-page-toggle reveal" role="tablist" aria-label="Water type">
-      <button class="wt-page-btn active" data-panel="regular" role="tab" aria-selected="true" aria-controls="panel-regular">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-        Regular Purified
+      <button class="wt-page-btn ro-btn active" data-panel="ro" role="tab" aria-selected="true" aria-controls="panel-ro">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
+        Reverse Osmosis
       </button>
       <button class="wt-page-btn alkaline-btn" data-panel="alkaline" role="tab" aria-selected="false" aria-controls="panel-alkaline">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Alkaline pH 8.5+
       </button>
-      <button class="wt-page-btn ro-btn" data-panel="ro" role="tab" aria-selected="false" aria-controls="panel-ro">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-        Reverse Osmosis
+      <button class="wt-page-btn" data-panel="hydrogen" role="tab" aria-selected="false" aria-controls="panel-hydrogen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
+        Hydrogen Water
       </button>
     </div>
 
-    <!-- Frequency tabs -->
-    <div class="freq-tabs reveal" role="group" aria-label="Delivery frequency">
-      <button class="freq-tab active" data-freq="monthly">Monthly</button>
-      <button class="freq-tab" data-freq="biweekly">Bi-Weekly (save 5%)</button>
-      <button class="freq-tab" data-freq="weekly">Weekly (save 10%)</button>
-    </div>
-
-    <!-- Regular Panel -->
-    <div id="panel-regular" class="pricing-panel active" role="tabpanel" aria-labelledby="tab-regular">
+    <!-- RO Panel -->
+    <div id="panel-ro" class="pricing-panel active" role="tabpanel">
+      <div class="text-center" style="margin-bottom:24px;">
+        <span class="section-label" style="color:#38BDF8;">Ultra-Pure Water</span>
+        <p class="section-subtitle dark" style="margin-top:8px;">99% of contaminants removed through reverse osmosis filtration.</p>
+      </div>
       <div class="pricing-grid reveal">
         <div class="pricing-card">
-          <div class="pricing-card-name">Solo</div>
-          <div class="pricing-card-jugs">2 × 5-gallon jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="21">21</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>Perfect for 1–2 people</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Pause or cancel anytime</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Solo Plan</button>
+          <div class="pricing-card-name">1 Gallon</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup>6<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta" style="background:#38BDF8;">Order Now</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-card-name">Family</div>
-          <div class="pricing-card-jugs">4 × 5-gallon jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="42">42</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>Great for 3–5 people</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Pause or cancel anytime</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Family Plan</button>
+          <div class="pricing-card-name">2 Gallon</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup>8<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta" style="background:#38BDF8;">Order Now</a>
         </div>
-        <div class="pricing-card featured">
-          <div class="pricing-card-name">Household</div>
-          <div class="pricing-card-jugs">6 × 5-gallon jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="57">57</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>Ideal for large families</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Priority scheduling</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Household Plan</button>
+        <div class="pricing-card featured" style="border-color:#38BDF8;box-shadow:0 0 0 1px #38BDF8,0 12px 40px rgba(56,189,248,0.15);">
+          <div class="pricing-card-name">3 Gallon</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup>9<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta" style="background:#38BDF8;">Order Now</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-card-name">Office</div>
-          <div class="pricing-card-jugs">8 × 5-gallon jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="72">72</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>Small teams &amp; offices</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Dedicated account rep</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Office Plan</button>
-        </div>
-        <div class="pricing-card">
-          <div class="pricing-card-name">Max Bundle</div>
-          <div class="pricing-card-jugs">12 × 5-gallon jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="95">95</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">~$7.92 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>Large offices &amp; events</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Priority scheduling</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Max Bundle</button>
+          <div class="pricing-card-name">5 Gallon</div>
+          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup>10<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta" style="background:#38BDF8;">Order Now</a>
         </div>
       </div>
     </div>
 
     <!-- Alkaline Panel -->
-    <div id="panel-alkaline" class="pricing-panel" role="tabpanel" aria-labelledby="tab-alkaline">
+    <div id="panel-alkaline" class="pricing-panel" role="tabpanel">
       <div class="text-center" style="margin-bottom:24px;">
         <span class="section-label" style="color:#38BDF8;">Only Available at Waterboy</span>
-        <p class="section-subtitle dark" style="margin-top:8px;">Alkaline pH 8.5+ water — smooth, clean, fitness-ready. We're the only local delivery service that carries it.</p>
+        <p class="section-subtitle dark" style="margin-top:8px;">Alkaline pH 8.5+ water — smooth, clean, fitness-ready.</p>
       </div>
-      <div class="pricing-grid reveal" style="max-width:800px;margin:0 auto;">
+      <div class="pricing-grid reveal">
         <div class="pricing-card alkaline-card">
-          <div class="pricing-card-name">Alkaline Solo</div>
-          <div class="pricing-card-jugs">2 × 5-gallon alkaline jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="25">25</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$8.33 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>pH 8.5+ certified</li>
-            <li>Smooth &amp; clean taste</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Alkaline Solo</button>
+          <div class="pricing-card-name">1 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>7<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
+        </div>
+        <div class="pricing-card alkaline-card">
+          <div class="pricing-card-name">2 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>10<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
         <div class="pricing-card alkaline-card featured">
-          <div class="pricing-card-name">Alkaline Family</div>
-          <div class="pricing-card-jugs">4 × 5-gallon alkaline jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="45">45</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">~$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>pH 8.5+ certified</li>
-            <li>Great for active families</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Alkaline Family</button>
+          <div class="pricing-card-name">3 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>11<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
         <div class="pricing-card alkaline-card">
-          <div class="pricing-card-name">Alkaline Max</div>
-          <div class="pricing-card-jugs">8 × 5-gallon alkaline jugs</div>
-          <div class="pricing-card-price"><sup>$</sup><span class="price-val" data-base="60">60</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">$7.50 per jug · billed monthly</div>
-          <ul class="pricing-card-bullets">
-            <li>pH 8.5+ certified</li>
-            <li>Offices &amp; large households</li>
-            <li>Empty jug swap included</li>
-            <li>Priority scheduling</li>
-          </ul>
-          <button class="pricing-card-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Sign in to start your plan.')">Start Alkaline Max</button>
+          <div class="pricing-card-name">5 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>13<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
       </div>
     </div>
 
-    <!-- RO Panel -->
-    <div id="panel-ro" class="pricing-panel" role="tabpanel" aria-labelledby="tab-ro">
+    <!-- Hydrogen Panel -->
+    <div id="panel-hydrogen" class="pricing-panel" role="tabpanel">
       <div class="text-center" style="margin-bottom:24px;">
-        <span class="section-label" style="color:#38BDF8;">Ultra-Pure Water</span>
-        <p class="section-subtitle dark" style="margin-top:8px;">99% of contaminants removed through reverse osmosis filtration. The purest water we offer.</p>
-        <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:12px;padding:14px 20px;max-width:480px;margin:20px auto 0;font-size:13px;color:#38BDF8;font-family:'Space Grotesk',sans-serif;font-weight:600;">
-          RO pricing is coming soon &mdash; contact us for current rates.
-        </div>
+        <span class="section-label" style="color:var(--cyan);">Premium Hydrogen Water</span>
+        <p class="section-subtitle dark" style="margin-top:8px;">Infused with molecular hydrogen — the highest-grade water we offer.</p>
       </div>
       <div class="pricing-grid reveal">
         <div class="pricing-card">
-          <div class="pricing-card-name">Solo</div>
-          <div class="pricing-card-jugs">2 &times; 5-gallon RO jugs</div>
-          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="24" data-placeholder="true">24</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
-          <ul class="pricing-card-bullets">
-            <li>99% contaminants removed</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-            <li>Pause or cancel anytime</li>
-          </ul>
-          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+          <div class="pricing-card-name">1 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>12<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-card-name">Family</div>
-          <div class="pricing-card-jugs">4 &times; 5-gallon RO jugs</div>
-          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="46" data-placeholder="true">46</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
-          <ul class="pricing-card-bullets">
-            <li>99% contaminants removed</li>
-            <li>Great for families</li>
-            <li>Empty jug swap included</li>
-            <li>Free delivery within 3 mi</li>
-          </ul>
-          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+          <div class="pricing-card-name">2 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>17<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
-        <div class="pricing-card featured" style="border-color:#38BDF8;box-shadow:0 0 0 1px #38BDF8,0 12px 40px rgba(56,189,248,0.15);">
-          <div class="pricing-card-name">Household</div>
-          <div class="pricing-card-jugs">6 &times; 5-gallon RO jugs</div>
-          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="63" data-placeholder="true">63</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
-          <ul class="pricing-card-bullets">
-            <li>99% contaminants removed</li>
-            <li>Ideal for large families</li>
-            <li>Empty jug swap included</li>
-            <li>Priority scheduling</li>
-          </ul>
-          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+        <div class="pricing-card featured">
+          <div class="pricing-card-name">3 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>20<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-card-name">Office</div>
-          <div class="pricing-card-jugs">8 &times; 5-gallon RO jugs</div>
-          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="80" data-placeholder="true">80</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
-          <ul class="pricing-card-bullets">
-            <li>99% contaminants removed</li>
-            <li>Small teams &amp; offices</li>
-            <li>Empty jug swap included</li>
-            <li>Dedicated account rep</li>
-          </ul>
-          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
-        </div>
-        <div class="pricing-card">
-          <div class="pricing-card-name">Max Bundle</div>
-          <div class="pricing-card-jugs">12 &times; 5-gallon RO jugs</div>
-          <div class="pricing-card-price" style="color:#38BDF8;"><sup>$</sup><span class="price-val" data-base="108" data-placeholder="true">108</span><sub>/mo</sub></div>
-          <div class="pricing-card-per">pricing TBD &mdash; contact us</div>
-          <ul class="pricing-card-bullets">
-            <li>99% contaminants removed</li>
-            <li>Large offices &amp; events</li>
-            <li>Empty jug swap included</li>
-            <li>Priority scheduling</li>
-          </ul>
-          <a href="contact.html" class="pricing-card-cta" style="display:block;text-align:center;">Contact for Pricing</a>
+          <div class="pricing-card-name">5 Gallon</div>
+          <div class="pricing-card-price"><sup>$</sup>24<sub>.99</sub></div>
+          <div class="pricing-card-per">per bottle</div>
+          <a href="contact.html" class="pricing-card-cta">Order Now</a>
         </div>
       </div>
     </div>
-
-    <p class="freq-note reveal" style="margin-top:24px;">* Bi-weekly and weekly discounts applied at checkout. All prices shown are monthly base rates. RO prices are placeholders — contact us for current rates.</p>
   </div>
 </section>
 
@@ -540,7 +343,7 @@
       <div class="how-delivery-step reveal reveal-delay-1">
         <div class="how-delivery-step-num">1</div>
         <h4>Choose Your Plan</h4>
-        <p>Pick the number of jugs and water type — regular or alkaline. Select your frequency: monthly, bi-weekly, or weekly.</p>
+        <p>Pick your water type — RO, alkaline, or hydrogen — and the bottle size that works for you.</p>
       </div>
       <div class="how-delivery-step reveal reveal-delay-2">
         <div class="how-delivery-step-num">2</div>
@@ -649,9 +452,8 @@
     </div>
     <div class="footer-col">
       <h4>Learn</h4>
-      <nav class="footer-links" aria-label="Info links">
+            <nav class="footer-links" aria-label="Info links">
         <a href="how-it-works.html">How It Works</a>
-        <a href="compare.html">vs Water.com</a>
         <a href="water-filtration.html">Water Filtration</a>
         <a href="faq.html">FAQ</a>
         <a href="about.html">About Us</a>
@@ -706,6 +508,7 @@
     </button>
   </div>
   <nav class="left-drawer-nav" aria-label="Full site navigation">
+    <a href="index.html" class="left-drawer-link">Home</a>
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Shop &amp; Services</div>
       <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
@@ -718,7 +521,6 @@
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Learn</div>
       <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="compare.html" class="left-drawer-link">Compare to Water.com</a>
       <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
       <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
     </div>
@@ -747,7 +549,6 @@
 (function () {
   'use strict';
 
-  /* ── Water type panel toggle ── */
   var panelBtns = document.querySelectorAll('.wt-page-btn');
   var panels = document.querySelectorAll('.pricing-panel');
 
@@ -765,32 +566,13 @@
     btn.addEventListener('click', function () { switchPanel(btn.dataset.panel); });
   });
 
-  /* Sync with global water type selection */
   document.addEventListener('waterTypeChanged', function (e) {
     var t = e.detail;
-    switchPanel(t === 'alkaline' ? 'alkaline' : t === 'ro' ? 'ro' : 'regular');
+    switchPanel(t === 'alkaline' ? 'alkaline' : t === 'ro' ? 'ro' : 'hydrogen');
   });
 
-  /* On load, sync to saved selection */
   var saved = sessionStorage.getItem('wb_water_type') || localStorage.getItem('wb_water_type');
-  if (saved) switchPanel(saved === 'alkaline' ? 'alkaline' : saved === 'ro' ? 'ro' : 'regular');
-
-  /* ── Frequency tabs ── */
-  var freqTabs = document.querySelectorAll('.freq-tab');
-  var discounts = { monthly: 1, biweekly: 0.95, weekly: 0.90 };
-
-  function applyFreq(freq) {
-    freqTabs.forEach(function (t) { t.classList.toggle('active', t.dataset.freq === freq); });
-    var mult = discounts[freq] || 1;
-    document.querySelectorAll('.price-val').forEach(function (el) {
-      var base = parseFloat(el.dataset.base);
-      el.textContent = Math.floor(base * mult);
-    });
-  }
-
-  freqTabs.forEach(function (tab) {
-    tab.addEventListener('click', function () { applyFreq(tab.dataset.freq); });
-  });
+  if (saved) switchPanel(saved === 'alkaline' ? 'alkaline' : saved === 'ro' ? 'ro' : 'hydrogen');
 })();
 </script>
 </body>

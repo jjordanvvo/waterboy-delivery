@@ -26,61 +26,12 @@
 <!-- ============================================================
      WATER TYPE STICKY BAR
      ============================================================ -->
-<div id="wt-sticky-bar" role="navigation" aria-label="Water type selector">
-  <span id="wt-bar-label">Water Type:</span>
-  <button class="wt-bar-btn" data-type="regular" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-    Regular
-  </button>
-  <button class="wt-bar-btn" data-type="alkaline" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-    Alkaline <span class="wt-bar-badge">Only Us!</span>
-  </button>
-  <button class="wt-bar-btn" data-type="ro" aria-pressed="false">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-    RO
-  </button>
-</div>
+
 
 <!-- ============================================================
      WATER TYPE MODAL
      ============================================================ -->
-<div id="wt-modal" role="dialog" aria-modal="true" aria-labelledby="wt-modal-title">
-  <div id="wt-modal-card">
-    <div class="wt-modal-header-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-    </div>
-    <h2 class="wt-modal-title" id="wt-modal-title">Choose Your Water</h2>
-    <p class="wt-modal-sub">Tell us what you drink &mdash; we'll tailor pricing and recommendations just for you.</p>
-    <div class="wt-modal-options">
-      <div class="wt-modal-option" data-type="regular" role="button" tabindex="0" aria-label="Select Regular water">
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Regular</div>
-        <div class="wt-modal-option-desc">Multi-stage purified &middot; pH 7.0</div>
-        <div class="wt-modal-option-price">From $21/mo</div>
-      </div>
-      <div class="wt-modal-option wt-alkaline-opt" data-type="alkaline" role="button" tabindex="0" aria-label="Select Alkaline water">
-        <span class="wt-modal-option-badge">Only Us!</span>
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Alkaline pH 8.5+</div>
-        <div class="wt-modal-option-desc">Smooth taste &middot; Fitness-ready</div>
-        <div class="wt-modal-option-price">From $25/mo</div>
-      </div>
-      <div class="wt-modal-option wt-ro-opt" data-type="ro" role="button" tabindex="0" aria-label="Select Reverse Osmosis water">
-        <div class="wt-modal-option-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-        </div>
-        <div class="wt-modal-option-name">Reverse Osmosis</div>
-        <div class="wt-modal-option-desc">Ultra-pure &middot; 99% contaminants removed</div>
-        <div class="wt-modal-option-price">Pricing TBD</div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- ============================================================
      QUICK LOADING SCREEN
@@ -103,23 +54,14 @@
     <span>Menu</span>
   </button>
   <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo"
-         onerror="this.outerHTML='<span style=\'font-family:Outfit,sans-serif;font-size:20px;font-weight:900;color:#00D4FF;\'>WATERBOY</span>'" />
+    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
   </a>
-
-  <ul class="nav-links" role="list">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="products.html" class="nav-active">Products</a></li>
-    <li><a href="index.html#delivery">Delivery</a></li>
-    <li><a href="index.html#pricing">Pricing</a></li>
-    <li><a href="index.html#about">About</a></li>
-    <li><a class="nav-app-pill" href="./app/customer.html">Get the App</a></li>
-    <li><a href="index.html#contact" class="nav-cta">Order Now</a></li>
-  </ul>
-
-  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
+    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  </div>
+  <ul class="nav-links" role="list" style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:8px;"></ul>
 </nav>
 
 <!-- Mobile full-screen menu -->
@@ -770,6 +712,7 @@
     </button>
   </div>
   <nav class="left-drawer-nav" aria-label="Full site navigation">
+    <a href="index.html" class="left-drawer-link">Home</a>
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Shop &amp; Services</div>
       <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
@@ -782,7 +725,6 @@
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Learn</div>
       <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="compare.html" class="left-drawer-link">Compare to Water.com</a>
       <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
       <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
     </div>
