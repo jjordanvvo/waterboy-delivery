@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -14,10 +14,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
   <link rel="stylesheet" href="water-type-selector.css" />
+  <link rel="stylesheet" href="global.css" />
 
   <script type="application/ld+json">
   {
@@ -69,7 +70,7 @@
       color:rgba(0,212,255,0.3);
     }
     .dispenser-image-placeholder svg { width:80px; height:80px; }
-    .dispenser-image-placeholder span { font-size:12px; font-family:'Space Grotesk',sans-serif; letter-spacing:1px; }
+    .dispenser-image-placeholder span { font-size:12px; font-family:'Outfit',sans-serif; letter-spacing:1px; }
 
     .dispenser-badge {
       position:absolute; top:16px; left:16px;
@@ -77,13 +78,13 @@
       padding:4px 10px; border-radius:6px; letter-spacing:0.5px;
     }
     .dispenser-body { padding:28px 28px 32px; }
-    .dispenser-brand { font-size:11px; color:var(--text-muted-dark); font-family:'Space Grotesk',sans-serif; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
+    .dispenser-brand { font-size:11px; color:var(--text-muted-dark); font-family:'Outfit',sans-serif; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
     .dispenser-name { font-family:'Outfit',sans-serif; font-size:22px; font-weight:800; color:var(--frost); margin:0 0 8px; }
     .dispenser-tagline { font-size:14px; color:var(--text-muted-dark); margin:0 0 20px; line-height:1.5; }
 
     .dispenser-price-block { display:flex; gap:24px; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap; }
     .dispenser-price-item { }
-    .dispenser-price-label { font-size:11px; color:var(--text-muted-dark); font-family:'Space Grotesk',sans-serif; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; }
+    .dispenser-price-label { font-size:11px; color:var(--text-muted-dark); font-family:'Outfit',sans-serif; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; }
     .dispenser-price-val { font-family:'Outfit',sans-serif; font-size:32px; font-weight:800; color:var(--cyan); }
     .dispenser-price-val sub { font-size:14px; color:var(--text-muted-dark); font-weight:500; }
     .dispenser-price-note { font-size:12px; color:var(--text-muted-dark); margin-top:2px; }
@@ -133,21 +134,36 @@
 
 
 <!-- NAVBAR -->
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
-  </button>
-  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
-  </a>
-  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
-    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
+      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+    </a>
+    <div class="nav-center-links">
+      <a href="water-delivery.html" class="nav-link">Delivery</a>
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="dispensers.html" class="nav-link">Dispensers</a>
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
+      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+    </div>
+    <div class="nav-right">
+      <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
+      <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
+    </div>
   </div>
-  <ul class="nav-links" role="list" style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:8px;"></ul>
 </nav>
+<div id="water-type-bar" class="water-type-bar">
+  <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
+  <button id="wtb-change" class="wtb-change">Change</button>
+</div>
 
 
 <!-- BREADCRUMB -->
@@ -446,5 +462,18 @@
 <script src="water-type-selector.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<div id="water-type-overlay" aria-hidden="true">
+  <div class="wt-overlay-box">
+    <h3 class="wt-overlay-title">Select Water Type</h3>
+    <div class="wt-overlay-opts">
+      <button class="wt-overlay-opt" data-type="ro"><span class="wto-name">RO Water</span><span class="wto-sub">Ultra-pure, 99% contaminants removed</span></button>
+      <button class="wt-overlay-opt" data-type="alkaline"><span class="wto-name">Alkaline Water</span><span class="wto-sub">pH 8.5+, smooth taste</span></button>
+      <button class="wt-overlay-opt" data-type="hydrogen"><span class="wto-name">Hydrogen Water</span><span class="wto-sub">Infused molecular hydrogen</span></button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* ================================================================
+﻿/* ================================================================
    SHOP.JS — Cart · Checkout · Auth · Modals · Subscription
    Waterboy Delivery  (v2 — all buttons fixed)
    ================================================================ */
@@ -472,7 +472,7 @@ function updateNavUser(){
     drop.innerHTML = user
       ? `<button class="nud-item" id="nud-account">My Account</button><button class="nud-item" id="nud-orders">My Orders</button><button class="nud-item nud-out" id="nud-signout">Sign Out</button>`
       : `<button class="nud-item" id="nud-signin">Sign In</button><button class="nud-item" id="nud-signup">Create Account</button>`;
-    drop.querySelector('#nud-signout')?.addEventListener('click',()=>{ user=null; saveUser(null); updateNavUser(); toast('Signed out','See you next time!','👋'); });
+    drop.querySelector('#nud-signout')?.addEventListener('click',()=>{ user=null; saveUser(null); updateNavUser(); toast('Signed out','See you next time!',''); });
     drop.querySelector('#nud-signin')?.addEventListener('click',()=>openAuthModal('signin'));
     drop.querySelector('#nud-signup')?.addEventListener('click',()=>openAuthModal('signup'));
   });
@@ -988,7 +988,8 @@ function wireAuth(){
     if((email===DEMO_EMAIL&&pass===DEMO_PASS)||pass.length>=6){
       user={name:email===DEMO_EMAIL?'Demo User':email.split('@')[0], email, phone:'', addr:'', city:'Sacramento', zip:''};
       saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-      toast('Welcome!','You are now signed in','👋');
+      const firstName=user.name.split(' ')[0];
+      toast('Welcome back, '+firstName+'!','You are now signed in','');
     } else { errEl.textContent='Invalid email or password.'; errEl.style.display='block'; }
   });
   document.getElementById('su-submit')?.addEventListener('click',()=>{
@@ -1000,7 +1001,7 @@ function wireAuth(){
     if(!fname||!email||pass.length<8){ errEl.textContent='Name, email and 8-char password required.'; errEl.style.display='block'; return; }
     user={name:`${fname} ${lname}`.trim(), email, phone:(document.getElementById('su-phone').value||''), addr:(document.getElementById('su-addr').value||''), city:(document.getElementById('su-city').value||''), zip:(document.getElementById('su-zip').value||'')};
     saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-    toast('Account created!','Welcome, '+fname+'!','🎉');
+    toast('Welcome to Waterboy, '+fname+'!','Your account is ready','');
   });
 }
 
@@ -1043,8 +1044,8 @@ function wireCartDrawer(){
   });
   document.getElementById('promo-apply')?.addEventListener('click',()=>{
     const code=(document.getElementById('promo-input')?.value||'').trim().toUpperCase();
-    if(code==='WATERBOY10') toast('Promo applied!','10% off your order','🎉');
-    else toast('Invalid code','Promo code not found','❌');
+    if(code==='WATERBOY10') toast('Promo applied!','10% off your order','');
+    else toast('Invalid code','Promo code not found','');
   });
 }
 
@@ -1053,7 +1054,7 @@ let coAddonQtys = {}; // addon id → qty
 
 function wireCheckout(){
   document.getElementById('co-next-0')?.addEventListener('click',()=>{
-    if(!(document.getElementById('co-fname')?.value)||!(document.getElementById('co-email')?.value)){ toast('Missing info','Please fill in name and email','⚠️'); return; }
+    if(!(document.getElementById('co-fname')?.value)||!(document.getElementById('co-email')?.value)){ toast('Missing info','Please fill in name and email',''); return; }
     gotoStep('checkout-overlay',1);
     buildCalendar('co-calendar',3,d=>{ coState.date=d; });
     buildTimeWindows('co-time-wins',t=>{ coState.time=t; });
@@ -1106,10 +1107,10 @@ function wireCheckout(){
   });
 
   document.getElementById('co-next-1')?.addEventListener('click',()=>{
-    if(!coState.date){ toast('Pick a date','Select a delivery date','📅'); return; }
-    if(!coState.time){ toast('Pick a time','Select a time window','⏰'); return; }
+    if(!coState.date){ toast('Pick a date','Select a delivery date',''); return; }
+    if(!coState.time){ toast('Pick a time','Select a time window',''); return; }
     if(coState.orderType==='one-time'&&!coState.bottleReturn){
-      toast('Bottle return','Please select how you\'ll return empty jugs','♻️'); return;
+      toast('Bottle return','Please select how you\'ll return empty jugs',''); return;
     }
     // Step 1 → add-ons step → payment
     gotoStep('checkout-overlay',2);
@@ -1119,14 +1120,14 @@ function wireCheckout(){
   document.getElementById('co-back-1')?.addEventListener('click',()=>gotoStep('checkout-overlay',0));
   document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',2));
   document.getElementById('co-place-order')?.addEventListener('click',()=>{
-    if(!(document.getElementById('co-card')?.value)||!(document.getElementById('co-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
+    if(!(document.getElementById('co-card')?.value)||!(document.getElementById('co-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
     gotoStep('checkout-overlay',4);
     const numEl=document.getElementById('co-order-num'); if(numEl) numEl.textContent=genId();
     cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
-    toast('Order placed!','Check your email for confirmation','✅');
+    toast('Order placed!','Check your email for confirmation','');
   });
-  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful','✅'); }));
-  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful','✅'); }));
+  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful',''); }));
+  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful',''); }));
   document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
   const coCard=document.getElementById('co-card'); coCard?.addEventListener('input',()=>{ let v=coCard.value.replace(/\D/g,'').slice(0,16); coCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
   const coExp=document.getElementById('co-exp'); coExp?.addEventListener('input',()=>{ let v=coExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); coExp.value=v; });
@@ -1146,13 +1147,13 @@ function wireSubscription(){
   });
   document.getElementById('sub-next-0')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-next-1')?.addEventListener('click',()=>{
-    if(!(document.getElementById('sub-fname')?.value)||!(document.getElementById('sub-email')?.value)){ toast('Missing info','Name and email required','⚠️'); return; }
+    if(!(document.getElementById('sub-fname')?.value)||!(document.getElementById('sub-email')?.value)){ toast('Missing info','Name and email required',''); return; }
     gotoStep('sub-overlay',2); buildCalendar('sub-calendar',3,d=>{ subState.date=d; }); buildTimeWindows('sub-time-wins',t=>{ subState.time=t; });
   });
   document.getElementById('sub-back-1')?.addEventListener('click',()=>gotoStep('sub-overlay',0));
   document.getElementById('sub-next-2')?.addEventListener('click',()=>{
-    if(!subState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
-    if(!subState.time){ toast('Pick a time','Select a time window','⏰'); return; }
+    if(!subState.date){ toast('Pick a date','Select your first delivery date',''); return; }
+    if(!subState.time){ toast('Pick a time','Select a time window',''); return; }
     gotoStep('sub-overlay',3);
     const plan=PLANS[subState.plan]||{}; const jugs=plan.jugs||0; const extra=subState.waterType==='alkaline'?jugs*4:0;
     const zd=zoneFeeDisplay(currentZone); const total=(plan.price||0)+extra+zd.fee;
@@ -1161,9 +1162,9 @@ function wireSubscription(){
   });
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
-  const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!','🎉'); };
+  const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!',''); };
   document.getElementById('sub-subscribe-btn')?.addEventListener('click',()=>{
-    if(!(document.getElementById('sub-card')?.value)||!(document.getElementById('sub-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
+    if(!(document.getElementById('sub-card')?.value)||!(document.getElementById('sub-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
     doSubConfirm();
   });
   document.getElementById('sub-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doSubConfirm));
@@ -1202,18 +1203,18 @@ function wireDeliveryModal(){
     }
   });
   document.getElementById('dv-next-0')?.addEventListener('click',()=>{
-    if(!(document.getElementById('dv-fname')?.value)||!(document.getElementById('dv-email')?.value)){ toast('Missing info','Name and email required','⚠️'); return; }
+    if(!(document.getElementById('dv-fname')?.value)||!(document.getElementById('dv-email')?.value)){ toast('Missing info','Name and email required',''); return; }
     gotoStep('delivery-overlay',1);
   });
   document.getElementById('dv-back-1')?.addEventListener('click',()=>gotoStep('delivery-overlay',0));
   document.getElementById('dv-next-1')?.addEventListener('click',()=>{
-    if(!dvState.plan){ toast('Choose a plan','Please select a delivery plan','📦'); return; }
+    if(!dvState.plan){ toast('Choose a plan','Please select a delivery plan',''); return; }
     gotoStep('delivery-overlay',2);
     buildCalendar('dv-calendar',3,d=>{ dvState.date=d; });
   });
   document.getElementById('dv-back-2')?.addEventListener('click',()=>gotoStep('delivery-overlay',1));
   document.getElementById('dv-next-2')?.addEventListener('click',()=>{
-    if(!dvState.date){ toast('Pick a date','Select your first delivery date','📅'); return; }
+    if(!dvState.date){ toast('Pick a date','Select your first delivery date',''); return; }
     gotoStep('delivery-overlay',3);
     const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
     const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
@@ -1232,11 +1233,11 @@ function wireDeliveryModal(){
       +`${esc(dvState.day)} ${esc(dvState.window)}<br>`
       +`First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD'}<br>`
       +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
-    toast('Delivery scheduled!','Welcome to Waterboy Delivery!','🎉');
+    toast('Delivery scheduled!','Welcome to Waterboy Delivery!','');
   };
   document.getElementById('dv-subscribe-btn')?.addEventListener('click',()=>{
-    if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service','⚠️'); return; }
-    if(!(document.getElementById('dv-card')?.value)||!(document.getElementById('dv-cname')?.value)){ toast('Payment info','Enter card details','💳'); return; }
+    if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service',''); return; }
+    if(!(document.getElementById('dv-card')?.value)||!(document.getElementById('dv-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
     doDvConfirm();
   });
   document.getElementById('dv-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doDvConfirm));
@@ -1564,12 +1565,35 @@ function updateNavUser(){
       drop.innerHTML=`<button class="nud-item" style="display:block;width:100%;text-align:left;padding:8px 13px;color:#C8E8F8;font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-orders">My Orders</button><button class="nud-item nud-out" style="display:block;width:100%;text-align:left;padding:8px 13px;color:rgba(255,100,100,.8);font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-signout">Sign Out</button>`;
       drop.querySelector('#nud-signout')?.addEventListener('click',()=>{
         user=null; saveUser(null); updateNavUser();
-        // Close drop
         drop.style.display='none';
-        toast('Signed out','See you next time!','👋');
+        toast('Signed out','See you next time!','');
       });
     } else {
       drop.innerHTML='';
+    }
+  });
+  // Update static sign-in buttons (.nav-btn-outline on interior pages, .hn-sign-in on homepage)
+  $$('.nav-btn-outline, .hn-sign-in').forEach(el=>{
+    if(user){
+      const firstName=user.name.split(' ')[0];
+      el.textContent=firstName;
+      el.removeAttribute('onclick');
+      if(!el._wbDrop){
+        const wrap=el.parentElement; wrap.style.position='relative';
+        const drop=document.createElement('div');
+        drop.style.cssText='display:none;position:absolute;top:calc(100% + 8px);right:0;background:#0D2137;border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:7px;min-width:150px;z-index:9999;box-shadow:0 12px 40px rgba(0,0,0,.55)';
+        drop.innerHTML='<button style="display:block;width:100%;text-align:left;padding:8px 13px;color:rgba(255,100,100,.8);font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:\'Inter\',sans-serif;">Sign Out</button>';
+        drop.querySelector('button').addEventListener('click',()=>{ user=null; saveUser(null); drop.style.display='none'; updateNavUser(); toast('Signed out','See you next time!',''); });
+        wrap.appendChild(drop);
+        el._wbDrop=drop;
+        el.addEventListener('click',e=>{ e.stopPropagation(); drop.style.display=drop.style.display==='none'?'block':'none'; });
+        document.addEventListener('click',()=>{ drop.style.display='none'; });
+      }
+      if(el._wbDrop) el._wbDrop.style.display='none';
+    } else {
+      el.textContent='Sign In';
+      el.setAttribute('onclick',"typeof openAuthModal==='function'&&openAuthModal('signin')");
+      if(el._wbDrop){ el._wbDrop.remove(); el._wbDrop=null; }
     }
   });
 }

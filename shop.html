@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -14,10 +14,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
   <link rel="stylesheet" href="water-type-selector.css" />
+  <link rel="stylesheet" href="global.css" />
 </head>
 <body>
 
@@ -28,21 +29,36 @@
 
 
 <!-- NAVBAR -->
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
-  </button>
-  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
-  </a>
-  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
-    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
+      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+    </a>
+    <div class="nav-center-links">
+      <a href="water-delivery.html" class="nav-link">Delivery</a>
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="dispensers.html" class="nav-link">Dispensers</a>
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
+      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+    </div>
+    <div class="nav-right">
+      <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
+      <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
+    </div>
   </div>
-  <ul class="nav-links" role="list" style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:8px;"></ul>
 </nav>
+<div id="water-type-bar" class="water-type-bar">
+  <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
+  <button id="wtb-change" class="wtb-change">Change</button>
+</div>
 
 
 <!-- BREADCRUMB -->
@@ -65,6 +81,34 @@
   </div>
 </header>
 
+<!-- SHOP WATER PRODUCTS GRID -->
+<section class="section section-dark menu-products-section" id="water-products-section" aria-label="Shop Water Products">
+  <div class="container">
+    <div class="menu-grid menu-grid-2col">
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon1.JPG" alt="Gallon 1" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon2.JPG" alt="Gallon 2" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon3.JPG" alt="Gallon 3" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="Gallon 4" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon5.JPG" alt="Gallon 5" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PRODUCT CATALOG — rendered by shop.js -->
 <section class="section section-dark" id="shop-section" aria-labelledby="shop-heading">
   <div class="container">
@@ -73,8 +117,58 @@
       <h2 id="shop-heading" class="section-title dark">All Products</h2>
       <p class="section-subtitle dark">Use filters to browse by category. Add to cart and checkout securely.</p>
     </div>
-    <!-- shop.js injects product grid here via its own selectors -->
-    <div id="products-section"></div>
+    <div id="products-section">
+      <div class="menu-grid menu-grid-all">
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Glass1.JPG" alt="Glass 1" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Glass2.JPG" alt="Glass 2" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle1.JPG" alt="Bottle 1" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle2.JPG" alt="Bottle 2" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle3.JPG" alt="Bottle 3" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Pot.JPG" alt="Pot" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card menu-card-has-carousel"
+             data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Can4.PNG,Images%20for%20Menu/Images%20for%20Menu/Can1.PNG,Images%20for%20Menu/Images%20for%20Menu/Can2.PNG,Images%20for%20Menu/Images%20for%20Menu/Can3.PNG">
+          <div class="menu-card-img">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" alt="Electrolyte Cans" loading="lazy">
+            <div class="menu-card-carousel-hint">Tap for flavors</div>
+          </div>
+          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Cans</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card menu-card-has-carousel"
+             data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Pack2.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack3.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack4.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack5.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack6.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack7.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack8.PNG">
+          <div class="menu-card-img">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="Electrolyte Packets" loading="lazy">
+            <div class="menu-card-carousel-hint">Tap for flavors</div>
+          </div>
+          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Packets</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" alt="Box" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" alt="Hyd" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -170,6 +264,22 @@
   </div>
 </footer>
 
+<!-- FLAVOR CAROUSEL MODAL -->
+<div id="flavor-carousel-modal" class="flavor-carousel-overlay" aria-hidden="true" role="dialog" aria-label="Flavor carousel">
+  <div class="flavor-carousel-backdrop"></div>
+  <div class="flavor-carousel-box">
+    <button class="flavor-carousel-close" aria-label="Close">&#10005;</button>
+    <div class="flavor-carousel-stage">
+      <button class="flavor-carousel-arrow fca-prev" aria-label="Previous flavor">&#8249;</button>
+      <div class="flavor-carousel-img-wrap">
+        <img id="fci" src="" alt="Flavor">
+      </div>
+      <button class="flavor-carousel-arrow fca-next" aria-label="Next flavor">&#8250;</button>
+    </div>
+    <div class="flavor-carousel-dots" id="fcd"></div>
+  </div>
+</div>
+
 <div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
 <aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
   <div class="left-drawer-header">
@@ -216,5 +326,104 @@
 <script src="water-type-selector.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<script>
+(function(){
+  var imgs=[],idx=0;
+  function openCarousel(images){
+    imgs=images;idx=0;showSlide();
+    var m=document.getElementById('flavor-carousel-modal');
+    m.classList.add('open');m.removeAttribute('aria-hidden');
+    document.body.style.overflow='hidden';
+  }
+  function closeCarousel(){
+    var m=document.getElementById('flavor-carousel-modal');
+    m.classList.remove('open');m.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  function showSlide(){
+    var img=document.getElementById('fci');
+    if(img)img.src=imgs[idx];
+    var d=document.getElementById('fcd');
+    if(!d)return;
+    d.innerHTML='';
+    imgs.forEach(function(_,i){
+      var dot=document.createElement('span');
+      dot.className='fcd-dot'+(i===idx?' active':'');
+      dot.addEventListener('click',function(){idx=i;showSlide();});
+      d.appendChild(dot);
+    });
+  }
+  function prev(){idx=(idx-1+imgs.length)%imgs.length;showSlide();}
+  function next(){idx=(idx+1)%imgs.length;showSlide();}
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.menu-card-has-carousel').forEach(function(card){
+      card.addEventListener('click',function(){
+        var raw=card.getAttribute('data-carousel-images');
+        if(raw)openCarousel(raw.split(','));
+      });
+    });
+    var backdrop=document.querySelector('.flavor-carousel-backdrop');
+    if(backdrop)backdrop.addEventListener('click',closeCarousel);
+    var closeBtn=document.querySelector('.flavor-carousel-close');
+    if(closeBtn)closeBtn.addEventListener('click',closeCarousel);
+    var prevBtn=document.querySelector('.fca-prev');
+    if(prevBtn)prevBtn.addEventListener('click',function(e){e.stopPropagation();prev();});
+    var nextBtn=document.querySelector('.fca-next');
+    if(nextBtn)nextBtn.addEventListener('click',function(e){e.stopPropagation();next();});
+    var stage=document.querySelector('.flavor-carousel-stage');
+    if(stage){
+      var sx=0;
+      stage.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+      stage.addEventListener('touchend',function(e){
+        var dx=e.changedTouches[0].clientX-sx;
+        if(Math.abs(dx)>40){dx<0?next():prev();}
+      });
+    }
+    document.addEventListener('keydown',function(e){
+      var m=document.getElementById('flavor-carousel-modal');
+      if(!m.classList.contains('open'))return;
+      if(e.key==='ArrowLeft')prev();
+      else if(e.key==='ArrowRight')next();
+      else if(e.key==='Escape')closeCarousel();
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var reviews=[98,143,67,212,84,56,78,134,201,89,43,312,187,52,76];
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.menu-card-info').forEach(function(info,i){
+      var nameEl=info.querySelector('.menu-card-name');
+      var name=nameEl?nameEl.textContent.trim():'?';
+      var rc=reviews[i]||99;
+      var isCarousel=!!info.closest('.menu-card-has-carousel');
+      info.innerHTML=
+        '<div class="mca-name">'+name+'</div>'+
+        '<div class="mca-stars"><span class="mca-st">★★★★★</span><span class="mca-rc">('+rc+')</span></div>'+
+        '<div class="mca-price">?</div>'+
+        '<div class="mca-badge"><span>Free Delivery</span></div>'+
+        '<button class="mca-atc">Add to Cart</button>';
+      if(isCarousel){
+        info.querySelector('.mca-atc').addEventListener('click',function(e){e.stopPropagation();});
+      }
+    });
+  });
+})();
+</script>
+<div id="water-type-overlay" aria-hidden="true">
+  <div class="wt-overlay-box">
+    <h3 class="wt-overlay-title">Select Water Type</h3>
+    <div class="wt-overlay-opts">
+      <button class="wt-overlay-opt" data-type="ro"><span class="wto-name">RO Water</span><span class="wto-sub">Ultra-pure, 99% contaminants removed</span></button>
+      <button class="wt-overlay-opt" data-type="alkaline"><span class="wto-name">Alkaline Water</span><span class="wto-sub">pH 8.5+, smooth taste</span></button>
+      <button class="wt-overlay-opt" data-type="hydrogen"><span class="wto-name">Hydrogen Water</span><span class="wto-sub">Infused molecular hydrogen</span></button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
+</script>
 </body>
 </html>
