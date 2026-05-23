@@ -151,7 +151,7 @@
             <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" alt="Electrolyte Cans" loading="lazy">
             <div class="menu-card-carousel-hint">Tap for flavors</div>
           </div>
-          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Cans</span><span class="menu-card-price">?</span></div>
+          <div class="menu-card-info"><span class="menu-card-name">LMNT Electrolyte Cans</span><span class="menu-card-price">$4.99/can</span></div>
         </div>
         <div class="menu-card menu-card-has-carousel"
              data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Pack2.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack3.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack4.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack5.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack6.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack7.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack8.PNG">
@@ -159,7 +159,7 @@
             <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="Electrolyte Packets" loading="lazy">
             <div class="menu-card-carousel-hint">Tap for flavors</div>
           </div>
-          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Packets</span><span class="menu-card-price">?</span></div>
+          <div class="menu-card-info"><span class="menu-card-name">LMNT Electrolyte Packets</span><span class="menu-card-price">$2.99/pkt</span></div>
         </div>
         <div class="menu-card">
           <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" alt="Box" loading="lazy"></div>
@@ -429,6 +429,8 @@
 <script>
 (function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
 </script>
+<script src="prices.js"></script>
+<script src="cart-modal.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

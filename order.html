@@ -320,7 +320,7 @@
           </span>
           <div class="wt-title">Purified Water</div>
           <p class="wt-desc">Clean, crisp, purified water. Perfect for everyday hydration and cooking.</p>
-          <div class="wt-price">from $7.50/jug</div>
+          <div class="wt-price">from $6.99/jug</div>
         </div>
 
         <div class="wt-card" id="wtc-alkaline" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('alkaline')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('alkaline')">
@@ -331,7 +331,7 @@
           </span>
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste — the only local delivery option.</p>
-          <div class="wt-price">from $25/mo</div>
+          <div class="wt-price">$7.99/jug · from $25/mo</div>
         </div>
 
       </div>
@@ -362,7 +362,7 @@
                 <button class="qty-btn" onclick="adjustQty(1)" aria-label="Increase quantity">+</button>
                 <span class="qty-label">5-gallon jugs</span>
               </div>
-              <div class="qty-total-line" id="qty-total-line">1 jug × $7.50 = $7.50</div>
+              <div class="qty-total-line" id="qty-total-line">1 jug × $6.99 = $6.99</div>
             </div>
           </div>
 
@@ -634,7 +634,7 @@ function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
-const PRICES={purified:7.50,alkaline:10.00};
+const PRICES={purified:6.99,alkaline:7.99};
 const BUNDLES_REG=[
   {id:'solo',    name:'Solo',       price:21, jugs:2,  badge:'STARTER',      pop:false,savings:'Saves $26 vs Water.com'},
   {id:'family',  name:'Family',     price:42, jugs:4,  badge:'MOST POPULAR', pop:true, savings:'Saves $7'},
@@ -1122,6 +1122,8 @@ function buildCalLink(order,timeLbl,delivDate){
   return 'https://www.google.com/calendar/render?action=TEMPLATE&text='+title+'&dates='+start+'/'+end+'&details='+det+'&location='+loc;
 }
 </script>
+<script src="prices.js"></script>
+<script src="cart-modal.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

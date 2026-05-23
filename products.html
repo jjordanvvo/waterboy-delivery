@@ -429,16 +429,48 @@
       </div>
       <p class="catalog-subheader">Energy &amp; Supplements</p>
       <div class="catalog-grid">
+
+        <!-- Zipfizz Energy Drink Mix — Combo Pack -->
         <div class="catalog-card reveal reveal-delay-1">
           <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/ZipFizz.jpg" alt="ZipFizz Energy Mix" loading="lazy" />
+            <img src="Images%20for%20Menu/Images%20for%20Menu/ZipFizz.jpg" alt="Zipfizz Energy Drink Mix Combo Pack" loading="lazy" />
           </div>
           <div class="catalog-card-body">
-            <p class="catalog-name">ZipFizz Energy Mix</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
+            <span class="catalog-badge">Best Seller</span>
+            <p class="lmnt-size">30 Count</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">Zipfizz Energy Drink Mix — Combo Pack</p>
+            <p class="catalog-desc">Sugar-free energy drink mix with B12, electrolytes, and 100mg natural caffeine. Includes Grape, Fruit Punch, and Orange Soda. Zero sugar, 20 calories, no artificial flavors.</p>
+            <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$39.99 per 30-pack</p>
+            <button class="lmnt-expand-btn" type="button" onclick="lmntToggle(this)">Add to Cart <span class="lmnt-arrow">&#9662;</span></button>
+            <div class="lmnt-expand" hidden>
+              <div class="lmnt-buy-opts">
+                <button class="lmnt-buy-opt selected" type="button" onclick="lmntBuyOpt(this)">30-Pack Combo &#8212; $39.99</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Echo Hydrogen Prebiotic Drink Mix -->
+        <div class="catalog-card reveal reveal-delay-2">
+          <div class="catalog-img-wrap">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="Echo Hydrogen Prebiotic Drink Mix" loading="lazy" />
+          </div>
+          <div class="catalog-card-body">
+            <span class="catalog-badge">Premium</span>
+            <p class="lmnt-size">Crisp Apple — Single Packet</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">Echo Hydrogen Prebiotic Drink Mix</p>
+            <p class="catalog-desc">Molecular hydrogen + prebiotic fiber in one packet. 5.58 ppm hydrogen dose, gut health support, energy and mental clarity. Sugar-free, gluten-free. Mix with 12–16oz of water.</p>
+            <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$4.99 per packet &#8212; $64.99 for 30-pack</p>
+            <button class="lmnt-expand-btn" type="button" onclick="lmntToggle(this)">Choose Options <span class="lmnt-arrow">&#9662;</span></button>
+            <div class="lmnt-expand" hidden>
+              <div class="lmnt-buy-opts">
+                <button class="lmnt-buy-opt selected" type="button" onclick="lmntBuyOpt(this)">Single Packet &#8212; $4.99</button>
+                <button class="lmnt-buy-opt" type="button" onclick="lmntBuyOpt(this)">30-Pack &#8212; $64.99 <span class="lmnt-save">Save $5.71</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -755,6 +787,8 @@ function lmntBuyOpt(btn){
   btn.classList.add('selected');
 }
 </script>
+<script src="prices.js"></script>
+<script src="cart-modal.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

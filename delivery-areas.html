@@ -470,6 +470,8 @@
 <script>
 (function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
 </script>
+<script src="prices.js"></script>
+<script src="cart-modal.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

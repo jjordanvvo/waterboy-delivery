@@ -8,6 +8,18 @@
 
 /* ── CSS Variables ──────────────────────────────────────────── */
 :root {
+  /* Requested design system variables */
+  --primary:         #00D4FF;
+  --primary-dark:    #0099BB;
+  --bg-dark:         #0B1B2B;
+  --bg-deep:         #0F2740;
+  --bg-card:         #132236;
+  --text-light:      #F0F7FF;
+  --text-muted:      #B8E6FF;
+  --accent-cyan:     #00D4FF;
+  --accent-glacier:  #38BDF8;
+
+  /* Legacy aliases */
   --g-navy:       #050C18;
   --g-navy-mid:   #0D1B2E;
   --g-navy-card:  #0F2740;
@@ -20,6 +32,57 @@
   --g-radius:     12px;
   --font-head:    'Outfit', sans-serif;
   --font-body:    'Inter', sans-serif;
+}
+
+/* ── Standardized Buttons ───────────────────────────────────── */
+.btn-primary, .btn-cta-large {
+  background: var(--primary) !important;
+  color: var(--bg-dark) !important;
+  font-family: var(--font-head) !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  transition: background 0.2s !important;
+}
+.btn-primary:hover, .btn-cta-large:hover {
+  background: var(--accent-glacier) !important;
+}
+.btn-secondary {
+  background: transparent !important;
+  border: 2px solid var(--primary) !important;
+  color: var(--primary) !important;
+  font-family: var(--font-head) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  transition: background 0.2s !important;
+}
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.1) !important;
+}
+
+/* ── Standardized Cards ─────────────────────────────────────── */
+.catalog-card, .pricing-card, .dispenser-card, .testimonial-card {
+  background: var(--bg-card) !important;
+  border: 1px solid rgba(0,212,255,0.15) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
+}
+
+/* ── Page background ────────────────────────────────────────── */
+body {
+  background: var(--bg-dark) !important;
+}
+
+/* ── Headings ───────────────────────────────────────────────── */
+h1, h2, h3 {
+  color: var(--text-light) !important;
+}
+
+/* ── Price display ──────────────────────────────────────────── */
+.catalog-price, .price-display {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  color: var(--primary) !important;
 }
 
 /* ── Typography ─────────────────────────────────────────────── */

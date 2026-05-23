@@ -75,13 +75,13 @@ const PLANS = {
   'Max Bundle':     { jugs:12, price:95, alkaline:false },
   'Alkaline Solo':  { jugs:2,  price:25, alkaline:true  },
   'Alkaline Family':{ jugs:4,  price:45, alkaline:true  },
-  'Alkaline Max':   { jugs:6,  price:60, alkaline:true  },
+  'Alkaline Max':   { jugs:12, price:60, alkaline:true  },
 };
 
 /* Checkout add-on data */
 const CHECKOUT_ADDONS = [
   { id:'ice-bags',       name:'Ice Bags',          price:4.99,  desc:'10lb bag. Parties and coolers.', img:'' },
-  { id:'lmnt-cans',      name:'LMNT Cans',          price:2.50,  desc:'Electrolyte drink. Hydration boost.', img:'' },
+  { id:'lmnt-cans',      name:'LMNT Sparkling Cans', price:4.99,  desc:'16oz electrolyte drink. 1000mg sodium. Zero sugar.', img:'' },
   { id:'hydrogen-sticks',name:'Hydrogen Sticks',    price:29.99, desc:'Month of H2-infused water on the go.', img:'' },
   { id:'h2-tabs',        name:'H2 Tabs',            price:1.00,  desc:'Fast-dissolving hydrogen tablets.', img:'' },
 ];
