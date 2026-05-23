@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waterboy — Admin Dashboard</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#00D4FF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Waterboy" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" href="Drop.PNG" type="image/png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ── Admin Login ────────────────────────────────────────────── -->
+<div id="admin-login-screen" style="display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;flex-direction:column;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(168,85,247,0.07) 0%,transparent 70%),var(--blue-deep)">
+  <div style="width:100%;max-width:380px">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#A855F7);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 28px rgba(168,85,247,0.3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" style="width:32px;height:32px"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h1 style="font-family:var(--font-head);font-size:1.75rem;font-weight:800;color:var(--white-90)">Admin <span style="color:#A855F7">Dashboard</span></h1>
+      <p style="font-size:.875rem;color:var(--white-40);margin-top:6px">Waterboy Delivery Operations</p>
+    </div>
+    <div class="card">
+      <form id="admin-login-form" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="form-group">
+            <label class="form-label">Admin Email</label>
+            <input id="admin-email" type="email" class="form-input" placeholder="admin@waterboy.com" autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input id="admin-password" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          <div id="admin-login-error" style="font-size:.8125rem;color:var(--danger);min-height:18px"></div>
+          <button type="submit" class="btn btn-full btn-lg" style="background:#A855F7;color:#fff">Sign In to Dashboard</button>
+          <button type="button" id="admin-demo-btn" class="btn btn-secondary btn-full">Use Demo Admin Account</button>
+        </div>
+      </form>
+    </div>
+    <p style="text-align:center;margin-top:20px;font-size:.8125rem;color:var(--white-40)"><a href="index.html">← Back to Portal</a></p>
+  </div>
+</div>
+
+<!-- ── Admin App ──────────────────────────────────────────────── -->
+<div id="admin-app-screen" class="admin-app" style="display:none">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="admin-sidebar" class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="Drop.PNG" alt="Waterboy" class="sidebar-brand-logo" />
+      <div>
+        <div class="sidebar-brand-name">Waterboy</div>
+        <div class="sidebar-brand-sub">Admin Dashboard</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Overview</div>
+      <div class="sidebar-nav-item active" data-page="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="nav-label">Overview</span>
+      </div>
+
+      <div class="sidebar-section-label">Operations</div>
+      <div class="sidebar-nav-item" data-page="orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span class="nav-label">Orders</span>
+        <span class="nav-badge" id="nav-badge-orders">0</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="routes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6l9-3 9 3M3 18l9 3 9-3"/></svg>
+        <span class="nav-label">Routes</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="drivers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <span class="nav-label">Employees</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="schedule">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="nav-label">Schedule</span>
+      </div>
+
+      <div class="sidebar-section-label">Business</div>
+      <div class="sidebar-nav-item" data-page="customers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="nav-label">Customers</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <span class="nav-label">Products</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="inventory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        <span class="nav-label">Inventory</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="promos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        <span class="nav-label">Promotions</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="zones">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        <span class="nav-label">Zones</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="payments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span class="nav-label">Payments</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="rentals">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="nav-label">Rentals</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span class="nav-label">Messages</span>
+      </div>
+
+      <div class="sidebar-section-label">Analytics</div>
+      <div class="sidebar-nav-item" data-page="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">Reports</span>
+      </div>
+
+      <div class="sidebar-section-label">System</div>
+      <div class="sidebar-nav-item" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.42 1.42M4.93 4.93l1.42 1.42M4.93 19.07l1.42-1.42M19.07 19.07l-1.42-1.42M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+        <span class="nav-label">Settings</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div id="admin-logout-btn" class="sidebar-collapse-btn" style="color:var(--danger)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span class="nav-label">Sign Out</span>
+      </div>
+      <div id="sidebar-collapse-btn" class="sidebar-collapse-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M11 19l-7-7 7-7M18 19l-7-7 7-7"/></svg>
+        <span class="nav-label">Collapse</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+
+    <!-- Top Bar -->
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:14px">
+        <button id="admin-hamburger" class="btn-icon hide-desktop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-page-title" id="topbar-page-title">Dashboard Overview</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-admin-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+          Admin
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="admin-content">
+
+      <!-- OVERVIEW PAGE -->
+      <div id="admin-page-overview" class="admin-page active">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Good morning, Admin</div>
+            <div class="page-header-sub">Here's what's happening today with Waterboy Delivery.</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card accent-cyan">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="stat-value" id="stat-revenue">$0.00</div>
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-delta up mt-8">↑ All time</div>
+          </div>
+          <div class="stat-card accent-green">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div>
+            <div class="stat-value" id="stat-orders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-card accent-yellow">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="stat-value" id="stat-customers">0</div>
+            <div class="stat-label">Customers</div>
+          </div>
+          <div class="stat-card accent-purple">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+            <div class="stat-value" id="stat-today">0</div>
+            <div class="stat-label">Delivered Today</div>
+          </div>
+          <div class="stat-card accent-red">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="stat-value" id="stat-active">0</div>
+            <div class="stat-label">Active Orders</div>
+          </div>
+          <div class="stat-card accent-cyan">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="stat-value" id="stat-avg">$0.00</div>
+            <div class="stat-label">Avg Order Value</div>
+          </div>
+        </div>
+
+        <div class="two-col-grid" style="margin-bottom:20px">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Revenue — Last 7 Days</div>
+            </div>
+            <div id="revenue-chart" class="bar-chart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">Active Drivers</div></div>
+            <div id="drivers-widget"></div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="chart-title">Recent Orders</div>
+            <button class="btn btn-primary btn-sm" onclick="adminNavigateTo('orders')">View All</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Status</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="recent-orders-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS PAGE -->
+      <div id="admin-page-orders" class="admin-page">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Orders</div>
+            <div class="page-header-sub" id="orders-count">All orders</div>
+          </div>
+          <div class="page-header-actions">
+            <input type="date" id="orders-date-from" class="form-input" style="width:140px" />
+            <input type="date" id="orders-date-to" class="form-input" style="width:140px" />
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-toolbar" style="flex-wrap:wrap;gap:10px">
+            <div class="table-toolbar-left" style="flex-wrap:wrap;gap:8px">
+              <div class="table-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input id="orders-search" type="search" placeholder="Search orders…" />
+              </div>
+              <div style="display:flex;gap:4px" id="orders-filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="active">Active</button>
+                <button class="filter-tab" data-filter="scheduled">Scheduled</button>
+                <button class="filter-tab" data-filter="delivered">Completed</button>
+                <button class="filter-tab" data-filter="cancelled">Cancelled</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Status</th><th>Driver</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+          <div class="table-pagination">
+            <span class="text-sm text-muted">Showing results</span>
+            <div id="orders-pagination" class="pagination-btns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROUTES PAGE -->
+      <div id="admin-page-routes" class="admin-page">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Route Management</div>
+            <div class="page-header-sub">Plan and assign delivery routes by date</div>
+          </div>
+          <div class="page-header-actions">
+            <input type="date" id="route-date-picker" class="form-input" style="width:180px" />
+            <button class="btn btn-secondary btn-sm" onclick="optimizeRoutes()">Optimize</button>
+            <button class="btn btn-ghost btn-sm" onclick="printRouteSheet()">Print</button>
+          </div>
+        </div>
+        <div id="route-stats-row" class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px"></div>
+
+        <!-- Delivery Map Section -->
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div class="chart-title">Delivery Map — Today's Routes</div>
+            <div style="font-size:.8125rem;color:var(--white-40)">Centered on 7119 Elk Grove Blvd, Elk Grove, CA</div>
+          </div>
+          <!-- Map Filter Buttons -->
+          <div style="display:flex;gap:8px;padding:0 20px 10px;flex-wrap:wrap">
+            <button class="filter-tab active" data-map-filter="all" onclick="filterDeliveryMap('all',this)">All</button>
+            <button class="filter-tab" data-map-filter="completed" onclick="filterDeliveryMap('completed',this)">Completed</button>
+            <button class="filter-tab" data-map-filter="in_progress" onclick="filterDeliveryMap('in_progress',this)">In Progress</button>
+            <button class="filter-tab" data-map-filter="pending" onclick="filterDeliveryMap('pending',this)">Pending</button>
+          </div>
+          <div style="display:flex;gap:8px;padding:0 20px 16px;flex-wrap:wrap;align-items:center">
+            <span style="font-size:.75rem;font-weight:600;color:var(--white-40);text-transform:uppercase;letter-spacing:.05em">Driver:</span>
+            <button class="filter-tab active" data-driver-filter="all" onclick="filterDeliveryMapDriver('all',this)">All</button>
+            <button class="filter-tab" data-driver-filter="Alex Rivera" onclick="filterDeliveryMapDriver('Alex Rivera',this)">Alex Rivera</button>
+            <button class="filter-tab" data-driver-filter="Sam Chen" onclick="filterDeliveryMapDriver('Sam Chen',this)">Sam Chen</button>
+            <button class="filter-tab" data-driver-filter="Jordan Lee" onclick="filterDeliveryMapDriver('Jordan Lee',this)">Jordan Lee</button>
+          </div>
+          <div style="display:flex;gap:20px;padding:0 20px 20px;flex-wrap:wrap">
+            <!-- Map Embed -->
+            <div style="flex:1;min-width:280px;position:relative">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25204.9!2d-121.3760!3d38.4088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ad6a8f1a6c5b1%3A0x5b3b3b3b3b3b3b3b!2s7119+Elk+Grove+Blvd%2C+Elk+Grove%2C+CA+95758!5e0!3m2!1sen!2sus!4v1"
+                width="100%" height="360" style="border:0;border-radius:var(--radius-md);filter:grayscale(0.3) contrast(1.1) brightness(0.9);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+            <!-- Legend & Stats -->
+            <div style="display:flex;flex-direction:column;gap:12px;min-width:180px">
+              <div style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:16px">
+                <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:12px">Status Legend</div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:12px;height:12px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px rgba(34,197,94,0.5)"></div>
+                      <span style="font-size:.875rem;color:var(--white-70)">Completed</span>
+                    </div>
+                    <span id="admin-map-completed" style="font-family:var(--font-mono);font-weight:700;color:#22C55E">8</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px rgba(0,212,255,0.5)"></div>
+                      <span style="font-size:.875rem;color:var(--white-70)">In Progress</span>
+                    </div>
+                    <span id="admin-map-inprogress" style="font-family:var(--font-mono);font-weight:700;color:var(--cyan)">3</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:12px;height:12px;border-radius:50%;background:#EAB308;box-shadow:0 0 6px rgba(234,179,8,0.5)"></div>
+                      <span style="font-size:.875rem;color:var(--white-70)">Pending</span>
+                    </div>
+                    <span id="admin-map-pending" style="font-family:var(--font-mono);font-weight:700;color:#EAB308">5</span>
+                  </div>
+                </div>
+              </div>
+              <div style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:16px">
+                <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:8px">Today's Total</div>
+                <div style="font-family:var(--font-head);font-size:1.75rem;font-weight:800;color:var(--white-90)">16</div>
+                <div style="font-size:.8125rem;color:var(--white-40)">deliveries</div>
+              </div>
+            </div>
+          </div>
+          <!-- Delivery List (filterable) -->
+          <div style="padding:0 20px 20px">
+            <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:12px" id="admin-map-list-label">All Deliveries</div>
+            <div id="admin-delivery-map-list" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+        </div>
+
+        <div id="routes-content" class="two-col-grid"></div>
+      </div>
+
+      <!-- EMPLOYEES PAGE -->
+      <div id="admin-page-drivers" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Employees</div><div class="page-header-sub">Manage your delivery employees</div></div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="openAddDriverModal()">+ Add Employee</button>
+          </div>
+        </div>
+        <div id="drivers-grid" class="three-col-grid"></div>
+      </div>
+
+      <!-- SCHEDULE PAGE -->
+      <div id="admin-page-schedule" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Employee Schedule</div><div class="page-header-sub">Weekly driver assignments — Mon through Sat</div></div>
+        </div>
+        <div id="schedule-grid-wrap"></div>
+      </div>
+
+      <!-- CUSTOMERS PAGE -->
+      <div id="admin-page-customers" class="admin-page">
+        <div class="page-header">
+          <div>
+            <div class="page-header-title">Customers</div>
+            <div class="page-header-sub" id="customers-count">All customers</div>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="table-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input id="customers-search" type="search" placeholder="Search customers…" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Customer</th><th>Phone</th><th>City</th><th>Subscription</th><th>Total Spent</th><th>Points</th><th>Joined</th><th></th></tr></thead>
+              <tbody id="customers-table-body"></tbody>
+            </table>
+          </div>
+          <div class="table-pagination">
+            <span class="text-sm text-muted">Showing results</span>
+            <div id="customers-pagination" class="pagination-btns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS PAGE -->
+      <div id="admin-page-products" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Products</div><div class="page-header-sub">Product catalog management</div></div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="openProductModal(null)">+ Add Product</button>
+          </div>
+        </div>
+        <div id="admin-products-grid" class="three-col-grid"></div>
+      </div>
+
+      <!-- INVENTORY PAGE -->
+      <div id="admin-page-inventory" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Inventory</div><div class="page-header-sub">Stock levels across all products</div></div>
+        </div>
+        <div id="inventory-alerts-banner"></div>
+        <div id="inventory-grid" style="display:flex;flex-direction:column;gap:12px"></div>
+        <div class="chart-card" style="margin-top:20px">
+          <div class="chart-header"><div class="chart-title">Stock History Log</div></div>
+          <div id="stock-history-log" style="max-height:240px;overflow-y:auto"></div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS PAGE -->
+      <div id="admin-page-payments" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Payments & Billing</div><div class="page-header-sub" id="payments-count">All transactions</div></div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="exportPayments()">Export CSV</button>
+          </div>
+        </div>
+        <div class="stats-grid" style="margin-bottom:20px">
+          <div class="stat-card accent-cyan">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="stat-value" id="pay-stat-today">$0.00</div><div class="stat-label">Today's Revenue</div>
+          </div>
+          <div class="stat-card accent-green">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="stat-value" id="pay-stat-week">$0.00</div><div class="stat-label">This Week</div>
+          </div>
+          <div class="stat-card accent-yellow">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="stat-value" id="pay-stat-month">$0.00</div><div class="stat-label">This Month</div>
+          </div>
+          <div class="stat-card accent-purple">
+            <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="stat-value" id="pay-stat-outstanding">$0.00</div><div class="stat-label">Outstanding</div>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="table-toolbar-left">
+              <div class="table-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input id="payments-search" type="search" placeholder="Search payments…" />
+              </div>
+              <div style="display:flex;gap:6px" id="payments-filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="delivered">Paid</button>
+                <button class="filter-tab" data-filter="pending">Pending</button>
+                <button class="filter-tab" data-filter="cancelled">Cancelled</button>
+              </div>
+            </div>
+            <div class="table-toolbar-right">
+              <input type="date" id="pay-date-from" class="form-input" style="width:140px" placeholder="From" />
+              <input type="date" id="pay-date-to" class="form-input" style="width:140px" placeholder="To" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Transaction ID</th><th>Customer</th><th>Items</th><th>Status</th><th>Method</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="payments-table-body"></tbody>
+            </table>
+          </div>
+          <div class="table-pagination">
+            <span class="text-sm text-muted" id="payments-showing">Showing results</span>
+            <div id="payments-pagination" class="pagination-btns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROMOS PAGE -->
+      <div id="admin-page-promos" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Promotions</div><div class="page-header-sub">Manage discount codes and offers</div></div>
+        </div>
+        <div id="promos-grid" class="three-col-grid"></div>
+      </div>
+
+      <!-- ZONES PAGE -->
+      <div id="admin-page-zones" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Delivery Zones</div><div class="page-header-sub">Manage service areas and ZIP codes</div></div>
+        </div>
+        <!-- Service Area Map -->
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-header"><div class="chart-title">Service Area Map — 10 Mile Radius</div><div style="font-size:.8125rem;color:var(--white-40)">Centered on 7119 Elk Grove Blvd</div></div>
+          <div class="service-map-wrap">
+            <div class="service-map">
+              <div class="service-map-ring ring-outer"></div>
+              <div class="service-map-ring ring-mid"></div>
+              <div class="service-map-center-dot"></div>
+              <div class="service-map-label-center">7119 Elk Grove Blvd<br><span style="font-size:.625rem;opacity:.6">HQ · 10 mi radius</span></div>
+              <div class="service-map-dot" style="top:22%;left:58%" title="Elk Grove Central"></div>
+              <div class="service-map-dot dot-south" style="top:70%;left:38%" title="Elk Grove South"></div>
+              <div class="service-map-dot dot-north" style="top:18%;left:32%" title="Elk Grove North"></div>
+              <div class="service-map-dot dot-laguna" style="top:55%;left:62%" title="Laguna"></div>
+              <div class="service-map-dot dot-inactive" style="top:25%;left:75%" title="Rancho Cordova (inactive)"></div>
+            </div>
+            <div class="service-map-legend">
+              <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--cyan)"></div>Active Zone</div>
+              <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--white-40)"></div>Inactive Zone</div>
+              <div class="map-legend-item"><div class="map-legend-dot" style="background:#A855F7;width:10px;height:10px"></div>HQ</div>
+            </div>
+          </div>
+        </div>
+        <div id="zones-grid" class="three-col-grid"></div>
+      </div>
+
+      <!-- REPORTS PAGE -->
+      <div id="admin-page-reports" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Reports & Analytics</div></div>
+          <div class="page-header-actions">
+            <div class="chart-period-tabs" id="report-range-tabs">
+              <div class="chart-period-tab active" data-days="7">7D</div>
+              <div class="chart-period-tab" data-days="30">30D</div>
+              <div class="chart-period-tab" data-days="90">90D</div>
+            </div>
+          </div>
+        </div>
+        <div class="report-metric-row" style="grid-template-columns:repeat(6,1fr)">
+          <div class="report-metric"><div class="text-muted text-sm mb-8">Total Revenue</div><div class="stat-value" id="report-total-revenue">$0</div></div>
+          <div class="report-metric"><div class="text-muted text-sm mb-8">Total Orders</div><div class="stat-value" id="report-total-orders">0</div></div>
+          <div class="report-metric"><div class="text-muted text-sm mb-8">New Customers</div><div class="stat-value" id="report-new-customers">0</div></div>
+          <div class="report-metric"><div class="text-muted text-sm mb-8">Active Subs</div><div class="stat-value" id="report-active-subs">0</div></div>
+          <div class="report-metric"><div class="text-muted text-sm mb-8">Avg Order Value</div><div class="stat-value" id="report-avg-order">$0</div></div>
+          <div class="report-metric"><div class="text-muted text-sm mb-8">Delivery Volume</div><div class="stat-value" id="report-delivery-volume">0</div></div>
+        </div>
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div class="chart-title">Revenue Trend</div>
+            <div style="display:flex;gap:16px;font-size:.8125rem">
+              <span style="color:var(--cyan)">— Recurring</span>
+              <span style="color:var(--success)">— One-Time</span>
+            </div>
+          </div>
+          <div id="report-line-chart" style="padding:8px 0"></div>
+        </div>
+        <div class="two-col-grid" style="margin-bottom:20px">
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">Top Products by Volume</div></div>
+            <div id="report-products"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">Revenue by Zone</div></div>
+            <div id="report-zones"></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div class="chart-title">Inventory Levels</div></div>
+          <div id="report-inventory"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS PAGE -->
+      <div id="admin-page-settings" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Settings</div><div class="page-header-sub">Business configuration</div></div>
+          <button id="settings-save-btn" class="btn btn-primary">Save Changes</button>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-header">Business Info</div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Business Name</div></div>
+            <div class="settings-row-control"><input id="settings-business-name" type="text" class="form-input" style="width:240px" /></div>
+          </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Phone</div></div>
+            <div class="settings-row-control"><input id="settings-phone" type="text" class="form-input" style="width:200px" /></div>
+          </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Email</div></div>
+            <div class="settings-row-control"><input id="settings-email" type="email" class="form-input" style="width:240px" /></div>
+          </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Address</div></div>
+            <div class="settings-row-control"><input id="settings-address" type="text" class="form-input" style="width:300px" /></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-header">Pricing & Delivery</div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Delivery Fee</div><div class="settings-row-sub">Standard delivery charge per order</div></div>
+            <div class="settings-row-control">
+              <div class="input-with-icon" style="width:140px"><span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--white-40)">$</span><input id="settings-delivery-fee" type="number" step="0.01" class="form-input" style="padding-left:28px" /></div>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Free Delivery Threshold</div><div class="settings-row-sub">Order total for free delivery</div></div>
+            <div class="settings-row-control">
+              <div class="input-with-icon" style="width:140px"><span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--white-40)">$</span><input id="settings-free-threshold" type="number" step="0.01" class="form-input" style="padding-left:28px" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-header">System</div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">Maintenance Mode</div><div class="settings-row-sub">Disables customer ordering</div></div>
+            <div class="settings-row-control"><div id="settings-maintenance" class="toggle-switch"></div></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-header">Payment Security</div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-label">Payment Processor</div>
+              <div class="settings-row-sub">All card payments are processed via Stripe (PCI DSS Level 1 certified)</div>
+            </div>
+            <span class="badge badge-green">Connected</span>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-label">Data Encryption</div>
+              <div class="settings-row-sub">Card data is tokenized end-to-end — no raw PAN stored on our servers</div>
+            </div>
+            <span class="badge badge-cyan">AES-256</span>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-label">PCI Compliance</div>
+              <div class="settings-row-sub">Annual SAQ-A audit completed. Last reviewed May 2026.</div>
+            </div>
+            <span class="badge badge-green">Compliant</span>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-label">Fraud Protection</div>
+              <div class="settings-row-sub">Stripe Radar active — blocks suspicious charges automatically</div>
+            </div>
+            <span class="badge badge-green">Active</span>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-header">Block Delivery Days</div>
+          <div style="padding:16px 20px">
+            <div style="font-size:.875rem;color:var(--white-40);margin-bottom:16px">Click any date to block or unblock deliveries. Sundays are pre-blocked. Blocked dates sync to the customer checkout calendar.</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <button class="btn btn-secondary btn-sm" onclick="blockCalPrev()">← Prev</button>
+              <div id="block-cal-month-label" style="font-weight:700;font-size:.9375rem;min-width:140px;text-align:center"></div>
+              <button class="btn btn-secondary btn-sm" onclick="blockCalNext()">Next →</button>
+            </div>
+            <div id="block-calendar-grid" class="block-cal-grid"></div>
+            <div style="display:flex;gap:16px;margin-top:12px;font-size:.8125rem;color:var(--white-40)">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;border-radius:3px;background:rgba(239,68,68,0.25);border:1px solid var(--danger)"></div>Blocked</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;border-radius:3px;background:var(--white-08);border:1px solid var(--blue-border)"></div>Available</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;border-radius:3px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3)"></div>Sunday (always blocked)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RENTALS PAGE -->
+      <div id="admin-page-rentals" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Rentals</div><div class="page-header-sub" id="rentals-admin-sub">Dispenser rental management</div></div>
+        </div>
+        <div id="rentals-stats-strip" class="stats-strip" style="margin-bottom:24px"></div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-weight:600;color:var(--white-90)">Active Rentals</div>
+            <span id="rentals-expiring-badge" style="display:none;font-size:.75rem;background:rgba(245,158,11,.15);color:#f59e0b;padding:3px 10px;border-radius:20px;border:1px solid rgba(245,158,11,.3)">⚠ Expiring Soon</span>
+          </div>
+          <div id="rentals-admin-table" style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>Customer</th><th>Model</th><th>Duration</th><th>Monthly</th><th>End Date</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="rentals-admin-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES PAGE -->
+      <div id="admin-page-messages" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Messages</div><div class="page-header-sub">All driver–customer conversations</div></div>
+          <button class="btn btn-secondary btn-sm" onclick="exportMessagesCSV()">Export CSV</button>
+        </div>
+        <div id="msg-stats-strip" class="stats-strip" style="margin-bottom:24px"></div>
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border)"><div style="font-weight:600;color:var(--danger)">⚑ Flagged Conversations</div></div>
+          <div id="admin-flagged-msgs" style="padding:16px 20px"></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border)"><div style="font-weight:600;color:var(--white-90)">All Conversations</div></div>
+          <div id="admin-all-msgs" style="padding:16px 20px"></div>
+        </div>
+      </div>
+
+    </main>
+  </div><!-- /.admin-main -->
+</div><!-- /#admin-app-screen -->
+
+<!-- Product Edit Modal -->
+<div id="product-edit-modal" class="modal-overlay">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <span class="modal-title" id="product-modal-title">Edit Product</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="product-modal-id" />
+      <div class="two-col-grid" style="gap:12px;margin-bottom:14px">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Icon (emoji)</label>
+          <input id="product-modal-icon" class="form-input" placeholder="💧" style="font-size:1.25rem" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Category</label>
+          <select id="product-modal-category" class="form-select">
+            <option value="delivery">delivery</option>
+            <option value="dispensers">dispensers</option>
+            <option value="instore">instore</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Product Name</label>
+        <input id="product-modal-name" class="form-input" placeholder="e.g. 5-Gallon RO Water" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="product-modal-desc" class="form-input" rows="2" placeholder="Short product description"></textarea>
+      </div>
+      <div class="two-col-grid" style="gap:12px;margin-bottom:14px">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Price ($)</label>
+          <input id="product-modal-price" class="form-input" type="number" step="0.01" min="0" placeholder="6.99" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Unit Label</label>
+          <input id="product-modal-unit" class="form-input" placeholder="per bottle" />
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <input type="checkbox" id="product-modal-popular" style="width:16px;height:16px;accent-color:var(--cyan)" />
+        <label for="product-modal-popular" class="form-label" style="margin:0;cursor:pointer">Mark as Popular</label>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Order Detail Modal -->
+<div id="admin-order-modal" class="modal-overlay">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title">Order Details</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="admin-order-detail-body"></div>
+  </div>
+</div>
+
+<!-- Customer Detail Modal -->
+<div id="customer-detail-modal" class="modal-overlay">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-header">
+      <span class="modal-title">Customer Profile</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="customer-detail-body"></div>
+  </div>
+</div>
+
+<!-- Update Stock Modal -->
+<div id="update-stock-modal" class="modal-overlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title" id="update-stock-title">Update Stock</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="update-stock-inv-id" />
+      <div class="form-group">
+        <label class="form-label">Adjustment Type</label>
+        <select id="update-stock-type" class="form-select">
+          <option value="add">Add to Stock</option>
+          <option value="set">Set Exact Quantity</option>
+          <option value="remove">Remove from Stock</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Quantity</label>
+        <input id="update-stock-qty" type="number" min="1" class="form-input" placeholder="Enter quantity" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason / Notes</label>
+        <input id="update-stock-reason" class="form-input" placeholder="e.g. Weekly delivery received" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveStockUpdate()">Save Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Modal -->
+<div id="refund-modal" class="modal-overlay">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <span class="modal-title">Issue Refund</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="refund-order-id" />
+      <div id="refund-order-summary" style="padding:12px;background:var(--white-04);border-radius:var(--radius-sm);margin-bottom:16px;font-size:.875rem"></div>
+      <div class="form-group">
+        <label class="form-label">Refund Reason</label>
+        <select id="refund-reason" class="form-select">
+          <option value="customer_request">Customer Request</option>
+          <option value="wrong_product">Wrong Product Delivered</option>
+          <option value="damaged">Damaged / Contaminated Product</option>
+          <option value="late_delivery">Late / Missed Delivery</option>
+          <option value="duplicate_charge">Duplicate Charge</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Refund Amount ($)</label>
+        <input id="refund-amount" type="number" step="0.01" min="0" class="form-input" placeholder="0.00" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Internal Notes</label>
+        <textarea id="refund-notes" class="form-input" rows="2" placeholder="Optional notes for records"></textarea>
+      </div>
+      <button class="btn btn-danger btn-full" onclick="processRefund()">Process Refund</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel Order Modal -->
+<div id="cancel-order-modal" class="modal-overlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title">Cancel Order</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cancel-order-id" />
+      <div id="cancel-order-summary" style="padding:12px;background:var(--white-04);border-radius:var(--radius-sm);margin-bottom:16px;font-size:.875rem"></div>
+      <div class="form-group">
+        <label class="form-label">Cancellation Reason</label>
+        <select id="cancel-reason" class="form-select">
+          <option value="customer_request">Customer Request</option>
+          <option value="out_of_stock">Out of Stock</option>
+          <option value="driver_unavailable">Driver Unavailable</option>
+          <option value="address_issue">Address / Access Issue</option>
+          <option value="payment_failed">Payment Failed</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <button class="btn btn-danger btn-full" onclick="confirmCancelOrder()">Cancel Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div id="add-driver-modal" class="modal-overlay">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title" id="add-driver-modal-title">Add New Employee</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="driver-modal-id" />
+      <div class="two-col-grid" style="gap:12px;margin-bottom:14px">
+        <div class="form-group" style="margin:0"><label class="form-label">Full Name</label><input id="driver-modal-name" class="form-input" placeholder="First Last" /></div>
+        <div class="form-group" style="margin:0"><label class="form-label">Phone</label><input id="driver-modal-phone" class="form-input" placeholder="(916) 555-0100" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input id="driver-modal-email" type="email" class="form-input" placeholder="driver@waterboy.com" /></div>
+      <div class="two-col-grid" style="gap:12px;margin-bottom:14px">
+        <div class="form-group" style="margin:0"><label class="form-label">Employee ID</label><input id="driver-modal-empid" class="form-input" placeholder="e.g. EMP-001" /></div>
+        <div class="form-group" style="margin:0"><label class="form-label">Hire Date</label><input id="driver-modal-hiredate" type="date" class="form-input" /></div>
+      </div>
+      <div class="two-col-grid" style="gap:12px;margin-bottom:14px">
+        <div class="form-group" style="margin:0"><label class="form-label">Vehicle</label><input id="driver-modal-vehicle" class="form-input" placeholder="Ram ProMaster 2500" /></div>
+        <div class="form-group" style="margin:0"><label class="form-label">License Plate</label><input id="driver-modal-plate" class="form-input" placeholder="7WBY312" /></div>
+      </div>
+      <div class="two-col-grid" style="gap:12px;margin-bottom:20px">
+        <div class="form-group" style="margin:0"><label class="form-label">Zone</label>
+          <select id="driver-modal-zone" class="form-select"></select>
+        </div>
+        <div class="form-group" style="margin:0"><label class="form-label">Temp Password</label><input id="driver-modal-password" class="form-input" placeholder="drive2026" /></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveDriver()">Save Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- Driver Detail Modal -->
+<div id="driver-detail-modal" class="modal-overlay">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <span class="modal-title">Employee Details</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="driver-detail-body"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/global.js"></script>
+<script src="js/admin.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[SW] Registered:', reg.scope))
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
+</script>
+<script>
+  // Update nav badge for active orders on load
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+      const active = (Store.getList(WB.KEYS.orders) || []).filter(o =>
+        !['delivered','cancelled'].includes(o.status)
+      ).length;
+      const badge = document.getElementById('nav-badge-orders');
+      if (badge) badge.textContent = active;
+    }, 200);
+  });
+</script>
+</body>
+</html>

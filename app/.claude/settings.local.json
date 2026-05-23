@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-app\\\\customer.html\")",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")",
+      "PowerShell(Start-Process \"https://waterboysite.netlify.app\")",
+      "Bash(git remote *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-app\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(start *)"
+    ]
+  }
+}

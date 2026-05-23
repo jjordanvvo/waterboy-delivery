@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Waterboy — Driver App</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#00D4FF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Waterboy" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/driver.css" />
+</head>
+<body>
+
+<!-- ── Driver Login ──────────────────────────────────────────── -->
+<div id="drv-login-screen" style="display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;flex-direction:column;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(34,197,94,0.07) 0%,transparent 70%),var(--blue-deep)">
+  <div style="width:100%;max-width:380px">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#16A34A,var(--success));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 28px rgba(34,197,94,0.3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" style="width:36px;height:36px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <h1 style="font-family:var(--font-head);font-size:1.75rem;font-weight:800;color:var(--white-90)">Driver <span style="color:var(--success)">Portal</span></h1>
+      <p style="font-size:.875rem;color:var(--white-40);margin-top:6px">Waterboy Delivery Driver App</p>
+    </div>
+    <div class="card">
+      <form id="drv-login-form" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input id="drv-login-email" type="email" class="form-input" placeholder="driver@waterboy.com" autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input id="drv-login-password" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          <div id="drv-login-error" style="font-size:.8125rem;color:var(--danger);min-height:18px"></div>
+          <button type="submit" class="btn btn-full btn-lg" style="background:var(--success);color:#fff">Sign In</button>
+          <button type="button" id="drv-demo-btn" class="btn btn-secondary btn-full">Use Demo Driver Account</button>
+        </div>
+      </form>
+    </div>
+    <p style="text-align:center;margin-top:20px;font-size:.8125rem;color:var(--white-40)"><a href="index.html">← Back to Portal</a></p>
+  </div>
+</div>
+
+<!-- ── Driver App ─────────────────────────────────────────────── -->
+<div id="drv-app-screen" class="driver-app" style="display:none">
+
+  <!-- Header -->
+  <header class="drv-header">
+    <div class="drv-header-left">
+      <div class="drv-status-dot" id="drv-status-dot"></div>
+      <div>
+        <div class="drv-header-name" id="drv-header-name">Driver</div>
+        <div class="drv-header-role">Waterboy Driver</div>
+      </div>
+    </div>
+    <div class="drv-toggle-wrap">
+      <span>On Duty</span>
+      <div class="toggle-switch on" id="duty-toggle"></div>
+    </div>
+  </header>
+
+  <!-- Stats Strip -->
+  <div class="drv-stats-strip">
+    <div class="drv-stat-cell">
+      <div class="drv-stat-val" id="drv-stat-pending">0</div>
+      <div class="drv-stat-lbl">Pending</div>
+    </div>
+    <div class="drv-stat-cell">
+      <div class="drv-stat-val" id="drv-stat-delivered">0</div>
+      <div class="drv-stat-lbl">Delivered Today</div>
+    </div>
+    <div class="drv-stat-cell">
+      <div class="drv-stat-val" id="drv-stat-bottles">0</div>
+      <div class="drv-stat-lbl">Bottles Left</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="drv-main">
+
+    <!-- ROUTE PAGE -->
+    <div id="drv-page-route" class="drv-page active">
+      <div class="route-header">
+        <div>
+          <div class="route-title">Today's Route</div>
+          <div class="route-summary" id="route-summary">Loading…</div>
+        </div>
+        <button class="route-sort-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+          Sort
+        </button>
+      </div>
+      <div id="stop-list" class="stop-list"></div>
+      <div style="height:80px"></div>
+    </div>
+
+    <!-- MAP PAGE -->
+    <div id="drv-page-map" class="drv-page">
+      <div class="route-header">
+        <div>
+          <div class="route-title">Today's Route Map</div>
+          <div class="route-summary">Your assigned deliveries</div>
+        </div>
+      </div>
+      <!-- Map Embed -->
+      <div style="padding:0 16px 16px">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25204.9!2d-121.3760!3d38.4088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ad6a8f1a6c5b1%3A0x5b3b3b3b3b3b3b3b!2s7119+Elk+Grove+Blvd%2C+Elk+Grove%2C+CA+95758!5e0!3m2!1sen!2sus!4v1"
+          width="100%" height="280" style="border:0;border-radius:var(--radius-md);filter:grayscale(0.2) brightness(0.85);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <!-- Legend -->
+      <div style="padding:0 16px 16px;display:flex;gap:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-sm);font-size:.8125rem;color:var(--white-70)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#22C55E"></div> Completed
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-sm);font-size:.8125rem;color:var(--white-70)">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s ease-in-out infinite"></div> Next Stop
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-sm);font-size:.8125rem;color:var(--white-70)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#EAB308"></div> Remaining
+        </div>
+      </div>
+      <!-- Navigate Button -->
+      <div style="padding:0 16px 16px">
+        <a id="drv-navigate-btn" href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank"
+           class="btn btn-full btn-lg"
+           style="background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Navigate to Next Stop
+        </a>
+      </div>
+      <!-- Today's Stop List -->
+      <div style="padding:0 16px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:10px">Today's Stops</div>
+      <div id="drv-map-stop-list" style="padding:0 16px;display:flex;flex-direction:column;gap:8px"></div>
+      <div style="height:80px"></div>
+    </div>
+
+    <!-- BOTTLES PAGE -->
+    <div id="drv-page-bottles" class="drv-page">
+      <div class="route-header">
+        <div>
+          <div class="route-title">Bottle Tracking</div>
+          <div class="route-summary" id="bottles-summary">Today's pickups &amp; drop-offs</div>
+        </div>
+      </div>
+      <div class="drv-stats-strip" style="margin:0 16px 16px;border-radius:var(--radius-md)">
+        <div class="drv-stat-cell">
+          <div class="drv-stat-val" id="btl-deliver">0</div>
+          <div class="drv-stat-lbl">To Deliver</div>
+        </div>
+        <div class="drv-stat-cell">
+          <div class="drv-stat-val" id="btl-pickup">0</div>
+          <div class="drv-stat-lbl">To Pick Up</div>
+        </div>
+        <div class="drv-stat-cell">
+          <div class="drv-stat-val" id="btl-returned" style="color:var(--success)">0</div>
+          <div class="drv-stat-lbl">Returned</div>
+        </div>
+      </div>
+      <div id="bottles-list" style="padding:0 16px;display:flex;flex-direction:column;gap:10px"></div>
+      <div style="height:80px"></div>
+    </div>
+
+    <!-- MESSAGES PAGE -->
+    <div id="drv-page-messages" class="drv-page">
+      <div class="route-header">
+        <div>
+          <div class="route-title">Messages</div>
+          <div class="route-summary" id="msg-summary">Customer conversations</div>
+        </div>
+      </div>
+      <div id="drv-messages-list" style="padding:0 16px;display:flex;flex-direction:column;gap:10px"></div>
+      <div style="height:80px"></div>
+    </div>
+
+    <!-- ACCOUNT PAGE -->
+    <div id="drv-page-account" class="drv-page">
+      <div class="drv-profile-hero">
+        <div class="drv-avatar" id="drv-avatar-text">DM</div>
+        <div class="drv-profile-name" id="drv-profile-name">Driver Name</div>
+        <div class="drv-profile-zone" id="drv-profile-role">Waterboy Driver</div>
+      </div>
+      <div style="margin:0 20px 8px;font-size:.8125rem;font-weight:600;color:var(--white-40);text-transform:uppercase;letter-spacing:.06em">My Info</div>
+      <div class="drv-vehicle-card">
+        <div class="drv-vehicle-row"><span class="drv-vehicle-label">Email</span><span class="drv-vehicle-val" id="drv-acct-email">—</span></div>
+        <div class="drv-vehicle-row"><span class="drv-vehicle-label">Phone</span><span class="drv-vehicle-val" id="drv-acct-phone">—</span></div>
+        <div class="drv-vehicle-row"><span class="drv-vehicle-label">Employee ID</span><span class="drv-vehicle-val" id="drv-acct-empid" style="color:var(--cyan);font-family:var(--font-mono);font-size:.8125rem">—</span></div>
+      </div>
+      <div style="padding:0 20px">
+        <button id="drv-logout-btn" class="btn btn-danger btn-full" style="margin-top:24px">Sign Out</button>
+      </div>
+      <div style="height:80px"></div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="drv-bottom-nav">
+    <div class="nav-tab active drv-nav-tab" data-page="route">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span class="nav-tab-label">Route</span>
+    </div>
+    <div class="nav-tab drv-nav-tab" data-page="messages" style="position:relative">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span class="nav-tab-label">Messages</span>
+      <span id="drv-msg-badge" style="display:none;position:absolute;top:4px;right:18px;background:var(--danger);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.65rem;font-weight:700;display:none;align-items:center;justify-content:center">0</span>
+    </div>
+    <div class="nav-tab drv-nav-tab" data-page="bottles">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <span class="nav-tab-label">Bottles</span>
+    </div>
+    <div class="nav-tab drv-nav-tab" data-page="map">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span class="nav-tab-label">Map</span>
+    </div>
+    <div class="nav-tab drv-nav-tab" data-page="account">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-tab-label">Account</span>
+    </div>
+  </nav>
+
+  <!-- Driver Chat Sub-screen -->
+  <div id="drv-chat-screen" class="sub-screen" style="background:#0B1B2B">
+    <div class="sub-screen-header" style="background:#0d2035;border-bottom:1px solid rgba(255,255,255,.08)">
+      <button class="sub-screen-back" onclick="closeDrvChat()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px;height:18px"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div>
+        <div style="font-weight:600;color:var(--white-90)" id="drv-chat-cust-name">Customer</div>
+        <div style="font-size:.75rem;color:var(--success)">Active Delivery</div>
+      </div>
+    </div>
+    <div id="drv-chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column"></div>
+    <div id="drv-chat-typing" style="display:none;padding:0 16px 8px;font-size:.8rem;color:var(--white-40);font-style:italic">Customer is typing…</div>
+    <div style="padding:12px 16px;background:#0d2035;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:10px;align-items:center">
+      <input id="drv-chat-input" type="text" class="form-input" placeholder="Type a message…" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)" />
+      <button onclick="sendDriverMessage()" style="width:44px;height:44px;border-radius:50%;background:var(--success);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:18px;height:18px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Complete Delivery Modal -->
+<div id="stop-detail-modal" class="modal-overlay">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title" id="stop-modal-title">Complete Delivery</span>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="stop-detail-body"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/global.js"></script>
+<script src="js/driver.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[SW] Registered:', reg.scope))
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>
