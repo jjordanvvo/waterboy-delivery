@@ -372,6 +372,82 @@
     document.head.appendChild(s);
   }
 
+  /* ── Cart Sidebar ────────────────────────────────────────────── */
+  var SIDEBAR_CSS = [
+    '#wb-cart-sidebar{position:fixed;top:0;right:0;height:100%;width:360px;max-width:92vw;',
+    'background:#0F2740;border-left:1px solid rgba(0,212,255,0.2);z-index:99980;',
+    'transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);',
+    'display:flex;flex-direction:column;overflow:hidden;}',
+    '#wb-cart-sidebar.open{transform:translateX(0);}',
+    '#wb-cart-sidebar-ov{position:fixed;inset:0;background:rgba(5,12,24,0.65);',
+    'z-index:99979;opacity:0;pointer-events:none;transition:opacity 0.3s;}',
+    '#wb-cart-sidebar-ov.open{opacity:1;pointer-events:auto;}',
+    '.wbcs-header{display:flex;align-items:center;justify-content:space-between;',
+    'padding:20px 24px;border-bottom:1px solid rgba(0,212,255,0.12);}',
+    '.wbcs-title{font-family:"Outfit",sans-serif;font-size:18px;font-weight:700;color:#F0F7FF;}',
+    '.wbcs-close{background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;',
+    'cursor:pointer;padding:4px;line-height:1;transition:color 0.15s;}',
+    '.wbcs-close:hover{color:#fff;}',
+    '.wbcs-body{flex:1;overflow-y:auto;padding:16px 24px;}',
+    '.wbcs-footer{padding:16px 24px;border-top:1px solid rgba(0,212,255,0.12);}',
+    '.wbcs-total-row{display:flex;justify-content:space-between;',
+    'font-family:"Inter",sans-serif;font-size:15px;font-weight:600;color:#F0F7FF;margin-bottom:14px;}',
+    '.wbcs-total-row span:last-child{color:#00D4FF;}',
+    '.wbcs-shop-btn{display:block;width:100%;background:#00D4FF;color:#0B1B2B;',
+    'font-family:"Outfit",sans-serif;font-size:16px;font-weight:800;border:none;padding:14px;',
+    'border-radius:12px;cursor:pointer;text-align:center;text-decoration:none;transition:background 0.2s;}',
+    '.wbcs-shop-btn:hover{background:#38BDF8;}',
+    '.nav-cart-btn{position:relative;background:none;border:none;cursor:pointer;',
+    'color:#00D4FF;padding:6px;display:flex;align-items:center;flex-shrink:0;}',
+    '.nav-cart-btn:hover{opacity:0.8;}',
+    '#cart-count{position:absolute;top:0;right:0;background:#FF3B3B;color:#fff;',
+    'font-family:"Inter",sans-serif;font-size:10px;font-weight:700;min-width:16px;height:16px;',
+    'border-radius:8px;display:flex;align-items:center;justify-content:center;',
+    'padding:0 3px;line-height:1;}',
+  ].join('');
+
+  function buildCartSidebar() {
+    if (document.getElementById('wb-cart-sidebar')) return;
+    var s = document.createElement('style');
+    s.textContent = SIDEBAR_CSS;
+    document.head.appendChild(s);
+
+    var ov = document.createElement('div');
+    ov.id = 'wb-cart-sidebar-ov';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', closeCartSidebar);
+
+    var aside = document.createElement('div');
+    aside.id = 'wb-cart-sidebar';
+    aside.innerHTML =
+      '<div class="wbcs-header">' +
+        '<span class="wbcs-title">Your Cart</span>' +
+        '<button class="wbcs-close" onclick="window.closeCartSidebar()" aria-label="Close cart">✕</button>' +
+      '</div>' +
+      '<div class="wbcs-body" id="cart-sidebar-items"></div>' +
+      '<div class="wbcs-footer">' +
+        '<div class="wbcs-total-row"><span>Total</span><span id="cart-total">$0.00</span></div>' +
+        '<a href="shop.html" class="wbcs-shop-btn">Shop Products</a>' +
+      '</div>';
+    document.body.appendChild(aside);
+  }
+
+  function openCartSidebar() {
+    buildCartSidebar();
+    renderCartSidebar();
+    document.getElementById('wb-cart-sidebar').classList.add('open');
+    document.getElementById('wb-cart-sidebar-ov').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCartSidebar() {
+    var s = document.getElementById('wb-cart-sidebar');
+    var o = document.getElementById('wb-cart-sidebar-ov');
+    if (s) s.classList.remove('open');
+    if (o) o.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   /* ── Init ──────────────────────────────────────────────────── */
   function init() {
     var style = document.createElement('style');
@@ -379,6 +455,7 @@
     document.head.appendChild(style);
     injectBounceCSS();
     buildModal();
+    buildCartSidebar();
     bindEvents();
     updateCartBadge();
     renderCartSidebar();
@@ -386,6 +463,8 @@
 
   /* ── Public API ─────────────────────────────────────────────── */
   window.openCartModal = function (productData) { openCartModal(productData); };
+  window.openCartSidebar = function () { openCartSidebar(); };
+  window.closeCartSidebar = function () { closeCartSidebar(); };
   window.renderCartSidebar = function () { renderCartSidebar(); };
   window.getWBCart = function () { return getCart(); };
 
