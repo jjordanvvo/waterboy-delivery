@@ -293,6 +293,34 @@ function buildTimeWindows(containerId, onSelect){
   }));
 }
 
+
+/* ── Customers Also Bought ───────────────────────────────────────── */
+const ALSO_BOUGHT=[
+  {name:'LMNT Electrolyte Cans',price:4.99,display:'$4.99 / can',img:'Images%20for%20Menu/Images%20for%20Menu/Cans.jpg'},
+  {name:'LMNT Electrolyte Packets',price:2.99,display:'$2.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG'},
+  {name:'Zipfizz Energy Drink Mix',price:39.99,display:'$39.99 / 30-pack',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG'},
+  {name:'Echo Hydrogen Prebiotic Drink Mix',price:4.99,display:'$4.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG'},
+];
+
+function renderAlsoBought(){
+  const wrap=document.getElementById('cd-also-items');
+  if(!wrap) return;
+  const inCart=cart.map(i=>(i.name||i.id||'').toLowerCase());
+  const toShow=ALSO_BOUGHT.filter(p=>!inCart.some(n=>n.includes(p.name.slice(0,6).toLowerCase())));
+  const parent=wrap.closest('.cd-also-bought');
+  if(!toShow.length){if(parent)parent.style.display='none';return;}
+  if(parent)parent.style.display='';
+  wrap.innerHTML=toShow.slice(0,3).map(p=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);border-radius:8px;">
+      <img src="${p.img}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="${p.name}" loading="lazy"/>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#F0F7FF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:12px;color:#00D4FF;font-weight:700;">${p.display}</div>
+      </div>
+      <button onclick="addToCartRaw(this.dataset.n,parseFloat(this.dataset.p),this.dataset.i,1);renderCartDrawer();" data-n="${p.name.replace(/"/g,'&quot;')}" data-p="${p.price}" data-i="${p.img}" style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;">+ Add</button>
+    </div>`).join('');
+}
+
 /* ── Cart Logic ────────────────────────────────────────────────── */
 function cartTotal(){ return cart.reduce((s,i)=>s+i.price*i.qty,0); }
 function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
@@ -329,6 +357,7 @@ function updateBadge(){
 function renderCartDrawer(){
   const body = document.getElementById('cd-body');
   if(!body) return;
+  renderAlsoBought();
   if(!cart.length){
     body.innerHTML='<p style="color:#8BB8D4;text-align:center;padding:40px 0;">Your cart is empty.</p>';
   } else {
@@ -430,6 +459,15 @@ function openProductDetailFromCard(card){
       atcBtn.style.display='none';
     }
   }
+  const buyNowBtn=modal.querySelector('.pd-buy-now');
+  if(buyNowBtn){
+    if(price){
+      buyNowBtn.style.display='flex';
+      buyNowBtn.onclick=()=>{ addToCartRaw(name,price,img,modal._qty); closeOverlay('pd-overlay'); gotoStep('checkout-overlay',0); openOverlay('checkout-overlay'); };
+    } else {
+      buyNowBtn.style.display='none';
+    }
+  }
   openOverlay('pd-overlay');
 }
 
@@ -437,10 +475,16 @@ function getProductDesc(name){
   const n=name.toLowerCase();
   if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water jug compatible with all standard top-load and bottom-load dispensers. Purified or alkaline available on every delivery.';
   if(n.includes('3-gallon')||n.includes('3 gallon')) return '3-gallon jug, ideal for smaller households or countertop dispensers. Lightweight and easy to handle.';
+  if(n.includes('half-gallon')||n.includes('half gallon')) return 'Sleek 64oz glass bottle for daily hydration. Pure taste with zero plastic leach. Dishwasher safe, airtight lid. Great for home or office.';
+  if(n.includes('32oz glass')) return 'Compact 32oz glass water bottle — perfect for on-the-go. Crystal clear, BPA-free, easy to clean, fits standard cup holders.';
+  if(n.includes('3-gallon glass')||n.includes('3 gallon glass')) return 'Premium 3-gallon borosilicate glass jug. Pure taste with zero plastic contact — ideal for countertop dispensers. Reusable and eco-friendly.';
   if(n.includes('glass bottle')||n.includes('glass jug')) return 'Premium glass bottle — pure taste with zero plastic contact. Reusable and eco-friendly.';
-  if(n.includes('aluminum')||n.includes('coffee mug')) return 'Lightweight aluminum bottle — perfect for on-the-go hydration. Durable, eco-friendly, and reusable.';
+  if(n.includes('36oz aluminum')) return 'Wide-mouth 36oz aluminum bottle for active use. Double-wall insulated keeps water cold for hours. Leak-proof, lightweight, built to last.';
+  if(n.includes('12oz')||n.includes('skinny')) return 'Slim 12oz aluminum bottle — perfect for the gym, commute, or kids. Leak-proof lid, lightweight design, fits any bag.';
+  if(n.includes('coffee mug')) return 'Double-wall 30oz aluminum mug — keeps drinks cold or hot for hours. Fits standard cup holders, spill-resistant sliding lid.';
+  if(n.includes('aluminum')) return 'Lightweight aluminum bottle — durable, eco-friendly, perfect for on-the-go hydration.';
   if(n.includes('dispenser')) return 'Premium water dispenser compatible with our 3 and 5-gallon jugs. Hot and cold taps. Contact us for current pricing and availability.';
-  if(n.includes('crock')) return 'Elegant ceramic water crock — a classic way to serve cold water in your home. Contact us for pricing.';
+  if(n.includes('crock')) return 'Classic ceramic water crock for elegant home water serving. Gravity-fed, holds a standard 5-gallon jug, no electricity required. Timeless design for any kitchen.';
   if(n.includes('prebiotic')||n.includes('hydrogen')) return 'Molecular hydrogen + prebiotic fiber. Crisp Apple. Supports gut health, energy & mental clarity. Sugar-free. Mix with 12–16 oz water.';
   if(n.includes('stick')||n.includes('electrolyte')) return 'Single-serve electrolyte stick. Drop into your water for natural hydration support with essential minerals and electrolytes.';
   if(n.includes('zipfizz')) return 'Zero sugar. 100mg natural caffeine. B12, electrolytes & vitamins in every tube. Grape, Fruit Punch & Peach Mango.';
@@ -602,6 +646,10 @@ function inject(){
    <div class="totals-row grand"><span>Total</span><span id="cd-grand">$0.00</span></div>
    <button class="wb-btn" id="cd-checkout-btn" style="margin-top:14px">Proceed to Checkout</button>
    <button class="wb-btn-ghost" id="cd-continue-btn">Continue Shopping</button>
+   <div class="cd-also-bought" style="margin-top:16px;border-top:1px solid rgba(0,212,255,0.12);padding-top:14px;">
+    <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.55);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>
+    <div id="cd-also-items" style="display:flex;flex-direction:column;gap:8px;"></div>
+   </div>
   </div>
  </div>
 </div>
@@ -640,6 +688,7 @@ function inject(){
       <button class="qty-btn" id="pd-plus">+</button>
      </div>
      <button class="wb-btn pd-atc" style="margin-top:14px">Add to Cart</button>
+     <button class="wb-btn pd-buy-now" style="margin-top:8px;background:transparent;border:1.5px solid #00D4FF;color:#00D4FF;">Buy Now — Checkout Instantly</button>
     </div>
    </div>
   </div>

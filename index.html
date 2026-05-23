@@ -122,6 +122,11 @@
      ============================================================ -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
 
+  <!-- Hamburger (mobile) — must be first for top-left positioning -->
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer" style="order:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+
   <!-- Logo -->
   <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
     <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
@@ -139,16 +144,10 @@
 
   <!-- Right side -->
   <div class="hn-nav-right">
-    <a href="order.html" class="hn-get-started" style="background:#00D4FF;color:#0B1B2B;">Order Now</a>
-    <a href="javascript:void(0)" class="hn-sign-in" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
-    <a href="javascript:void(0)" class="hn-get-started" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
+    <a href="javascript:void(0)" class="hn-get-started" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="background:#00D4FF;color:#0B1B2B;">Sign Up / Log In</a>
       <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():window.openCartSidebar&&window.openCartSidebar()" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"></polyline><line x1="7.68" y1="13.39" x2="5" y2="5"></line><line x1="5" y1="5" x2="21" y2="5"></line></svg><span id="cart-count" style="position:absolute;top:0;right:0;background:#ef4444;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span></button>
   </div>
 
-  <!-- Hamburger (mobile) -->
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-  </button>
 
   <!-- nav-links ul — kept for script.js compat -->
   <ul class="nav-links" role="list" style="list-style:none;margin:0;padding:0;display:none;"></ul>
@@ -501,30 +500,6 @@
         <a href="water-delivery.html" class="hn-bundle-btn">Order Now</a>
       </div>
 
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     STATS ROW
-     ============================================================ -->
-<section class="hn-stats-section" aria-label="Waterboy Delivery stats">
-  <div class="hn-stats-grid">
-    <div class="hn-stat">
-      <span class="hn-stat-num">500+</span>
-      <span class="hn-stat-lbl">Happy Customers</span>
-    </div>
-    <div class="hn-stat">
-      <span class="hn-stat-num">5,000+</span>
-      <span class="hn-stat-lbl">Jugs Delivered</span>
-    </div>
-    <div class="hn-stat">
-      <span class="hn-stat-num">3</span>
-      <span class="hn-stat-lbl">Delivery Zones</span>
-    </div>
-    <div class="hn-stat">
-      <span class="hn-stat-num">4.9★</span>
-      <span class="hn-stat-lbl">Average Rating</span>
     </div>
   </div>
 </section>

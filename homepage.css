@@ -76,7 +76,7 @@ body {
   border-radius: 8px;
   gap: 6px;
   font-size: 13px;
-  order: 3;
+  order: 0;
   flex-shrink: 0;
 }
 .nav-menu-btn span { display: none; }
@@ -172,7 +172,7 @@ body {
   }
   .hn-center-links { display: none; }
   .hn-nav-right { display: none; }
-  .nav-menu-btn { display: flex; margin-left: auto; }
+  .nav-menu-btn { display: flex; margin-left: 0; }
   #wt-bar { top: 56px !important; }
 }
 
