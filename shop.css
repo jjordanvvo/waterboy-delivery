@@ -270,7 +270,7 @@
 .pd-img img{width:100%;height:100%;object-fit:contain;padding:14px}
 .pd-info{flex:1}
 .pd-name{font-family:'Outfit',sans-serif;font-size:21px;font-weight:900;color:#fff;margin-bottom:7px}
-.pd-price{font-family:'Space Mono',monospace;font-size:19px;font-weight:700;color:#00D4FF;margin-bottom:14px}
+.pd-price{font-family:'Inter',sans-serif;font-size:19px;font-weight:600;color:#00D4FF;margin-bottom:14px}
 .pd-desc{font-size:14px;color:#8BB8D4;line-height:1.7;margin-bottom:16px}
 .pd-specs{margin-bottom:20px}
 .pd-spec{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:#8BB8D4}
@@ -281,7 +281,7 @@
 /* ── Subscription Plan Card ───────────────────────────────────── */
 .sub-plan-card{background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:18px;margin-bottom:18px}
 .sub-plan-name{font-family:'Outfit',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:4px}
-.sub-plan-price{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:#00D4FF;margin-bottom:10px}
+.sub-plan-price{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:#00D4FF;margin-bottom:10px}
 .sub-plan-tags{display:flex;flex-wrap:wrap;gap:5px}
 .sub-tag{font-size:11px;color:#C8E8F8;background:rgba(0,212,255,.1);border-radius:20px;padding:3px 10px}
 .sub-change{font-size:11px;color:#00D4FF;cursor:pointer;text-decoration:underline;background:none;border:none;margin-top:8px;display:block;text-align:right;padding:0}
@@ -442,7 +442,7 @@
 .dr-card{background:rgba(19,46,74,.7);border:1px solid rgba(0,212,255,.1);border-radius:14px;padding:28px 24px;transition:all .25s;position:relative}
 .dr-card:hover{border-color:rgba(0,212,255,.28);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.2)}
 .dr-card-popular{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;color:#0B1B2B;background:#00D4FF;border-radius:20px;padding:4px 12px;white-space:nowrap}
-.dr-price{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#00D4FF;margin:0 0 4px}
+.dr-price{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;color:#00D4FF;margin:0 0 4px}
 .dr-price-sub{font-size:11px;color:#5A8AAC;margin:0 0 20px}
 .dr-name{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#fff;margin:0 0 16px}
 .dr-features{list-style:none;padding:0;margin:0 0 20px}
@@ -481,7 +481,7 @@
 .co-addon-img svg{stroke:rgba(0,212,255,.3);width:28px;height:28px}
 .co-addon-name{font-size:11px;font-weight:700;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:3px;line-height:1.3}
 .co-addon-desc{font-size:9px;color:#5A8AAC;line-height:1.4;margin-bottom:7px}
-.co-addon-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#00D4FF;margin-bottom:8px}
+.co-addon-price{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#00D4FF;margin-bottom:8px}
 .co-addon-ctrl{display:flex;align-items:center;gap:5px}
 .co-addon-add{flex:1;padding:6px 8px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22);border-radius:6px;color:#00D4FF;font-size:11px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;transition:all .15s;text-align:center}
 .co-addon-add:hover{background:rgba(0,212,255,.18)}
@@ -552,13 +552,13 @@
   min-height:46px;
 }
 .menu-card-name{color:#fff;font-size:13px;font-family:'Outfit',sans-serif;font-weight:500;text-align:center;line-height:1.3}
-.menu-card-price{color:#00D4FF;font-size:14px;font-weight:700;font-family:'Space Mono','Courier New',monospace;text-align:center}
+.menu-card-price{color:#00D4FF;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;text-align:center}
 
 .mca-name{color:#fff;font-size:14px;font-family:'Outfit',sans-serif;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:100%}
 .mca-stars{display:flex;align-items:center;gap:5px;width:100%}
 .mca-st{color:#00D4FF;font-size:12px;letter-spacing:1px}
-.mca-rc{color:#5A8AAC;font-size:11px;font-family:'Space Mono',monospace}
-.mca-price{color:#00D4FF;font-size:16px;font-weight:700;font-family:'Space Mono','Courier New',monospace}
+.mca-rc{color:#5A8AAC;font-size:11px;font-family:'Inter',sans-serif;font-weight:500}
+.mca-price{color:#00D4FF;font-size:16px;font-weight:600;font-family:'Inter',sans-serif}
 .mca-badge{font-size:11px;color:#5A8AAC}
 .mca-atc{width:100%;height:36px;background:#00D4FF;color:#0B1B2B;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;margin-top:2px}
 .mca-atc:hover{opacity:0.88}
