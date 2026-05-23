@@ -35,7 +35,7 @@
 .orders-list{display:flex;flex-direction:column;gap:20px;}
 .order-card{background:#132236;border:1px solid rgba(0,212,255,0.15);border-radius:16px;padding:28px;position:relative;}
 .oc-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;}
-.oc-id{font-family:'Space Mono',monospace;font-size:17px;color:#00D4FF;font-weight:700;}
+.oc-id{font-family:'Inter',sans-serif;font-weight:700;font-size:17px;color:#00D4FF;}
 .oc-placed{font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;}
 .status-badge{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px;}
 .status-badge.confirmed{background:rgba(0,212,255,0.12);color:#00D4FF;border:1px solid rgba(0,212,255,0.3);}
@@ -47,7 +47,7 @@
 .oc-field{display:flex;flex-direction:column;gap:3px;}
 .oc-field-lbl{font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;}
 .oc-field-val{font-family:'Inter',sans-serif;font-size:14px;color:#F0F7FF;}
-.oc-field-val.mono{font-family:'Space Mono',monospace;color:#00D4FF;}
+.oc-field-val.mono{font-family:'Inter',sans-serif;font-weight:500;color:#00D4FF;}
 
 .oc-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:18px;border-top:1px solid rgba(0,212,255,0.08);}
 .oc-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:9px 18px;border-radius:8px;cursor:pointer;transition:all 0.2s;border:none;}
@@ -514,5 +514,6 @@ function showToast(msg){
   clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove('show');},3500);
 }
 </script>
+<script src="auth.js"></script>
 </body>
 </html>

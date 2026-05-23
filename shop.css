@@ -154,11 +154,11 @@
 .ci-img img{width:100%;height:100%;object-fit:contain;padding:4px}
 .ci-info{flex:1;min-width:0}
 .ci-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci-price{font-family:'Space Mono',monospace;font-size:11px;color:#00D4FF;margin-top:2px}
+.ci-price{font-family:'Inter',sans-serif;font-weight:500;font-size:11px;color:#00D4FF;margin-top:2px}
 .ci-ctrl{display:flex;align-items:center;gap:6px}
 .qty-btn{width:27px;height:27px;border:1px solid rgba(0,212,255,.22);background:transparent;color:#00D4FF;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}
 .qty-btn:hover{background:rgba(0,212,255,.1)}
-.qty-val{font-family:'Space Mono',monospace;font-size:13px;color:#fff;min-width:20px;text-align:center}
+.qty-val{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:#fff;min-width:20px;text-align:center}
 .ci-del{background:none;border:none;color:rgba(255,100,100,.55);cursor:pointer;padding:3px;border-radius:5px;transition:color .15s;display:flex;align-items:center}
 .ci-del:hover{color:#ff6464}
 .cd-foot{padding:14px 22px 22px;border-top:1px solid rgba(0,212,255,.08);flex-shrink:0}
@@ -168,7 +168,7 @@
 .promo-apply{padding:9px 14px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.28);border-radius:8px;color:#00D4FF;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
 .promo-apply:hover{background:rgba(0,212,255,.18)}
 .totals-row{display:flex;justify-content:space-between;font-size:13px;color:#8BB8D4;padding:3px 0}
-.totals-row.grand{font-weight:700;color:#fff;font-size:16px;font-family:'Space Mono',monospace;border-top:1px solid rgba(0,212,255,.1);padding-top:9px;margin-top:6px}
+.totals-row.grand{font-weight:600;color:#fff;font-size:16px;font-family:'Inter',sans-serif;border-top:1px solid rgba(0,212,255,.1);padding-top:9px;margin-top:6px}
 .totals-row.grand span:last-child{color:#00D4FF}
 .cd-checkout{margin-top:14px}
 
@@ -177,11 +177,11 @@
 .qm-img{width:76px;height:76px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .qm-img img{width:100%;height:100%;object-fit:contain;padding:8px}
 .qm-name{font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#fff}
-.qm-price{font-family:'Space Mono',monospace;font-size:14px;color:#00D4FF;margin-top:4px}
+.qm-price{font-family:'Inter',sans-serif;font-weight:500;font-size:14px;color:#00D4FF;margin-top:4px}
 .qty-sel{display:flex;align-items:center;justify-content:center;gap:22px;margin:22px 0}
 .qty-lg{width:50px;height:50px;border:2px solid rgba(0,212,255,.3);background:transparent;color:#00D4FF;border-radius:12px;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}
 .qty-lg:hover{background:rgba(0,212,255,.1);border-color:#00D4FF}
-.qty-disp{font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:#fff;min-width:50px;text-align:center}
+.qty-disp{font-family:'Inter',sans-serif;font-weight:600;font-size:34px;color:#fff;min-width:50px;text-align:center}
 
 /* ── Step Progress ────────────────────────────────────────────── */
 .step-bar{display:flex;align-items:center;justify-content:center;padding:18px 24px 0}
@@ -238,12 +238,12 @@
 .pay-or span{font-size:11px;color:#8BB8D4;white-space:nowrap}
 .order-box{background:rgba(0,0,0,.25);border:1px solid rgba(0,212,255,.09);border-radius:10px;padding:14px;margin-bottom:18px}
 .ob-row{display:flex;justify-content:space-between;font-size:13px;color:#8BB8D4;padding:3px 0}
-.ob-row.grand{font-weight:700;color:#fff;font-family:'Space Mono',monospace;border-top:1px solid rgba(0,212,255,.09);padding-top:9px;margin-top:6px}
+.ob-row.grand{font-weight:600;color:#fff;font-family:'Inter',sans-serif;border-top:1px solid rgba(0,212,255,.09);padding-top:9px;margin-top:6px}
 .ob-row.grand span:last-child{color:#00D4FF}
 .terms-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:14px}
 .terms-row input{margin-top:3px;accent-color:#00D4FF;flex-shrink:0}
 .terms-row label{font-size:12px;color:#8BB8D4;line-height:1.5}
-.stripe-badge{text-align:center;font-size:10px;color:rgba(255,255,255,.28);margin-top:11px;font-family:'Space Mono',monospace;letter-spacing:.8px}
+.stripe-badge{text-align:center;font-size:10px;color:rgba(255,255,255,.28);margin-top:11px;font-family:'Inter',sans-serif;font-weight:500;letter-spacing:.8px}
 
 /* ── Pay Sim Sheet ────────────────────────────────────────────── */
 #pay-sim{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
@@ -262,7 +262,7 @@
 @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 .confirm-wrap h2{font-family:'Outfit',sans-serif;font-size:26px;font-weight:900;color:#fff;margin-bottom:8px}
 .confirm-wrap p{font-size:14px;color:#8BB8D4;margin-bottom:5px}
-.confirm-num{font-family:'Space Mono',monospace;font-size:16px;color:#00D4FF;margin:14px 0;padding:9px 18px;border:1px solid rgba(0,212,255,.2);border-radius:8px;display:inline-block}
+.confirm-num{font-family:'Inter',sans-serif;font-weight:600;font-size:16px;color:#00D4FF;margin:14px 0;padding:9px 18px;border:1px solid rgba(0,212,255,.2);border-radius:8px;display:inline-block}
 
 /* ── Product Detail Modal ─────────────────────────────────────── */
 .pd-wrap{display:flex;gap:24px}
