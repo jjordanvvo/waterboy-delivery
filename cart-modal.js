@@ -67,10 +67,10 @@
 
   /* ── Cart storage ──────────────────────────────────────────── */
   function getCart() {
-    try { return JSON.parse(localStorage.getItem('wb_cart') || '[]'); } catch (e) { return []; }
+    try { return JSON.parse(localStorage.getItem('wb_cart_v1') || '[]'); } catch (e) { return []; }
   }
   function saveCart(arr) {
-    try { localStorage.setItem('wb_cart', JSON.stringify(arr)); } catch (e) {}
+    try { localStorage.setItem('wb_cart_v1', JSON.stringify(arr)); } catch (e) {}
   }
   function addToCart(item) {
     var cart = getCart();
