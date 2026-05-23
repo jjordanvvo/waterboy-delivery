@@ -1105,6 +1105,24 @@ function showSuccess(orderId){
 
   document.getElementById('success-overlay').classList.add('open');
   document.body.style.overflow='hidden';
+
+  /* Silent background webhook — does not block UI or surface errors */
+  (function(){
+    fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        order_id:orderId,
+        customer_name:state.name,
+        phone:state.phone,
+        address:fullAddr,
+        bundle:amtLbl+' — '+wtLbl,
+        delivery_date:delivDate,
+        delivery_window:timeLbl,
+        zone:state.zone.zone||'unknown'
+      })
+    }).catch(function(){});
+  })();
 }
 
 function buildCalLink(order,timeLbl,delivDate){
