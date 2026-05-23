@@ -1,13 +1,103 @@
 [build]
   publish = "."
 
-# Redirect all paths to index.html (SPA behavior)
+# Clean URLs
+[[redirects]]
+  from = "/products"
+  to = "/products.html"
+  status = 200
+
+[[redirects]]
+  from = "/shop"
+  to = "/shop.html"
+  status = 200
+
+[[redirects]]
+  from = "/dispensers"
+  to = "/dispensers.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/how-it-works"
+  to = "/how-it-works.html"
+  status = 200
+
+[[redirects]]
+  from = "/faq"
+  to = "/faq.html"
+  status = 200
+
+[[redirects]]
+  from = "/order"
+  to = "/order.html"
+  status = 200
+
+[[redirects]]
+  from = "/water-delivery"
+  to = "/water-delivery.html"
+  status = 200
+
+[[redirects]]
+  from = "/delivery-areas"
+  to = "/delivery-areas.html"
+  status = 200
+
+[[redirects]]
+  from = "/bottle-pickup"
+  to = "/bottle-pickup.html"
+  status = 200
+
+[[redirects]]
+  from = "/my-orders"
+  to = "/my-orders.html"
+  status = 200
+
+[[redirects]]
+  from = "/water-filtration"
+  to = "/water-filtration.html"
+  status = 200
+
+[[redirects]]
+  from = "/alkaline-water"
+  to = "/alkaline-water.html"
+  status = 200
+
+[[redirects]]
+  from = "/reverse-osmosis-water"
+  to = "/reverse-osmosis-water.html"
+  status = 200
+
+[[redirects]]
+  from = "/app/customer"
+  to = "/app/customer.html"
+  status = 200
+
+[[redirects]]
+  from = "/app/driver"
+  to = "/app/driver.html"
+  status = 200
+
+[[redirects]]
+  from = "/app/admin"
+  to = "/app/admin.html"
+  status = 200
+
+# 404 fallback — NOT an SPA, status must be 404
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200
+  status = 404
 
-# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -16,7 +106,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Cache static assets aggressively
 [[headers]]
   for = "/styles.css"
   [headers.values]
