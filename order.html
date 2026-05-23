@@ -240,6 +240,21 @@
 .btn-no-recur{background:none;border:none;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;text-decoration:underline;padding:6px;display:block;width:100%;text-align:center;}
 
 .hidden{display:none!important;}
+
+/* Customers Also Bought */
+.co-also-section{margin-top:20px;padding-top:18px;border-top:1px solid rgba(0,212,255,0.1);}
+.co-also-label{font-family:'Space Mono',monospace;font-size:10px;color:#00D4FF;letter-spacing:2px;text-transform:uppercase;margin:0 0 12px;}
+.co-also-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
+.co-also-row::-webkit-scrollbar{height:3px;}
+.co-also-row::-webkit-scrollbar-track{background:transparent;}
+.co-also-row::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.3);border-radius:2px;}
+.co-also-card{flex:0 0 110px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:10px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.co-also-img{width:80px;height:80px;object-fit:cover;border-radius:6px;}
+.co-also-name{font-family:'Inter',sans-serif;font-size:11px;color:#B8E6FF;line-height:1.3;margin:0;}
+.co-also-price{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#00D4FF;margin:0;}
+.co-also-add{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;background:transparent;border:1px solid rgba(0,212,255,0.4);color:#00D4FF;border-radius:6px;padding:5px 10px;cursor:pointer;transition:all 0.15s;width:100%;}
+.co-also-add:hover{background:rgba(0,212,255,0.1);}
+.co-also-add.added{background:rgba(0,212,255,0.12);border-color:#00D4FF;}
 </style>
 </head>
 <body>
@@ -517,6 +532,36 @@
     <div class="co-sum">
       <div class="co-heading">Order Summary</div>
       <div id="co-summary-content"></div>
+      <div id="also-addons-list"></div>
+      <div class="co-also-section">
+        <p class="co-also-label">Customers Also Bought</p>
+        <div class="co-also-row">
+          <div class="co-also-card">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" class="co-also-img" alt="LMNT Electrolyte Cans" />
+            <p class="co-also-name">LMNT Electrolyte Cans</p>
+            <p class="co-also-price">$4.99</p>
+            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Cans',4.99,this)">+ Add</button>
+          </div>
+          <div class="co-also-card">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" class="co-also-img" alt="LMNT Electrolyte Packets" />
+            <p class="co-also-name">LMNT Electrolyte Packets</p>
+            <p class="co-also-price">$2.99</p>
+            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Packets',2.99,this)">+ Add</button>
+          </div>
+          <div class="co-also-card">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" class="co-also-img" alt="Zipfizz Energy Drink Mix" />
+            <p class="co-also-name">Zipfizz Energy Drink Mix</p>
+            <p class="co-also-price">$34.99</p>
+            <button class="co-also-add" onclick="addAlsoBought('Zipfizz Energy Drink Mix',34.99,this)">+ Add</button>
+          </div>
+          <div class="co-also-card">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" class="co-also-img" alt="Echo Hydrogen Prebiotic Packet" />
+            <p class="co-also-name">Echo Hydrogen Prebiotic Packet</p>
+            <p class="co-also-price">$1.99</p>
+            <button class="co-also-add" onclick="addAlsoBought('Echo Hydrogen Prebiotic Packet',1.99,this)">+ Add</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="co-pay">
       <div class="co-heading">
@@ -942,9 +987,42 @@ function validateStep3(){
 
 /* ── Checkout ────────────────────────────────────────────────── */
 var stripe=null,cardElement=null;
+var alsoAddons=[];
+
+function addAlsoBought(name,price,btn){
+  var idx=alsoAddons.findIndex(function(a){return a.name===name;});
+  if(idx>=0){
+    alsoAddons.splice(idx,1);
+    btn.textContent='+ Add';
+    btn.classList.remove('added');
+  } else {
+    alsoAddons.push({name:name,price:price});
+    btn.textContent='Added ✓';
+    btn.classList.add('added');
+  }
+  updateCoTotal();
+}
+
+function updateCoTotal(){
+  var base=getBasePrice();
+  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var addonTotal=alsoAddons.reduce(function(s,a){return s+a.price;},0);
+  var total=base+zoneFee+addonTotal;
+  var tv=document.querySelector('#co-summary-content .sp-total-val');
+  if(tv)tv.textContent='$'+total.toFixed(2);
+  var pt=document.getElementById('pay-text');
+  if(pt)pt.textContent='PAY $'+total.toFixed(2);
+  var list=document.getElementById('also-addons-list');
+  if(list)list.innerHTML=alsoAddons.map(function(a){
+    return '<div class="sp-row"><span>+ '+a.name+'</span><span>$'+a.price.toFixed(2)+'</span></div>';
+  }).join('');
+}
 
 function openCheckout(){
   if(!validateStep3())return;
+  alsoAddons=[];
+  document.querySelectorAll('.co-also-add').forEach(function(b){b.textContent='+ Add';b.classList.remove('added');});
+  document.getElementById('also-addons-list').innerHTML='';
   // Sync fields from inputs
   state.name=document.getElementById('f-name').value.trim();
   state.addr=document.getElementById('f-addr').value.trim();
