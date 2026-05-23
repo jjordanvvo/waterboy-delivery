@@ -39,7 +39,7 @@
     .lmnt-buy-opt:hover{border-color:rgba(0,212,255,0.5);color:#F0F7FF;}
     .lmnt-buy-opt.selected{border-color:#00D4FF;background:rgba(0,212,255,0.1);color:#00D4FF;}
     .lmnt-save{background:rgba(109,207,112,0.15);color:#6DCF70;border:1px solid rgba(109,207,112,0.3);border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap;}
-    .catalog-img-wrap img{object-fit:cover;padding:0;}
+    .catalog-img-wrap img{object-fit:cover;width:100%;height:100%;padding:0;}
     .catalog-cat--dispensers .catalog-img-wrap img{object-fit:contain;padding:16px;}
     .catalog-rent-btn{display:block;width:100%;background:transparent;border:1px solid #00D4FF;border-radius:8px;color:#00D4FF;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 14px;text-align:center;margin-top:10px;text-decoration:none;transition:background 0.2s;}
     .catalog-rent-btn:hover{background:rgba(0,212,255,0.08);}
@@ -97,7 +97,7 @@
       <a href="order.html" class="nav-btn-cyan">Order Now</a>
       <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
       <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
-      <button id="cart-btn" onclick="document.getElementById('cart-modal').style.display='flex'" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"></polyline><line x1="7.68" y1="13.39" x2="5" y2="5"></line><line x1="5" y1="5" x2="21" y2="5"></line></svg><span id="cart-count" style="position:absolute;top:0;right:0;background:#ef4444;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span></button>
+      <button id="cart-btn" onclick="window.openCartSidebar&&window.openCartSidebar()" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"></polyline><line x1="7.68" y1="13.39" x2="5" y2="5"></line><line x1="5" y1="5" x2="21" y2="5"></line></svg><span id="cart-count" style="position:absolute;top:0;right:0;background:#ef4444;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span></button>
     </div>
   </div>
 </nav>
@@ -216,22 +216,22 @@
         </div>
         <div class="catalog-card reveal reveal-delay-2">
           <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="3-Gallon Tall Bottle" loading="lazy" />
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="3-Gallon Alkaline Water" loading="lazy" />
           </div>
           <div class="catalog-card-body">
-            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">5-Gallon Jug (Empty)</p>
-            <p class="catalog-desc">BPA-free polycarbonate jug. Reusable for years.</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">3-Gallon Alkaline Water</p>
+            <p class="catalog-desc">Alkaline ionized water, pH 8.5–9.5. Electrolyte enhanced, compact size.</p>
             <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$12.99 each</p>
             <a href="index.html#contact" class="catalog-view">View Details →</a>
           </div>
         </div>
         <div class="catalog-card reveal reveal-delay-3">
           <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="3-Gallon Jug with Spigot" loading="lazy" />
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="3-Gallon Hydrogen Water" loading="lazy" />
           </div>
           <div class="catalog-card-body">
-            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">3-Gallon Jug (Empty)</p>
-            <p class="catalog-desc">Compact BPA-free jug. Fits small countertop dispensers.</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">3-Gallon Hydrogen Water</p>
+            <p class="catalog-desc">Hydrogen-infused antioxidant water in a compact 3-gallon size. Premium wellness choice.</p>
             <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$9.99 each</p>
             <a href="index.html#contact" class="catalog-view">View Details →</a>
           </div>
@@ -338,7 +338,7 @@
             <p class="catalog-price">$279.99</p>
             <a href="index.html#contact" class="catalog-view">View Details →</a>
             <button type="button" class="lmnt-expand-btn" style="justify-content:center;margin-top:10px;" onclick="typeof openCartModal==='function'&&openCartModal({name:'Brio Bottom-Load Dispenser',pricePerUnit:279.99,priceDisplay:'$279.99',image:'Water%20disp%201.JPG'})">Add to Cart</button>
-            <a href="/dispensers" class="catalog-rent-btn">Rent a Dispenser</a>
+            <a href="dispensers.html" class="catalog-rent-btn">Rent a Dispenser</a>
           </div>
         </div>
         <div class="catalog-card reveal reveal-delay-2">
@@ -350,7 +350,7 @@
             <p class="catalog-price">$129.99</p>
             <a href="index.html#contact" class="catalog-view">View Details →</a>
             <button type="button" class="lmnt-expand-btn" style="justify-content:center;margin-top:10px;" onclick="typeof openCartModal==='function'&&openCartModal({name:'Brio Top-Load Dispenser',pricePerUnit:129.99,priceDisplay:'$129.99',image:'Water%20disp%202.JPEG'})">Add to Cart</button>
-            <a href="/dispensers" class="catalog-rent-btn">Rent a Dispenser</a>
+            <a href="dispensers.html" class="catalog-rent-btn">Rent a Dispenser</a>
           </div>
         </div>
         <div class="catalog-card reveal reveal-delay-3">

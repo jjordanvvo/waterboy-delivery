@@ -426,10 +426,36 @@
       '</div>' +
       '<div class="wbcs-body" id="cart-sidebar-items"></div>' +
       '<div class="wbcs-footer">' +
+        '<div class="wbcs-total-row"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>' +
         '<div class="wbcs-total-row"><span>Total</span><span id="cart-total">$0.00</span></div>' +
-        '<a href="shop.html" class="wbcs-shop-btn">Shop Products</a>' +
+        '<a href="order.html" class="wbcs-shop-btn" style="margin-bottom:12px;">Checkout →</a>' +
+        '<div id="wbcs-also-bought" style="margin-top:4px;">' +
+          '<div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>' +
+          '<div style="display:flex;flex-direction:column;gap:8px;" id="wbcs-also-items"></div>' +
+        '</div>' +
       '</div>';
     document.body.appendChild(aside);
+    var alsoBought=[
+      {name:'LMNT Electrolyte Cans',price:'$4.99',img:'Images%20for%20Menu/Images%20for%20Menu/Cans.jpg',priceNum:4.99},
+      {name:'LMNT Electrolyte Packets',price:'$2.99',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG',priceNum:2.99},
+      {name:'Zipfizz Energy Drink Mix',price:'$34.99',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG',priceNum:34.99},
+      {name:'Echo Hydrogen Prebiotic Packet',price:'$1.99',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG',priceNum:1.99}
+    ];
+    var alsoContainer=aside.querySelector('#wbcs-also-items');
+    alsoBought.forEach(function(p){
+      var row=document.createElement('div');
+      row.style.cssText='display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);border-radius:8px;';
+      row.innerHTML='<img src="'+p.img+'" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="'+p.name+'" /><div style="flex:1;min-width:0;"><div style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#F0F7FF;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+p.name+'</div><div style="font-family:'Inter',sans-serif;font-size:12px;color:#00D4FF;font-weight:700;">'+p.price+'</div></div><button style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;" data-also-name="'+p.name+'" data-also-price="'+p.priceNum+'" data-also-img="'+p.img+'">+ Add</button>';
+      alsoContainer.appendChild(row);
+    });
+    alsoContainer.addEventListener('click',function(e){
+      var btn=e.target.closest('[data-also-name]');
+      if(!btn)return;
+      addToCart({productName:btn.getAttribute('data-also-name'),quantity:1,pricePerUnit:parseFloat(btn.getAttribute('data-also-price'))||0,subtotal:parseFloat(btn.getAttribute('data-also-price'))||0,image:btn.getAttribute('data-also-img'),timestamp:Date.now()});
+      btn.textContent='✓';btn.style.background='#22c55e';
+      setTimeout(function(){btn.textContent='+ Add';btn.style.background='#00D4FF';},1500);
+      renderCartSidebar();
+    });
   }
 
   function openCartSidebar() {
