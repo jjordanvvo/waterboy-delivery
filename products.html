@@ -24,6 +24,21 @@
   <style>
     .catalog-badge{display:inline-block;background:rgba(0,212,255,0.15);color:#00D4FF;border:1px solid #00D4FF;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;text-transform:uppercase;font-family:'Inter',sans-serif;letter-spacing:0.05em;margin-bottom:6px;}
     .catalog-desc{font-family:'Inter',sans-serif;color:#B8E6FF;font-size:13px;line-height:1.5;margin:5px 0 8px;}
+    .lmnt-size{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:rgba(0,212,255,0.7);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 4px;}
+    .lmnt-expand-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.28);border-radius:8px;color:#00D4FF;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 14px;cursor:pointer;margin-top:12px;transition:background 0.2s;}
+    .lmnt-expand-btn:hover{background:rgba(0,212,255,0.14);}
+    .lmnt-arrow{display:inline-block;transition:transform 0.2s;}
+    .lmnt-expand-btn.open .lmnt-arrow{transform:rotate(180deg);}
+    .lmnt-expand{margin-top:12px;}
+    .lmnt-flavors{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .lmnt-pill{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);color:#B8E6FF;border-radius:20px;padding:6px 14px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;line-height:1.3;}
+    .lmnt-pill:hover{border-color:rgba(0,212,255,0.5);color:#00D4FF;}
+    .lmnt-pill.selected{background:rgba(0,212,255,0.2);border-color:#00D4FF;color:#00D4FF;}
+    .lmnt-buy-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+    .lmnt-buy-opt{display:flex;align-items:center;justify-content:space-between;width:100%;background:rgba(0,0,0,0.2);border:1px solid rgba(0,212,255,0.2);border-radius:8px;color:#B8E6FF;font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;cursor:pointer;text-align:left;transition:all 0.15s;}
+    .lmnt-buy-opt:hover{border-color:rgba(0,212,255,0.5);color:#F0F7FF;}
+    .lmnt-buy-opt.selected{border-color:#00D4FF;background:rgba(0,212,255,0.1);color:#00D4FF;}
+    .lmnt-save{background:rgba(109,207,112,0.15);color:#6DCF70;border:1px solid rgba(109,207,112,0.3);border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap;}
   </style>
 </head>
 <body style="background:#0B1B2B;">
@@ -359,152 +374,59 @@
         <div class="catalog-cat-line"></div>
       </div>
 
-      <p class="catalog-subheader">Salt Sticks — Single Serve</p>
       <div class="catalog-grid">
-        <div class="catalog-card reveal reveal-delay-1">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Citrus%20Salt%20Stick.jpg" alt="Citrus Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Citrus Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-2">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Grapefruit%20Stick.jpg" alt="Grapefruit Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Grapefruit Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-3">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Lemonade%20Salt%20Stick.jpg" alt="Lemonade Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Lemonade Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-      </div>
-      <div class="catalog-grid" style="margin-top:24px;">
-        <div class="catalog-card reveal reveal-delay-1">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Mango%20Chili%20Stick.jpg" alt="Mango Chili Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Mango Chili Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-2">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Orange%20Salt%20Stick.jpg" alt="Orange Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Orange Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-3">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Raspberry%20Salt%20Stick.jpg" alt="Raspberry Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Raspberry Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-      </div>
-      <div class="catalog-grid" style="margin-top:24px;">
-        <div class="catalog-card reveal reveal-delay-1">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Watermelon%20Salt%20Stick.jpg" alt="Watermelon Salt Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Watermelon Salt Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-2">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Raw%20Unf%3Bavored%20Stick.jpg" alt="Raw Unflavored Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Raw Unflavored Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-        <div class="catalog-card reveal reveal-delay-3">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Hydrogen%20Prebiotic%20Stick.jpg" alt="Hydrogen Prebiotic Stick" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Hydrogen Prebiotic Stick</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-      </div>
 
-      <p class="catalog-subheader">Canned Drinks — 16 fl oz</p>
-      <div class="catalog-grid">
+        <!-- LMNT Sparkling Electrolyte Cans -->
         <div class="catalog-card reveal reveal-delay-1">
           <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Black%20Cherry%20Lime%2016%20fl%20oz.jpg" alt="Black Cherry Lime 16 fl oz" loading="lazy" />
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" alt="LMNT Sparkling Electrolyte Cans" loading="lazy" />
           </div>
           <div class="catalog-card-body">
-            <p class="catalog-name">Black Cherry Lime</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
+            <p class="lmnt-size">16 fl oz</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">LMNT Sparkling Electrolyte Cans</p>
+            <p class="catalog-desc">Zero-sugar sparkling electrolyte drink. 1000mg sodium, science-backed ratio. Crisp, refreshing, and built for real hydration.</p>
+            <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$4.99 per can</p>
+            <button class="lmnt-expand-btn" type="button" onclick="lmntToggle(this)">Choose Flavor <span class="lmnt-arrow">&#9662;</span></button>
+            <div class="lmnt-expand" hidden>
+              <div class="lmnt-flavors">
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Citrus Salt</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Watermelon Salt</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Black Cherry Lime</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Grapefruit Salt</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- LMNT Zero-Sugar Electrolyte Packets -->
         <div class="catalog-card reveal reveal-delay-2">
           <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Grapefruit%20Salt%2016%20fl%20oz.jpg" alt="Grapefruit Salt 16 fl oz" loading="lazy" />
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="LMNT Zero-Sugar Electrolyte Packets" loading="lazy" />
           </div>
           <div class="catalog-card-body">
-            <p class="catalog-name">Grapefruit Salt</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
+            <p class="lmnt-size">Single Serve Stick Packs</p>
+            <p class="catalog-name" style="font-family:'Outfit',sans-serif;font-weight:700;color:#F0F7FF;">LMNT Zero-Sugar Electrolyte Packets</p>
+            <p class="catalog-desc">Mix with 16&#8211;32oz of water for a powerful dose of electrolytes. Zero sugar, zero junk. Perfect for workouts, travel, and daily hydration.</p>
+            <p class="catalog-price" style="font-family:'Inter',sans-serif;font-weight:600;color:#00D4FF;">$2.99 per packet &#8212; $39.99 for 30-pack box</p>
+            <button class="lmnt-expand-btn" type="button" onclick="lmntToggle(this)">Choose Options <span class="lmnt-arrow">&#9662;</span></button>
+            <div class="lmnt-expand" hidden>
+              <div class="lmnt-buy-opts">
+                <button class="lmnt-buy-opt selected" type="button" onclick="lmntBuyOpt(this)">Single Packet &#8212; $2.99</button>
+                <button class="lmnt-buy-opt" type="button" onclick="lmntBuyOpt(this)">30-Pack Box &#8212; $39.99 <span class="lmnt-save">Save $9.81</span></button>
+              </div>
+              <div class="lmnt-flavors">
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Citrus Salt</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Watermelon Salt</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Raspberry Salt</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Mango Chili</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Lemon Habanero</button>
+                <button class="lmnt-pill" type="button" onclick="lmntFlavor(this)">Raw Unflavored</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="catalog-card reveal reveal-delay-3">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Watermelon%20Salt%2016%20fl%20oz.jpg" alt="Watermelon Salt 16 fl oz" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Watermelon Salt</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
-      </div>
 
-      <p class="catalog-subheader">Canned Electrolytes</p>
-      <div class="catalog-grid">
-        <div class="catalog-card reveal reveal-delay-1">
-          <div class="catalog-img-wrap">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/citrus%20salt%20can.jpg" alt="Citrus Salt Can" loading="lazy" />
-          </div>
-          <div class="catalog-card-body">
-            <p class="catalog-name">Citrus Salt Can</p>
-            <p class="catalog-price tbd">[Price Coming Soon]</p>
-            <a href="index.html#contact" class="catalog-view">View Details →</a>
-          </div>
-        </div>
       </div>
-
       <p class="catalog-subheader">Energy &amp; Supplements</p>
       <div class="catalog-grid">
         <div class="catalog-card reveal reveal-delay-1">
@@ -814,6 +736,24 @@
 </div>
 <script>
 (function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
+</script>
+<script>
+function lmntToggle(btn){
+  var exp=btn.nextElementSibling;
+  var opening=exp.hasAttribute('hidden');
+  exp.toggleAttribute('hidden',!opening);
+  btn.classList.toggle('open',opening);
+}
+function lmntFlavor(btn){
+  var pills=btn.closest('.lmnt-flavors').querySelectorAll('.lmnt-pill');
+  Array.prototype.forEach.call(pills,function(p){p.classList.remove('selected');});
+  btn.classList.add('selected');
+}
+function lmntBuyOpt(btn){
+  var opts=btn.closest('.lmnt-buy-opts').querySelectorAll('.lmnt-buy-opt');
+  Array.prototype.forEach.call(opts,function(o){o.classList.remove('selected');});
+  btn.classList.add('selected');
+}
 </script>
 <script src="auth.js"></script>
 </body>
