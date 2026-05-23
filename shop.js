@@ -441,9 +441,9 @@ function getProductDesc(name){
   if(n.includes('aluminum')||n.includes('coffee mug')) return 'Lightweight aluminum bottle — perfect for on-the-go hydration. Durable, eco-friendly, and reusable.';
   if(n.includes('dispenser')) return 'Premium water dispenser compatible with our 3 and 5-gallon jugs. Hot and cold taps. Contact us for current pricing and availability.';
   if(n.includes('crock')) return 'Elegant ceramic water crock — a classic way to serve cold water in your home. Contact us for pricing.';
-  if(n.includes('prebiotic')||n.includes('hydrogen')) return 'Advanced hydrogen prebiotic stick — supports gut health and enhanced hydration. Single serve, easy to use.';
+  if(n.includes('prebiotic')||n.includes('hydrogen')) return 'Molecular hydrogen + prebiotic fiber. Crisp Apple. Supports gut health, energy & mental clarity. Sugar-free. Mix with 12–16 oz water.';
   if(n.includes('stick')||n.includes('electrolyte')) return 'Single-serve electrolyte stick. Drop into your water for natural hydration support with essential minerals and electrolytes.';
-  if(n.includes('zipfizz')) return 'ZipFizz energy mix — natural energy with vitamins, minerals, and electrolytes. Mix with water for an instant boost without the crash.';
+  if(n.includes('zipfizz')) return 'Zero sugar. 100mg natural caffeine. B12, electrolytes & vitamins in every tube. Grape, Fruit Punch & Peach Mango.';
   if(n.includes('can')||n.includes('cherry')||n.includes('grapefruit')||n.includes('watermelon salt')) return 'Ready-to-drink electrolyte beverage in a convenient can. Crisp taste, hydrating minerals, no artificial colors.';
   return 'Premium hydration product from Waterboy Delivery. Contact us for details.';
 }
