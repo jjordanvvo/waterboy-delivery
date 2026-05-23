@@ -171,7 +171,10 @@ body {
     justify-content: space-between;
   }
   .hn-center-links { display: none; }
-  .hn-nav-right { display: none; }
+  /* Keep cart icon, hide text buttons */
+  .hn-nav-right .hn-get-started,
+  .hn-nav-right .hn-sign-in { display: none !important; }
+  .hn-nav-right { gap: 0 !important; padding: 0 !important; }
   .nav-menu-btn { display: flex; margin-left: 0; }
   #wt-bar { top: 56px !important; }
 }

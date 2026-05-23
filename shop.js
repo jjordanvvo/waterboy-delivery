@@ -317,7 +317,7 @@ function renderAlsoBought(){
         <div style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#F0F7FF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
         <div style="font-family:'Inter',sans-serif;font-size:12px;color:#00D4FF;font-weight:700;">${p.display}</div>
       </div>
-      <button onclick="addToCartRaw(this.dataset.n,parseFloat(this.dataset.p),this.dataset.i,1);renderCartDrawer();" data-n="${p.name.replace(/"/g,'&quot;')}" data-p="${p.price}" data-i="${p.img}" style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;">+ Add</button>
+      <button onclick="addToCartRaw(this.dataset.n,parseFloat(this.dataset.p),this.dataset.i,1);renderCartDrawer();if(typeof updateBadge==='function')updateBadge();" data-n="${p.name.replace(/"/g,'&quot;')}" data-p="${p.price}" data-i="${p.img}" style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;">+ Add</button>
     </div>`).join('');
 }
 
@@ -348,7 +348,8 @@ function cartSetQty(id, qty){
 
 function updateBadge(){
   const count = cartCount();
-  $$('.cart-badge').forEach(b=>{ b.textContent=count; b.style.display=count?'flex':'none'; });
+  $$('.cart-badge, .wb-cart-badge').forEach(b=>{ b.textContent=count; b.style.display=count?'flex':'none'; });
+  const nbBadge=document.getElementById('cart-count'); if(nbBadge){nbBadge.textContent=count; nbBadge.style.display=count?'flex':'none';}
   const cdCount = document.getElementById('cd-count');
   if(cdCount) cdCount.textContent = count;
 }

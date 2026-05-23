@@ -39,14 +39,14 @@
   if (signinLink) signinLink.addEventListener('click', function (e) {
     e.preventDefault();
     closeDrawer();
-    var m = document.getElementById('auth-modal');
-    if (m) m.classList.add('open');
+    if (typeof openAuthModal === 'function') openAuthModal('signin');
+    else if (typeof openOverlay === 'function') openOverlay('auth-overlay');
   });
   if (cartLink) cartLink.addEventListener('click', function (e) {
     e.preventDefault();
     closeDrawer();
-    var m = document.getElementById('cart-modal');
-    if (m) m.classList.add('open');
+    if (typeof openCartDrawer === 'function') openCartDrawer();
+    else if (typeof openCartSidebar === 'function') openCartSidebar();
   });
 
   var current = window.location.pathname.split('/').pop() || 'index.html';

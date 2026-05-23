@@ -220,8 +220,12 @@ h1, h2, h3, h4, h5, h6,
   flex-shrink: 0;
 }
 @media (max-width: 900px) {
-  .nav-right { display: none; }
-  #navbar .nav-menu-btn, #navbar button.nav-menu-btn { margin-left: auto !important; }
+  /* Hide text buttons but keep cart icon visible */
+  .nav-right .nav-btn-outline,
+  .nav-right .nav-btn-primary,
+  .nav-right .nav-btn-cyan { display: none !important; }
+  .nav-right { gap: 0; }
+  /* Hamburger stays LEFT — no margin-left auto */
 }
 .nav-btn-outline {
   font-family: var(--font-head);

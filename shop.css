@@ -305,6 +305,10 @@
 .catalog-atc{display:block;width:100%;margin-top:10px;padding:9px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);border-radius:8px;color:#00D4FF;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .2s;text-align:center}
 .catalog-atc:hover{background:rgba(0,212,255,.2);border-color:#00D4FF}
 
+/* Buy Now button in product detail modal */
+.pd-buy-now{display:flex;width:100%;justify-content:center;align-items:center;margin-top:8px;padding:13px;background:transparent;border:1.5px solid #00D4FF;color:#00D4FF;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;border-radius:12px;cursor:pointer;transition:background 0.2s;box-sizing:border-box}
+.pd-buy-now:hover{background:rgba(0,212,255,0.1)}
+
 /* ── Responsive ───────────────────────────────────────────────── */
 @media(max-width:768px){
   .wb-overlay{align-items:flex-end}
@@ -560,7 +564,7 @@
 .mca-rc{color:#5A8AAC;font-size:11px;font-family:'Inter',sans-serif;font-weight:500}
 .mca-price{color:#00D4FF;font-size:16px;font-weight:600;font-family:'Inter',sans-serif}
 .mca-badge{font-size:11px;color:#5A8AAC}
-.mca-atc{width:100%;height:36px;background:#00D4FF;color:#0B1B2B;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;margin-top:2px}
+.mca-atc{width:100%;height:44px;background:#00D4FF;color:#0B1B2B;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;margin-top:2px}
 .mca-atc:hover{opacity:0.88}
 
 .menu-card-carousel-hint{
