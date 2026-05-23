@@ -19,7 +19,7 @@ body { padding-top: 80px; }
   background: transparent;
   color: var(--text-muted-dark, #8BB8D4);
   cursor: pointer;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Space Mono', monospace;
   font-size: 13px;
   font-weight: 600;
   transition: all 0.2s;
@@ -73,7 +73,7 @@ body { padding-top: 80px; }
 
 @media (max-width: 500px) {
   .nav-wt-btn { font-size: 0; padding: 5px 8px; }
-  .nav-wt-btn::after { font-size: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; letter-spacing: 0.3px; }
+  .nav-wt-btn::after { font-size: 10px; font-family: 'Space Mono', monospace; font-weight: 600; letter-spacing: 0.3px; }
   .nav-wt-btn[data-type="ro"]::after { content: 'RO'; }
   .nav-wt-btn[data-type="alkaline"]::after { content: 'ALK'; }
   .nav-wt-btn[data-type="hydrogen"]::after { content: 'H2'; }

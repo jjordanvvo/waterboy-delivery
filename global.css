@@ -4,7 +4,7 @@
    ============================================================ */
 
 /* ── Fonts ──────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
 /* ── CSS Variables ──────────────────────────────────────────── */
 :root {
@@ -192,6 +192,22 @@ h1, h2, h3, h4, h5, h6,
 }
 .nav-btn-primary:hover {
   background: #E8F4FF;
+}
+.nav-btn-cyan {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: #0B1B2B;
+  text-decoration: none;
+  padding: 9px 20px;
+  border-radius: 8px;
+  background: #00D4FF;
+  transition: all 0.2s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.nav-btn-cyan:hover {
+  background: #38BDF8;
 }
 
 /* ── Water Type Bar ─────────────────────────────────────────── */

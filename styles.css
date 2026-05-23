@@ -2,7 +2,7 @@
    WATERBOY DELIVERY — COMPLETE STYLESHEET
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
 /* ---- CSS Custom Properties ---- */
 :root {
@@ -29,8 +29,17 @@
   --grad-text-cyan: linear-gradient(135deg, #00D4FF 0%, #38BDF8 100%);
   --f-head: 'Outfit', sans-serif;
   --f-body: 'Inter', sans-serif;
-  --f-mono: 'Space Grotesk', sans-serif;
+  --f-mono: 'Space Mono', monospace;
   --ease-water: cubic-bezier(0.25, 0.8, 0.25, 1.1);
+  --primary: #00D4FF;
+  --primary-dark: #0099BB;
+  --bg-dark: #0B1B2B;
+  --bg-deep: #0F2740;
+  --bg-card: #132236;
+  --text-light: #F0F7FF;
+  --text-muted: #B8E6FF;
+  --accent-cyan: #00D4FF;
+  --accent-glacier: #38BDF8;
 }
 
 /* ---- Reset ---- */
@@ -337,13 +346,13 @@ button { font-family: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--cyan);
-  color: var(--bg-primary);
-  font-family: var(--f-body);
+  background: #00D4FF;
+  color: #0B1B2B;
+  font-family: 'Outfit', sans-serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 16px 32px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -361,38 +370,38 @@ button { font-family: inherit; }
   transition: left 0.5s ease;
 }
 .btn-primary:hover::before { left: 100%; }
-.btn-primary:hover { box-shadow: var(--glow-hover); transform: translateY(-2px); }
+.btn-primary:hover { background: #38BDF8; box-shadow: var(--glow-hover); transform: translateY(-2px); }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: var(--text-on-dark);
-  font-family: var(--f-body);
+  color: #00D4FF;
+  font-family: 'Outfit', sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 16px 32px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,212,255,0.4);
+  border-radius: 8px;
+  border: 2px solid #00D4FF;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 .btn-secondary:hover {
+  background: rgba(0,212,255,0.1);
   border-color: var(--cyan);
-  box-shadow: 0 0 28px rgba(0,212,255,0.18);
   color: var(--cyan);
   transform: translateY(-2px);
 }
 .section-light .btn-secondary {
-  color: #1E3A5F;
-  border-color: rgba(30,58,95,0.4);
+  color: #00D4FF;
+  border-color: #00D4FF;
 }
 .section-light .btn-secondary:hover {
-  color: #0B1B2B;
-  border-color: #1E3A5F;
-  box-shadow: 0 0 20px rgba(30,58,95,0.15);
+  background: rgba(0,212,255,0.1);
+  color: var(--cyan);
+  border-color: var(--cyan);
 }
 
 /* Hero image */
@@ -528,7 +537,7 @@ button { font-family: inherit; }
    SECTION COMMONS
    ============================================================ */
 .section { padding: 108px 48px; }
-.section-light { background: var(--bg-light); color: var(--text-on-light); }
+.section-light { background: var(--bg-primary); color: var(--text-on-dark); }
 .section-dark  { background: var(--bg-primary); color: var(--text-on-dark); }
 .section-darker{ background: var(--bg-secondary); color: var(--text-on-dark); }
 .section-darkest{ background: var(--bg-darkest); color: var(--text-on-dark); }
@@ -590,10 +599,10 @@ button { font-family: inherit; }
   gap: 28px;
 }
 .service-card {
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 16px;
   padding: 40px 32px;
-  border: 1px solid rgba(0,212,255,0.07);
+  border: 1px solid rgba(0,212,255,0.15);
   transition: all 0.4s var(--ease-water);
   position: relative;
   overflow: hidden;
@@ -616,7 +625,7 @@ button { font-family: inherit; }
 
 .service-icon {
   width: 60px; height: 60px;
-  background: #E0F7FF;
+  background: rgba(0,212,255,0.1);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -628,10 +637,10 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 21px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 12px;
 }
-.service-card p { font-size: 15px; color: var(--text-muted-light); line-height: 1.75; margin-bottom: 24px; }
+.service-card p { font-size: 15px; color: var(--text-muted-dark); line-height: 1.75; margin-bottom: 24px; }
 .card-link {
   font-size: 14px;
   font-weight: 600;
@@ -843,10 +852,10 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 17px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 10px;
 }
-.process-step p { font-size: 14px; color: var(--text-muted-light); line-height: 1.7; }
+.process-step p { font-size: 14px; color: var(--text-muted-dark); line-height: 1.7; }
 
 /* ============================================================
    STATS STRIP
@@ -1021,10 +1030,10 @@ button { font-family: inherit; }
   gap: 22px;
 }
 .feature-card {
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 14px;
   padding: 32px 26px;
-  border: 1px solid rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
   transition: all 0.4s var(--ease-water);
 }
 .feature-card:hover {
@@ -1038,10 +1047,10 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 17px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 10px;
 }
-.feature-card p { font-size: 14px; color: var(--text-muted-light); line-height: 1.75; }
+.feature-card p { font-size: 14px; color: var(--text-muted-dark); line-height: 1.75; }
 
 /* ============================================================
    TESTIMONIALS
@@ -1110,7 +1119,7 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 17px;
   font-weight: 600;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   flex: 1;
 }
 .faq-toggle {
@@ -1130,7 +1139,7 @@ button { font-family: inherit; }
 .faq-item.open .faq-toggle svg { transform: rotate(45deg); color: var(--bg-primary); }
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
 .faq-answer-inner { padding: 0 0 24px; }
-.faq-answer-inner p { font-size: 15px; color: var(--text-muted-light); line-height: 1.82; }
+.faq-answer-inner p { font-size: 15px; color: var(--text-muted-dark); line-height: 1.82; }
 .faq-item.open .faq-answer { max-height: 300px; }
 
 /* ============================================================
@@ -1221,22 +1230,22 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 24px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 28px;
 }
 .form-group { margin-bottom: 18px; }
-.form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted-light); margin-bottom: 7px; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted-dark); margin-bottom: 7px; }
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
   padding: 13px 17px;
-  background: #fff;
-  border: 1.5px solid rgba(0,180,220,0.18);
+  background: rgba(11,27,43,0.8);
+  border: 1.5px solid rgba(0,212,255,0.2);
   border-radius: 10px;
   font-family: var(--f-body);
   font-size: 15px;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   transition: all 0.3s;
   -webkit-appearance: none;
   appearance: none;
@@ -1294,7 +1303,7 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 24px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 28px;
 }
 .contact-info-list { display: flex; flex-direction: column; gap: 14px; }
@@ -1303,9 +1312,9 @@ button { font-family: inherit; }
   align-items: flex-start;
   gap: 15px;
   padding: 18px 20px;
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 12px;
-  border: 1px solid rgba(0,212,255,0.07);
+  border: 1px solid rgba(0,212,255,0.15);
   transition: all 0.3s;
 }
 .contact-info-item:hover {
@@ -1314,7 +1323,7 @@ button { font-family: inherit; }
 }
 .contact-info-icon {
   width: 42px; height: 42px;
-  background: #E0F7FF;
+  background: rgba(0,212,255,0.1);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -1326,12 +1335,12 @@ button { font-family: inherit; }
   display: block;
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-muted-light);
+  color: var(--text-muted-dark);
   margin-bottom: 3px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.contact-info-text span { font-size: 14px; color: var(--text-on-light); }
+.contact-info-text span { font-size: 14px; color: var(--text-on-dark); }
 
 /* ============================================================
    FOOTER
@@ -1552,7 +1561,7 @@ button { font-family: inherit; }
 .catalog-item-name {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   line-height: 1.4;
 }
 .catalog-item-price {
@@ -1567,14 +1576,14 @@ button { font-family: inherit; }
 .catalog-price-tbd {
   font-family: var(--f-mono);
   font-size: 10px;
-  color: var(--text-muted-light);
-  background: rgba(0,0,0,0.04);
+  color: var(--text-muted-dark);
+  background: rgba(255,255,255,0.04);
   border-radius: 100px;
   padding: 3px 10px;
   white-space: nowrap;
   margin-left: 16px;
   flex-shrink: 0;
-  border: 1px solid rgba(0,0,0,0.07);
+  border: 1px solid rgba(255,255,255,0.07);
 }
 
 /* ============================================================
@@ -1582,8 +1591,8 @@ button { font-family: inherit; }
    ============================================================ */
 .bottle-tracking-note {
   margin-top: 52px;
-  background: linear-gradient(135deg, #E8F4FD 0%, #d4ecf7 100%);
-  border: 1px solid rgba(0,180,220,0.2);
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.2);
   border-left: 4px solid var(--cyan);
   border-radius: 12px;
   padding: 22px 28px;
@@ -1603,11 +1612,11 @@ button { font-family: inherit; }
 .bottle-tracking-icon svg { width: 20px; height: 20px; color: #00A8CC; }
 .bottle-tracking-note p {
   font-size: 14px;
-  color: var(--text-on-light);
+  color: var(--text-muted-dark);
   line-height: 1.75;
   margin: 0;
 }
-.bottle-tracking-note strong { color: #0088AA; }
+.bottle-tracking-note strong { color: var(--cyan); }
 
 /* ============================================================
    SCHEDULE YOUR DELIVERY
@@ -1815,7 +1824,7 @@ button { font-family: inherit; }
    IN-STORE PRODUCTS SECTION
    ============================================================ */
 .section-instore {
-  background: var(--bg-light);
+  background: var(--bg-primary);
   position: relative;
   overflow: hidden;
 }
@@ -1859,7 +1868,7 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 22px;
   font-weight: 800;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   white-space: nowrap;
 }
 
@@ -1884,11 +1893,11 @@ button { font-family: inherit; }
 }
 
 .instore-card {
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 16px;
   padding: 30px 26px;
-  box-shadow: 0 4px 20px rgba(0,90,180,0.07), 0 1px 4px rgba(0,0,0,0.04);
-  border: 1px solid rgba(0,212,255,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,212,255,0.15);
   transition: transform 0.35s var(--ease-water), box-shadow 0.35s, border-color 0.35s;
 }
 
@@ -1924,13 +1933,13 @@ button { font-family: inherit; }
   font-family: var(--f-head);
   font-size: 17px;
   font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 10px;
 }
 
 .instore-card p {
   font-size: 14px;
-  color: var(--text-muted-light);
+  color: var(--text-muted-dark);
   line-height: 1.75;
   margin: 0;
 }
@@ -1971,7 +1980,7 @@ button { font-family: inherit; }
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--text-muted-light);
+  color: var(--text-muted-dark);
   font-family: var(--f-body);
 }
 
@@ -2251,11 +2260,11 @@ button { font-family: inherit; }
 }
 
 .home-system-card {
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 16px;
   padding: 32px 28px;
-  border: 1px solid rgba(0,212,255,0.08);
-  box-shadow: 0 4px 20px rgba(0,90,180,0.07);
+  border: 1px solid rgba(0,212,255,0.15);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   transition: all 0.35s var(--ease-water);
 }
 
@@ -2279,13 +2288,13 @@ button { font-family: inherit; }
 .home-system-card h3 {
   font-family: var(--f-head);
   font-size: 19px; font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 12px;
 }
 
 .home-system-card p {
   font-size: 14px;
-  color: var(--text-muted-light);
+  color: var(--text-muted-dark);
   line-height: 1.75; margin-bottom: 14px;
 }
 
@@ -2312,12 +2321,12 @@ button { font-family: inherit; }
 }
 
 .products-teaser-card {
-  background: #fff;
+  background: var(--bg-card-dark);
   border-radius: 14px;
   padding: 30px 22px;
   text-align: center;
-  border: 1px solid rgba(0,212,255,0.08);
-  box-shadow: 0 4px 20px rgba(0,90,180,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   transition: all 0.35s var(--ease-water);
 }
 
@@ -2341,13 +2350,13 @@ button { font-family: inherit; }
 .products-teaser-card h3 {
   font-family: var(--f-head);
   font-size: 16px; font-weight: 700;
-  color: var(--text-on-light);
+  color: var(--text-on-dark);
   margin-bottom: 8px;
 }
 
 .products-teaser-card p {
   font-size: 13px;
-  color: var(--text-muted-light);
+  color: var(--text-muted-dark);
   line-height: 1.65; margin: 0;
 }
 

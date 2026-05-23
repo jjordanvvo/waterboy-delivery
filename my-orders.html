@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders | Waterboy Delivery</title>
+  <meta name="description" content="View and manage your Waterboy Delivery orders. Reschedule, cancel, or reorder deliveries." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="global.css" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+
+.mo-hero{background:linear-gradient(135deg,#0F2740,#132236);border-bottom:1px solid rgba(0,212,255,0.15);padding:48px 24px 40px;}
+.mo-hero-inner{max-width:1100px;margin:0 auto;}
+.mo-hero h1{font-family:'Outfit',sans-serif;font-size:40px;font-weight:800;color:#F0F7FF;margin:0 0 6px;}
+.mo-hero-email{font-family:'Inter',sans-serif;font-size:15px;color:#B8E6FF;margin:0;}
+
+.mo-main{background:#0B1B2B;min-height:60vh;padding:40px 24px 80px;}
+.mo-container{max-width:1100px;margin:0 auto;}
+
+/* Filter tabs */
+.filter-tabs{display:flex;gap:6px;margin-bottom:32px;flex-wrap:wrap;}
+.ft{font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:9px 20px;border-radius:30px;border:1px solid rgba(0,212,255,0.2);background:none;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;}
+.ft:hover{border-color:rgba(0,212,255,0.4);color:#fff;}
+.ft.active{background:rgba(0,212,255,0.12);border-color:#00D4FF;color:#00D4FF;}
+
+/* Order cards */
+.orders-list{display:flex;flex-direction:column;gap:20px;}
+.order-card{background:#132236;border:1px solid rgba(0,212,255,0.15);border-radius:16px;padding:28px;position:relative;}
+.oc-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;}
+.oc-id{font-family:'Space Mono',monospace;font-size:17px;color:#00D4FF;font-weight:700;}
+.oc-placed{font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;}
+.status-badge{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px;}
+.status-badge.confirmed{background:rgba(0,212,255,0.12);color:#00D4FF;border:1px solid rgba(0,212,255,0.3);}
+.status-badge.out{background:rgba(56,189,248,0.12);color:#38BDF8;border:1px solid rgba(56,189,248,0.3);}
+.status-badge.delivered{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);}
+.status-badge.cancelled{background:rgba(255,107,107,0.1);color:#FF6B6B;border:1px solid rgba(255,107,107,0.25);}
+
+.oc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:22px;}
+.oc-field{display:flex;flex-direction:column;gap:3px;}
+.oc-field-lbl{font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em;}
+.oc-field-val{font-family:'Inter',sans-serif;font-size:14px;color:#F0F7FF;}
+.oc-field-val.mono{font-family:'Space Mono',monospace;color:#00D4FF;}
+
+.oc-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:18px;border-top:1px solid rgba(0,212,255,0.08);}
+.oc-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:9px 18px;border-radius:8px;cursor:pointer;transition:all 0.2s;border:none;}
+.oc-btn.reschedule{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:#00D4FF;}
+.oc-btn.reschedule:hover{background:rgba(0,212,255,0.18);}
+.oc-btn.cancel{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);color:#FF6B6B;}
+.oc-btn.cancel:hover{background:rgba(255,107,107,0.14);}
+.oc-btn.reorder{background:#00D4FF;color:#0B1B2B;}
+.oc-btn.reorder:hover{background:#38BDF8;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:80px 24px;}
+.empty-icon{font-size:56px;margin-bottom:20px;opacity:0.5;}
+.empty-h{font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:#F0F7FF;margin:0 0 10px;}
+.empty-p{font-family:'Inter',sans-serif;font-size:15px;color:#B8E6FF;margin:0 0 28px;}
+.btn-order-now{display:inline-block;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;background:#00D4FF;color:#0B1B2B;padding:16px 40px;border-radius:12px;text-decoration:none;transition:background 0.2s;}
+.btn-order-now:hover{background:#38BDF8;}
+
+/* Sign-in gate */
+.signin-gate{text-align:center;padding:80px 24px;}
+.signin-gate h2{font-family:'Outfit',sans-serif;font-size:28px;font-weight:700;color:#F0F7FF;margin:0 0 10px;}
+.signin-gate p{font-family:'Inter',sans-serif;font-size:15px;color:#B8E6FF;margin:0 0 24px;}
+.btn-signin-gate{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;background:#00D4FF;color:#0B1B2B;border:none;padding:14px 32px;border-radius:10px;cursor:pointer;transition:background 0.2s;text-decoration:none;display:inline-block;}
+.btn-signin-gate:hover{background:#38BDF8;}
+
+/* Reschedule modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,12,24,0.9);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#0F2740;border:1px solid rgba(0,212,255,0.2);border-radius:20px;padding:40px 32px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+@media(max-width:520px){.modal-box{padding:28px 20px;}}
+.modal-h{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#F0F7FF;margin:0 0 22px;}
+.modal-x{position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.2s;}
+.modal-x:hover{color:#fff;}
+
+.cal-wrap{margin-bottom:20px;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-nav-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+.cal-nav-btn:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.cal-month-lbl{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:#F0F7FF;}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px;}
+.cal-wd{font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;text-align:center;color:rgba(255,255,255,0.25);padding:3px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day{width:100%;aspect-ratio:1;border-radius:6px;border:none;font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;background:none;color:#F0F7FF;padding:0;}
+.cal-day:hover:not(:disabled){background:rgba(0,212,255,0.14);color:#00D4FF;}
+.cal-day.selected{background:#00D4FF!important;color:#0B1B2B!important;font-weight:700;}
+.cal-day:disabled{opacity:0.18;cursor:not-allowed;}
+.cal-day.empty-day{visibility:hidden;cursor:default;}
+.time-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.time-pill{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:30px;border:1px solid rgba(0,212,255,0.22);background:none;color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.2s;}
+.time-pill:hover{border-color:rgba(0,212,255,0.5);color:#fff;}
+.time-pill.active{background:rgba(0,212,255,0.14);border-color:#00D4FF;color:#00D4FF;}
+.btn-confirm-reschedule{width:100%;background:#00D4FF;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;border:none;padding:15px;border-radius:10px;cursor:pointer;transition:background 0.2s;}
+.btn-confirm-reschedule:hover{background:#38BDF8;}
+
+/* Confirm dialog */
+.confirm-dialog{background:#0F2740;border:1px solid rgba(255,107,107,0.25);border-radius:16px;padding:28px;max-width:420px;width:100%;}
+.cd-h{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#F0F7FF;margin:0 0 10px;}
+.cd-p{font-family:'Inter',sans-serif;font-size:14px;color:#B8E6FF;margin:0 0 20px;line-height:1.55;}
+.cd-actions{display:flex;gap:10px;}
+.cd-cancel-btn{flex:1;background:none;border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.55);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.cd-cancel-btn:hover{color:#fff;border-color:rgba(255,255,255,0.28);}
+.cd-confirm-btn{flex:1;background:rgba(255,107,107,0.12);border:1px solid rgba(255,107,107,0.3);color:#FF6B6B;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:12px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.cd-confirm-btn:hover{background:rgba(255,107,107,0.2);}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#132236;border:1px solid rgba(0,212,255,0.25);border-radius:12px;padding:14px 22px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:#F0F7FF;z-index:20000;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.toast.show{opacity:1;}
+
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
+      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+    </a>
+    <div class="nav-center-links">
+      <a href="water-delivery.html" class="nav-link">Delivery</a>
+      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="how-it-works.html" class="nav-link">How It Works</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="my-orders.html" class="nav-link">My Orders</a>
+    </div>
+    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
+      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+    </div>
+    <div class="nav-right">
+      <a href="my-orders.html" class="nav-btn-outline">My Orders</a>
+      <a href="order.html" class="nav-btn-cyan">Order Now</a>
+      <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
+      <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
+    </div>
+  </div>
+</nav>
+<div id="water-type-bar" class="water-type-bar">
+  <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
+  <button id="wtb-change" class="wtb-change">Change</button>
+</div>
+
+<!-- Hero -->
+<header class="mo-hero">
+  <div class="mo-hero-inner">
+    <h1>My Orders</h1>
+    <p class="mo-hero-email" id="mo-email"></p>
+  </div>
+</header>
+
+<!-- Main content -->
+<main class="mo-main" id="mo-main">
+  <div class="mo-container">
+
+    <!-- Signed-out gate -->
+    <div class="signin-gate hidden" id="signin-gate">
+      <div class="empty-icon">🔒</div>
+      <h2>Please sign in to view your orders</h2>
+      <p>Your orders are saved to your account. Sign in to track, reschedule, or reorder.</p>
+      <a href="javascript:void(0)" class="btn-signin-gate" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
+    </div>
+
+    <!-- Orders view -->
+    <div id="orders-view">
+
+      <!-- Filter tabs -->
+      <div class="filter-tabs" role="group" aria-label="Filter orders">
+        <button class="ft active" id="ft-all" onclick="setFilter('all')">All</button>
+        <button class="ft" id="ft-active" onclick="setFilter('active')">Active</button>
+        <button class="ft" id="ft-delivered" onclick="setFilter('delivered')">Delivered</button>
+        <button class="ft" id="ft-cancelled" onclick="setFilter('cancelled')">Cancelled</button>
+      </div>
+
+      <!-- Order cards list -->
+      <div class="orders-list" id="orders-list"></div>
+
+      <!-- Empty state -->
+      <div class="empty-state hidden" id="empty-state">
+        <div class="empty-icon">📦</div>
+        <h2 class="empty-h">No orders yet</h2>
+        <p class="empty-p">You haven't placed any orders. Order your first delivery today — free in Zone 1!</p>
+        <a href="order.html" class="btn-order-now">Place Your First Order</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Reschedule modal -->
+<div class="modal-overlay" id="reschedule-modal" role="dialog" aria-modal="true" aria-label="Reschedule delivery">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeReschedule()" aria-label="Close">✕</button>
+    <div class="modal-h">Reschedule Delivery</div>
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="rCalNav(-1)">&#8249;</button>
+        <span class="cal-month-lbl" id="r-cal-month">Month</span>
+        <button class="cal-nav-btn" onclick="rCalNav(1)">&#8250;</button>
+      </div>
+      <div class="cal-weekdays">
+        <span class="cal-wd">Mon</span><span class="cal-wd">Tue</span><span class="cal-wd">Wed</span>
+        <span class="cal-wd">Thu</span><span class="cal-wd">Fri</span><span class="cal-wd">Sat</span>
+        <span class="cal-wd" style="color:rgba(255,107,107,0.4);">Sun</span>
+      </div>
+      <div class="cal-grid" id="r-cal-grid"></div>
+    </div>
+    <p style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 10px;">Delivery Window</p>
+    <div class="time-pills" id="r-time-pills">
+      <button class="time-pill" id="rtp-morning" onclick="rSelectTime('morning')">Morning (7–11am)</button>
+      <button class="time-pill" id="rtp-afternoon" onclick="rSelectTime('afternoon')">Afternoon (12–4pm)</button>
+      <button class="time-pill" id="rtp-evening" onclick="rSelectTime('evening')">Evening (4–7pm)</button>
+    </div>
+    <button class="btn-confirm-reschedule" onclick="confirmReschedule()">Confirm Reschedule</button>
+  </div>
+</div>
+
+<!-- Cancel confirm dialog -->
+<div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-label="Cancel order">
+  <div class="confirm-dialog">
+    <div class="cd-h">Cancel this order?</div>
+    <p class="cd-p">Cancellations must be made 24+ hours before delivery. For refund processing, please contact us at <a href="tel:+19166193218" style="color:#00D4FF">(916) 619-3218</a>.</p>
+    <div class="cd-actions">
+      <button class="cd-cancel-btn" onclick="closeCancelModal()">Keep Order</button>
+      <button class="cd-confirm-btn" onclick="confirmCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Footer -->
+<footer id="footer" role="contentinfo">
+  <div class="wave-section" style="background:var(--bg-secondary);height:60px;"><svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg></div>
+  <div class="container footer-grid">
+    <div class="footer-brand"><img src="logo.png" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
+    <div class="footer-col"><h4>Services</h4><nav class="footer-links"><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">In-Store Products</a></nav></div>
+    <div class="footer-col"><h4>Learn</h4><nav class="footer-links"><a href="how-it-works.html">How It Works</a><a href="faq.html">FAQ</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav></div>
+    <div class="footer-col"><h4>Order</h4><nav class="footer-links"><a href="order.html">Order Now</a><a href="my-orders.html">My Orders</a><a href="water-delivery.html">Pricing</a><a href="delivery-areas.html">Delivery Zones</a></nav></div>
+  </div>
+  <div class="footer-bottom"><p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved.</p><nav class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></nav></div>
+</footer>
+
+<!-- Left drawer -->
+<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
+  <div class="left-drawer-header">
+    <span class="left-drawer-title">Navigation</span>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="left-drawer-nav" aria-label="Full site navigation">
+    <a href="index.html" class="left-drawer-link">Home</a>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Shop &amp; Services</div>
+      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+      <a href="shop.html" class="left-drawer-link">Shop Products</a>
+      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Learn</div>
+      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
+      <a href="faq.html" class="left-drawer-link">FAQ</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Company</div>
+      <a href="about.html" class="left-drawer-link">About</a>
+      <a href="contact.html" class="left-drawer-link">Contact</a>
+    </div>
+    <div class="left-drawer-section">
+      <div class="left-drawer-section-label">Account</div>
+      <a href="order.html" class="left-drawer-link" style="color:#00D4FF!important;font-weight:700!important;">Order Now</a>
+      <a href="my-orders.html" class="left-drawer-link">My Orders</a>
+      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
+      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
+    </div>
+  </nav>
+</aside>
+
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="left-menu.js"></script>
+<script src="shared.js"></script>
+<script>
+/* ============================================================
+   MY ORDERS PAGE — Waterboy Delivery
+   ============================================================ */
+
+var currentFilter='all';
+var pendingCancelId=null;
+var rCalYear=new Date().getFullYear(),rCalMonth=new Date().getMonth(),rSelDate=null,rSelTime=null,rOrderId=null;
+var CAL_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* ── Load orders from localStorage ──────────────────────────── */
+function loadOrders(){
+  try{return JSON.parse(localStorage.getItem('wb_orders_v1')||'[]');}catch(_){return[];}
+}
+function saveOrders(orders){
+  try{localStorage.setItem('wb_orders_v1',JSON.stringify(orders));}catch(_){}
+}
+
+/* ── Auth check ──────────────────────────────────────────────── */
+function getUser(){
+  try{return JSON.parse(localStorage.getItem('wb_user_v1'))||null;}catch(_){return null;}
+}
+
+/* ── Init ────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',function(){
+  var user=getUser();
+  var orders=loadOrders();
+  /* Show orders if user is logged in OR if there are local orders (demo mode) */
+  if(!user&&orders.length===0){
+    document.getElementById('signin-gate').classList.remove('hidden');
+    document.getElementById('orders-view').classList.add('hidden');
+    return;
+  }
+  if(user){
+    document.getElementById('mo-email').textContent=user.email||'';
+  } else {
+    document.getElementById('mo-email').textContent='Your recent orders';
+  }
+  renderOrders();
+});
+
+/* ── Filter ──────────────────────────────────────────────────── */
+function setFilter(f){
+  currentFilter=f;
+  ['all','active','delivered','cancelled'].forEach(function(ft){
+    document.getElementById('ft-'+ft).className='ft'+(ft===f?' active':'');
+  });
+  renderOrders();
+}
+
+/* ── Render ──────────────────────────────────────────────────── */
+function renderOrders(){
+  var orders=loadOrders();
+  var filtered=orders.filter(function(o){
+    if(currentFilter==='all')return true;
+    if(currentFilter==='active')return o.status==='confirmed'||o.status==='out';
+    if(currentFilter==='delivered')return o.status==='delivered';
+    if(currentFilter==='cancelled')return o.status==='cancelled';
+    return true;
+  });
+  /* Show newest first */
+  filtered=filtered.slice().reverse();
+  var list=document.getElementById('orders-list');
+  var empty=document.getElementById('empty-state');
+  if(!filtered.length){
+    list.innerHTML='';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML=filtered.map(renderOrderCard).join('');
+}
+
+function statusLabel(s){
+  var map={confirmed:'Confirmed',out:'Out for Delivery',delivered:'Delivered',cancelled:'Cancelled'};
+  return map[s]||s;
+}
+
+function timePretty(timeStr){
+  if(!timeStr||timeStr==='—')return '—';
+  return timeStr;
+}
+
+function renderOrderCard(o){
+  var now=Date.now();
+  var canModify=o.status==='confirmed'&&now<(o.canRescheduleUntil||0);
+  var placedDate=o.placedAt?new Date(o.placedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+  return '<article class="order-card" data-id="'+o.orderId+'">'
+    +'<div class="oc-top">'
+      +'<div><div class="oc-id">'+o.orderId+'</div><div class="oc-placed">Placed '+placedDate+'</div></div>'
+      +'<span class="status-badge '+o.status+'">'+statusLabel(o.status)+'</span>'
+    +'</div>'
+    +'<div class="oc-grid">'
+      +'<div class="oc-field"><span class="oc-field-lbl">Water Type</span><span class="oc-field-val">'+esc(o.waterType||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Amount</span><span class="oc-field-val">'+esc(o.quantity||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Delivery Date</span><span class="oc-field-val">'+esc(o.deliveryDate||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Time Window</span><span class="oc-field-val">'+esc(timePretty(o.deliveryTime))+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Address</span><span class="oc-field-val">'+esc(o.address||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Total</span><span class="oc-field-val mono">$'+parseFloat(o.price||0).toFixed(2)+'</span></div>'
+    +'</div>'
+    +'<div class="oc-actions">'
+      +(canModify?'<button class="oc-btn reschedule" onclick="openReschedule(\''+o.orderId+'\')">Reschedule</button>':'')
+      +(canModify?'<button class="oc-btn cancel" onclick="openCancelModal(\''+o.orderId+'\')">Cancel</button>':'')
+      +(o.status==='delivered'?'<button class="oc-btn reorder" onclick="reorder(\''+o.orderId+'\')">Reorder</button>':'')
+    +'</div>'
+  +'</article>';
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ── Reschedule ──────────────────────────────────────────────── */
+function openReschedule(id){
+  rOrderId=id;rSelDate=null;rSelTime=null;
+  rCalYear=new Date().getFullYear();rCalMonth=new Date().getMonth();
+  document.getElementById('rtp-morning').className='time-pill';
+  document.getElementById('rtp-afternoon').className='time-pill';
+  document.getElementById('rtp-evening').className='time-pill';
+  renderRCal();
+  document.getElementById('reschedule-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeReschedule(){
+  document.getElementById('reschedule-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function rCalNav(dir){
+  rCalMonth+=dir;
+  if(rCalMonth>11){rCalMonth=0;rCalYear++;}
+  if(rCalMonth<0){rCalMonth=11;rCalYear--;}
+  renderRCal();
+}
+function renderRCal(){
+  document.getElementById('r-cal-month').textContent=CAL_MONTHS[rCalMonth]+' '+rCalYear;
+  var grid=document.getElementById('r-cal-grid');
+  var today=new Date();today.setHours(0,0,0,0);
+  var maxDate=new Date(today);maxDate.setDate(maxDate.getDate()+30);
+  var firstDay=new Date(rCalYear,rCalMonth,1);
+  var lastDay=new Date(rCalYear,rCalMonth+1,0);
+  var offset=(firstDay.getDay()+6)%7;
+  var total=Math.ceil((offset+lastDay.getDate())/7)*7;
+  var html='';
+  for(var i=0;i<total;i++){
+    var dn=i-offset+1;
+    if(dn<1||dn>lastDay.getDate()){html+='<button class="cal-day empty-day" disabled tabindex="-1"> </button>';continue;}
+    var date=new Date(rCalYear,rCalMonth,dn);
+    var disabled=date.getDay()===0||date<today||date>maxDate;
+    var ds=date.toISOString().split('T')[0];
+    var cls='cal-day'+(rSelDate===ds?' selected':'');
+    html+='<button class="'+cls+'"'+(disabled?' disabled':'')+' onclick="rSelectDate(\''+ds+'\')">'+(date.getDay()===0?'<span style="opacity:0.2">'+dn+'</span>':dn)+'</button>';
+  }
+  grid.innerHTML=html;
+}
+function rSelectDate(ds){rSelDate=ds;renderRCal();}
+function rSelectTime(t){
+  rSelTime=t;
+  ['morning','afternoon','evening'].forEach(function(x){
+    document.getElementById('rtp-'+x).className='time-pill'+(x===t?' active':'');
+  });
+}
+function confirmReschedule(){
+  if(!rSelDate){showToast('Please select a delivery date.');return;}
+  if(!rSelTime){showToast('Please select a delivery window.');return;}
+  var orders=loadOrders();
+  var idx=orders.findIndex(function(o){return o.orderId===rOrderId;});
+  if(idx===-1){showToast('Order not found.');return;}
+  var timeLbl=rSelTime==='morning'?'Morning (7–11am)':rSelTime==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  orders[idx].deliveryDate=rSelDate;
+  orders[idx].deliveryTime=timeLbl;
+  orders[idx].canRescheduleUntil=new Date(rSelDate+'T00:00:00').getTime()-86400000;
+  saveOrders(orders);
+  closeReschedule();
+  showToast('Reschedule confirmed! Your delivery has been updated.');
+  renderOrders();
+}
+
+/* ── Cancel ──────────────────────────────────────────────────── */
+function openCancelModal(id){
+  pendingCancelId=id;
+  document.getElementById('cancel-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCancelModal(){
+  document.getElementById('cancel-modal').classList.remove('open');
+  document.body.style.overflow='';
+  pendingCancelId=null;
+}
+function confirmCancel(){
+  if(!pendingCancelId)return;
+  var orders=loadOrders();
+  var idx=orders.findIndex(function(o){return o.orderId===pendingCancelId;});
+  if(idx!==-1){orders[idx].status='cancelled';saveOrders(orders);}
+  closeCancelModal();
+  showToast('Order cancelled. For refund processing call (916) 619-3218.');
+  renderOrders();
+}
+
+/* ── Reorder ─────────────────────────────────────────────────── */
+function reorder(id){
+  var orders=loadOrders();
+  var o=orders.find(function(x){return x.orderId===id;});
+  if(!o){window.location.href='order.html';return;}
+  /* Pre-fill order draft in sessionStorage */
+  var draft={step:1,waterType:o.waterType&&o.waterType.toLowerCase().includes('alkaline')?'alkaline':'purified',amtMode:'onetime',qty:1,bundleId:null,delOpt:null,timePref:null,calDate:null,calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),name:'',addr:'',city:'Elk Grove',stateField:'CA',zip:'',phone:o.phone||'',email:o.email||'',zone:{zone:0,fee:0,outside:false,unknown:true}};
+  try{sessionStorage.setItem('wb_order_draft',JSON.stringify(draft));}catch(_){}
+  window.location.href='order.html';
+}
+
+/* ── Toast ───────────────────────────────────────────────────── */
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove('show');},3500);
+}
+</script>
+</body>
+</html>

@@ -1179,3 +1179,54 @@ body {
 
 /* Payment badges on index */
 .payment-badge { background: var(--bg-card) !important; border: 1px solid var(--border) !important; color: var(--text-secondary) !important; }
+
+/* ── Order Now CTA Strip ─────────────────────────────────────── */
+.hn-order-cta-strip {
+  background: linear-gradient(135deg, #0F2740, #132236);
+  border-top: 1px solid rgba(0,212,255,0.2);
+  border-bottom: 1px solid rgba(0,212,255,0.2);
+  padding: 60px 20px;
+  text-align: center;
+}
+.hn-order-cta-label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: #00D4FF;
+  letter-spacing: 3px;
+  margin-bottom: 18px;
+}
+.hn-order-cta-h {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 42px;
+  font-weight: 800;
+  color: #F0F7FF;
+  margin: 0 0 14px;
+}
+.hn-order-cta-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: #B8E6FF;
+  margin: 0 0 36px;
+}
+.hn-order-cta-btn {
+  display: inline-block;
+  background: #00D4FF;
+  color: #0B1B2B;
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 20px 60px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.hn-order-cta-btn:hover {
+  background: #38BDF8;
+  transform: scale(1.03);
+}
+@media (max-width: 600px) {
+  .hn-order-cta-h { font-size: 30px; }
+  .hn-order-cta-btn { font-size: 16px; padding: 16px 36px; }
+}

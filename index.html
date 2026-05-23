@@ -25,7 +25,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
   <link rel="stylesheet" href="water-type-selector.css" />
@@ -134,10 +134,13 @@
     <a href="water-delivery.html">Delivery</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
+    <a href="my-orders.html">My Orders</a>
   </div>
 
   <!-- Right side -->
   <div class="hn-nav-right">
+    <a href="my-orders.html" class="hn-sign-in">My Orders</a>
+    <a href="order.html" class="hn-get-started" style="background:#00D4FF;color:#0B1B2B;">Order Now</a>
     <a href="javascript:void(0)" class="hn-sign-in" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
     <a href="javascript:void(0)" class="hn-get-started" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
   </div>
@@ -228,6 +231,16 @@
       <div id="hero-placeholder" class="hero-image-placeholder" style="display:none;"></div>
     </div>
   </div>
+</section>
+
+<!-- ============================================================
+     ORDER NOW CTA STRIP
+     ============================================================ -->
+<section class="hn-order-cta-strip" aria-label="Order water now">
+  <span class="hn-order-cta-label">FRESH WATER. DELIVERED TO YOUR DOOR.</span>
+  <h2 class="hn-order-cta-h">Ready to Order?</h2>
+  <p class="hn-order-cta-sub">Choose your water, pick your time, and we'll handle the rest.</p>
+  <a href="order.html" class="hn-order-cta-btn">ORDER WATER NOW →</a>
 </section>
 
 <!-- ============================================================
@@ -721,6 +734,8 @@
     </div>
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Account</div>
+      <a href="order.html" class="left-drawer-link" style="color:#00D4FF!important;font-weight:700!important;">Order Now</a>
+      <a href="my-orders.html" class="left-drawer-link">My Orders</a>
       <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
       <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
     </div>

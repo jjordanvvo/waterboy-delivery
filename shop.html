@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
   <link rel="stylesheet" href="water-type-selector.css" />
@@ -49,10 +49,7 @@
       <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
       <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
     </div>
-    <div class="nav-right">
-      <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
-      <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal==='function'&&openAuthModal('signup')">Get Started</a>
-    </div>
+    <div class="nav-right">\r\n      <a href="my-orders.html" class="nav-btn-outline">My Orders</a>\r\n      <a href="order.html" class="nav-btn-cyan">Order Now</a>\r\n      <a href="javascript:void(0)" class="nav-btn-outline" onclick="typeof openAuthModal===.function.&&openAuthModal(.signin.)">Sign In</a>\r\n      <a href="javascript:void(0)" class="nav-btn-primary" onclick="typeof openAuthModal===.function.&&openAuthModal(.signup.)">Get Started</a>\r\n    </div>
   </div>
 </nav>
 <div id="water-type-bar" class="water-type-bar">
@@ -313,6 +310,8 @@
     </div>
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Account</div>
+      <a href="order.html" class="left-drawer-link" style="color:#00D4FF!important;font-weight:700!important;">Order Now</a>
+      <a href="my-orders.html" class="left-drawer-link">My Orders</a>
       <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
       <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
     </div>
@@ -427,3 +426,4 @@
 </script>
 </body>
 </html>
+
