@@ -409,6 +409,30 @@
         '<div class="mca-price">'+price+'</div>'+
         '<div class="mca-badge"><span>Free Delivery</span></div>'+
         '<button class="mca-atc">Add to Cart</button>';
+      var atcBtn=info.querySelector('.mca-atc');
+      if(atcBtn){
+        var cardImg=(info.closest('.menu-card')||{querySelector:function(){return null;}}).querySelector('img');
+        var imgSrc=cardImg?cardImg.getAttribute('src'):'';
+        var priceNum=parseFloat((price||'').replace(/[^0-9.]/g,''))||0;
+        (function(n,p,img){
+          atcBtn.addEventListener('click',function(e){
+            e.stopPropagation();
+            if(n&&n!=='?'&&p>0){
+              if(typeof openInlineQtyModal==='function'){
+                openInlineQtyModal(n,p,img,function(qty){
+                  addToCartRaw(n,p,img,qty);
+                  if(typeof toast==='function') toast(n,'Added to cart','');
+                });
+              } else {
+                addToCartRaw(n,p,img,1);
+                if(typeof toast==='function') toast(n,'Added to cart','');
+              }
+            } else {
+              if(typeof openOverlay==='function') openOverlay('contact-overlay');
+            }
+          });
+        })(name,priceNum,imgSrc);
+      }
       if(isCarousel){
         info.querySelector('.mca-atc').addEventListener('click',function(e){e.stopPropagation();});
       }
