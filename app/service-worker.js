@@ -1,5 +1,5 @@
 /* ============================================================
-   WATERBOY DELIVERY — SERVICE WORKER
+   WATERBOY DELIVERY - SERVICE WORKER
    Cache-first for assets, network-first for HTML pages
    ============================================================ */
 
@@ -112,7 +112,7 @@ function offlinePage() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Waterboy — Offline</title>
+  <title>Waterboy Offline</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {

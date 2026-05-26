@@ -1,5 +1,5 @@
 /* ============================================================
-   WATERBOY APP — GLOBAL DATA LAYER & UTILITIES
+   WATERBOY APP - GLOBAL DATA LAYER & UTILITIES
    ============================================================ */
 
 'use strict';
@@ -24,7 +24,7 @@ const WB = {
     blockedDates: 'wb_blocked_dates',
     rentals:      'wb_rentals',
     messages:     'wb_messages',
-    seeded:       'wb_seeded_v7',
+    seeded:       'wb_seeded_v9',
   },
   CREDS: {
     customer: { email: 'demo@waterboy.com',   password: 'water2026' },
@@ -47,7 +47,7 @@ const WB = {
 // ============================================================
 const SUBSCRIPTION_PLANS = {
   monthly: [
-    { id:'plan_solo',       name:'Solo',      price:2100,  jugs:2,  freq:'Monthly', tag:'STARTER',    tagColor:'cyan',    features:['2 × 5-gal jugs','Purified water','Free delivery 0–3 mi'], savings:'Saves $26 vs Water.com' },
+    { id:'plan_solo',       name:'Solo',      price:2100,  jugs:2,  freq:'Monthly', tag:'STARTER',    tagColor:'cyan',    features:['2 × 5-gal jugs','Purified water','Free delivery 0-3 mi'], savings:'Saves $26 vs Water.com' },
     { id:'plan_family',     name:'Family',    price:4200,  jugs:4,  freq:'Monthly', tag:'MOST POPULAR',tagColor:'green',   features:['4 × 5-gal jugs','Purified or Spring','Priority scheduling'], savings:'Saves $7 vs Water.com' },
     { id:'plan_household',  name:'Household', price:5700,  jugs:6,  freq:'Monthly', tag:'BEST VALUE',  tagColor:'yellow',  features:['6 × 5-gal jugs','Choice of water type','Cooler rental add-on'], savings:'Saves $9 vs Water.com' },
     { id:'plan_office',     name:'Office',    price:7200,  jugs:8,  freq:'Monthly', tag:'OFFICE',      tagColor:'blue',    features:['8 × 5-gal jugs','Bi-weekly option','Invoice billing'], savings:'Saves $10+ vs Water.com' },
@@ -61,12 +61,39 @@ const SUBSCRIPTION_PLANS = {
 };
 
 // ============================================================
+// WATER TYPES
+// ============================================================
+const WATER_TYPES = [
+  {
+    id:          'purified',
+    name:        'Purified',
+    ph:          '7.0',
+    desc:        'Reverse osmosis filtered. Clean, crisp, and great for everyday drinking.',
+    priceAdjust: 0,
+  },
+  {
+    id:          'spring',
+    name:        'Spring',
+    ph:          '7.4',
+    desc:        'Natural spring water. Mineral-rich and naturally refreshing.',
+    priceAdjust: 50,
+  },
+  {
+    id:          'alkaline',
+    name:        'Alkaline',
+    ph:          '8.5+',
+    desc:        'Ionized alkaline water. A premium choice for fitness and wellness.',
+    priceAdjust: 100,
+  },
+];
+
+// ============================================================
 // RENTAL PLANS
 // ============================================================
 const RENTAL_PLANS = {
   r_bottom: {
     id: 'r_bottom', name: 'Brio Bottom-Load Dispenser',
-    desc: 'Hot, cold, and room temperature. Sleek stainless steel. Bottom-load — no heavy lifting.',
+    desc: 'Hot, cold, and room temperature. Sleek stainless steel. Bottom-load design means no heavy lifting.',
     image: 'images/Screenshot 2025-11-03 152515.png',
     retailPrice: 27999,
     tiers: [
@@ -132,9 +159,9 @@ function getZoneForZip(zip) {
   if (!coords) return { zone: null, miles: null, fee: 0, label: 'outside', outside: true };
   const miles = haversineMiles(STORE_LAT, STORE_LNG, coords.lat, coords.lng);
   if (miles <= 3)  return { zone:'zone_1', miles, fee:0,   label:'✓ Free delivery!', outside:false };
-  if (miles <= 6)  return { zone:'zone_2', miles, fee:499, label:'Zone 2 — $4.99 delivery', outside:false };
-  if (miles <= 9)  return { zone:'zone_3', miles, fee:999, label:'Zone 3 — $9.99 delivery', outside:false };
-  return { zone:'zone_out', miles, fee:0, label:'Outside delivery area — call us', outside:true };
+  if (miles <= 6)  return { zone:'zone_2', miles, fee:499, label:'Zone 2: $4.99 delivery', outside:false };
+  if (miles <= 9)  return { zone:'zone_3', miles, fee:999, label:'Zone 3: $9.99 delivery', outside:false };
+  return { zone:'zone_out', miles, fee:0, label:'Outside delivery area. Call us.', outside:true };
 }
 
 // ============================================================
@@ -209,49 +236,49 @@ const SEED = {
 
   products: [
     // 5-Gallon Jugs
-    { id:'p_5g1',  name:'5-Gallon Water Jug',         category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/5 Gallon Bottle.jpg',            description:'Pure reverse osmosis water. Crisp, clean, and refreshing. Our best-seller.', popular:true,  inquire:false },
-    { id:'p_5g2',  name:'5-Gallon Jug with Spigot',   category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/5 Gallon bottle w Spigot.jpg',   description:'Same great purified water with a convenient built-in spigot for easy dispensing.', popular:false, inquire:false },
-    { id:'p_5g3',  name:'5-Gallon Glass Bottle',       category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/5 Gallon Glass Bottle.jpg',      description:'Premium glass bottle for the purest taste. BPA-free and eco-friendly.', popular:false, inquire:false },
+    { id:'p_5g1',  name:'5-Gallon Water Jug',         category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/5 Gallon Bottle.jpg',            description:'Crisp, clean, and refreshing. Our best-selling 5-gallon jug.', popular:true,  inquire:false },
+    { id:'p_5g2',  name:'5-Gallon Jug with Spigot',   category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/5 Gallon bottle w Spigot.jpg',   description:'Convenient built-in spigot for easy dispensing without a separate dispenser.', popular:false, inquire:false },
+    { id:'p_5g3',  name:'5-Gallon Glass Bottle',       category:'5-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/5 Gallon Glass Bottle.jpg',      description:'Premium glass bottle. BPA-free and eco-friendly. Superior taste and clarity.', popular:false, inquire:false },
     // 3-Gallon Jugs
-    { id:'p_3g1',  name:'3-Gallon Water Jug',          category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/3 Gallon Bottle .jpg',           description:'Compact purified water jug. Perfect for smaller households and offices.', popular:false, inquire:false },
-    { id:'p_3g2',  name:'3-Gallon Tall Bottle',        category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/3 Gallon Tall Bottle.jpg',       description:'Tall-profile 3-gallon bottle. Fits most standard countertop dispensers.', popular:false, inquire:false },
-    { id:'p_3g3',  name:'3-Gallon Jug with Spigot',   category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/3 Gallon Bottle with Spigot.jpg',description:'3-gallon jug with built-in spigot. Easy pour without a dispenser.', popular:false, inquire:false },
-    { id:'p_3g4',  name:'3-Gallon Glass Bottle',       category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'💧', image:'images/3 Gallon Glass Bottle.jpg',      description:'Glass 3-gallon bottle for the purest taste experience.', popular:false, inquire:false },
+    { id:'p_3g1',  name:'3-Gallon Water Jug',          category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/3 Gallon Bottle .jpg',           description:'Compact water jug. Perfect for smaller households and offices.', popular:false, inquire:false },
+    { id:'p_3g2',  name:'3-Gallon Tall Bottle',        category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/3 Gallon Tall Bottle.jpg',       description:'Tall-profile 3-gallon bottle. Fits most standard countertop dispensers.', popular:false, inquire:false },
+    { id:'p_3g3',  name:'3-Gallon Jug with Spigot',   category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/3 Gallon Bottle with Spigot.jpg',description:'3-gallon jug with built-in spigot. Easy pour without a separate dispenser.', popular:false, inquire:false },
+    { id:'p_3g4',  name:'3-Gallon Glass Bottle',       category:'3-Gallon Jugs',             price:750,  unit:'per jug', icon:'', image:'images/3 Gallon Glass Bottle.jpg',      description:'Glass 3-gallon bottle. BPA-free and eco-friendly.', popular:false, inquire:false },
     // Glass & Personal Bottles
-    { id:'p_gb1',  name:'1-Gallon Glass Bottle',       category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'🫙', image:'images/1 Gallon Glass Bottle.jpg',       description:'1-gallon glass bottle. Great for home, gym, or office. Contact us for pricing.', popular:false, inquire:true },
-    { id:'p_gb2',  name:'Half-Gallon Glass Bottle',    category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'🫙', image:'images/Half Gallon Glass Bottle.jpg',    description:'Half-gallon glass bottle. Perfect personal size for daily use.', popular:false, inquire:true },
-    { id:'p_gb3',  name:'32oz Glass Bottle',           category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'🫙', image:'images/32oz Glass Bottle.jpg',          description:'32oz personal glass water bottle. Refillable and eco-friendly.', popular:false, inquire:true },
+    { id:'p_gb1',  name:'1-Gallon Glass Bottle',       category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'', image:'images/1 Gallon Glass Bottle.jpg',       description:'1-gallon glass bottle. Great for home, gym, or office. Contact us for pricing.', popular:false, inquire:true },
+    { id:'p_gb2',  name:'Half-Gallon Glass Bottle',    category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'', image:'images/Half Gallon Glass Bottle.jpg',    description:'Half-gallon glass bottle. Perfect personal size for daily use.', popular:false, inquire:true },
+    { id:'p_gb3',  name:'32oz Glass Bottle',           category:'Glass & Personal Bottles',  price:null, unit:'each', icon:'', image:'images/32oz Glass Bottle.jpg',          description:'32oz personal glass water bottle. Refillable and eco-friendly.', popular:false, inquire:true },
     // Aluminum Bottles
-    { id:'p_al1',  name:'36oz Aluminum Bottle',        category:'Aluminum Bottles',          price:null, unit:'each', icon:'🥤', image:'images/36oz Aluminum Bottle.jpg',        description:'36oz aluminum bottle. Durable, lightweight, and keeps water cold.', popular:false, inquire:true },
-    { id:'p_al2',  name:'Skinny 12oz Aluminum Bottle', category:'Aluminum Bottles',          price:null, unit:'each', icon:'🥤', image:'images/Skinny 12oz Aluminum Bottle.jpg', description:'Slim 12oz aluminum bottle. Great for on-the-go hydration.', popular:false, inquire:true },
-    { id:'p_al3',  name:'30oz Aluminum Coffee Mug',    category:'Aluminum Bottles',          price:null, unit:'each', icon:'☕', image:'images/30oz Aluminum Coffee Mug.jpg',    description:'30oz aluminum coffee mug. Double-walled to keep drinks hot or cold.', popular:false, inquire:true },
+    { id:'p_al1',  name:'36oz Aluminum Bottle',        category:'Aluminum Bottles',          price:null, unit:'each', icon:'', image:'images/36oz Aluminum Bottle.jpg',        description:'36oz aluminum bottle. Durable, lightweight, and keeps water cold.', popular:false, inquire:true },
+    { id:'p_al2',  name:'Skinny 12oz Aluminum Bottle', category:'Aluminum Bottles',          price:null, unit:'each', icon:'', image:'images/Skinny 12oz Aluminum Bottle.jpg', description:'Slim 12oz aluminum bottle. Great for on-the-go hydration.', popular:false, inquire:true },
+    { id:'p_al3',  name:'30oz Aluminum Coffee Mug',    category:'Aluminum Bottles',          price:null, unit:'each', icon:'', image:'images/30oz Aluminum Coffee Mug.jpg',    description:'30oz aluminum coffee mug. Double-walled to keep drinks hot or cold.', popular:false, inquire:true },
     // Water Dispensers
-    { id:'p_wd1',  name:'Brio Bottom-Load Dispenser',  category:'Water Dispensers',          price:27999,unit:'one-time', icon:'🏠', image:'images/Screenshot 2025-11-03 152515.png', description:'Brio bottom-load water dispenser. Hot & cold, no heavy lifting. Easy jug loading.', popular:true,  inquire:false },
-    { id:'p_wd2',  name:'Brio Top-Load Dispenser',     category:'Water Dispensers',          price:12999,unit:'one-time', icon:'🏠', image:'images/Screenshot 2025-11-03 152515.png', description:'Brio top-load water dispenser. Hot & cold. Compact and affordable.', popular:false, inquire:false },
-    { id:'p_wd3',  name:'Ceramic Water Crock',         category:'Water Dispensers',          price:null, unit:'each', icon:'🏺', image:'images/Crock.jpg',                      description:'Classic ceramic water crock dispenser. Elegant design, no electricity needed.', popular:false, inquire:true },
+    { id:'p_wd1',  name:'Brio Bottom-Load Dispenser',  category:'Water Dispensers',          price:27999,unit:'one-time', icon:'', image:'images/Screenshot 2025-11-03 152515.png', description:'Brio bottom-load water dispenser. Hot & cold, no heavy lifting. Easy jug loading.', popular:true,  inquire:false },
+    { id:'p_wd2',  name:'Brio Top-Load Dispenser',     category:'Water Dispensers',          price:12999,unit:'one-time', icon:'', image:'images/Screenshot 2025-11-03 152515.png', description:'Brio top-load water dispenser. Hot & cold. Compact and affordable.', popular:false, inquire:false },
+    { id:'p_wd3',  name:'Ceramic Water Crock',         category:'Water Dispensers',          price:null, unit:'each', icon:'', image:'images/Crock.jpg',                      description:'Classic ceramic water crock dispenser. Elegant design, no electricity needed.', popular:false, inquire:true },
     // Salt Sticks
-    { id:'p_ss1',  name:'Citrus Salt Stick',           category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🍋', image:'images/Citrus Salt Stick.jpg',           description:'Citrus-flavored electrolyte stick. Add to your water for instant hydration boost.', popular:false, inquire:true },
-    { id:'p_ss2',  name:'Grapefruit Salt Stick',       category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🍊', image:'images/Grapefruit Stick.jpg',            description:'Grapefruit-flavored electrolyte salt stick. Refreshing and replenishing.', popular:false, inquire:true },
-    { id:'p_ss3',  name:'Lemonade Salt Stick',         category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🍋', image:'images/Lemonade Salt Stick.jpg',         description:'Lemonade-flavored electrolyte stick. Sweet, tangy, and hydrating.', popular:false, inquire:true },
-    { id:'p_ss4',  name:'Mango Chili Salt Stick',      category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🥭', image:'images/Mango Chili Stick.jpg',           description:'Mango chili electrolyte stick. Unique flavor with a kick.', popular:false, inquire:true },
-    { id:'p_ss5',  name:'Orange Salt Stick',           category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🍊', image:'images/Orange Salt Stick.jpg',           description:'Orange-flavored electrolyte stick. Classic citrus hydration.', popular:false, inquire:true },
-    { id:'p_ss6',  name:'Raspberry Salt Stick',        category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🫐', image:'images/Raspberry Salt Stick.jpg',        description:'Raspberry-flavored electrolyte stick. Berry-fresh hydration.', popular:false, inquire:true },
-    { id:'p_ss7',  name:'Watermelon Salt Stick',       category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🍉', image:'images/Watermelon Salt Stick.jpg',       description:'Watermelon-flavored electrolyte stick. Summer hydration in a stick.', popular:false, inquire:true },
-    { id:'p_ss8',  name:'Raw Unflavored Stick',        category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'⚗️', image:'images/Raw Unf;avored Stick.jpg',        description:'Raw unflavored electrolyte stick. Pure minerals, no additives.', popular:false, inquire:true },
-    { id:'p_ss9',  name:'Hydrogen Prebiotic Stick',    category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'🔬', image:'images/Hydrogen Prebiotic Stick.jpg',    description:'Hydrogen + prebiotic electrolyte stick. Supports gut health and hydration.', popular:true,  inquire:true },
+    { id:'p_ss1',  name:'Citrus Salt Stick',           category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Citrus Salt Stick.jpg',           description:'Citrus-flavored electrolyte stick. Add to your water for instant hydration boost.', popular:false, inquire:true },
+    { id:'p_ss2',  name:'Grapefruit Salt Stick',       category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Grapefruit Stick.jpg',            description:'Grapefruit-flavored electrolyte salt stick. Refreshing and replenishing.', popular:false, inquire:true },
+    { id:'p_ss3',  name:'Lemonade Salt Stick',         category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Lemonade Salt Stick.jpg',         description:'Lemonade-flavored electrolyte stick. Sweet, tangy, and hydrating.', popular:false, inquire:true },
+    { id:'p_ss4',  name:'Mango Chili Salt Stick',      category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Mango Chili Stick.jpg',           description:'Mango chili electrolyte stick. Unique flavor with a kick.', popular:false, inquire:true },
+    { id:'p_ss5',  name:'Orange Salt Stick',           category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Orange Salt Stick.jpg',           description:'Orange-flavored electrolyte stick. Classic citrus hydration.', popular:false, inquire:true },
+    { id:'p_ss6',  name:'Raspberry Salt Stick',        category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Raspberry Salt Stick.jpg',        description:'Raspberry-flavored electrolyte stick. Berry-fresh hydration.', popular:false, inquire:true },
+    { id:'p_ss7',  name:'Watermelon Salt Stick',       category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Watermelon Salt Stick.jpg',       description:'Watermelon-flavored electrolyte stick. Summer hydration in a stick.', popular:false, inquire:true },
+    { id:'p_ss8',  name:'Raw Unflavored Stick',        category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Raw Unf;avored Stick.jpg',        description:'Raw unflavored electrolyte stick. Pure minerals, no additives.', popular:false, inquire:true },
+    { id:'p_ss9',  name:'Hydrogen Prebiotic Stick',    category:'Hydration & Electrolytes',  price:null, unit:'each', icon:'', image:'images/Hydrogen Prebiotic Stick.jpg',    description:'Hydrogen + prebiotic electrolyte stick. Supports gut health and hydration.', popular:true,  inquire:true },
     // Canned Drinks
-    { id:'p_cd1',  name:'Black Cherry Lime (16 fl oz)',category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'🍒', image:'images/Black Cherry Lime 16 fl oz.jpg',  description:'Black cherry lime flavored sparkling water. 16 fl oz can.', popular:false, inquire:true },
-    { id:'p_cd2',  name:'Grapefruit Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'🍊', image:'images/Grapefruit Salt 16 fl oz.jpg',    description:'Grapefruit salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
-    { id:'p_cd3',  name:'Watermelon Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'🍉', image:'images/Watermelon Salt 16 fl oz.jpg',    description:'Watermelon salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
-    { id:'p_cd4',  name:'Citrus Salt Can (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'🍋', image:'images/citrus salt can.jpg',             description:'Citrus salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
+    { id:'p_cd1',  name:'Black Cherry Lime (16 fl oz)',category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/Black Cherry Lime 16 fl oz.jpg',  description:'Black cherry lime flavored sparkling water. 16 fl oz can.', popular:false, inquire:true },
+    { id:'p_cd2',  name:'Grapefruit Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/Grapefruit Salt 16 fl oz.jpg',    description:'Grapefruit salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
+    { id:'p_cd3',  name:'Watermelon Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/Watermelon Salt 16 fl oz.jpg',    description:'Watermelon salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
+    { id:'p_cd4',  name:'Citrus Salt Can (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/citrus salt can.jpg',             description:'Citrus salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
     // Energy & Supplements
-    { id:'p_en1',  name:'ZipFizz Energy Mix',          category:'Energy & Supplements',      price:null, unit:'each', icon:'⚡', image:'images/ZipFizz.jpg',                     description:'ZipFizz energy drink mix. Vitamin B12, antioxidants, and electrolytes.', popular:true,  inquire:true },
+    { id:'p_en1',  name:'ZipFizz Energy Mix',          category:'Energy & Supplements',      price:null, unit:'each', icon:'', image:'images/ZipFizz.jpg',                     description:'ZipFizz energy drink mix. Vitamin B12, antioxidants, and electrolytes.', popular:true,  inquire:true },
   ],
 
   zones: [
-    { id:'zone_1', name:'Zone 1 — 0–3 mi (Free)',   deliveryFee:0,   minMiles:0, maxMiles:3,  active:true,  deliveryDays:[1,2,3,4,5,6] },
-    { id:'zone_2', name:'Zone 2 — 3–6 mi ($4.99)',  deliveryFee:499, minMiles:3, maxMiles:6,  active:true,  deliveryDays:[1,2,3,4,5,6] },
-    { id:'zone_3', name:'Zone 3 — 6–9 mi ($9.99)',  deliveryFee:999, minMiles:6, maxMiles:9,  active:true,  deliveryDays:[1,2,3,4,5,6] },
+    { id:'zone_1', name:'Zone 1: 0-3 mi (Free)',   deliveryFee:0,   minMiles:0, maxMiles:3,  active:true,  deliveryDays:[1,2,3,4,5,6] },
+    { id:'zone_2', name:'Zone 2: 3-6 mi ($4.99)',  deliveryFee:499, minMiles:3, maxMiles:6,  active:true,  deliveryDays:[1,2,3,4,5,6] },
+    { id:'zone_3', name:'Zone 3: 6-9 mi ($9.99)',  deliveryFee:999, minMiles:6, maxMiles:9,  active:true,  deliveryDays:[1,2,3,4,5,6] },
     { id:'zone_out', name:'Outside Delivery Area',   deliveryFee:0,   minMiles:9, maxMiles:999, active:false, deliveryDays:[] },
   ],
 
@@ -380,7 +407,7 @@ const SEED = {
       });
     });
 
-    // Historical orders — 25 more spread over past 30 days
+    // Historical orders - 25 more spread over past 30 days
     const custs = SEED.customers;
     for (let i = 0; i < 25; i++) {
       const cust = custs[i % custs.length];
@@ -419,7 +446,7 @@ const SEED = {
     { id:'notif_1', userId:'cust_1', type:'order_update', title:'Order Out for Delivery!', body:'Your 4 bottles are on the way. Marcus is about 30 min away.', read:false, createdAt:hoursAgo(3),  orderId:'ord_s001' },
     { id:'notif_2', userId:'cust_1', type:'promo',        title:'New Promo: ELKGROVE',     body:'Get 15% off your next order with code ELKGROVE. Expires in 60 days.',  read:false, createdAt:hoursAgo(24), orderId:null },
     { id:'notif_3', userId:'cust_1', type:'order_update', title:'Order Delivered ✓',       body:'Your last order of 2 bottles was delivered. Rate your experience!',    read:true,  createdAt:daysAgo(3),   orderId:'ord_h001' },
-    { id:'notif_4', userId:'cust_1', type:'subscription', title:'Subscription Reminder',   body:'Your weekly delivery is scheduled for tomorrow between 10am–2pm.',     read:true,  createdAt:daysAgo(6),   orderId:null },
+    { id:'notif_4', userId:'cust_1', type:'subscription', title:'Subscription Reminder',   body:'Your weekly delivery is scheduled for tomorrow between 10am and 2pm.',     read:true,  createdAt:daysAgo(6),   orderId:null },
     { id:'notif_5', userId:'cust_1', type:'loyalty',      title:'You earned 70 pts!',      body:'Keep ordering to reach Silver status (500 pts away).',                 read:true,  createdAt:daysAgo(8),   orderId:null },
   ],
 
@@ -737,14 +764,15 @@ const Cart = {
   save(items) { Store.set(WB.KEYS.cartKey, items); },
   count()     { return this.get().reduce((sum, i) => sum + i.qty, 0); },
   total()     { return this.get().reduce((sum, i) => sum + (i.price || 0) * i.qty, 0); },
-  add(productId, qty = 1) {
+  add(productId, qty = 1, priceOverride = null) {
     const items = this.get();
     const products = Store.getList(WB.KEYS.products);
     const prod = products.find(p => p.id === productId);
     if (!prod) return;
+    const price = priceOverride !== null ? priceOverride : prod.price;
     const existing = items.find(i => i.productId === productId);
-    if (existing) { existing.qty += qty; }
-    else { items.push({ productId, productName: prod.name, qty, price: prod.price }); }
+    if (existing) { existing.qty += qty; existing.price = price; }
+    else { items.push({ productId, productName: prod.name, qty, price }); }
     this.save(items);
   },
   remove(productId) {

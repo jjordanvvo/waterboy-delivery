@@ -1,5 +1,5 @@
 /* ============================================================
-   WATERBOY APP — DRIVER APP LOGIC
+   WATERBOY APP - DRIVER APP LOGIC
    ============================================================ */
 
 'use strict';
@@ -146,7 +146,7 @@ function renderStatsStrip(orders) {
   setEl('drv-stat-bottles',    totalBottles);
 }
 
-const DEMO_TIME_WINDOWS = ['8:00–10:00 AM','9:00–11:00 AM','10:00 AM–12:00 PM','11:00 AM–1:00 PM','12:00–2:00 PM','1:00–3:00 PM','2:00–4:00 PM'];
+const DEMO_TIME_WINDOWS = ['8:00 to 10:00 AM','9:00 to 11:00 AM','10:00 AM to 12:00 PM','11:00 AM to 1:00 PM','12:00 to 2:00 PM','1:00 to 3:00 PM','2:00 to 4:00 PM'];
 const DEMO_NOTES = ['','Gate code: #2241','Leave at door','Ring bell twice','','Call on arrival',''];
 
 function renderStopList(orders) {
@@ -186,7 +186,7 @@ function renderStopList(orders) {
         </a>
         <div class="stop-meta">
           <span class="stop-items">${order.items.map(i => `${i.qty}× ${i.productName}`).join(', ')}</span>
-          <span class="stop-bottles-badge">💧 ${bottles} deliver · ⬆ ${pickupQty} return</span>
+          <span class="stop-bottles-badge">${bottles} deliver · ${pickupQty} return</span>
         </div>
         ${note ? `<div style="font-size:.75rem;color:var(--warning);margin-top:6px;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${note}</div>` : ''}
         ${!isDone && !isMissed ? `
@@ -197,7 +197,7 @@ function renderStopList(orders) {
           <button class="btn btn-primary btn-sm flex-1" onclick="event.stopPropagation();openCompleteModal('${order.id}')">✓ Complete</button>
           <button class="btn btn-sm" style="background:rgba(239,68,68,0.12);color:var(--danger);border:1px solid rgba(239,68,68,0.25)" onclick="event.stopPropagation();markMissed('${order.id}')">Missed</button>
         </div>
-        <button class="btn btn-secondary btn-sm btn-full" style="margin-top:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--success)" onclick="event.stopPropagation();openDrvChat('${order.id}')">💬 Message Customer</button>` : isDone ? `
+        <button class="btn btn-secondary btn-sm btn-full" style="margin-top:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--success)" onclick="event.stopPropagation();openDrvChat('${order.id}')">Message Customer</button>` : isDone ? `
         <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.8125rem;color:var(--success);font-weight:600">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>Delivery completed
         </div>` : ''}
@@ -371,8 +371,8 @@ function renderAccount() {
   const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   setEl('drv-profile-name', d.name);
   setEl('drv-profile-role', 'Waterboy Driver');
-  setEl('drv-acct-email',   d.email || '—');
-  setEl('drv-acct-phone',   d.phone || '—');
+  setEl('drv-acct-email',   d.email || '');
+  setEl('drv-acct-phone',   d.phone || '');
   setEl('drv-acct-empid',   d.id);
 
   const logoutBtn = document.getElementById('drv-logout-btn');
@@ -507,7 +507,7 @@ function renderDrvMessages() {
   const threads = Store.getList(WB.KEYS.messages).filter(t => t.driverId === currentDriver.id);
 
   if (!threads.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">💬</div><div class="empty-state-title">No messages</div><div class="empty-state-sub">Customer messages during deliveries will appear here.</div></div>`;
+    el.innerHTML = `<div class="empty-state"><div class="empty-state-title">No messages</div><div class="empty-state-sub">Customer messages during deliveries will appear here.</div></div>`;
     return;
   }
 

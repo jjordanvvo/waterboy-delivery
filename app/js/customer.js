@@ -1,5 +1,5 @@
 /* ============================================================
-   WATERBOY APP — CUSTOMER APP LOGIC
+   WATERBOY APP - CUSTOMER APP LOGIC
    ============================================================ */
 
 'use strict';
@@ -27,6 +27,11 @@ let coFreq             = 'weekly';
 let coSelectedDate     = null;
 let coSelectedSlot     = null;
 let applePayActive     = false;
+let selectedWaterType  = 'purified';
+let woStep             = 1;
+let woQty              = 2;
+let woSelectedDate     = null;
+let woSelectedSlot     = null;
 
 const HYDRATION_GOAL = 8;
 const DEPOSIT_PER_BOTTLE = 200; // $2.00 in cents
@@ -285,8 +290,10 @@ function renderHome() {
   renderHydrationCard();
   renderActiveOrderBanner();
   renderReorderCards();
+  renderFeaturedProducts();
   renderSubscriptionCard();
   renderComparisonCard();
+  renderOurWaterSection();
   renderZoneChip();
 }
 
@@ -295,13 +302,13 @@ function renderZoneChip() {
   if (!el || !currentCustomer) return;
   const z = getZoneForZip(currentCustomer.zip || '');
   if (z.outside) {
-    el.textContent = '⚠️ Outside area';
+    el.textContent = 'Outside delivery area';
     el.style.color = 'var(--danger)';
   } else if (z.fee === 0) {
-    el.textContent = '✓ Free delivery';
+    el.textContent = 'Free delivery';
     el.style.color = 'var(--success)';
   } else {
-    el.textContent = z.fee === 499 ? '📦 $4.99 delivery' : '📦 $9.99 delivery';
+    el.textContent = z.fee === 499 ? '$4.99 delivery' : '$9.99 delivery';
     el.style.color = 'var(--cyan)';
   }
 }
@@ -339,38 +346,36 @@ window.toggleComparisonDetail = toggleComparisonDetail;
 
 function getTimeGreeting() {
   const h = new Date().getHours();
-  if (h < 12) return 'Good morning 🌅';
-  if (h < 17) return 'Good afternoon ☀️';
-  return 'Good evening 🌙';
+  if (h < 12) return 'Good morning.';
+  if (h < 17) return 'Good afternoon.';
+  return 'Good evening.';
 }
 
 function updateWeatherChip() {
   const chip = document.getElementById('weather-chip');
   if (!chip) return;
   const temp = getCurrentTemp();
-  chip.textContent = getWeatherEmoji(temp) + ' ' + temp + '°F';
+  chip.textContent = temp + '°F';
 }
 
 function getCurrentTemp() {
-  // Simulated temp for Elk Grove, CA
   const h = new Date().getHours();
   if (h >= 12 && h <= 16) return 94;
   if (h >= 8 && h < 12)   return 82;
   return 71;
 }
 
-function getWeatherEmoji(temp) {
-  if (temp >= 90) return '🌡️';
-  if (temp >= 80) return '☀️';
-  if (temp >= 65) return '⛅';
-  return '🌤️';
+function getWeatherLabel(temp) {
+  if (temp >= 90) return 'Very Hot';
+  if (temp >= 80) return 'Sunny';
+  if (temp >= 65) return 'Partly Cloudy';
+  return 'Cool';
 }
 
 function openWeatherModal() {
   const temp = getCurrentTemp();
-  document.getElementById('weather-temp-display').textContent = temp + '°F — ' + (temp >= 90 ? 'Very Hot' : temp >= 80 ? 'Sunny' : 'Partly Cloudy');
+  document.getElementById('weather-temp-display').textContent = temp + 'F, ' + getWeatherLabel(temp);
 
-  // Hydration calc: 64oz base, +20% if >80°F, +40% if >95°F
   let ozBase = 64;
   if (temp > 95) ozBase = Math.round(64 * 1.4);
   else if (temp > 80) ozBase = Math.round(64 * 1.2);
@@ -383,9 +388,9 @@ function openWeatherModal() {
   document.getElementById('hydro-gal').textContent = gallons;
 
   let tip = '';
-  if (temp > 95) tip = '🔥 Extreme heat! Drink water every 20 minutes and avoid outdoor activity between 10am–4pm.';
-  else if (temp > 80) tip = '💡 It\'s hot today! Drink an extra glass per hour outdoors. Stay hydrated!';
-  else tip = '✅ Mild temps today. Aim for 8 glasses throughout the day.';
+  if (temp > 95) tip = 'Extreme heat. Drink water every 20 minutes and limit outdoor activity between 10am and 4pm.';
+  else if (temp > 80) tip = 'It is hot today. Drink an extra glass per hour if you are outdoors. Stay hydrated.';
+  else tip = 'Mild temperatures today. Aim for 8 glasses throughout the day.';
   document.getElementById('hydration-tip').textContent = tip;
 
   Modal.open('weather-modal');
@@ -405,7 +410,7 @@ function renderHydrationCard() {
   if (amt) amt.innerHTML = `${hydrationGlasses}<span> / ${HYDRATION_GOAL} glasses</span>`;
   document.querySelectorAll('.hydration-glass').forEach((g, i) => {
     g.classList.toggle('filled', i < hydrationGlasses);
-    g.innerHTML = i < hydrationGlasses ? '💧' : '○';
+    g.innerHTML = i < hydrationGlasses ? '●' : '○';
   });
 }
 
@@ -419,7 +424,7 @@ function initHydration() {
       hydrationGlasses = i + 1 <= hydrationGlasses ? i : i + 1;
       sessionStorage.setItem('wb_hydration', hydrationGlasses);
       renderHydrationCard();
-      if (hydrationGlasses >= HYDRATION_GOAL) Toast.success('Goal Reached!', 'You hit your daily hydration goal! 💧');
+      if (hydrationGlasses >= HYDRATION_GOAL) Toast.success('Goal Reached!', 'You hit your daily hydration goal.');
     });
   });
 }
@@ -436,8 +441,7 @@ function renderActiveOrderBanner() {
 
   const statusIdx = WB.ORDER_STATUSES.indexOf(active.status);
   const labels = ['Pending','Confirmed','Preparing','On the Way','Delivered'];
-  const emojis = ['⏳','✅','📦','🚚','🎉'];
-  banner.querySelector('.active-order-status').textContent = emojis[statusIdx] + ' ' + labels[statusIdx];
+  banner.querySelector('.active-order-status').textContent = labels[statusIdx] || '';
   banner.querySelector('.active-order-id').textContent = '#' + active.id.slice(-8).toUpperCase();
 
   const steps = banner.querySelectorAll('.step-dot');
@@ -447,7 +451,7 @@ function renderActiveOrderBanner() {
     else if (i === statusIdx) s.classList.add('active');
   });
 
-  const etaMap = { pending:'Waiting to be confirmed', confirmed:'Being prepared soon', preparing:'Getting ready for pickup', out_for_delivery:'~30–45 min away', delivered:'Delivered!' };
+  const etaMap = { pending:'Waiting to be confirmed', confirmed:'Being prepared soon', preparing:'Getting ready for pickup', out_for_delivery:'About 30 to 45 minutes away', delivered:'Delivered.' };
   const etaEl = banner.querySelector('.active-order-eta');
   if (etaEl) etaEl.textContent = etaMap[active.status] || '';
   banner.onclick = () => navigateTo('orders');
@@ -468,8 +472,8 @@ function renderReorderCards() {
   container.innerHTML = topItems.map(item => {
     const prod = products.find(p => p.id === item.productId) || {};
     const imgHtml = prod.image
-      ? `<img src="${prod.image}" alt="${prod.name || ''}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;margin-bottom:6px" onerror="this.outerHTML='<div class=reorder-icon>${prod.icon || '💧'}</div>'" />`
-      : `<div class="reorder-icon">${prod.icon || '💧'}</div>`;
+      ? `<img src="${prod.image}" alt="${prod.name || ''}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;margin-bottom:6px" onerror="this.outerHTML='<div class=reorder-icon>${prod.icon || ''}</div>'" />`
+      : `<div class="reorder-icon">${prod.icon || ''}</div>`;
     const priceDisplay = prod.price !== null ? fmtMoney(prod.price || 0) : 'Inquire';
     return `<div class="reorder-card" onclick="openAddToCartModal('${prod.id}')">
       ${imgHtml}
@@ -495,7 +499,7 @@ function renderSubscriptionCard() {
       const allPlans = [...SUBSCRIPTION_PLANS.monthly, ...SUBSCRIPTION_PLANS.alkaline];
       const plan = allPlans.find(p => p.id === c.subscriptionPlanId);
       const planName = plan ? plan.name : (c.subscriptionDesc || 'Subscription');
-      const price = plan ? ` — $${(plan.price/100).toFixed(0)}/mo` : '';
+      const price = plan ? `: $${(plan.price/100).toFixed(0)}/mo` : '';
       if (titleEl) titleEl.textContent = planName + price;
       if (nextEl)  nextEl.textContent  = 'Next delivery: this week';
     }
@@ -505,6 +509,98 @@ function renderSubscriptionCard() {
     if (noneCard) noneCard.style.display = 'block';
   }
 }
+
+// ============================================================
+// WATER TYPE HELPERS
+// ============================================================
+function isWaterProduct(productId) {
+  const prod = Store.findById(WB.KEYS.products, productId);
+  if (!prod) return false;
+  return prod.category === '5-Gallon Jugs' || prod.category === '3-Gallon Jugs';
+}
+
+function getWaterTypeAdjustedPrice(basePrice) {
+  const wt = WATER_TYPES.find(t => t.id === selectedWaterType);
+  return basePrice + (wt ? wt.priceAdjust : 0);
+}
+
+function selectWaterType(typeId, containerId) {
+  selectedWaterType = typeId;
+  if (containerId) renderWaterTypeSelector(containerId);
+}
+window.selectWaterType = selectWaterType;
+
+function renderWaterTypeSelector(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = WATER_TYPES.map(type => {
+    const price = (750 + type.priceAdjust) / 100;
+    const selected = selectedWaterType === type.id;
+    return `<div class="water-type-card${selected ? ' selected' : ''}" onclick="selectWaterType('${type.id}','${containerId}')">
+      <div class="wt-ph">pH ${type.ph}</div>
+      <div class="wt-name">${type.name}</div>
+      <div class="wt-desc">${type.desc}</div>
+      <div class="wt-price">$${price.toFixed(2)}/jug</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// FEATURED PRODUCTS (Home Page)
+// ============================================================
+function renderFeaturedProducts() {
+  const container = document.getElementById('featured-products-grid');
+  if (!container) return;
+  const products = Store.getList(WB.KEYS.products).filter(p => p.popular && p.active !== false && p.price !== null);
+  const featured = products.slice(0, 4);
+  if (!featured.length) {
+    const section = document.getElementById('featured-products-section');
+    if (section) section.style.display = 'none';
+    return;
+  }
+  container.innerHTML = featured.map(p => {
+    const adjustedPrice = isWaterProduct(p.id) ? getWaterTypeAdjustedPrice(p.price) : p.price;
+    const imgHtml = p.image
+      ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:80px;object-fit:contain;border-radius:8px;margin-bottom:8px" onerror="this.style.display='none'" />`
+      : `<div style="font-size:2rem;text-align:center;margin-bottom:8px">${p.icon || ''}</div>`;
+    return `<div class="featured-product-card" onclick="navigateToProduct('${p.id}')">
+      ${imgHtml}
+      <div class="fp-name">${p.name}</div>
+      <div class="fp-price">${fmtMoney(adjustedPrice)}</div>
+      <div class="fp-unit" style="font-size:.7rem;color:var(--white-40)">${p.unit}</div>
+    </div>`;
+  }).join('');
+}
+
+function navigateToProduct(productId) {
+  navigateTo('products');
+  setTimeout(() => openProductDetail(productId), 80);
+}
+window.navigateToProduct = navigateToProduct;
+
+// ============================================================
+// OUR WATER SECTION (Home Page)
+// ============================================================
+function renderOurWaterSection() {
+  const el = document.getElementById('our-water-types');
+  if (!el) return;
+  el.innerHTML = WATER_TYPES.map(type => {
+    const price = (750 + type.priceAdjust) / 100;
+    const selected = selectedWaterType === type.id;
+    return `<div class="our-water-card${selected ? ' selected' : ''}" onclick="selectOurWaterType('${type.id}')">
+      <div style="font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);margin-bottom:4px">pH ${type.ph}</div>
+      <div style="font-weight:700;font-size:.9375rem;color:var(--white-90);margin-bottom:4px">${type.name}</div>
+      <div style="font-size:.75rem;color:var(--white-50);line-height:1.4;margin-bottom:8px">${type.desc}</div>
+      <div style="font-family:var(--font-mono);font-weight:700;color:var(--cyan);font-size:.9375rem">$${price.toFixed(2)}/jug</div>
+    </div>`;
+  }).join('');
+}
+
+function selectOurWaterType(typeId) {
+  selectedWaterType = typeId;
+  renderOurWaterSection();
+}
+window.selectOurWaterType = selectOurWaterType;
 
 // ============================================================
 // PRODUCTS PAGE
@@ -561,8 +657,8 @@ function renderProducts() {
 function renderProductCard(p) {
   const priceStr = p.price !== null ? '$' + (p.price / 100).toFixed(2) : 'Inquire';
   const imgHtml = p.image
-    ? `<img src="${p.image}" alt="${p.name}" class="product-item-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="product-item-icon" style="display:none">${p.icon || '💧'}</div>`
-    : `<div class="product-item-icon">${p.icon || '💧'}</div>`;
+    ? `<img src="${p.image}" alt="${p.name}" class="product-item-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="product-item-icon" style="display:none">${p.icon || ''}</div>`
+    : `<div class="product-item-icon">${p.icon || ''}</div>`;
   const actionBtn = p.inquire
     ? `<button class="product-add-btn product-inquire-btn" onclick="event.stopPropagation();openInquireModal('${p.id}')" aria-label="Inquire about ${p.name}" style="font-size:.65rem;padding:0 8px;width:auto;white-space:nowrap">Inquire</button>`
     : `<button class="product-add-btn" onclick="event.stopPropagation();openAddToCartModal('${p.id}')" aria-label="Add ${p.name}">+</button>`;
@@ -602,26 +698,42 @@ function openProductDetail(productId) {
   currentDetailProductId = productId;
   currentDetailQty = 1;
 
+  const isWater = isWaterProduct(productId);
+
   const iconEl = document.getElementById('detail-icon');
   if (iconEl) {
     if (prod.image) {
-      iconEl.innerHTML = `<img src="${prod.image}" alt="${prod.name}" style="width:140px;height:140px;object-fit:contain;border-radius:12px" onerror="this.outerHTML='<span style=font-size:4rem>${prod.icon || '💧'}</span>'" />`;
+      iconEl.innerHTML = `<img src="${prod.image}" alt="${prod.name}" style="width:140px;height:140px;object-fit:contain;border-radius:12px" onerror="this.style.display='none'" />`;
     } else {
-      iconEl.textContent = prod.icon || '💧';
+      iconEl.textContent = prod.icon || '';
     }
   }
   document.getElementById('detail-name').textContent = prod.name;
+
+  const displayPrice = isWater && prod.price !== null ? getWaterTypeAdjustedPrice(prod.price) : prod.price;
   const priceEl = document.getElementById('detail-price');
-  if (priceEl) priceEl.textContent = prod.price !== null ? fmtMoney(prod.price) : 'Inquire for Pricing';
+  if (priceEl) priceEl.textContent = displayPrice !== null ? fmtMoney(displayPrice) : 'Inquire for Pricing';
   document.getElementById('detail-unit').textContent = prod.unit;
   document.getElementById('detail-desc').textContent = prod.description || '';
   document.getElementById('detail-extra').innerHTML = `
     Category: ${prod.category || 'Water'}<br>
-    ${prod.popular ? 'Popular item ⭐<br>' : ''}
-    BPA-free • pH balanced • Safe for all ages`;
+    ${prod.popular ? 'Popular item<br>' : ''}
+    BPA-free. pH balanced. Safe for all ages.`;
+
+  // Water type selector for water jug products
+  const wtSelectorEl = document.getElementById('detail-water-type-wrap');
+  if (wtSelectorEl) {
+    if (isWater) {
+      wtSelectorEl.style.display = 'block';
+      renderWaterTypeSelector('detail-water-type-selector');
+    } else {
+      wtSelectorEl.style.display = 'none';
+    }
+  }
+
   document.getElementById('detail-qty').textContent = 1;
   const subtotalEl = document.getElementById('detail-subtotal');
-  if (subtotalEl) subtotalEl.textContent = prod.price !== null ? fmtMoney(prod.price) : '';
+  if (subtotalEl) subtotalEl.textContent = displayPrice !== null ? fmtMoney(displayPrice) : '';
 
   const addBtn = document.getElementById('detail-add-btn');
   if (addBtn) {
@@ -650,7 +762,10 @@ function changeDetailQty(delta) {
   currentDetailQty = Math.max(1, currentDetailQty + delta);
   document.getElementById('detail-qty').textContent = currentDetailQty;
   const prod = Store.findById(WB.KEYS.products, currentDetailProductId);
-  if (prod) document.getElementById('detail-subtotal').textContent = fmtMoney(prod.price * currentDetailQty);
+  if (prod && prod.price !== null) {
+    const price = isWaterProduct(currentDetailProductId) ? getWaterTypeAdjustedPrice(prod.price) : prod.price;
+    document.getElementById('detail-subtotal').textContent = fmtMoney(price * currentDetailQty);
+  }
 }
 window.changeDetailQty = changeDetailQty;
 
@@ -658,7 +773,8 @@ function addFromDetail() {
   if (!currentDetailProductId) return;
   const prod = Store.findById(WB.KEYS.products, currentDetailProductId);
   if (!prod) return;
-  Cart.add(currentDetailProductId, currentDetailQty);
+  const priceOverride = isWaterProduct(currentDetailProductId) ? getWaterTypeAdjustedPrice(prod.price) : null;
+  Cart.add(currentDetailProductId, currentDetailQty, priceOverride);
   loadCartBadge();
   showCartToast(prod.name, currentDetailQty);
   closeProductDetail();
@@ -687,12 +803,13 @@ function openAddToCartModal(productId) {
   const atcIcon = document.getElementById('atc-icon');
   if (atcIcon) {
     if (prod.image) {
-      atcIcon.innerHTML = `<img src="${prod.image}" alt="${prod.name}" style="width:80px;height:80px;object-fit:contain;border-radius:8px" onerror="this.outerHTML='${prod.icon || '💧'}'" />`;
+      atcIcon.innerHTML = `<img src="${prod.image}" alt="${prod.name}" style="width:80px;height:80px;object-fit:contain;border-radius:8px" onerror="this.style.display='none'" />`;
     } else {
-      atcIcon.textContent = prod.icon || '💧';
+      atcIcon.textContent = prod.icon || '';
     }
   }
-  document.getElementById('atc-price').textContent = fmtMoney(prod.price) + ' each';
+  const displayPrice = isWaterProduct(productId) ? getWaterTypeAdjustedPrice(prod.price) : prod.price;
+  document.getElementById('atc-price').textContent = fmtMoney(displayPrice) + ' each';
   document.getElementById('atc-qty').textContent = 1;
   updateAtcButton(prod);
   Modal.open('add-to-cart-modal');
@@ -702,8 +819,9 @@ window.openAddToCartModal = openAddToCartModal;
 function updateAtcButton(prod) {
   if (!prod) prod = Store.findById(WB.KEYS.products, atcProductId);
   if (!prod) return;
+  const price = isWaterProduct(atcProductId) ? getWaterTypeAdjustedPrice(prod.price) : prod.price;
   const btn = document.getElementById('atc-confirm-btn');
-  if (btn) btn.textContent = `Add to Cart — ${fmtMoney(prod.price * atcQty)}`;
+  if (btn) btn.textContent = `Add to Cart: ${fmtMoney(price * atcQty)}`;
 }
 
 function changeAtcQty(delta) {
@@ -717,7 +835,8 @@ function confirmAddToCart() {
   if (!atcProductId) return;
   const prod = Store.findById(WB.KEYS.products, atcProductId);
   if (!prod) return;
-  Cart.add(atcProductId, atcQty);
+  const priceOverride = isWaterProduct(atcProductId) ? getWaterTypeAdjustedPrice(prod.price) : null;
+  Cart.add(atcProductId, atcQty, priceOverride);
   loadCartBadge();
   Modal.close('add-to-cart-modal');
   showCartToast(prod.name, atcQty);
@@ -792,7 +911,7 @@ function renderCart() {
   listEl.innerHTML = items.map(item => {
     const prod = products.find(p => p.id === item.productId) || {};
     return `<div class="cart-item">
-      <div class="cart-item-icon">${prod.icon || '💧'}</div>
+      <div class="cart-item-icon">${prod.icon || ''}</div>
       <div class="cart-item-body">
         <div class="cart-item-name">${item.productName}</div>
         <div class="cart-item-unit">${fmtMoney(item.price)} each</div>
@@ -873,7 +992,7 @@ function renderOrders() {
     const itemStr = order.items.map(i => `${i.qty}× ${i.productName}`).join(', ');
     const hasDriver = activeDriverStatuses.includes(order.status) && order.driverId;
     const contactBtn = hasDriver
-      ? `<button class="btn btn-secondary btn-sm" style="margin-top:10px;width:100%;background:rgba(0,212,255,.12);border:1px solid var(--cyan);color:var(--cyan)" onclick="event.stopPropagation();openChatScreen('${order.id}')">💬 Contact Driver</button>`
+      ? `<button class="btn btn-secondary btn-sm" style="margin-top:10px;width:100%;background:rgba(0,212,255,.12);border:1px solid var(--cyan);color:var(--cyan)" onclick="event.stopPropagation();openChatScreen('${order.id}')">Contact Driver</button>`
       : '';
     return `<div class="order-card" onclick="openOrderDetail('${order.id}')">
       <div class="order-card-head">
@@ -896,7 +1015,7 @@ function openOrderDetail(orderId) {
   const overlay = document.getElementById('order-detail-modal');
   if (!overlay) return;
 
-  const itemStr = order.items.map(i => `${i.qty}× ${i.productName} — ${fmtMoney(i.price * i.qty)}`).join('<br>');
+  const itemStr = order.items.map(i => `${i.qty}x ${i.productName}: ${fmtMoney(i.price * i.qty)}`).join('<br>');
   overlay.querySelector('.order-detail-body').innerHTML = `
     <div style="margin-bottom:14px">
       <div class="d-flex justify-between items-center"><span class="text-sm text-muted">Order ID</span><span class="mono text-xs" style="color:var(--cyan)">#${order.id.slice(-8).toUpperCase()}</span></div>
@@ -911,7 +1030,7 @@ function openOrderDetail(orderId) {
     <div class="cart-summary-row"><span>Delivery</span><span>${fmtMoney(order.deliveryFee)}</span></div>
     ${order.discount ? `<div class="cart-summary-row discount"><span>Discount</span><span>-${fmtMoney(order.discount)}</span></div>` : ''}
     <div class="cart-summary-row total"><span>Total</span><span>${fmtMoney(order.total)}</span></div>
-    ${order.status === 'delivered' && !order.rating ? `<button class="btn btn-secondary btn-full mt-16" onclick="rateOrder('${order.id}',5)">⭐ Rate this delivery</button>` : ''}`;
+    ${order.status === 'delivered' && !order.rating ? `<button class="btn btn-secondary btn-full mt-16" onclick="rateOrder('${order.id}',5)">Rate This Delivery</button>` : ''}`;
 
   Modal.open('order-detail-modal');
 }
@@ -1168,7 +1287,7 @@ function renderSavedCards() {
   listEl.innerHTML = cards.map((card, i) => `
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md)">
       <div style="display:flex;align-items:center;gap:12px">
-        <span style="font-size:1.5rem">💳</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--cyan)"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         <div>
           <div style="font-weight:600;font-size:.9375rem">${card.brand} ····${card.last4}</div>
           <div style="font-size:.8125rem;color:var(--white-40)">Expires ${card.expiry}</div>
@@ -1260,13 +1379,13 @@ function selectPlan(planId) {
     subscriptionProduct: productId,
     subscriptionFrequency: 'monthly',
     subscriptionQty: plan.jugs,
-    subscriptionDesc: `${plan.name} — ${plan.jugs} jugs/mo`,
+    subscriptionDesc: `${plan.name}: ${plan.jugs} jugs/mo`,
     subscriptionPlanId: planId,
     subscriptionPrice: plan.price,
   });
   currentCustomer = Store.findById(WB.KEYS.customers, currentCustomer.id);
   Notifs.push(currentCustomer.id, 'subscription', 'Subscription Started!', `You're now on the ${plan.name} plan. $${(plan.price/100).toFixed(0)}/mo.`);
-  Toast.success('Subscription Activated!', `${plan.name} — $${(plan.price/100).toFixed(0)}/mo`);
+  Toast.success('Subscription Activated!', `${plan.name}, $${(plan.price/100).toFixed(0)}/mo`);
   renderSubPlanScreen();
   renderSubscriptionCard();
 }
@@ -1388,6 +1507,272 @@ function doLogout() {
 }
 
 // ============================================================
+// WATER ORDER FLOW (Consolidated - Change 9)
+// ============================================================
+function openWaterOrderFlow() {
+  woStep = 1;
+  woQty = 2;
+  woSelectedDate = null;
+  woSelectedSlot = null;
+
+  const flow = document.getElementById('water-order-flow');
+  if (flow) { flow.style.display = 'flex'; flow.style.flexDirection = 'column'; }
+  document.body.style.overflow = 'hidden';
+  goToWoStep(1);
+}
+window.openWaterOrderFlow = openWaterOrderFlow;
+
+function closeWaterOrderFlow() {
+  const flow = document.getElementById('water-order-flow');
+  if (flow) flow.style.display = 'none';
+  document.body.style.overflow = '';
+}
+window.closeWaterOrderFlow = closeWaterOrderFlow;
+
+function goToWoStep(n) {
+  woStep = n;
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById('wo-step-' + i);
+    if (el) el.style.display = i === n ? 'flex' : 'none';
+    const dot = document.getElementById('wo-dot-' + i);
+    if (dot) {
+      dot.classList.remove('active','done');
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+  }
+  const backBtn = document.getElementById('wo-back-btn');
+  if (backBtn) backBtn.style.visibility = n > 1 && n < 3 ? 'visible' : 'hidden';
+
+  if (n === 1) {
+    renderWaterTypeSelector('wo-water-type-selector');
+    renderWoTypeSummary();
+  }
+  if (n === 2) buildWoCalendar();
+  if (n === 3) renderWoOrderSummary();
+}
+
+function renderWoTypeSummary() {
+  const el = document.getElementById('wo-selected-type-summary');
+  if (!el) return;
+  const wt = WATER_TYPES.find(t => t.id === selectedWaterType);
+  if (!wt) return;
+  const price = (750 + wt.priceAdjust) / 100;
+  el.innerHTML = `<span style="font-weight:600;color:var(--white-90)">${wt.name} Water</span> <span style="color:var(--white-50)">pH ${wt.ph}</span> <span style="font-family:var(--font-mono);color:var(--cyan);margin-left:8px">$${price.toFixed(2)}/jug</span>`;
+}
+
+function woNext() {
+  if (woStep === 1) {
+    renderWoTypeSummary();
+    goToWoStep(2);
+  } else if (woStep === 2) {
+    if (!woSelectedDate) { Toast.warning('Select a Date', 'Please choose a delivery date.'); return; }
+    if (!woSelectedSlot) { Toast.warning('Select a Time', 'Please choose a delivery window.'); return; }
+    const qtyInput = document.getElementById('wo-qty-input');
+    woQty = parseInt(qtyInput ? qtyInput.value : 2) || 2;
+    goToWoStep(3);
+  }
+}
+window.woNext = woNext;
+
+function woBack() {
+  if (woStep > 1 && woStep < 3) goToWoStep(woStep - 1);
+}
+window.woBack = woBack;
+
+function buildWoCalendar() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const monthLabel = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const labelEl = document.getElementById('wo-cal-month-label');
+  if (labelEl) labelEl.textContent = monthLabel;
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay  = new Date(year, month + 1, 0);
+  const grid     = document.getElementById('wo-cal-grid');
+  if (!grid) return;
+
+  let startOffset = firstDay.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let html = '';
+  for (let i = 0; i < startOffset; i++) html += '<div class="cal-day cal-day-empty"></div>';
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const date  = new Date(year, month, d);
+    const dow   = date.getDay();
+    const isSun = dow === 0;
+    const isPast = date < today;
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const blockedDates = Store.getList(WB.KEYS.blockedDates || 'wb_blocked_dates');
+    const isBlocked = blockedDates.includes(dateStr);
+    const isAvail = !isSun && !isPast && !isBlocked;
+    html += `<div class="cal-day ${isAvail ? 'cal-day-available' : 'cal-day-unavailable'}${woSelectedDate === dateStr ? ' selected' : ''}"
+      data-date="${dateStr}" ${isAvail ? `onclick="selectWoCalDay(this,'${dateStr}')"` : ''}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+
+  const woSlots = document.getElementById('wo-time-slots');
+  if (woSlots) woSlots.style.display = 'none';
+  woSelectedSlot = null;
+}
+
+function selectWoCalDay(el, dateStr) {
+  woSelectedDate = dateStr;
+  document.querySelectorAll('#wo-cal-grid .cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  const slotsEl = document.getElementById('wo-time-slots');
+  if (slotsEl) slotsEl.style.display = 'block';
+  document.querySelectorAll('.wo-time-slot').forEach(s => s.classList.remove('active'));
+  woSelectedSlot = null;
+  const dtDisplay = document.getElementById('wo-selected-dt-display');
+  if (dtDisplay) dtDisplay.style.display = 'none';
+}
+window.selectWoCalDay = selectWoCalDay;
+
+function selectWoTimeSlot(el, slot) {
+  woSelectedSlot = slot;
+  document.querySelectorAll('.wo-time-slot').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const slotLabels = { morning: 'Morning (8am to 12pm)', afternoon: 'Afternoon (12pm to 4pm)', evening: 'Evening (4pm to 6pm)' };
+  const date = new Date(woSelectedDate + 'T12:00:00');
+  const dateStr = date.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  const dtDisplay = document.getElementById('wo-selected-dt-display');
+  const dtText    = document.getElementById('wo-selected-dt-text');
+  if (dtDisplay) dtDisplay.style.display = 'flex';
+  if (dtText) dtText.textContent = dateStr + ', ' + slotLabels[slot];
+}
+window.selectWoTimeSlot = selectWoTimeSlot;
+
+function renderWoOrderSummary() {
+  const summaryEl = document.getElementById('wo-order-summary');
+  if (!summaryEl) return;
+  const wt = WATER_TYPES.find(t => t.id === selectedWaterType);
+  if (!wt) return;
+  const pricePerJug = (750 + wt.priceAdjust) / 100;
+  const qtyInput = document.getElementById('wo-qty-input');
+  const qty = parseInt(qtyInput ? qtyInput.value : woQty) || woQty;
+  const subtotal = pricePerJug * qty;
+  const delivery = currentCustomer ? getDeliveryFeeForCustomer() / 100 : 0;
+  const total = subtotal + delivery;
+
+  const slotLabels = { morning: '8am to 12pm', afternoon: '12pm to 4pm', evening: '4pm to 6pm' };
+  let dateDisplay = '';
+  if (woSelectedDate) {
+    const d = new Date(woSelectedDate + 'T12:00:00');
+    dateDisplay = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+    if (woSelectedSlot) dateDisplay += ', ' + slotLabels[woSelectedSlot];
+  }
+
+  summaryEl.innerHTML = `
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--blue-border)">
+      <span style="font-size:.875rem;color:var(--white-70)">Water Type</span>
+      <span style="font-weight:600;color:var(--white-90)">${wt.name} (pH ${wt.ph})</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:.875rem;color:var(--white-70)">Jugs</span>
+      <span style="font-weight:600;color:var(--white-90)">${qty} x $${pricePerJug.toFixed(2)}</span>
+    </div>
+    ${dateDisplay ? `<div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:.875rem;color:var(--white-70)">Delivery</span>
+      <span style="font-weight:600;color:var(--white-90);text-align:right;max-width:60%">${dateDisplay}</span>
+    </div>` : ''}
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:.875rem;color:var(--white-70)">Subtotal</span>
+      <span style="color:var(--white-90)">$${subtotal.toFixed(2)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:.875rem;color:var(--white-70)">Delivery fee</span>
+      <span style="color:${delivery === 0 ? 'var(--success)' : 'var(--white-90)'}">${delivery === 0 ? 'FREE' : '$' + delivery.toFixed(2)}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--blue-border);font-size:1.125rem;font-weight:800">
+      <span>Total</span>
+      <span style="color:var(--cyan);font-family:var(--font-mono)">$${total.toFixed(2)}</span>
+    </div>`;
+
+  const confirmBtn = document.getElementById('wo-confirm-btn');
+  if (confirmBtn) confirmBtn.textContent = `Place Order: $${total.toFixed(2)}`;
+}
+
+function confirmWaterOrder() {
+  if (!currentCustomer) return;
+  const wt = WATER_TYPES.find(t => t.id === selectedWaterType);
+  if (!wt) return;
+  const qtyInput = document.getElementById('wo-qty-input');
+  const qty = parseInt(qtyInput ? qtyInput.value : woQty) || woQty;
+  const pricePerJug = 750 + wt.priceAdjust;
+
+  const products = Store.getList(WB.KEYS.products);
+  const jugProduct = products.find(p => p.id === 'p_5g1');
+  if (!jugProduct) { Toast.error('Error', 'Product not found.'); return; }
+
+  const items = [{ productId: 'p_5g1', productName: `5-Gallon Water Jug (${wt.name})`, qty, price: pricePerJug }];
+  const deliveryFee = getDeliveryFeeForCustomer();
+  const subtotal = pricePerJug * qty;
+  const total = subtotal + deliveryFee;
+
+  const order = {
+    id: uid('ord_'),
+    customerId: currentCustomer.id,
+    items,
+    subtotal,
+    deliveryFee,
+    discount: 0,
+    total,
+    status: 'pending',
+    waterType: selectedWaterType,
+    deliveryDate: woSelectedDate,
+    deliverySlot: woSelectedSlot,
+    createdAt: Date.now(),
+  };
+
+  Store.push(WB.KEYS.orders, order);
+  Store.updateItem(WB.KEYS.customers, currentCustomer.id, {
+    totalOrders: (currentCustomer.totalOrders || 0) + 1,
+    totalSpent: (currentCustomer.totalSpent || 0) + total,
+  });
+  currentCustomer = Store.findById(WB.KEYS.customers, currentCustomer.id);
+  Notifs.push(currentCustomer.id, 'order_update', 'Order Confirmed', `Your ${wt.name} water delivery has been confirmed.`, order.id);
+
+  const idEl  = document.getElementById('wo-confirm-order-id');
+  const detEl = document.getElementById('wo-confirm-details');
+  const summaryEl = document.getElementById('wo-order-summary');
+  const confirmBtn = document.getElementById('wo-confirm-btn');
+  const postBtns = document.getElementById('wo-post-confirm-btns');
+
+  if (idEl)  { idEl.textContent = 'Order #' + order.id.slice(-8).toUpperCase(); idEl.style.display = 'block'; }
+  if (detEl) {
+    const slotLabels = { morning: '8am to 12pm', afternoon: '12pm to 4pm', evening: '4pm to 6pm' };
+    let dtStr = '';
+    if (woSelectedDate) {
+      const d = new Date(woSelectedDate + 'T12:00:00');
+      dtStr = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+      if (woSelectedSlot) dtStr += ', ' + slotLabels[woSelectedSlot];
+    }
+    detEl.innerHTML = `<strong>Water Type:</strong> ${wt.name} (pH ${wt.ph})<br>
+      <strong>Quantity:</strong> ${qty} jug${qty > 1 ? 's' : ''}<br>
+      <strong>Total:</strong> $${(total/100).toFixed(2)}<br>
+      ${dtStr ? `<strong>Delivery:</strong> ${dtStr}<br>` : ''}
+      <strong style="color:var(--success)">Order Confirmed.</strong> We will contact you to confirm your delivery window.`;
+    detEl.style.display = 'block';
+  }
+  if (summaryEl) summaryEl.style.display = 'none';
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  if (postBtns) postBtns.style.display = 'block';
+  loadCartBadge();
+}
+window.confirmWaterOrder = confirmWaterOrder;
+
+function woConfirmDone() {
+  closeWaterOrderFlow();
+  navigateTo('orders');
+}
+window.woConfirmDone = woConfirmDone;
+
+// ============================================================
 // CHECKOUT FLOW
 // ============================================================
 function initCheckoutFlow() {
@@ -1493,7 +1878,7 @@ function coBack() {
 }
 window.coBack = coBack;
 
-// Step 1 – Order Type
+// Step 1 - Order Type
 function selectOrderType(type) {
   coOrderType = type;
   document.getElementById('co-type-card-onetime')  ? null : null;
@@ -1533,7 +1918,7 @@ function selectCoFreq(btn, freq) {
 }
 window.selectCoFreq = selectCoFreq;
 
-// Step 2 – Calendar
+// Step 2 - Calendar
 function buildCalendar() {
   const now = new Date();
   const year  = now.getFullYear();
@@ -1600,18 +1985,18 @@ function selectTimeSlot(el, slot) {
   document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
 
-  const slotLabels = { morning: 'Morning (8am – 12pm)', afternoon: 'Afternoon (12 – 4pm)', evening: 'Evening (4 – 6pm)' };
+  const slotLabels = { morning: 'Morning (8am to 12pm)', afternoon: 'Afternoon (12pm to 4pm)', evening: 'Evening (4pm to 6pm)' };
   const date = new Date(coSelectedDate + 'T12:00:00');
   const dateStr = date.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
 
   const displayEl = document.getElementById('selected-dt-display');
   const textEl    = document.getElementById('selected-dt-text');
   if (displayEl) displayEl.style.display = 'flex';
-  if (textEl) textEl.textContent = dateStr + ' — ' + slotLabels[slot];
+  if (textEl) textEl.textContent = dateStr + ', ' + slotLabels[slot];
 }
 window.selectTimeSlot = selectTimeSlot;
 
-// Step 3 – Payment
+// Step 3 - Payment
 function updatePayBtn() {
   const termsOk = document.getElementById('terms-agree')?.checked;
   const payBtn  = document.getElementById('pay-btn');
@@ -1681,7 +2066,7 @@ function showOrderConfirmation(order) {
   const detEl  = document.getElementById('confirm-details');
   if (idEl)  idEl.textContent = '#' + order.id.slice(-8).toUpperCase();
   if (detEl) {
-    const slotLabels = { morning: '8am – 12pm', afternoon: '12 – 4pm', evening: '4 – 6pm' };
+    const slotLabels = { morning: '8am to 12pm', afternoon: '12pm to 4pm', evening: '4pm to 6pm' };
     const itemStr = order.items.map(i => `${i.qty}× ${i.productName}`).join(', ');
     let html = `<strong>Items:</strong> ${itemStr}<br>`;
     html += `<strong>Total:</strong> ${fmtMoney(order.total)}<br>`;
@@ -1717,19 +2102,19 @@ function triggerApplePay() {
   const label  = document.getElementById('face-id-label');
   const status = document.getElementById('face-id-status');
 
-  if (icon) icon.textContent  = '🔒';
+  if (icon) icon.textContent  = 'ID';
   if (label) label.textContent = 'Confirm with Face ID';
   if (status) status.textContent = 'Double-click to confirm';
 
   setTimeout(() => {
     if (!applePayActive) return;
-    if (icon) icon.textContent   = '😐';
-    if (status) status.textContent = 'Scanning…';
+    if (icon) icon.textContent   = '...';
+    if (status) status.textContent = 'Scanning';
   }, 700);
 
   setTimeout(() => {
     if (!applePayActive) return;
-    if (icon) icon.textContent   = '✅';
+    if (icon) icon.textContent   = 'OK';
     if (label) label.textContent  = 'Payment Confirmed!';
     if (status) status.textContent = '';
   }, 1700);
@@ -1878,12 +2263,12 @@ function seedDemoNotifications() {
   const allNotifs = Store.getList(WB.KEYS.notifications).filter(n => n.userId !== uid2);
 
   const demoNotifs = [
-    { id: uid('notif_'), userId: uid2, type: 'order_update', title: 'Order #WB-38291 Confirmed ✓', body: 'Your order has been confirmed and is being prepared for delivery.', read: false, createdAt: Date.now() - 900000, orderId: null },
-    { id: uid('notif_'), userId: uid2, type: 'subscription', title: 'Delivery Tomorrow: 12–4pm', body: 'Reminder: Your 4 bottles are scheduled for delivery tomorrow between 12pm and 4pm.', read: false, createdAt: Date.now() - 3600000, orderId: null },
-    { id: uid('notif_'), userId: uid2, type: 'order_update', title: '🚚 Driver on the Way!', body: 'Marcus is headed your way! Estimated arrival: 15 minutes. Get ready!', read: false, createdAt: Date.now() - 7200000, orderId: null },
-    { id: uid('notif_'), userId: uid2, type: 'order_update', title: 'Missed Delivery — Reschedule', body: 'We missed you! Your delivery was attempted today. Tap to reschedule at no charge.', read: true, createdAt: Date.now() - 86400000, orderId: null },
-    { id: uid('notif_'), userId: uid2, type: 'payment',      title: 'Payment Receipt — $42.97', body: 'Thank you! Your payment of $42.97 has been received for Order #WB-38291.', read: true, createdAt: Date.now() - 172800000, orderId: null },
-    { id: uid('notif_'), userId: uid2, type: 'promo',        title: '💧 Save 20% — Code COOL20', body: 'Summer special! Use code COOL20 for 20% off your next order. Expires soon!', read: true, createdAt: Date.now() - 259200000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'order_update', title: 'Order #WB-38291 Confirmed', body: 'Your order has been confirmed and is being prepared for delivery.', read: false, createdAt: Date.now() - 900000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'subscription', title: 'Delivery Tomorrow: 12pm to 4pm', body: 'Reminder: Your 4 bottles are scheduled for delivery tomorrow between 12pm and 4pm.', read: false, createdAt: Date.now() - 3600000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'order_update', title: 'Driver on the Way', body: 'Your driver is headed your way. Estimated arrival: 15 minutes.', read: false, createdAt: Date.now() - 7200000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'order_update', title: 'Missed Delivery: Reschedule', body: 'We missed you. Your delivery was attempted today. Tap to reschedule at no charge.', read: true, createdAt: Date.now() - 86400000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'payment',      title: 'Payment Receipt: $42.97', body: 'Thank you. Your payment of $42.97 has been received for Order #WB-38291.', read: true, createdAt: Date.now() - 172800000, orderId: null },
+    { id: uid('notif_'), userId: uid2, type: 'promo',        title: 'Save 20% with Code COOL20', body: 'Summer special. Use code COOL20 for 20% off your next order. Expires soon.', read: true, createdAt: Date.now() - 259200000, orderId: null },
   ];
 
   Store.set(WB.KEYS.notifications, [...allNotifs, ...demoNotifs]);
@@ -2021,7 +2406,7 @@ function openPlanDetail(planId) {
   const actionHtml = plan.id === 'business'
     ? `<a href="tel:9166193218" class="btn btn-primary btn-full btn-lg" style="margin-top:20px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
-         Contact Us — (916) 619-3218
+         Contact Us: (916) 619-3218
        </a>`
     : isCurrent
     ? `<div style="margin-top:20px;padding:12px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-md);text-align:center">
@@ -2260,7 +2645,7 @@ function renderRfOrderSummary() {
   const rfPayBtn = document.getElementById('rf-pay-btn');
   if (rfPayBtn) {
     rfPayBtn.disabled = false;
-    rfPayBtn.textContent = `Start Rental — Pay ${fmtMoney(tier.price)}`;
+    rfPayBtn.textContent = `Start Rental: Pay ${fmtMoney(tier.price)}`;
   }
 }
 
@@ -2383,7 +2768,7 @@ function renderAcctRentals() {
 
   const rentals = Store.getList(WB.KEYS.rentals).filter(r => r.customerId === currentCustomer.id);
   if (!rentals.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🚰</div><div class="empty-state-title">No active rentals</div><div class="empty-state-sub">Rent a dispenser to see it here.</div></div>
+    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon" style="font-size:2rem;color:var(--cyan)">W</div><div class="empty-state-title">No active rentals</div><div class="empty-state-sub">Rent a dispenser to see it here.</div></div>
       <button class="btn btn-primary btn-full" style="margin-top:16px" onclick="closeSubScreen('acct-rentals');navigateTo('rentals')">Browse Dispensers</button>`;
     return;
   }

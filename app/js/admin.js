@@ -1,5 +1,5 @@
 /* ============================================================
-   WATERBOY APP — ADMIN DASHBOARD LOGIC
+   WATERBOY APP - ADMIN DASHBOARD LOGIC
    ============================================================ */
 
 'use strict';
@@ -324,7 +324,7 @@ function openCancelOrderModal(orderId) {
   if (!order) return;
   document.getElementById('cancel-order-id').value = orderId;
   document.getElementById('cancel-order-summary').innerHTML =
-    `<strong>#${order.id.slice(-8).toUpperCase()}</strong> — ${order.customerName} — ${fmtMoney(order.total)}`;
+    `<strong>#${order.id.slice(-8).toUpperCase()}</strong>: ${order.customerName} (${fmtMoney(order.total)})`;
   Modal.open('cancel-order-modal');
 }
 window.openCancelOrderModal = openCancelOrderModal;
@@ -667,7 +667,7 @@ function openProductModal(productId) {
     if (descEl)  descEl.value = '';
     if (priceEl) priceEl.value = '';
     if (unitEl)  unitEl.value  = 'per bottle';
-    if (iconEl)  iconEl.value  = '💧';
+    if (iconEl)  iconEl.value  = '';
     if (catEl)   catEl.value   = 'delivery';
     if (popEl)   popEl.checked = false;
   }
@@ -695,7 +695,7 @@ function saveProduct() {
   if (id) {
     const updated = Store.updateItem(WB.KEYS.products, id, { name, description: desc, price: priceCents, unit, icon, category: cat, popular: pop, inquire });
     console.log('[Admin] Product saved to localStorage:', updated);
-    Toast.success('Product Updated', `${name} saved — ${price !== null ? '$' + price.toFixed(2) : 'Inquire'}.`);
+    Toast.success('Product Updated', `${name} saved (${price !== null ? '$' + price.toFixed(2) : 'Inquire'}).`);
   } else {
     const newProd = {
       id: uid('prod_'),
@@ -763,7 +763,7 @@ function renderDriversPage() {
         <div class="driver-card-avatar">${d.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
         <div style="flex:1;min-width:0">
           <div class="driver-card-name">${d.name}</div>
-          <div class="driver-card-zone" style="font-size:.75rem;color:var(--white-40)">${d.phone || '—'}</div>
+          <div class="driver-card-zone" style="font-size:.75rem;color:var(--white-40)">${d.phone || ''}</div>
         </div>
         <span class="badge ${statusBadge}" style="margin-left:auto;flex-shrink:0">${statusLbl}</span>
       </div>
@@ -792,7 +792,7 @@ function openDriverDetailModal(drvId) {
   const allDelivered   = Orders.getAll().filter(o => o.driverId === drvId && o.status === 'delivered');
   const todayRoute     = Orders.getForDriver(drvId);
   const completionRate = d.deliveriesTotal ? Math.min(100, Math.round((allDelivered.length / d.deliveriesTotal) * 100)) : 0;
-  const hireDate       = d.hireDate ? new Date(d.hireDate).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : (d.joinedAt ? fmtDate(d.joinedAt) : '—');
+  const hireDate       = d.hireDate ? new Date(d.hireDate).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : (d.joinedAt ? fmtDate(d.joinedAt) : '');
   const empId          = d.employeeId || d.id.slice(-8).toUpperCase();
   const statusLbl      = empStatusLabel(d.status);
   const statusBadge    = empStatusBadge(d.status);
@@ -802,7 +802,7 @@ function openDriverDetailModal(drvId) {
       <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#16A34A,var(--success));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem;color:#fff">${d.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:1.125rem;font-weight:700">${d.name}</div>
-        <div style="font-size:.875rem;color:var(--white-40)">${d.email || '—'} · ${d.phone || '—'}</div>
+        <div style="font-size:.875rem;color:var(--white-40)">${d.email || ''} · ${d.phone || ''}</div>
         <div style="font-size:.8125rem;color:var(--cyan);font-family:var(--font-mono);margin-top:3px">ID: ${empId} · Hired ${hireDate}</div>
       </div>
       <span class="badge ${statusBadge}">${statusLbl}</span>
@@ -926,7 +926,7 @@ function renderInventoryPage() {
       banner.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:14px 20px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-md);margin-bottom:16px">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" style="width:20px;height:20px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <div>
-          <div style="font-weight:700;color:var(--danger);font-size:.875rem">Low Stock Alert — ${lowItems.length} item${lowItems.length>1?'s':''} at or below reorder level</div>
+          <div style="font-weight:700;color:var(--danger);font-size:.875rem">Low Stock Alert: ${lowItems.length} item${lowItems.length>1?'s':''} at or below reorder level</div>
           <div style="font-size:.8125rem;color:var(--white-70)">${lowItems.map(i=>i.label).join(' · ')}</div>
         </div>
       </div>`;
@@ -941,7 +941,7 @@ function renderInventoryPage() {
     const isLow  = item.qty <= item.lowAt * 2 && item.qty > item.lowAt;
     const isCrit = item.qty <= item.lowAt;
     return `<div class="inventory-card ${isCrit ? 'critical' : isLow ? 'low-stock' : ''}">
-      <div class="inventory-icon">${prod?.icon || '📦'}</div>
+      <div class="inventory-icon">${prod?.icon || ''}</div>
       <div class="inventory-body">
         <div class="inventory-name">${item.label}</div>
         <div style="display:flex;align-items:baseline;gap:6px">
@@ -974,7 +974,7 @@ function renderStockHistoryLog() {
     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--blue-border)">
       <div>
         <div style="font-size:.875rem;font-weight:600">${entry.label}</div>
-        <div style="font-size:.75rem;color:var(--white-40)">${entry.reason || '—'}</div>
+        <div style="font-size:.75rem;color:var(--white-40)">${entry.reason || ''}</div>
       </div>
       <div style="text-align:right">
         <div style="font-family:var(--font-mono);font-size:.875rem;color:${entry.delta > 0 ? 'var(--success)' : 'var(--danger)'}">${entry.delta > 0 ? '+' : ''}${entry.delta}</div>
@@ -987,7 +987,7 @@ function openUpdateStockModal(invId) {
   const item = Store.findById(WB.KEYS.inventory, invId);
   if (!item) return;
   document.getElementById('update-stock-inv-id').value = invId;
-  document.getElementById('update-stock-title').textContent = `Update Stock — ${item.label}`;
+  document.getElementById('update-stock-title').textContent = `Update Stock: ${item.label}`;
   document.getElementById('update-stock-qty').value = '';
   document.getElementById('update-stock-reason').value = '';
   document.getElementById('update-stock-type').value = 'add';
@@ -1587,7 +1587,7 @@ function renderRoutesPage() {
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <select class="form-select" style="flex:1;font-size:.8125rem" id="add-stop-select-${drv.id}">
           <option value="">Add unassigned stop…</option>
-          ${allOrders.filter(o => !o.driverId).map(o => `<option value="${o.id}">#${o.id.slice(-6).toUpperCase()} — ${o.customerName}</option>`).join('')}
+          ${allOrders.filter(o => !o.driverId).map(o => `<option value="${o.id}">#${o.id.slice(-6).toUpperCase()}: ${o.customerName}</option>`).join('')}
         </select>
         <button class="btn btn-sm btn-secondary" onclick="addStopToRoute('${drv.id}')">Add Stop</button>
       </div>
@@ -1637,9 +1637,9 @@ window.optimizeRoutes = optimizeRoutes;
 
 function printRouteSheet() {
   const drivers = Store.getList(WB.KEYS.drivers).filter(d => d.status === 'active');
-  let html = `<html><head><title>Route Sheet — ${currentRouteDate}</title>
+  let html = `<html><head><title>Route Sheet: ${currentRouteDate}</title>
     <style>body{font-family:sans-serif;padding:20px}h2{margin-bottom:4px}table{width:100%;border-collapse:collapse;margin-bottom:24px}th,td{border:1px solid #ccc;padding:8px;font-size:12px}th{background:#f0f0f0}</style></head><body>
-    <h1>Waterboy Delivery — Route Sheet</h1><p>${new Date(currentRouteDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>`;
+    <h1>Waterboy Delivery Route Sheet</h1><p>${new Date(currentRouteDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>`;
   drivers.forEach(d => {
     const route = Orders.getAll().filter(o => o.driverId === d.id && !['delivered','cancelled'].includes(o.status)).sort((a,b)=>(a.routeOrder||99)-(b.routeOrder||99));
     html += `<h2>${d.name}</h2><p>${d.vehicle} · ${d.plate}</p>
@@ -1750,7 +1750,7 @@ function openRefundModal(orderId) {
   if (!order) return;
   document.getElementById('refund-order-id').value = orderId;
   document.getElementById('refund-order-summary').innerHTML =
-    `<strong>#${order.id.slice(-8).toUpperCase()}</strong> — ${order.customerName}<br>Total: ${fmtMoney(order.total)}`;
+    `<strong>#${order.id.slice(-8).toUpperCase()}</strong>: ${order.customerName}<br>Total: ${fmtMoney(order.total)}`;
   document.getElementById('refund-amount').value = (order.total / 100).toFixed(2);
   document.getElementById('refund-notes').value = '';
   Modal.open('refund-modal');
@@ -1859,7 +1859,7 @@ function renderBlockCalendar() {
     const isPast = date < now && !isSameDay(date, now);
     const cls = isSun ? 'block-cal-day sunday' : isBlocked ? 'block-cal-day blocked' : 'block-cal-day available';
     const onclick = (!isSun && !isPast) ? `onclick="toggleBlockedDate('${iso}')"` : '';
-    html += `<div class="${cls}${isPast?' past':''}" ${onclick} title="${iso}${isBlocked?' — Blocked':''}">${d}</div>`;
+    html += `<div class="${cls}${isPast?' past':''}" ${onclick} title="${iso}${isBlocked?' (Blocked)':''}">${d}</div>`;
   }
 
   el.innerHTML = html;
@@ -2010,7 +2010,7 @@ function renderRentalsPage() {
   }
 
   tbody.innerHTML = rentals.map(r => {
-    const endDate = r.endDate ? new Date(r.endDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    const endDate = r.endDate ? new Date(r.endDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
     const isExpiring = r.status === 'active' && r.endDate && r.endDate - now < 14 * 24 * 60 * 60 * 1000;
     const statusBadge = r.status === 'active'
       ? (isExpiring ? '<span class="badge" style="background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)">Expiring Soon</span>' : '<span class="badge badge-green">Active</span>')
@@ -2025,7 +2025,7 @@ function renderRentalsPage() {
       <td>
         ${r.status === 'active' ? `
         <button class="btn btn-secondary btn-sm" onclick="adminExtendRental('${r.id}')">Extend</button>
-        <button class="btn btn-sm" style="background:rgba(239,68,68,.1);color:var(--danger);border:1px solid rgba(239,68,68,.25);margin-left:4px" onclick="adminTerminateRental('${r.id}')">End</button>` : '—'}
+        <button class="btn btn-sm" style="background:rgba(239,68,68,.1);color:var(--danger);border:1px solid rgba(239,68,68,.25);margin-left:4px" onclick="adminTerminateRental('${r.id}')">End</button>` : ''}
       </td>
     </tr>`;
   }).join('');
