@@ -14,6 +14,28 @@
   <link rel="icon" href="Drop.PNG" type="image/png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/customer.css" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
   <style>
     @keyframes typingDot {
       0%, 60%, 100% { transform: translateY(0); opacity: .4; }
@@ -60,6 +82,15 @@
     </div>
     <p style="text-align:center;margin-top:16px;font-size:.8125rem;color:var(--white-40)">No account? <a href="#" id="goto-signup-btn" style="color:var(--cyan)">Create Account</a></p>
     <p style="text-align:center;margin-top:8px;font-size:.8125rem;color:var(--white-40)"><a href="index.html">← Back to Portal</a></p>
+    <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--blue-border)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;font-size:.75rem">
+        <a href="privacy.html" style="color:var(--white-40);text-decoration:none">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--white-40);text-decoration:none">Terms of Service</a>
+        <a href="refund.html" style="color:var(--white-40);text-decoration:none">Refund Policy</a>
+        <a href="rental-agreement.html" style="color:var(--white-40);text-decoration:none">Rental Agreement</a>
+      </div>
+      <div style="font-size:.75rem;color:var(--white-30);margin-top:8px">&copy; 2026 Waterboy Delivery &nbsp;|&nbsp; <a href="tel:+19166193218" style="color:var(--cyan);text-decoration:none">(916) 619-3218</a></div>
+    </div>
   </div>
 </div>
 
@@ -305,7 +336,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span style="font-size:.875rem;color:var(--cyan);line-height:1.4">7119 Elk Grove Blvd<br><span style="color:var(--white-40)">Elk Grove, CA 95758</span></span>
         </a>
-        <a href="tel:9166193218" class="btn btn-primary btn-full btn-lg" style="margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+        <a href="tel:+19166193218" class="btn btn-primary btn-full btn-lg" style="margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
           Call Us: (916) 619-3218
         </a>
@@ -318,6 +349,107 @@
           <div style="display:flex;justify-content:space-between;font-size:.8125rem">
             <span style="color:var(--white-70)">Sunday</span>
             <span style="color:var(--white-90);font-weight:600">9:00 AM to 6:00 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- How the Bottle Program Works -->
+      <div class="section-head"><span class="section-head-title">How the Bottle Program Works</span></div>
+      <div style="margin:0 20px 20px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-lg);padding:20px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:18px;height:18px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9375rem;margin-bottom:4px">We bring fresh jugs to you</div>
+              <div style="font-size:.8125rem;color:var(--white-40);line-height:1.6">Order 3-gallon or 5-gallon jugs and we deliver to your door on your schedule.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:18px;height:18px"><path d="M9 2h6v3l2 3v12a2 2 0 01-2 2H9a2 2 0 01-2-2V8l2-3V2z"/><line x1="7" y1="11" x2="17" y2="11"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9375rem;margin-bottom:4px">Leave empties out, we do the rest</div>
+              <div style="font-size:.8125rem;color:var(--white-40);line-height:1.6">On your next delivery, your driver picks up empty jugs from your previous order at no charge.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(0,212,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:18px;height:18px"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9375rem;margin-bottom:4px">Bottle deposit refunded when returned</div>
+              <div style="font-size:.8125rem;color:var(--white-40);line-height:1.6">A small deposit of <strong style="color:var(--white-70)">[DEPOSIT AMOUNT - OWNER TO FILL IN]</strong> per jug is held and fully refunded when bottles come back in good condition.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water You Can Trust -->
+      <div class="section-head"><span class="section-head-title">Water You Can Trust</span></div>
+      <div style="margin:0 20px 20px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-lg);padding:20px">
+        <div style="font-size:.875rem;color:var(--white-50);line-height:1.7;margin-bottom:16px"><strong style="color:var(--white-90)">[WATER SOURCE - OWNER TO FILL IN]</strong> Every jug we deliver is purified through a multi-stage filtration process. Our water is tested regularly so you know exactly what you are drinking.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="padding:12px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);text-align:center">
+            <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:6px">Filtration</div>
+            <div style="font-size:.875rem;color:var(--white-80);font-weight:600">[PROCESS - OWNER TO FILL IN]</div>
+          </div>
+          <div style="padding:12px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);text-align:center">
+            <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:6px">Source</div>
+            <div style="font-size:.875rem;color:var(--white-80);font-weight:600">[SOURCE - OWNER TO FILL IN]</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Hours -->
+      <div class="section-head"><span class="section-head-title">Delivery Schedule</span></div>
+      <div style="margin:0 20px 20px;background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-lg);padding:20px">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:.875rem">
+            <span style="color:var(--white-60)">Delivery Days</span>
+            <span style="font-weight:600;color:var(--white-90)">Monday to Saturday</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.875rem">
+            <span style="color:var(--white-60)">Order Cutoff</span>
+            <span style="font-weight:600;color:var(--white-90)">[CUTOFF TIME - OWNER TO FILL IN]</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.875rem">
+            <span style="color:var(--white-60)">Sunday</span>
+            <span style="font-weight:600;color:var(--danger)">No Delivery</span>
+          </div>
+        </div>
+        <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:10px">Delivery Windows</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="padding:10px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);text-align:center">
+            <div style="font-size:.8125rem;font-weight:700;color:var(--white-80)">Morning</div>
+            <div style="font-size:.75rem;color:var(--white-40);margin-top:3px">8am to 12pm</div>
+          </div>
+          <div style="padding:10px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);text-align:center">
+            <div style="font-size:.8125rem;font-weight:700;color:var(--white-80)">Afternoon</div>
+            <div style="font-size:.75rem;color:var(--white-40);margin-top:3px">12pm to 4pm</div>
+          </div>
+          <div style="padding:10px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);text-align:center">
+            <div style="font-size:.8125rem;font-weight:700;color:var(--white-80)">Evening</div>
+            <div style="font-size:.75rem;color:var(--white-40);margin-top:3px">4pm to 6pm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Satisfaction Guarantee -->
+      <div style="margin:0 20px 20px;background:linear-gradient(135deg,rgba(0,212,255,0.07) 0%,var(--blue-card) 100%);border:1px solid rgba(0,212,255,0.2);border-radius:var(--radius-lg);padding:20px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:20px;height:20px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div style="font-family:var(--font-head);font-size:1rem;font-weight:800;color:var(--white-90);margin-bottom:6px">We Stand Behind Every Delivery</div>
+            <div style="font-size:.8125rem;color:var(--white-50);line-height:1.7">If anything is wrong with your order, contact us and we will make it right. Our goal is your complete satisfaction, no hassle required.</div>
+            <a href="tel:+19166193218" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.8125rem;font-weight:600;color:var(--cyan);text-decoration:none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
+              (916) 619-3218
+            </a>
           </div>
         </div>
       </div>
@@ -697,14 +829,14 @@
         <div class="settings-row-label">Terms of Service</div>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;color:var(--white-40)"><path d="M9 18l6-6-6-6"/></svg>
       </div>
-      <div class="settings-row" style="cursor:pointer">
+      <div class="settings-row" onclick="window.open('privacy.html','_blank')" style="cursor:pointer">
         <div class="settings-row-label">Privacy Policy</div>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;color:var(--white-40)"><path d="M9 18l6-6-6-6"/></svg>
       </div>
       <!-- Help -->
       <div class="settings-section-head">Help &amp; Support</div>
       <div class="settings-row">
-        <div><div class="settings-row-label">Phone</div><a href="tel:9166193218" style="font-size:.8125rem;color:var(--cyan)">(916) 619-3218</a></div>
+        <div><div class="settings-row-label">Phone</div><a href="tel:+19166193218" style="font-size:.8125rem;color:var(--cyan)">(916) 619-3218</a></div>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--white-40)"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
       </div>
       <div class="settings-row">
@@ -1065,7 +1197,13 @@
     <div id="co-step-payment" class="co-step-content" style="display:none">
       <div class="co-step-inner">
         <h2 class="co-step-title">Payment</h2>
-        <div id="co-order-total-display" style="font-family:var(--font-mono);font-size:1.5rem;font-weight:800;color:var(--cyan);text-align:center;margin:12px 0 20px"></div>
+        <div id="co-order-total-display" style="font-family:var(--font-mono);font-size:1.5rem;font-weight:800;color:var(--cyan);text-align:center;margin:12px 0 16px"></div>
+
+        <!-- Promo Code -->
+        <div style="display:flex;gap:8px;margin-bottom:20px">
+          <input id="co-promo-input" type="text" class="form-input" placeholder="Promo code" style="flex:1;text-transform:uppercase" />
+          <button id="co-apply-promo-btn" class="btn btn-secondary" onclick="applyCheckoutPromo()">Apply</button>
+        </div>
 
         <!-- Digital Wallets -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
@@ -1094,6 +1232,22 @@
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.875rem;color:var(--white-70)">
             <input type="checkbox" id="save-card" style="width:16px;height:16px;accent-color:var(--cyan)"> Save card for future orders
           </label>
+        </div>
+
+        <!-- Trust Badges -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:20px;padding:12px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-md)">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:20px;height:20px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <span style="font-size:.6875rem;color:var(--white-50);font-weight:600;line-height:1.3">Secure Checkout</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:20px;height:20px"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="font-size:.6875rem;color:var(--white-50);font-weight:600;line-height:1.3">Satisfaction Guaranteed</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="width:20px;height:20px"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <span style="font-size:.6875rem;color:var(--white-50);font-weight:600;line-height:1.3">Cancel Anytime</span>
+          </div>
         </div>
 
         <div style="margin-top:16px">
@@ -1280,10 +1434,21 @@
         <div style="font-size:.8125rem;font-weight:600;margin-bottom:8px">Service ZIPs</div>
         <div style="font-size:.8125rem;color:var(--white-40);line-height:1.8">95624 • 95757 • 95758 • 95759 • 95626</div>
       </div>
-      <div style="text-align:center;padding:14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-md)">
-        <div style="font-size:.875rem;color:var(--warning);font-weight:600;margin-bottom:6px">Not in our zone?</div>
-        <a href="tel:9166193218" style="color:var(--cyan);font-size:.875rem">(916) 619-3218</a>
-        <span style="color:var(--white-40);font-size:.875rem"> to contact us.</span>
+      <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-md);padding:16px">
+        <div style="font-size:.875rem;color:var(--warning);font-weight:600;margin-bottom:10px">Not in our zone yet?</div>
+        <div id="zone-waitlist-form">
+          <div style="font-size:.8125rem;color:var(--white-50);margin-bottom:12px;line-height:1.5">Join our waitlist and we will contact you when we expand to your area.</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <input id="wl-name" type="text" class="form-input" placeholder="Your name" style="font-size:.875rem" />
+            <input id="wl-email" type="email" class="form-input" placeholder="Email address" style="font-size:.875rem" />
+            <button class="btn btn-primary btn-full" onclick="submitWaitlist()" style="font-size:.875rem">Join Waitlist</button>
+          </div>
+          <div style="text-align:center;margin-top:10px;font-size:.8125rem;color:var(--white-40)">Or call us: <a href="tel:+19166193218" style="color:var(--cyan)">(916) 619-3218</a></div>
+        </div>
+        <div id="zone-waitlist-success" style="display:none;text-align:center;padding:8px 0">
+          <div style="font-size:.9375rem;font-weight:700;color:var(--success);margin-bottom:6px">You are on the list!</div>
+          <div style="font-size:.8125rem;color:var(--white-50)">We will reach out when we deliver to your area.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1440,7 +1605,7 @@
     <div class="modal-body" style="text-align:center;padding:24px">
       <div id="inquire-product-name" style="font-weight:700;font-size:1rem;margin-bottom:8px"></div>
       <div style="font-size:.875rem;color:var(--white-50);margin-bottom:24px;line-height:1.6">This product is available by inquiry. Contact us for pricing and availability.</div>
-      <a href="tel:9166193218" class="btn btn-primary btn-full btn-lg" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:10px">
+      <a href="tel:+19166193218" class="btn btn-primary btn-full btn-lg" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:10px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
         Call (916) 619-3218
       </a>
@@ -1452,6 +1617,7 @@
   </div>
 </div>
 
+<script src="js/consent.js"></script>
 <script src="js/global.js"></script>
 <script src="js/customer.js"></script>
 <script>

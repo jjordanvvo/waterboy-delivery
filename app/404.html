@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found - Waterboy Delivery</title>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="css/global.css" />
+
+  <!-- Google Analytics - replace GA_MEASUREMENT_ID with your actual ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+
+  <!-- Facebook Pixel - replace PIXEL_ID with your actual Pixel ID -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,212,255,0.07) 0%, transparent 70%), var(--blue-deep);
+    }
+    .notfound-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .notfound-code {
+      font-family: var(--font-mono);
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--cyan);
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0.25;
+      letter-spacing: -0.04em;
+    }
+    .notfound-logo {
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 20px rgba(0,212,255,0.5));
+    }
+    .notfound-title {
+      font-family: var(--font-head);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--white-90);
+      margin-bottom: 10px;
+    }
+    .notfound-body {
+      font-size: .9375rem;
+      color: var(--white-50);
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 32px;
+    }
+    .notfound-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+    }
+    .notfound-footer {
+      padding: 20px 24px;
+      text-align: center;
+      font-size: .8125rem;
+      color: var(--white-40);
+      border-top: 1px solid var(--blue-border);
+    }
+    .notfound-footer a { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+<div class="notfound-wrap">
+  <div class="notfound-code">404</div>
+
+  <svg class="notfound-logo" width="72" height="72" viewBox="0 0 56 56">
+    <path d="M28 4C28 4 10 22 10 34a18 18 0 0036 0C46 22 28 4 28 4z" fill="#00D4FF"/>
+  </svg>
+
+  <h1 class="notfound-title">Page Not Found</h1>
+  <p class="notfound-body">The page you are looking for does not exist or may have been moved. Use the button below to get back on track, or call us if you need help.</p>
+
+  <div class="notfound-actions">
+    <a href="index.html" class="btn btn-primary btn-lg btn-full">Back to Home</a>
+    <a href="tel:+19166193218" class="btn btn-secondary btn-full" style="text-decoration:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
+      (916) 619-3218
+    </a>
+  </div>
+</div>
+
+<footer class="notfound-footer">
+  <div>
+    <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp;
+    <a href="refund.html">Refund Policy</a>
+  </div>
+  <div style="margin-top:8px">&copy; 2026 Waterboy Delivery &nbsp;|&nbsp; 7119 Elk Grove Blvd, Elk Grove, CA 95758</div>
+</footer>
+
+<script src="js/consent.js"></script>
+</body>
+</html>

@@ -105,11 +105,33 @@ function initLogin() {
     const email    = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
     errEl.textContent = '';
-    const cust = Auth.login('customer', email, password);
-    if (!cust) { errEl.textContent = 'Invalid email or password.'; return; }
-    currentUser = Auth.current();
-    loadCustomer(cust.id);
-    showApp();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      document.getElementById('login-email').focus();
+      return;
+    }
+    if (!password) {
+      errEl.textContent = 'Please enter your password.';
+      document.getElementById('login-password').focus();
+      return;
+    }
+
+    const submitBtn = form.querySelector('[type="submit"]');
+    const origText  = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing in…'; }
+
+    setTimeout(() => {
+      const cust = Auth.login('customer', email, password);
+      if (!cust) {
+        errEl.textContent = 'Invalid email or password.';
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = origText; }
+        return;
+      }
+      currentUser = Auth.current();
+      loadCustomer(cust.id);
+      showApp();
+    }, 400);
   });
 
   if (demoBtn) {
@@ -199,12 +221,15 @@ function handleSignup() {
   const notes    = document.getElementById('su-notes').value.trim();
   const location = document.getElementById('su-location').value;
 
-  if (!name || !email || !phone || !password || !street || !city || !state || !zip || !location) {
-    errEl.textContent = 'Please fill in all required fields.';
-    return;
-  }
-  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
-  if (!/^\d{5}$/.test(zip)) { errEl.textContent = 'Please enter a valid 5-digit ZIP code.'; return; }
+  if (!name) { errEl.textContent = 'Full name is required.'; document.getElementById('su-name').focus(); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = 'Please enter a valid email address.'; document.getElementById('su-email').focus(); return; }
+  if (!phone || phone.replace(/\D/g,'').length < 10) { errEl.textContent = 'Please enter a valid 10-digit phone number.'; document.getElementById('su-phone').focus(); return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; document.getElementById('su-password').focus(); return; }
+  if (!street) { errEl.textContent = 'Street address is required.'; document.getElementById('su-street').focus(); return; }
+  if (!city) { errEl.textContent = 'City is required.'; document.getElementById('su-city').focus(); return; }
+  if (!state) { errEl.textContent = 'State is required.'; document.getElementById('su-state').focus(); return; }
+  if (!/^\d{5}$/.test(zip)) { errEl.textContent = 'Please enter a valid 5-digit ZIP code.'; document.getElementById('su-zip').focus(); return; }
+  if (!location) { errEl.textContent = 'Please select a preferred delivery location.'; document.getElementById('su-location').focus(); return; }
 
   const existing = Store.getList(WB.KEYS.customers).find(c => c.email === email);
   if (existing) { errEl.textContent = 'An account with that email already exists.'; return; }
@@ -398,9 +423,36 @@ function openWeatherModal() {
 window.openWeatherModal = openWeatherModal;
 
 function openZoneModal() {
+  const form    = document.getElementById('zone-waitlist-form');
+  const success = document.getElementById('zone-waitlist-success');
+  if (form)    form.style.display    = 'block';
+  if (success) success.style.display = 'none';
+  const nameEl  = document.getElementById('wl-name');
+  const emailEl = document.getElementById('wl-email');
+  if (nameEl)  nameEl.value  = '';
+  if (emailEl) emailEl.value = '';
   Modal.open('zone-modal');
 }
 window.openZoneModal = openZoneModal;
+
+function submitWaitlist() {
+  const name  = document.getElementById('wl-name')?.value.trim();
+  const email = document.getElementById('wl-email')?.value.trim();
+  if (!name || !email) { Toast.error('Required', 'Please enter your name and email.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { Toast.error('Invalid Email', 'Please enter a valid email address.'); return; }
+
+  const waitlist = JSON.parse(localStorage.getItem('wb_waitlist') || '[]');
+  waitlist.push({ name, email, ts: Date.now() });
+  localStorage.setItem('wb_waitlist', JSON.stringify(waitlist));
+
+  try { fbq('track', 'Lead'); } catch(e) {}
+
+  const form    = document.getElementById('zone-waitlist-form');
+  const success = document.getElementById('zone-waitlist-success');
+  if (form)    form.style.display    = 'none';
+  if (success) success.style.display = 'block';
+}
+window.submitWaitlist = submitWaitlist;
 
 function renderHydrationCard() {
   const pct = Math.round((hydrationGlasses / HYDRATION_GOAL) * 100);
@@ -1812,6 +1864,8 @@ function openCheckoutFlow() {
   goToCoStep(1);
   selectOrderType('onetime');
   updateCoTotal();
+
+  try { fbq('track', 'Lead'); } catch(e) {}
 }
 window.openCheckoutFlow = openCheckoutFlow;
 
@@ -2012,14 +2066,30 @@ window.updatePayBtn = updatePayBtn;
 
 function processPayment() {
   const cardNum  = document.getElementById('card-number')?.value.replace(/\s/g,'');
-  const cardExp  = document.getElementById('card-expiry')?.value;
-  const cardCvv  = document.getElementById('card-cvv')?.value;
+  const cardExp  = document.getElementById('card-expiry')?.value.trim();
+  const cardCvv  = document.getElementById('card-cvv')?.value.trim();
   const cardName = document.getElementById('card-name')?.value.trim();
 
-  if (!cardNum || cardNum.length < 13) { Toast.error('Invalid Card', 'Please enter a valid card number.'); return; }
-  if (!cardExp || cardExp.length < 5)  { Toast.error('Invalid Expiry', 'Please enter a valid expiry date.'); return; }
-  if (!cardCvv || cardCvv.length < 3)  { Toast.error('Invalid CVV', 'Please enter your CVV.'); return; }
-  if (!cardName) { Toast.error('Missing Name', 'Please enter the name on your card.'); return; }
+  if (!cardNum || cardNum.length < 13 || cardNum.length > 19) {
+    Toast.error('Invalid Card Number', 'Please enter a valid card number.');
+    document.getElementById('card-number')?.focus();
+    return;
+  }
+  if (!cardExp || !/^\d{2}\/\d{2}$/.test(cardExp)) {
+    Toast.error('Invalid Expiry', 'Please enter an expiry date in MM/YY format.');
+    document.getElementById('card-expiry')?.focus();
+    return;
+  }
+  if (!cardCvv || cardCvv.length < 3) {
+    Toast.error('Invalid CVV', 'Please enter your 3 or 4-digit CVV.');
+    document.getElementById('card-cvv')?.focus();
+    return;
+  }
+  if (!cardName) {
+    Toast.error('Missing Name', 'Please enter the name as it appears on your card.');
+    document.getElementById('card-name')?.focus();
+    return;
+  }
 
   // Save card if requested
   if (document.getElementById('save-card')?.checked) {
@@ -2030,16 +2100,41 @@ function processPayment() {
   }
 
   const payBtn = document.getElementById('pay-btn');
-  if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Processing…'; }
+  if (payBtn) {
+    payBtn.disabled = true;
+    payBtn.innerHTML = '<svg style="width:18px;height:18px;animation:ldSpin 0.7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0110 10" stroke-linecap="round"/></svg>Processing…';
+  }
 
-  setTimeout(() => finalizeOrder(), 1500);
+  setTimeout(() => {
+    finalizeOrder();
+    if (payBtn) { payBtn.disabled = false; payBtn.textContent = 'Pay'; }
+  }, 1500);
 }
 window.processPayment = processPayment;
+
+function applyCheckoutPromo() {
+  const input = document.getElementById('co-promo-input');
+  const code  = input?.value?.trim().toUpperCase();
+  if (!code) return;
+  const subtotal = Cart.total();
+  const result   = validatePromo(code, subtotal);
+  if (result.ok) {
+    Toast.success('Promo Applied!', result.promo.desc);
+    updateCoTotal();
+  } else {
+    Toast.error('Invalid Code', result.msg);
+  }
+}
+window.applyCheckoutPromo = applyCheckoutPromo;
 
 function finalizeOrder() {
   if (!currentCustomer) return;
   const items     = Cart.get();
-  const promoCode = document.getElementById('promo-input')?.value?.trim().toUpperCase() || null;
+  const promoCode = (
+    document.getElementById('co-promo-input')?.value?.trim().toUpperCase() ||
+    document.getElementById('promo-input')?.value?.trim().toUpperCase() ||
+    null
+  );
 
   const order = Orders.create(currentCustomer.id, items, promoCode);
   if (!order) { Toast.error('Error', 'Could not place order.'); return; }
@@ -2053,6 +2148,8 @@ function finalizeOrder() {
       subscriptionFrequency: coFreq,
     });
   }
+
+  try { fbq('track', 'Purchase', { value: (order.total / 100).toFixed(2), currency: 'USD' }); } catch(e) {}
 
   Cart.clear();
   currentCustomer = Store.findById(WB.KEYS.customers, currentCustomer.id);

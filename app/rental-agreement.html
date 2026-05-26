@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dispenser Rental Agreement - Waterboy Delivery</title>
+  <meta name="description" content="Waterboy Delivery dispenser rental agreement. Review rental terms, pricing, and policies for Brio water dispensers." />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="css/global.css" />
+
+  <!-- Google Analytics - replace GA_MEASUREMENT_ID with your actual ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+
+  <!-- Facebook Pixel - replace PIXEL_ID with your actual Pixel ID -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+  <style>
+    .legal-header { background:var(--blue-mid);border-bottom:1px solid var(--blue-border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100; }
+    .legal-brand { display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-head);font-size:1.125rem;font-weight:700;color:var(--white-90); }
+    .legal-phone { font-size:.875rem;font-weight:600;color:var(--cyan);text-decoration:none; }
+    .legal-main { max-width:760px;margin:0 auto;padding:48px 24px 80px; }
+    .legal-page-title { font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--white-90);margin-bottom:6px; }
+    .legal-effective { font-size:.875rem;color:var(--white-40);margin-bottom:40px; }
+    .legal-section { margin-bottom:36px; }
+    .legal-section h2 { font-family:var(--font-head);font-size:1.125rem;font-weight:700;color:var(--cyan);margin-bottom:12px; }
+    .legal-section p { font-size:.9375rem;color:var(--white-70);line-height:1.75;margin-bottom:12px; }
+    .legal-section ul { list-style:disc;padding-left:20px;margin-bottom:12px; }
+    .legal-section ul li { font-size:.9375rem;color:var(--white-70);line-height:1.75;margin-bottom:4px; }
+    .dispenser-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 24px; }
+    .dispenser-card { background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:20px; }
+    .dispenser-card-title { font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--white-90);margin-bottom:6px; }
+    .dispenser-card-price { font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--cyan);margin-bottom:10px; }
+    .dispenser-card-desc { font-size:.8125rem;color:var(--white-50);line-height:1.6; }
+    .duration-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0; }
+    .duration-card { background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-sm);padding:14px 16px; }
+    .duration-label { font-weight:600;font-size:.9375rem;color:var(--white-90);margin-bottom:4px; }
+    .duration-desc { font-size:.8125rem;color:var(--white-40); }
+    .legal-highlight { background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:16px 20px;margin:12px 0; }
+    .legal-highlight p { margin:0; }
+    .legal-contact-box { background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:20px 24px;margin-top:16px; }
+    .legal-contact-box p { margin:0 0 6px;font-size:.9375rem;color:var(--white-70);line-height:1.6; }
+    .legal-contact-box p:last-child { margin-bottom:0; }
+    .legal-footer { background:var(--blue-mid);border-top:1px solid var(--blue-border);padding:40px 24px; }
+    .legal-footer-inner { max-width:760px;margin:0 auto; }
+    .legal-footer-links { display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:24px; }
+    .legal-footer-links a { font-size:.875rem;color:var(--white-50);text-decoration:none;transition:color 0.2s; }
+    .legal-footer-links a:hover { color:var(--cyan); }
+    .legal-footer-info { font-size:.8125rem;color:var(--white-40);line-height:1.8; }
+    .legal-footer-info a { color:var(--cyan); }
+    @media (max-width:600px) {
+      .legal-page-title { font-size:1.5rem; }
+      .legal-main { padding:32px 16px 60px; }
+      .dispenser-grid, .duration-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="legal-header">
+  <a href="index.html" class="legal-brand">
+    <svg width="28" height="28" viewBox="0 0 32 32" style="filter:drop-shadow(0 0 6px rgba(0,212,255,0.4))"><path d="M16 2C16 2 6 13 6 20a10 10 0 0020 0C26 13 16 2 16 2z" fill="#00D4FF"/></svg>
+    Waterboy Delivery
+  </a>
+  <a href="tel:+19166193218" class="legal-phone">(916) 619-3218</a>
+</header>
+
+<main class="legal-main">
+  <h1 class="legal-page-title">Dispenser Rental Agreement</h1>
+  <p class="legal-effective">Effective Date: June 1, 2026</p>
+
+  <div class="legal-section">
+    <h2>Available Dispensers</h2>
+    <p>Waterboy Delivery offers two Brio water dispenser models for rent. Both models dispense hot and cold water and are compatible with our 5-gallon jugs.</p>
+    <div class="dispenser-grid">
+      <div class="dispenser-card">
+        <div class="dispenser-card-title">Brio Bottom-Load Dispenser</div>
+        <div class="dispenser-card-price">$279.99</div>
+        <div class="dispenser-card-desc">Bottom-loading design. No heavy lifting required. Stainless steel finish. Hot, cold, and room temperature settings.</div>
+      </div>
+      <div class="dispenser-card">
+        <div class="dispenser-card-title">Brio Top-Load Dispenser</div>
+        <div class="dispenser-card-price">$129.99</div>
+        <div class="dispenser-card-desc">Classic top-load design. Compact and affordable. Hot and cold settings. Easy to clean.</div>
+      </div>
+    </div>
+    <p>The prices above reflect the retail purchase price. Monthly rental rates are set by duration. Contact us for current rental pricing.</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>Rental Duration Options</h2>
+    <div class="duration-grid">
+      <div class="duration-card">
+        <div class="duration-label">1 Month</div>
+        <div class="duration-desc">Month-to-month. Flexible. No long-term commitment.</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-label">3 Months</div>
+        <div class="duration-desc">Quarterly rental. Better rate than month-to-month.</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-label">6 Months</div>
+        <div class="duration-desc">Semi-annual rental. Significant savings per month.</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-label">12 Months</div>
+        <div class="duration-desc">Annual rental. Lowest monthly rate available.</div>
+      </div>
+    </div>
+    <p>Rental pricing for each duration is available in the app or by calling <a href="tel:+19166193218">(916) 619-3218</a>.</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>Rental Terms</h2>
+    <div class="legal-highlight">
+      <p><strong style="color:var(--white-90)">[RENTAL TERMS - OWNER TO FILL IN]</strong> Contact us at <a href="tel:+19166193218">(916) 619-3218</a> for current rental terms, pricing, and availability.</p>
+    </div>
+    <ul>
+      <li>Rental payments are charged monthly on or around the delivery date of your first order.</li>
+      <li>The dispenser remains the property of Waterboy Delivery for the duration of the rental period.</li>
+      <li>You may purchase the dispenser at any time during the rental. The purchase price will be reduced by 50% of the rental payments made to date.</li>
+      <li>At the end of the rental term, you may renew, purchase at a discounted price, or schedule a free pickup.</li>
+      <li>To end a rental early, contact us. An early termination fee equal to one month's rental rate applies if cancelled before the agreed term ends.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>Security Deposit</h2>
+    <div class="legal-highlight">
+      <p><strong style="color:var(--white-90)">Security deposit: [DEPOSIT AMOUNT - OWNER TO FILL IN]</strong> charged at the start of the rental. This deposit is fully refunded when the dispenser is returned in good working condition.</p>
+    </div>
+    <ul>
+      <li>The deposit is separate from and in addition to the monthly rental fee.</li>
+      <li>The deposit is refunded within 7 business days after the dispenser is inspected upon return.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>Care and Damage Policy</h2>
+    <ul>
+      <li>Normal wear and tear is expected and will not affect your deposit refund.</li>
+      <li>You are responsible for any damage beyond normal use, including cracks, broken components, or contamination from improper use.</li>
+      <li>Do not use the dispenser for any purpose other than dispensing water compatible with our jugs.</li>
+      <li>If the dispenser malfunctions due to normal use, contact us and we will repair or replace it at no charge.</li>
+      <li>Damage caused by misuse, dropping, or unauthorized repair attempts will be assessed and deducted from the deposit.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>Delivery and Setup</h2>
+    <ul>
+      <li>Initial delivery and setup of the dispenser is free with any active water delivery order.</li>
+      <li>Our driver will install the dispenser and verify it is working correctly before leaving.</li>
+      <li>If you need the dispenser moved to a different location within your home, contact us and we will schedule a service visit.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>Return Process</h2>
+    <ul>
+      <li>Contact us to schedule a dispenser pickup. We will coordinate a convenient time.</li>
+      <li>Pickup is free when arranged in advance with at least 24 hours notice.</li>
+      <li>Clean the dispenser before pickup. Empty all water from the unit and wipe down accessible surfaces.</li>
+      <li>Deposits are refunded after the dispenser is inspected, within 7 business days.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>Questions About Your Rental</h2>
+    <p>For rental questions, scheduling, or anything else related to your dispenser, contact us directly:</p>
+    <div class="legal-contact-box">
+      <p><strong style="color:var(--white-90)">Waterboy Delivery</strong></p>
+      <p>7119 Elk Grove Blvd, Elk Grove, CA 95758</p>
+      <p>Phone: <a href="tel:+19166193218">(916) 619-3218</a></p>
+      <p>Email: <a href="mailto:info@waterboydelivery.com">info@waterboydelivery.com</a></p>
+      <p>Hours: Monday through Saturday</p>
+    </div>
+  </div>
+</main>
+
+<footer class="legal-footer">
+  <div class="legal-footer-inner">
+    <nav class="legal-footer-links">
+      <a href="index.html">Home</a>
+      <a href="customer.html">Order Water</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="rental-agreement.html">Rental Agreement</a>
+    </nav>
+    <div class="legal-footer-info">
+      <div>Waterboy Delivery &nbsp;|&nbsp; 7119 Elk Grove Blvd, Elk Grove, CA 95758</div>
+      <div><a href="tel:+19166193218">(916) 619-3218</a> &nbsp;|&nbsp; Monday through Saturday</div>
+      <div style="margin-top:8px;color:var(--white-30)">&copy; 2026 Waterboy Delivery. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/consent.js"></script>
+</body>
+</html>

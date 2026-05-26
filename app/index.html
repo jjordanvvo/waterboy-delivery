@@ -27,6 +27,28 @@
   <meta name="twitter:image" content="og-image.png" />
 
   <link rel="stylesheet" href="css/global.css" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
   <style>
     /* ── Splash Page Specific ─────────────────────────────── */
     body { overflow-x: hidden; }
@@ -255,13 +277,31 @@
 
     /* Footer */
     .splash-footer {
-      margin-top: 40px;
+      margin-top: 48px;
+      width: 100%;
+      max-width: 860px;
+      border-top: 1px solid var(--blue-border);
+      padding-top: 28px;
       font-size: 0.8125rem;
       color: var(--white-40);
       text-align: center;
       animation: fadeIn 0.5s ease 0.5s both;
     }
-    .splash-footer a { color: var(--cyan-dim); }
+    .splash-footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 20px;
+      margin-bottom: 14px;
+    }
+    .splash-footer-nav a {
+      color: var(--white-50);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .splash-footer-nav a:hover { color: var(--cyan); }
+    .splash-footer-info { line-height: 1.8; }
+    .splash-footer-info a { color: var(--cyan); text-decoration: none; }
 
     /* Responsive */
     @media (max-width: 720px) {
@@ -358,12 +398,24 @@
     Admin: <strong>admin@waterboy.com / admin2026</strong>
   </div>
 
-  <p class="splash-footer">
-    &copy; 2026 <a href="https://waterboydelivery.com" target="_blank">Waterboy Delivery</a> &nbsp;·&nbsp; Elk Grove, CA &nbsp;·&nbsp; All data is demo only
-  </p>
+  <div class="splash-footer">
+    <nav class="splash-footer-nav">
+      <a href="customer.html">Order Water</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="rental-agreement.html">Rental Agreement</a>
+    </nav>
+    <div class="splash-footer-info">
+      <div>Waterboy Delivery &nbsp;|&nbsp; 7119 Elk Grove Blvd, Elk Grove, CA 95758</div>
+      <div><a href="tel:+19166193218">(916) 619-3218</a> &nbsp;|&nbsp; Monday through Saturday</div>
+      <div style="margin-top:6px;color:var(--white-30)">&copy; 2026 Waterboy Delivery. All rights reserved.</div>
+    </div>
+  </div>
 
 </div>
 
+<script src="js/consent.js"></script>
 <script src="js/global.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
