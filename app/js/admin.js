@@ -149,6 +149,7 @@ function adminNavigateTo(page) {
     promos: renderPromosPage, zones: renderZonesPage, reports: renderReportsPage,
     settings: renderSettingsPage, routes: renderRoutesPage, payments: renderPaymentsPage,
     schedule: renderSchedulePage, rentals: renderRentalsPage, messages: renderMessagesPage,
+    pickups: renderPickupsPage,
   };
   if (renderers[page]) renderers[page]();
 }
@@ -2122,6 +2123,71 @@ function exportMessagesCSV() {
   Toast.info('Coming Soon', 'CSV export will be available in a future update.');
 }
 window.exportMessagesCSV = exportMessagesCSV;
+
+// ============================================================
+// PICKUPS PAGE
+// ============================================================
+let _pickupFilter = 'all';
+
+function renderPickupsPage() {
+  const bottlePickups  = Store.getList(WB.KEYS.pickups);
+  const refillPickups  = Store.getList(WB.KEYS.refillPickups || 'wb_refill_pickups');
+
+  const combined = [
+    ...bottlePickups.map(p => ({ ...p, type: p.type || 'bottle_pickup' })),
+    ...refillPickups.map(p => ({ ...p, type: p.type || 'refill_pickup' })),
+  ].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const filtered = _pickupFilter === 'all' ? combined : combined.filter(p => p.type === _pickupFilter);
+
+  const tbody = document.getElementById('pickups-admin-tbody');
+  if (!tbody) return;
+
+  const slotLabels = { morning:'8am–12pm', afternoon:'12pm–4pm', evening:'4pm–7pm' };
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--white-40);padding:32px">No pickup requests found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(p => {
+    const dateStr = p.date ? new Date(p.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+    const timeWindow = slotLabels[p.timeSlot] || '—';
+    const typeLabel  = p.type === 'refill_pickup' ? 'Refill Pickup' : 'Bottle Pickup';
+    const typeBadge  = p.type === 'refill_pickup'
+      ? `<span style="background:rgba(249,115,22,.15);color:#F97316;border:1px solid rgba(249,115,22,.3);border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:700">${typeLabel}</span>`
+      : `<span style="background:rgba(245,158,11,.15);color:#F59E0B;border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:700">${typeLabel}</span>`;
+    const statusBadge = p.status === 'completed'
+      ? `<span style="background:rgba(34,197,94,.15);color:var(--success);border:1px solid rgba(34,197,94,.3);border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:700">Completed</span>`
+      : p.status === 'cancelled'
+      ? `<span style="background:rgba(239,68,68,.12);color:var(--danger);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:700">Cancelled</span>`
+      : `<span style="background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.25);border-radius:4px;padding:2px 8px;font-size:.7rem;font-weight:700">Scheduled</span>`;
+    return `<tr>
+      <td style="font-weight:600">${p.customerName || '—'}</td>
+      <td style="font-size:.8125rem;color:var(--white-50)">${p.address || '—'}</td>
+      <td style="font-family:var(--font-mono);color:var(--cyan)">${p.bottleCount || '—'}</td>
+      <td>${dateStr}</td>
+      <td>${timeWindow}</td>
+      <td>${typeBadge}</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+window.renderPickupsPage = renderPickupsPage;
+
+function setPickupFilter(filter, btn) {
+  _pickupFilter = filter;
+  document.querySelectorAll('#pickups-filter-tabs button').forEach(b => {
+    b.className = b === btn ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+  });
+  renderPickupsPage();
+}
+window.setPickupFilter = setPickupFilter;
+
+function exportPickupsCSV() {
+  Toast.info('Coming Soon', 'CSV export will be available in a future update.');
+}
+window.exportPickupsCSV = exportPickupsCSV;
 
 // ============================================================
 // MODALS

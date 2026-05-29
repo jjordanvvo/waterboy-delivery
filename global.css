@@ -182,6 +182,10 @@ h1, h2, h3, h4, h5, h6,
   color: #fff;
   background: rgba(255,255,255,0.07);
 }
+.nav-center-links .nav-link.active {
+  color: #00D4FF;
+  background: rgba(0,212,255,0.08);
+}
 
 /* Water type pills in nav */
 #navbar .nav-wt-pills {

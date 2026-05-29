@@ -20,11 +20,12 @@ const WB = {
     settings:     'wb_settings',
     currentUser:  'wb_current_user',
     cartKey:      'wb_cart',
-    pickups:      'wb_pickups',
-    blockedDates: 'wb_blocked_dates',
-    rentals:      'wb_rentals',
-    messages:     'wb_messages',
-    seeded:       'wb_seeded_v9',
+    pickups:        'wb_pickups',
+    refillPickups:  'wb_refill_pickups',
+    blockedDates:   'wb_blocked_dates',
+    rentals:        'wb_rentals',
+    messages:       'wb_messages',
+    seeded:         'wb_seeded_v10',
   },
   CREDS: {
     customer: { email: 'demo@waterboy.com',   password: 'water2026' },
@@ -271,8 +272,13 @@ const SEED = {
     { id:'p_cd2',  name:'Grapefruit Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/Grapefruit Salt 16 fl oz.jpg',    description:'Grapefruit salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
     { id:'p_cd3',  name:'Watermelon Salt (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/Watermelon Salt 16 fl oz.jpg',    description:'Watermelon salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
     { id:'p_cd4',  name:'Citrus Salt Can (16 fl oz)',  category:'Canned Drinks (16 fl oz)',  price:null, unit:'each', icon:'', image:'images/citrus salt can.jpg',             description:'Citrus salt sparkling water with electrolytes. 16 fl oz can.', popular:false, inquire:true },
-    // Energy & Supplements
-    { id:'p_en1',  name:'ZipFizz Energy Mix',          category:'Energy & Supplements',      price:null, unit:'each', icon:'', image:'images/ZipFizz.jpg',                     description:'ZipFizz energy drink mix. Vitamin B12, antioxidants, and electrolytes.', popular:true,  inquire:true },
+    // Add-Ons
+    { id:'p_lmnt_can', name:'LMNT Sparkling Electrolyte Cans',      category:'Add-Ons', price:499,  unit:'per can',    icon:'', image:'Images for Menu/Images for Menu/Cans.jpg',  description:'Zero-sugar sparkling electrolyte drink. 1000mg sodium. Crisp, refreshing.', popular:true,  inquire:false },
+    { id:'p_lmnt_pkt', name:'LMNT Zero-Sugar Electrolyte Packets',  category:'Add-Ons', price:299,  unit:'per packet', icon:'', image:'Images for Menu/Images for Menu/Pack1.PNG', description:'Mix with 16–32oz of water. Zero sugar, zero junk. Perfect for workouts.',   popular:false, inquire:false },
+    { id:'p_zipfizz',  name:'Zipfizz Energy Drink Mix — Combo Pack',category:'Add-Ons', price:3999, unit:'per 30-pack',icon:'', image:'Images for Menu/Images for Menu/Box.PNG',  description:'Sugar-free energy mix with B12, electrolytes, 100mg caffeine. 30-count combo.', popular:true, inquire:false },
+    { id:'p_echo_h',   name:'Echo Hydrogen Prebiotic Drink Mix',     category:'Add-Ons', price:499,  unit:'per packet', icon:'', image:'Images for Menu/Images for Menu/Hyd.PNG',  description:'Molecular hydrogen + prebiotic fiber. Gut health support and mental clarity.', popular:false, inquire:false },
+    // Energy & Supplements (legacy)
+    { id:'p_en1',  name:'ZipFizz Energy Mix',          category:'Energy & Supplements',      price:null, unit:'each', icon:'', image:'images/ZipFizz.jpg',                     description:'ZipFizz energy drink mix. Vitamin B12, antioxidants, and electrolytes.', popular:false, inquire:true },
   ],
 
   zones: [
@@ -508,7 +514,8 @@ function seedData() {
   Store.set(WB.KEYS.notifications, SEED.notifications);
   Store.set(WB.KEYS.inventory,  SEED.inventory);
   Store.set(WB.KEYS.settings,   SEED.settings);
-  Store.set(WB.KEYS.pickups,    []);
+  Store.set(WB.KEYS.pickups,       []);
+  Store.set(WB.KEYS.refillPickups, []);
   Store.set(WB.KEYS.rentals,   SEED.rentals);
   Store.set(WB.KEYS.messages,  SEED.messages);
 

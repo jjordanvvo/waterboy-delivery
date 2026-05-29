@@ -26,6 +26,16 @@ let coOrderType        = 'onetime';
 let coFreq             = 'weekly';
 let coSelectedDate     = null;
 let coSelectedSlot     = null;
+let coSelectedAddons   = [];
+let pickupStep         = 1;
+let pickupBottleCount  = 1;
+let pickupDate         = null;
+let pickupTimeSlot     = null;
+let refillStep         = 1;
+let refillBottleCount  = 1;
+let refillDate         = null;
+let refillTimeSlot     = null;
+let refillNotes        = '';
 let applePayActive     = false;
 let selectedWaterType  = 'purified';
 let woStep             = 1;
@@ -661,6 +671,7 @@ const PRODUCT_CATEGORIES = [
   '5-Gallon Jugs',
   '3-Gallon Jugs',
   'Glass & Personal Bottles',
+  'Add-Ons',
   'Aluminum Bottles',
   'Water Dispensers',
   'Hydration & Electrolytes',
@@ -1122,7 +1133,7 @@ function renderBottles() {
 
   // Count returned bottles from pickups
   const pickups = Store.getList(WB.KEYS.pickups).filter(p => p.customerId === currentCustomer.id && p.date < Date.now());
-  const totalReturned = pickups.reduce((sum, p) => sum + (p.count || 0), 0);
+  const totalReturned = pickups.reduce((sum, p) => sum + ((p.bottleCount || p.count) || 0), 0);
   if (returnedEl) returnedEl.textContent = totalReturned;
 
   const listEl = document.getElementById('pickups-list');
@@ -1132,73 +1143,345 @@ function renderBottles() {
     .filter(p => p.customerId === currentCustomer.id)
     .sort((a, b) => a.date - b.date);
 
-  if (!allPickups.length) {
+  // Also include refill pickups
+  const refillPickupsList = Store.getList(WB.KEYS.refillPickups || 'wb_refill_pickups')
+    .filter(p => p.customerId === currentCustomer.id);
+  const combinedPickups = [...allPickups, ...refillPickupsList].sort((a, b) => a.date - b.date);
+
+  if (!combinedPickups.length) {
     listEl.innerHTML = `<div class="empty-state" style="padding:40px 20px"><div class="empty-state-title">No pickups scheduled</div><div class="empty-state-sub">Schedule a pickup to return empty bottles.</div></div>`;
     return;
   }
 
-  listEl.innerHTML = allPickups.map(p => {
-    const dateStr = new Date(p.date).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
-    const isPast  = p.date < Date.now();
-    const depositAmt = fmtMoney((p.count || 0) * DEPOSIT_PER_BOTTLE);
+  listEl.innerHTML = combinedPickups.map(p => {
+    const dateStr  = new Date(p.date).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    const isPast   = p.date < Date.now();
+    const bottleQty = (p.bottleCount || p.count) || 0;
+    const depositAmt = fmtMoney(bottleQty * DEPOSIT_PER_BOTTLE);
+    const isRefill = p.type === 'refill_pickup';
+    const typeLabel = isRefill ? 'Refill Pickup' : 'Bottle Pickup';
+    const slotLabels = { morning:'8am–12pm', afternoon:'12pm–4pm', evening:'4pm–7pm' };
+    const timeStr = p.timeSlot ? ` • ${slotLabels[p.timeSlot]}` : '';
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--white-04);border:1px solid var(--blue-border);border-radius:var(--radius-md);margin-bottom:10px">
       <div>
-        <div style="font-weight:600;font-size:.9375rem">${dateStr}</div>
-        <div style="font-size:.8125rem;color:var(--white-40);margin-top:2px">${p.count} bottle${p.count > 1 ? 's' : ''} • ${isPast ? 'Deposit credited: ' + depositAmt : 'Upcoming'}</div>
+        <div style="font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${isRefill ? '#F97316' : 'var(--warning)'};margin-bottom:4px">${typeLabel}</div>
+        <div style="font-weight:600;font-size:.9375rem">${dateStr}${timeStr}</div>
+        <div style="font-size:.8125rem;color:var(--white-40);margin-top:2px">${bottleQty} ${isRefill ? 'jug' : 'bottle'}${bottleQty > 1 ? 's' : ''} • ${isPast ? (isRefill ? 'Completed' : 'Deposit credited: ' + depositAmt) : 'Upcoming'}</div>
         ${p.notes ? `<div style="font-size:.75rem;color:var(--white-40);margin-top:2px">${p.notes}</div>` : ''}
       </div>
       <div style="display:flex;align-items:center;gap:10px">
-        <span class="badge ${isPast ? 'badge-green' : 'badge-cyan'}">${isPast ? 'Credited' : 'Scheduled'}</span>
-        ${!isPast ? `<button class="btn-icon" onclick="cancelPickup('${p.id}')" style="color:var(--danger);width:30px;height:30px;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>` : ''}
+        <span class="badge ${isPast ? 'badge-green' : 'badge-cyan'}">${isPast ? 'Done' : 'Scheduled'}</span>
+        ${!isPast ? `<button class="btn-icon" onclick="cancelPickup('${p.id}','${p.type || 'bottle_pickup'}')" style="color:var(--danger);width:30px;height:30px;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>` : ''}
       </div>
     </div>`;
   }).join('');
 }
 
-function openPickupModal() {
-  const dateInput = document.getElementById('pickup-date');
-  if (dateInput) {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    dateInput.min   = tomorrow.toISOString().split('T')[0];
-    dateInput.value = tomorrow.toISOString().split('T')[0];
-  }
-  const countInput = document.getElementById('pickup-count');
-  if (countInput && currentCustomer) countInput.value = Math.min(currentCustomer.bottles || 1, 20);
-  const notesInput = document.getElementById('pickup-notes');
-  if (notesInput) notesInput.value = '';
-  Modal.open('pickup-modal');
+// ============================================================
+// PICKUP FLOW (multi-step)
+// ============================================================
+function openPickupFlow() {
+  pickupStep = 1;
+  pickupBottleCount = currentCustomer ? Math.min(currentCustomer.bottles || 1, 20) : 1;
+  pickupDate = null;
+  pickupTimeSlot = null;
+  const flow = document.getElementById('pickup-flow');
+  if (flow) { flow.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  goToPickupStep(1);
 }
-window.openPickupModal = openPickupModal;
+window.openPickupFlow = openPickupFlow;
+window.openPickupModal = openPickupFlow; // backward compat
 
-function savePickup() {
-  const dateVal  = document.getElementById('pickup-date')?.value;
-  const countVal = parseInt(document.getElementById('pickup-count')?.value) || 0;
-  const notes    = document.getElementById('pickup-notes')?.value?.trim() || '';
+function closePickupFlow() {
+  const flow = document.getElementById('pickup-flow');
+  if (flow) flow.style.display = 'none';
+  document.body.style.overflow = '';
+}
+window.closePickupFlow = closePickupFlow;
 
-  if (!dateVal) { Toast.warning('Missing Date', 'Please select a pickup date.'); return; }
-  if (countVal < 1) { Toast.warning('Invalid Count', 'Enter at least 1 bottle.'); return; }
+function goToPickupStep(n) {
+  pickupStep = n;
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('pf-step-' + i);
+    if (el) el.style.display = i === n ? 'flex' : 'none';
+    const dot = document.getElementById('pf-dot-' + i);
+    if (dot) { dot.classList.remove('active','done'); if (i < n) dot.classList.add('done'); else if (i === n) dot.classList.add('active'); }
+  }
+  if (n === 2) buildPickupCalendar();
+  if (n === 4) renderPickupSummary();
+  const el = document.getElementById('pf-bottle-count');
+  if (el && n === 1) el.textContent = pickupBottleCount;
+}
 
+function buildPickupCalendar() {
+  const now = new Date();
+  const year = now.getFullYear(), month = now.getMonth();
+  const label = document.getElementById('pf-cal-month-label');
+  if (label) label.textContent = now.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+  const firstDay = new Date(year, month, 1);
+  const lastDay  = new Date(year, month + 1, 0);
+  const grid = document.getElementById('pf-cal-grid');
+  if (!grid) return;
+  let startOffset = firstDay.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = '';
+  for (let i = 0; i < startOffset; i++) html += '<div class="cal-day cal-day-empty"></div>';
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const date = new Date(year, month, d);
+    const isSun = date.getDay() === 0;
+    const isPast = date < today;
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isAvail = !isSun && !isPast;
+    html += `<div class="cal-day ${isAvail ? 'cal-day-available' : 'cal-day-unavailable'}${pickupDate === dateStr ? ' selected' : ''}" data-date="${dateStr}" ${isAvail ? `onclick="selectPickupDate(this,'${dateStr}')"` : ''}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function selectPickupDate(el, dateStr) {
+  pickupDate = dateStr;
+  document.querySelectorAll('#pf-cal-grid .cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+window.selectPickupDate = selectPickupDate;
+
+function changePickupCount(delta) {
+  pickupBottleCount = Math.min(20, Math.max(1, pickupBottleCount + delta));
+  const el = document.getElementById('pf-bottle-count');
+  if (el) el.textContent = pickupBottleCount;
+}
+window.changePickupCount = changePickupCount;
+
+function selectPickupSlot(slot) {
+  pickupTimeSlot = slot;
+  ['morning','afternoon','evening'].forEach(s => {
+    const card = document.getElementById('pf-slot-' + s);
+    const chk  = document.getElementById('pf-check-' + s);
+    if (card) card.classList.toggle('selected', s === slot);
+    if (chk)  chk.textContent = s === slot ? '✓' : '';
+  });
+}
+window.selectPickupSlot = selectPickupSlot;
+
+function renderPickupSummary() {
+  const el = document.getElementById('pf-summary');
+  if (!el) return;
+  const slotLabels = { morning:'8am–12pm', afternoon:'12pm–4pm', evening:'4pm–7pm' };
+  const dateStr = pickupDate ? new Date(pickupDate + 'T12:00:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' }) : '—';
+  el.innerHTML = `<strong>Bottles:</strong> ${pickupBottleCount}<br><strong>Date:</strong> ${dateStr}<br><strong>Time:</strong> ${slotLabels[pickupTimeSlot] || '—'}<br><strong>Type:</strong> Bottle Pickup`;
+}
+
+function pickupFlowNext() {
+  if (pickupStep === 1) {
+    goToPickupStep(2);
+  } else if (pickupStep === 2) {
+    if (!pickupDate) { Toast.warning('Select a Date', 'Please choose a pickup date.'); return; }
+    goToPickupStep(3);
+  } else if (pickupStep === 3) {
+    if (!pickupTimeSlot) { Toast.warning('Select a Time', 'Please choose a time window.'); return; }
+    goToPickupStep(4);
+  }
+}
+window.pickupFlowNext = pickupFlowNext;
+
+function pickupFlowBack() {
+  if (pickupStep > 1) goToPickupStep(pickupStep - 1);
+  else closePickupFlow();
+}
+window.pickupFlowBack = pickupFlowBack;
+
+function savePickupFlow() {
+  if (!currentCustomer) return;
   const pickup = {
     id: uid('pkp_'),
     customerId: currentCustomer.id,
-    date: new Date(dateVal + 'T12:00:00').getTime(),
-    count: countVal, notes,
+    customerName: currentCustomer.name,
+    address: currentCustomer.address || '',
+    type: 'bottle_pickup',
+    bottleCount: pickupBottleCount,
+    count: pickupBottleCount,
+    date: new Date(pickupDate + 'T12:00:00').getTime(),
+    timeSlot: pickupTimeSlot,
     status: 'scheduled',
     createdAt: Date.now(),
   };
-
   Store.push(WB.KEYS.pickups, pickup);
   Notifs.push(currentCustomer.id, 'subscription', 'Pickup Scheduled!',
     `Your bottle pickup on ${new Date(pickup.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })} is confirmed.`);
-  Modal.close('pickup-modal');
-  Toast.success('Pickup Scheduled!', `${countVal} bottle${countVal > 1 ? 's' : ''} on ${new Date(pickup.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}.`);
+
+  const confirmBtn = document.querySelector('#pf-step-4 .btn-primary');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  const confirmedEl = document.getElementById('pf-confirmed');
+  if (confirmedEl) confirmedEl.style.display = 'block';
+
+  Toast.success('Pickup Scheduled!', `${pickupBottleCount} bottle${pickupBottleCount > 1 ? 's' : ''} on ${new Date(pickup.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}.`);
   renderBottles();
 }
-window.savePickup = savePickup;
+window.savePickupFlow = savePickupFlow;
+window.savePickup = savePickupFlow; // backward compat
 
-function cancelPickup(pickupId) {
-  Store.removeItem(WB.KEYS.pickups, pickupId);
+// ============================================================
+// REFILL FLOW (multi-step)
+// ============================================================
+const REFILL_PRICE_CENTS = 699; // $6.99 per jug
+
+function openRefillFlow() {
+  refillStep = 1;
+  refillBottleCount = 1;
+  refillDate = null;
+  refillTimeSlot = null;
+  refillNotes = '';
+  const flow = document.getElementById('refill-flow');
+  if (flow) { flow.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  goToRefillStep(1);
+}
+window.openRefillFlow = openRefillFlow;
+
+function closeRefillFlow() {
+  const flow = document.getElementById('refill-flow');
+  if (flow) flow.style.display = 'none';
+  document.body.style.overflow = '';
+}
+window.closeRefillFlow = closeRefillFlow;
+
+function goToRefillStep(n) {
+  refillStep = n;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('rf-step-' + i);
+    if (el) el.style.display = i === n ? 'flex' : 'none';
+    const dot = document.getElementById('rf-dot-' + i);
+    if (dot) { dot.classList.remove('active','done'); if (i < n) dot.classList.add('done'); else if (i === n) dot.classList.add('active'); }
+  }
+  if (n === 2) buildRefillCalendar();
+  if (n === 4) {
+    const priceEl = document.getElementById('rf-pricing-line');
+    if (priceEl) priceEl.textContent = `${refillBottleCount} jug${refillBottleCount > 1 ? 's' : ''} × $6.99 = ${fmtMoney(refillBottleCount * REFILL_PRICE_CENTS)}`;
+  }
+  if (n === 5) renderRefillSummary();
+  const countEl = document.getElementById('rf-bottle-count');
+  if (countEl && n === 1) countEl.textContent = refillBottleCount;
+  const pricePreview = document.getElementById('rf-price-preview');
+  if (pricePreview && n === 1) pricePreview.textContent = fmtMoney(refillBottleCount * REFILL_PRICE_CENTS);
+}
+
+function buildRefillCalendar() {
+  const now = new Date();
+  const year = now.getFullYear(), month = now.getMonth();
+  const label = document.getElementById('rf-cal-month-label');
+  if (label) label.textContent = now.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+  const firstDay = new Date(year, month, 1);
+  const lastDay  = new Date(year, month + 1, 0);
+  const grid = document.getElementById('rf-cal-grid');
+  if (!grid) return;
+  let startOffset = firstDay.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = '';
+  for (let i = 0; i < startOffset; i++) html += '<div class="cal-day cal-day-empty"></div>';
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const date = new Date(year, month, d);
+    const isSun = date.getDay() === 0;
+    const isPast = date < today;
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isAvail = !isSun && !isPast;
+    html += `<div class="cal-day ${isAvail ? 'cal-day-available' : 'cal-day-unavailable'}${refillDate === dateStr ? ' selected' : ''}" data-date="${dateStr}" ${isAvail ? `onclick="selectRefillDate(this,'${dateStr}')"` : ''}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function selectRefillDate(el, dateStr) {
+  refillDate = dateStr;
+  document.querySelectorAll('#rf-cal-grid .cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+window.selectRefillDate = selectRefillDate;
+
+function changeRefillCount(delta) {
+  refillBottleCount = Math.min(12, Math.max(1, refillBottleCount + delta));
+  const countEl = document.getElementById('rf-bottle-count');
+  if (countEl) countEl.textContent = refillBottleCount;
+  const priceEl = document.getElementById('rf-price-preview');
+  if (priceEl) priceEl.textContent = fmtMoney(refillBottleCount * REFILL_PRICE_CENTS);
+}
+window.changeRefillCount = changeRefillCount;
+
+function selectRefillSlot(slot) {
+  refillTimeSlot = slot;
+  ['morning','afternoon','evening'].forEach(s => {
+    const card = document.getElementById('rf-slot-' + s);
+    const chk  = document.getElementById('rf-check-' + s);
+    if (card) card.classList.toggle('selected', s === slot);
+    if (chk)  chk.textContent = s === slot ? '✓' : '';
+  });
+}
+window.selectRefillSlot = selectRefillSlot;
+
+function renderRefillSummary() {
+  const el = document.getElementById('rf-summary');
+  if (!el) return;
+  const slotLabels = { morning:'8am–12pm', afternoon:'12pm–4pm', evening:'4pm–7pm' };
+  const dateStr = refillDate ? new Date(refillDate + 'T12:00:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' }) : '—';
+  const notesInput = document.getElementById('rf-notes-input');
+  refillNotes = notesInput?.value?.trim() || '';
+  el.innerHTML = `<strong>Jugs:</strong> ${refillBottleCount}<br><strong>Date:</strong> ${dateStr}<br><strong>Time:</strong> ${slotLabels[refillTimeSlot] || '—'}<br><strong>Total:</strong> ${fmtMoney(refillBottleCount * REFILL_PRICE_CENTS)}<br><strong>Type:</strong> Refill Pickup${refillNotes ? `<br><strong>Notes:</strong> ${refillNotes}` : ''}`;
+}
+
+function refillFlowNext() {
+  if (refillStep === 1) {
+    goToRefillStep(2);
+  } else if (refillStep === 2) {
+    if (!refillDate) { Toast.warning('Select a Date', 'Please choose a pickup date.'); return; }
+    goToRefillStep(3);
+  } else if (refillStep === 3) {
+    if (!refillTimeSlot) { Toast.warning('Select a Time', 'Please choose a time window.'); return; }
+    goToRefillStep(4);
+  } else if (refillStep === 4) {
+    const notesInput = document.getElementById('rf-notes-input');
+    refillNotes = notesInput?.value?.trim() || '';
+    goToRefillStep(5);
+  }
+}
+window.refillFlowNext = refillFlowNext;
+
+function refillFlowBack() {
+  if (refillStep > 1) goToRefillStep(refillStep - 1);
+  else closeRefillFlow();
+}
+window.refillFlowBack = refillFlowBack;
+
+function saveRefillFlow() {
+  if (!currentCustomer) return;
+  const refill = {
+    id: uid('rfl_'),
+    customerId: currentCustomer.id,
+    customerName: currentCustomer.name,
+    address: currentCustomer.address || '',
+    type: 'refill_pickup',
+    bottleCount: refillBottleCount,
+    date: new Date(refillDate + 'T12:00:00').getTime(),
+    timeSlot: refillTimeSlot,
+    notes: refillNotes,
+    total: refillBottleCount * REFILL_PRICE_CENTS,
+    status: 'scheduled',
+    createdAt: Date.now(),
+  };
+  Store.push(WB.KEYS.refillPickups, refill);
+  Notifs.push(currentCustomer.id, 'order_update', 'Refill Pickup Scheduled!',
+    `Your refill pickup on ${new Date(refill.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })} is confirmed.`);
+
+  const confirmBtn = document.querySelector('#rf-step-5 .btn-primary');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  const confirmedEl = document.getElementById('rf-confirmed');
+  if (confirmedEl) confirmedEl.style.display = 'block';
+
+  Toast.success('Refill Pickup Scheduled!', `${refillBottleCount} jug${refillBottleCount > 1 ? 's' : ''} on ${new Date(refill.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}.`);
+  renderBottles();
+}
+window.saveRefillFlow = saveRefillFlow;
+
+function cancelPickup(pickupId, type) {
+  const key = type === 'refill_pickup' ? (WB.KEYS.refillPickups || 'wb_refill_pickups') : WB.KEYS.pickups;
+  Store.removeItem(key, pickupId);
   Toast.info('Cancelled', 'Pickup has been removed.');
   renderBottles();
 }
@@ -1893,13 +2176,13 @@ function updateCoTotal() {
 
 function goToCoStep(n) {
   coStep = n;
-  ['co-step-type','co-step-calendar','co-step-payment','co-step-confirm'].forEach((id, i) => {
+  ['co-step-type','co-step-calendar','co-step-addons','co-step-payment','co-step-confirm'].forEach((id, i) => {
     const el = document.getElementById(id);
     if (el) el.style.display = i + 1 === n ? 'flex' : 'none';
   });
 
   // Update step indicators
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const dot = document.getElementById('co-dot-' + i);
     if (dot) {
       dot.classList.remove('active','done');
@@ -1910,10 +2193,11 @@ function goToCoStep(n) {
 
   // Back button visibility
   const backBtn = document.getElementById('co-back-btn');
-  if (backBtn) backBtn.style.visibility = n > 1 && n < 4 ? 'visible' : 'hidden';
+  if (backBtn) backBtn.style.visibility = n > 1 && n < 5 ? 'visible' : 'hidden';
 
   if (n === 2) buildCalendar();
-  if (n === 3) { updateCoTotal(); updatePayBtn(); }
+  if (n === 3) renderCoAddons();
+  if (n === 4) { updateCoTotal(); updatePayBtn(); }
 }
 
 function coNext() {
@@ -1923,12 +2207,20 @@ function coNext() {
     if (!coSelectedDate) { Toast.warning('Select a Date', 'Please choose a delivery date.'); return; }
     if (!coSelectedSlot) { Toast.warning('Select a Time', 'Please choose a delivery window.'); return; }
     goToCoStep(3);
+  } else if (coStep === 3) {
+    goToCoStep(4);
   }
 }
 window.coNext = coNext;
 
+function coSkipAddons() {
+  coSelectedAddons = [];
+  goToCoStep(4);
+}
+window.coSkipAddons = coSkipAddons;
+
 function coBack() {
-  if (coStep > 1 && coStep < 4) goToCoStep(coStep - 1);
+  if (coStep > 1 && coStep < 5) goToCoStep(coStep - 1);
 }
 window.coBack = coBack;
 
@@ -2050,7 +2342,49 @@ function selectTimeSlot(el, slot) {
 }
 window.selectTimeSlot = selectTimeSlot;
 
-// Step 3 - Payment
+// Step 3 - Add-Ons
+function renderCoAddons() {
+  const container = document.getElementById('co-addons-list');
+  if (!container) return;
+  const products = Store.getList(WB.KEYS.products).filter(p => p.category === 'Add-Ons');
+  if (!products.length) {
+    container.innerHTML = '<p style="text-align:center;color:var(--white-40);font-size:.875rem">No add-ons available right now.</p>';
+    return;
+  }
+  container.innerHTML = products.map(p => {
+    const existing = coSelectedAddons.find(a => a.id === p.id);
+    const qty = existing ? existing.qty : 0;
+    return `<div style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:14px 16px;display:flex;align-items:center;gap:14px">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:.9375rem;color:var(--white-90);margin-bottom:3px">${p.name}</div>
+        <div style="font-size:.8125rem;color:var(--white-40);line-height:1.4;margin-bottom:6px">${p.description || ''}</div>
+        <div style="font-family:var(--font-mono);font-size:.9rem;font-weight:700;color:var(--cyan)">${fmtMoney(p.price)} <span style="font-family:var(--font-body);font-size:.75rem;font-weight:400;color:var(--white-40)">${p.unit || ''}</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <button style="width:36px;height:36px;border-radius:50%;background:var(--white-08);border:1px solid var(--blue-border);font-size:1.25rem;color:var(--white-90);cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:36px" onclick="changeAddonQty('${p.id}',${p.price},'${p.name.replace(/'/g,"\\'")}',${p.price},-1,this)">−</button>
+        <span id="addon-qty-${p.id}" style="font-family:var(--font-head);font-size:1.125rem;font-weight:700;min-width:24px;text-align:center">${qty}</span>
+        <button style="width:36px;height:36px;border-radius:50%;background:var(--cyan);border:none;font-size:1.25rem;color:var(--blue-deep);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;min-width:36px" onclick="changeAddonQty('${p.id}',${p.price},'${p.name.replace(/'/g,"\\'")}',${p.price},1,this)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+window.renderCoAddons = renderCoAddons;
+
+function changeAddonQty(id, price, name, unitPrice, delta, btn) {
+  let existing = coSelectedAddons.find(a => a.id === id);
+  if (existing) {
+    existing.qty = Math.max(0, Math.min(5, existing.qty + delta));
+    if (existing.qty === 0) coSelectedAddons = coSelectedAddons.filter(a => a.id !== id);
+  } else if (delta > 0) {
+    coSelectedAddons.push({ id, name, unitPrice, qty: 1 });
+  }
+  const qtyEl = document.getElementById('addon-qty-' + id);
+  const entry = coSelectedAddons.find(a => a.id === id);
+  if (qtyEl) qtyEl.textContent = entry ? entry.qty : 0;
+}
+window.changeAddonQty = changeAddonQty;
+
+// Step 4 - Payment
 function updatePayBtn() {
   const termsOk = document.getElementById('terms-agree')?.checked;
   const payBtn  = document.getElementById('pay-btn');
@@ -2179,7 +2513,7 @@ function showOrderConfirmation(order) {
   const circle = document.getElementById('confirm-circle');
   if (circle) circle.classList.add('pop');
 
-  goToCoStep(4);
+  goToCoStep(5);
   loadCartBadge();
   renderSubscriptionCard();
 }
@@ -2401,7 +2735,7 @@ window.selectFrequency = selectFrequency;
 // MODALS INIT
 // ============================================================
 function initModals() {
-  ['pickup-modal','order-detail-modal','add-to-cart-modal','weather-modal','zone-modal','terms-modal','notif-permission-modal','pause-sub-modal'].forEach(id => {
+  ['order-detail-modal','add-to-cart-modal','weather-modal','zone-modal','terms-modal','notif-permission-modal','pause-sub-modal'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('click', e => { if (e.target === el) Modal.close(id); });

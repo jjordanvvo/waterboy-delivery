@@ -10,15 +10,20 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://waterboydelivery.com/shop.html" />
 
+  <meta property="og:title" content="Shop In-Store Products | Waterboy Delivery Elk Grove" />
+  <meta property="og:description" content="Browse in-store products at Waterboy Delivery's Elk Grove location. Water, accessories, and more available for pickup at 7119 Elk Grove Blvd." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://waterboydelivery.com/shop.html" />
+  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
+
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shop.css" />
   <link rel="stylesheet" href="water-type-selector.css" />
-  <link rel="stylesheet" href="global.css" />
 </head>
 <body>
 
@@ -29,36 +34,27 @@
 
 
 <!-- NAVBAR -->
-<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
-    </a>
-    <div class="nav-center-links">
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    <span>Menu</span>
+  </button>
+  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
+    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+  </a>
+  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
+    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
+    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
+    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  </div>
+  <div class="nav-center-links">
       <a href="water-delivery.html" class="nav-link">Delivery</a>
-      <a href="shop.html" class="nav-link">Shop</a>
+      <a href="shop.html" class="nav-link active">Shop</a>
+      <a href="products.html" class="nav-link">Add-Ons</a>
       <a href="dispensers.html" class="nav-link">Dispensers</a>
-      <a href="how-it-works.html" class="nav-link">How It Works</a>
       <a href="about.html" class="nav-link">About</a>
     </div>
-    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
-      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
-    </div>
-    <div class="nav-right">
-      <a href="javascript:void(0)" class="nav-btn-cyan" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-size:13px;padding:8px 18px;">Sign Up / Log In</a>
-      <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():window.openCartSidebar&&window.openCartSidebar()" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"></polyline><line x1="7.68" y1="13.39" x2="5" y2="5"></line><line x1="5" y1="5" x2="21" y2="5"></line></svg><span id="cart-count" style="position:absolute;top:0;right:0;background:#ef4444;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span></button>
-    </div>
-  </div>
 </nav>
-<div id="water-type-bar" class="water-type-bar">
-  <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
-  <button id="wtb-change" class="wtb-change">Change</button>
-</div>
 
 
 <!-- BREADCRUMB -->
@@ -86,12 +82,12 @@
   <div class="container">
     <div class="menu-grid menu-grid-2col">
       <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon1.JPG" alt="5 Gallon RO Water" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">5 Gallon RO Water</span><span class="menu-card-price">$6.99</span></div>
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon1.JPG" alt="Gallon 1" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
       </div>
       <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon2.JPG" alt="5 Gallon Alkaline Water" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">5 Gallon Alkaline Water</span><span class="menu-card-price">$7.99</span></div>
+        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon2.JPG" alt="Gallon 2" loading="lazy"></div>
+        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
       </div>
       <div class="menu-card">
         <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon3.JPG" alt="Gallon 3" loading="lazy"></div>
@@ -149,7 +145,7 @@
             <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" alt="Electrolyte Cans" loading="lazy">
             <div class="menu-card-carousel-hint">Tap for flavors</div>
           </div>
-          <div class="menu-card-info"><span class="menu-card-name">LMNT Electrolyte Cans</span><span class="menu-card-price">$4.99/can</span></div>
+          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Cans</span><span class="menu-card-price">?</span></div>
         </div>
         <div class="menu-card menu-card-has-carousel"
              data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Pack2.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack3.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack4.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack5.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack6.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack7.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack8.PNG">
@@ -157,15 +153,15 @@
             <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="Electrolyte Packets" loading="lazy">
             <div class="menu-card-carousel-hint">Tap for flavors</div>
           </div>
-          <div class="menu-card-info"><span class="menu-card-name">LMNT Electrolyte Packets</span><span class="menu-card-price">$2.99/pkt</span></div>
+          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Packets</span><span class="menu-card-price">?</span></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" alt="Zipfizz Energy Drink Mix Variety 30 Pack" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">Zipfizz Energy Drink Mix — Variety 30 Pack</span><span class="menu-card-price">$34.99</span></div>
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" alt="Box" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" alt="Echo Hydrogen Prebiotic Packet" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">Echo Hydrogen Prebiotic Packet</span><span class="menu-card-price">$1.99</span></div>
+          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" alt="Hyd" loading="lazy"></div>
+          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
         </div>
       </div>
     </div>
@@ -257,8 +253,8 @@
     <div class="footer-bottom">
       <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved. Serving Elk Grove &amp; Sacramento County.</p>
       <nav class="footer-legal" aria-label="Legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
       </nav>
     </div>
   </div>
@@ -296,6 +292,7 @@
       <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
       <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
       <a href="shop.html" class="left-drawer-link">Shop Products</a>
+      <a href="products.html" class="left-drawer-link">Add-Ons</a>
       <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
       <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
     </div>
@@ -313,10 +310,8 @@
     </div>
     <div class="left-drawer-section">
       <div class="left-drawer-section-label">Account</div>
-      <a href="order.html" class="left-drawer-link" style="color:#00D4FF!important;font-weight:700!important;">Order Now</a>
-      <a href="my-orders.html" class="left-drawer-link">My Orders</a>
-      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign Up / Log In</a>
-      <a href="#" class="left-drawer-link" id="ld-cart-link">View Cart</a>
+      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
+      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
     </div>
   </nav>
 </aside><button id="back-to-top" aria-label="Back to top">
@@ -398,41 +393,15 @@
   document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.menu-card-info').forEach(function(info,i){
       var nameEl=info.querySelector('.menu-card-name');
-      var priceEl=info.querySelector('.menu-card-price');
       var name=nameEl?nameEl.textContent.trim():'?';
-      var price=priceEl?priceEl.textContent.trim():'?';
       var rc=reviews[i]||99;
       var isCarousel=!!info.closest('.menu-card-has-carousel');
       info.innerHTML=
         '<div class="mca-name">'+name+'</div>'+
         '<div class="mca-stars"><span class="mca-st">★★★★★</span><span class="mca-rc">('+rc+')</span></div>'+
-        '<div class="mca-price">'+price+'</div>'+
-        '<div class="mca-badge"><span>Free Delivery</span></div>'+
+        '<div class="mca-price">?</div>'+
+        '<div class="mca-badge">📦 <span>Free Delivery</span></div>'+
         '<button class="mca-atc">Add to Cart</button>';
-      var atcBtn=info.querySelector('.mca-atc');
-      if(atcBtn){
-        var cardImg=(info.closest('.menu-card')||{querySelector:function(){return null;}}).querySelector('img');
-        var imgSrc=cardImg?cardImg.getAttribute('src'):'';
-        var priceNum=parseFloat((price||'').replace(/[^0-9.]/g,''))||0;
-        (function(n,p,img){
-          atcBtn.addEventListener('click',function(e){
-            e.stopPropagation();
-            if(n&&n!=='?'&&p>0){
-              if(typeof openInlineQtyModal==='function'){
-                openInlineQtyModal(n,p,img,function(qty){
-                  addToCartRaw(n,p,img,qty);
-                  if(typeof toast==='function') toast(n,'Added to cart','');
-                });
-              } else {
-                addToCartRaw(n,p,img,1);
-                if(typeof toast==='function') toast(n,'Added to cart','');
-              }
-            } else {
-              if(typeof openOverlay==='function') openOverlay('contact-overlay');
-            }
-          });
-        })(name,priceNum,imgSrc);
-      }
       if(isCarousel){
         info.querySelector('.mca-atc').addEventListener('click',function(e){e.stopPropagation();});
       }
@@ -440,22 +409,5 @@
   });
 })();
 </script>
-<div id="water-type-overlay" aria-hidden="true">
-  <div class="wt-overlay-box">
-    <h3 class="wt-overlay-title">Select Water Type</h3>
-    <div class="wt-overlay-opts">
-      <button class="wt-overlay-opt" data-type="ro"><span class="wto-name">RO Water</span><span class="wto-sub">Ultra-pure, 99% contaminants removed</span></button>
-      <button class="wt-overlay-opt" data-type="alkaline"><span class="wto-name">Alkaline Water</span><span class="wto-sub">pH 8.5+, smooth taste</span></button>
-      <button class="wt-overlay-opt" data-type="hydrogen"><span class="wto-name">Hydrogen Water</span><span class="wto-sub">Infused molecular hydrogen</span></button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
-</script>
-<script src="prices.js"></script>
-<script src="cart-modal.js"></script>
-<script src="auth.js"></script>
 </body>
 </html>
-

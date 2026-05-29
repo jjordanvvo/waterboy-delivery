@@ -153,57 +153,102 @@ function renderStopList(orders) {
   const list = document.getElementById('stop-list');
   if (!list) return;
 
-  if (!orders.length) {
+  // Build unified stop list: deliveries + pickups + refill pickups
+  const pickups      = Store.getList(WB.KEYS.pickups).filter(p => p.status === 'scheduled');
+  const refillPickups = Store.getList(WB.KEYS.refillPickups || 'wb_refill_pickups').filter(p => p.status === 'scheduled');
+
+  const allStops = [
+    ...orders.map(o => ({ ...o, _stopType: 'delivery' })),
+    ...pickups.map(p => ({ ...p, _stopType: 'bottle_pickup' })),
+    ...refillPickups.map(p => ({ ...p, _stopType: 'refill_pickup' })),
+  ];
+
+  if (!allStops.length) {
     list.innerHTML = `<div class="empty-state"><div class="empty-state-icon" style="background:rgba(34,197,94,0.12);color:var(--success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="empty-state-title">All deliveries done!</div><div class="empty-state-sub">Great work today. Check back for new orders.</div></div>`;
     return;
   }
 
-  list.innerHTML = orders.map((order, idx) => {
-    const cust       = Store.findById(WB.KEYS.customers, order.customerId);
-    const bottles    = order.items.reduce((s, i) => s + i.qty, 0);
-    const pickupQty  = cust?.bottles || 0;
-    const mapsUrl    = `https://maps.google.com/?q=${encodeURIComponent(order.customerAddress)}`;
-    const timeWindow = DEMO_TIME_WINDOWS[idx % DEMO_TIME_WINDOWS.length];
-    const note       = DEMO_NOTES[idx % DEMO_NOTES.length];
-    const isDone     = order.status === 'delivered';
-    const isMissed   = order.status === 'missed' || order.status === 'cancelled';
-    const statusBadge = isDone ? 'badge-green' : isMissed ? 'badge-red' : 'badge-yellow';
-    const statusTxt   = isDone ? 'Completed' : isMissed ? 'Missed' : 'Pending';
+  const slotLabels = { morning:'8am–12pm', afternoon:'12pm–4pm', evening:'4pm–7pm' };
+
+  list.innerHTML = allStops.map((stop, idx) => {
+    const isDelivery    = stop._stopType === 'delivery';
+    const isPickup      = stop._stopType === 'bottle_pickup';
+    const isRefill      = stop._stopType === 'refill_pickup';
+
+    const cust          = Store.findById(WB.KEYS.customers, stop.customerId);
+    const address       = isDelivery ? stop.customerAddress : (stop.address || cust?.address || 'Address on file');
+    const customerName  = isDelivery ? stop.customerName : (stop.customerName || cust?.name || 'Customer');
+    const mapsUrl       = `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+    const timeWindow    = isDelivery
+      ? DEMO_TIME_WINDOWS[idx % DEMO_TIME_WINDOWS.length]
+      : (slotLabels[stop.timeSlot] || 'See schedule');
+    const note          = isDelivery ? DEMO_NOTES[idx % DEMO_NOTES.length] : (stop.notes || '');
+    const isDone        = stop.status === 'delivered' || stop.status === 'completed';
+    const isMissed      = stop.status === 'missed' || stop.status === 'cancelled';
+    const statusBadge   = isDone ? 'badge-green' : isMissed ? 'badge-red' : 'badge-yellow';
+    const statusTxt     = isDone ? 'Completed' : isMissed ? 'Missed' : 'Pending';
+
+    // Type badge
+    let typeBadge = '';
+    if (isPickup) typeBadge = `<span style="background:rgba(245,158,11,0.15);color:#F59E0B;border:1px solid rgba(245,158,11,0.35);border-radius:6px;padding:2px 8px;font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">PICKUP · ${stop.bottleCount} btl</span>`;
+    if (isRefill) typeBadge = `<span style="background:rgba(249,115,22,0.15);color:#F97316;border:1px solid rgba(249,115,22,0.35);border-radius:6px;padding:2px 8px;font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">REFILL PICKUP · ${stop.bottleCount} jug</span>`;
+
+    const deliveryMeta = isDelivery
+      ? (() => { const bottles = stop.items.reduce((s, i) => s + i.qty, 0); const pickupQty = cust?.bottles || 0; return `<span class="stop-items">${stop.items.map(i => `${i.qty}× ${i.productName}`).join(', ')}</span><span class="stop-bottles-badge">${bottles} deliver · ${pickupQty} return</span>`; })()
+      : `<span class="stop-items" style="color:var(--white-50)">${isPickup ? 'Empty bottle collection' : 'Jug pickup for refill'}</span>`;
 
     return `
       <div class="stop-card ${isDone ? 'priority-normal' : 'priority-high'}" style="${isDone ? 'opacity:.7' : ''}">
         <div class="stop-card-head">
           <div class="stop-number">${idx + 1}</div>
-          <div style="flex:1;min-width:0">
-            <div class="stop-customer-name">${order.customerName}</div>
-            <div style="font-size:.75rem;color:var(--white-40)">⏱ ${timeWindow}</div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+            <div class="stop-customer-name">${customerName}</div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:.75rem;color:var(--white-40)">⏱ ${timeWindow}</span>
+              ${typeBadge}
+            </div>
           </div>
           <span class="badge ${statusBadge}">${statusTxt}</span>
         </div>
         <a href="${mapsUrl}" target="_blank" class="stop-address" style="text-decoration:none;color:inherit;display:flex;align-items:flex-start;gap:6px;padding:8px 0;border-top:1px solid var(--blue-border)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0;margin-top:2px;stroke:var(--cyan)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span style="font-size:.8125rem;color:var(--white-70)">${order.customerAddress}</span>
+          <span style="font-size:.8125rem;color:var(--white-70)">${address}</span>
         </a>
-        <div class="stop-meta">
-          <span class="stop-items">${order.items.map(i => `${i.qty}× ${i.productName}`).join(', ')}</span>
-          <span class="stop-bottles-badge">${bottles} deliver · ${pickupQty} return</span>
-        </div>
+        <div class="stop-meta">${deliveryMeta}</div>
         ${note ? `<div style="font-size:.75rem;color:var(--warning);margin-top:6px;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${note}</div>` : ''}
-        ${!isDone && !isMissed ? `
+        ${!isDone && !isMissed && isDelivery ? `
         <div class="stop-actions">
           <a href="${mapsUrl}" target="_blank" class="btn btn-secondary btn-sm flex-1" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Navigate
           </a>
-          <button class="btn btn-primary btn-sm flex-1" onclick="event.stopPropagation();openCompleteModal('${order.id}')">✓ Complete</button>
-          <button class="btn btn-sm" style="background:rgba(239,68,68,0.12);color:var(--danger);border:1px solid rgba(239,68,68,0.25)" onclick="event.stopPropagation();markMissed('${order.id}')">Missed</button>
+          <button class="btn btn-primary btn-sm flex-1" onclick="event.stopPropagation();openCompleteModal('${stop.id}')">✓ Complete</button>
+          <button class="btn btn-sm" style="background:rgba(239,68,68,0.12);color:var(--danger);border:1px solid rgba(239,68,68,0.25)" onclick="event.stopPropagation();markMissed('${stop.id}')">Missed</button>
         </div>
-        <button class="btn btn-secondary btn-sm btn-full" style="margin-top:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--success)" onclick="event.stopPropagation();openDrvChat('${order.id}')">Message Customer</button>` : isDone ? `
+        <button class="btn btn-secondary btn-sm btn-full" style="margin-top:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--success)" onclick="event.stopPropagation();openDrvChat('${stop.id}')">Message Customer</button>` : ''}
+        ${!isDone && !isMissed && (isPickup || isRefill) ? `
+        <div class="stop-actions">
+          <a href="${mapsUrl}" target="_blank" class="btn btn-secondary btn-sm flex-1" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Navigate
+          </a>
+          <button class="btn btn-primary btn-sm flex-1" onclick="event.stopPropagation();markPickupComplete('${stop.id}','${stop._stopType}')">✓ Picked Up</button>
+        </div>` : ''}
+        ${isDone ? `
         <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.8125rem;color:var(--success);font-weight:600">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>Delivery completed
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>${isDelivery ? 'Delivery completed' : 'Pickup completed'}
         </div>` : ''}
       </div>`;
   }).join('');
 }
+
+function markPickupComplete(id, type) {
+  const key = type === 'refill_pickup' ? (WB.KEYS.refillPickups || 'wb_refill_pickups') : WB.KEYS.pickups;
+  const items = Store.getList(key);
+  const idx = items.findIndex(p => p.id === id);
+  if (idx !== -1) { items[idx].status = 'completed'; Store.set(key, items); }
+  Toast.success('Pickup Complete!', 'Stop marked as completed.');
+  renderRoute();
+}
+window.markPickupComplete = markPickupComplete;
 
 function callCustomer(custId) {
   const cust = Store.findById(WB.KEYS.customers, custId);

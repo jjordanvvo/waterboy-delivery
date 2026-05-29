@@ -598,8 +598,13 @@
           <div style="font-size:.6875rem;color:var(--white-40);margin-top:3px">lifetime</div>
         </div>
       </div>
-      <div style="padding:16px 20px 0">
-        <button class="btn btn-primary btn-full btn-lg" onclick="openPickupModal()">+ Schedule Bottle Pickup</button>
+      <div style="padding:16px 20px 0;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary btn-full btn-lg" onclick="openPickupFlow()">+ Schedule Bottle Pickup</button>
+        <button class="btn btn-secondary btn-full" onclick="openRefillFlow()">Schedule Pickup &amp; Refill</button>
+        <a href="tel:+19166193218" class="btn btn-full" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-size:.9375rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:var(--radius-md);text-decoration:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
+          Call for Pickup: (916) 619-3218
+        </a>
       </div>
       <div style="margin:20px 20px 8px;font-size:.8125rem;font-weight:600;color:var(--white-40);text-transform:uppercase;letter-spacing:.06em">Scheduled Pickups</div>
       <div id="pickups-list" style="padding:0 20px"></div>
@@ -1119,6 +1124,7 @@
         <div class="co-step-dot" id="co-dot-2"></div>
         <div class="co-step-dot" id="co-dot-3"></div>
         <div class="co-step-dot" id="co-dot-4"></div>
+        <div class="co-step-dot" id="co-dot-5"></div>
       </div>
       <button class="btn-icon" onclick="closeCheckout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
@@ -1193,7 +1199,18 @@
       </div>
     </div>
 
-    <!-- Step 3: Payment -->
+    <!-- Step 3: Add-Ons -->
+    <div id="co-step-addons" class="co-step-content" style="display:none">
+      <div class="co-step-inner">
+        <h2 class="co-step-title">Add-Ons</h2>
+        <p style="font-size:.875rem;color:var(--white-40);text-align:center;margin:0 0 20px">Electrolytes and supplements delivered with your water.</p>
+        <div id="co-addons-list" style="display:flex;flex-direction:column;gap:10px"></div>
+        <button class="btn btn-ghost btn-full" style="margin-top:16px;color:var(--white-40);font-size:.875rem" onclick="coSkipAddons()">No thanks, continue without add-ons →</button>
+        <button class="btn btn-primary btn-full btn-lg" style="margin-top:8px" onclick="coNext()" id="co-next-addons">Add to Order &amp; Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Payment -->
     <div id="co-step-payment" class="co-step-content" style="display:none">
       <div class="co-step-inner">
         <h2 class="co-step-title">Payment</h2>
@@ -1267,7 +1284,7 @@
       </div>
     </div>
 
-    <!-- Step 4: Confirmation -->
+    <!-- Step 5: Confirmation -->
     <div id="co-step-confirm" class="co-step-content" style="display:none">
       <div class="co-step-inner" style="text-align:center;padding-top:40px">
         <div class="confirm-circle" id="confirm-circle">
@@ -1353,18 +1370,212 @@
   </div>
 </div>
 
-<!-- ── Pickup Schedule Modal ─────────────────────────────────── -->
-<div id="pickup-modal" class="modal-overlay">
-  <div class="modal" style="max-width:400px">
-    <div class="modal-header">
-      <span class="modal-title">Schedule Bottle Pickup</span>
-      <button class="modal-close" data-close-modal="pickup-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+<!-- ── Pickup Flow (full-screen multi-step) ───────────────────── -->
+<div id="pickup-flow" class="checkout-flow" style="display:none">
+  <div class="co-header">
+    <button class="btn-icon" onclick="pickupFlowBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="co-steps-indicator">
+      <div class="co-step-dot" id="pf-dot-1"></div>
+      <div class="co-step-dot" id="pf-dot-2"></div>
+      <div class="co-step-dot" id="pf-dot-3"></div>
+      <div class="co-step-dot" id="pf-dot-4"></div>
     </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Pickup Date</label><input type="date" id="pickup-date" class="form-input" /></div>
-      <div class="form-group" style="margin-top:14px"><label class="form-label">Number of Bottles</label><input type="number" id="pickup-count" class="form-input" min="1" max="20" value="1" /></div>
-      <div class="form-group" style="margin-top:14px"><label class="form-label">Notes <span style="color:var(--white-40);font-weight:400">(optional)</span></label><input type="text" id="pickup-notes" class="form-input" placeholder="Leave at door, ring bell, etc." /></div>
-      <button class="btn btn-primary btn-full" onclick="savePickup()" style="margin-top:16px">Confirm Pickup</button>
+    <button class="btn-icon" onclick="closePickupFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+
+  <!-- PF Step 1: Bottle Count -->
+  <div id="pf-step-1" class="co-step-content" style="display:none">
+    <div class="co-step-inner" style="text-align:center">
+      <h2 class="co-step-title">How many bottles?</h2>
+      <p style="font-size:.875rem;color:var(--white-40);margin-bottom:32px">Select the number of empty bottles for pickup.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:28px;margin-bottom:32px">
+        <button style="width:56px;height:56px;border-radius:50%;background:var(--white-08);border:1px solid var(--blue-border);font-size:1.75rem;color:var(--white-90);cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="changePickupCount(-1)">−</button>
+        <div>
+          <span id="pf-bottle-count" style="font-family:var(--font-head);font-size:3.5rem;font-weight:800;color:var(--cyan);line-height:1">1</span>
+          <div style="font-size:.8125rem;color:var(--white-40);margin-top:4px">bottle(s)</div>
+        </div>
+        <button style="width:56px;height:56px;border-radius:50%;background:var(--cyan);border:none;font-size:1.75rem;color:var(--blue-deep);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700" onclick="changePickupCount(1)">+</button>
+      </div>
+      <div style="font-size:.8125rem;color:var(--white-40);margin-bottom:32px">Max 20 bottles per pickup request.</div>
+      <button class="btn btn-primary btn-full btn-lg" onclick="pickupFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- PF Step 2: Calendar -->
+  <div id="pf-step-2" class="co-step-content" style="display:none">
+    <div class="co-step-inner">
+      <h2 class="co-step-title">Choose Pickup Date</h2>
+      <div id="pf-cal-month-label" style="font-size:.9375rem;font-weight:700;text-align:center;margin:20px 0 12px;color:var(--white-90)"></div>
+      <div class="cal-grid-head">
+        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+      </div>
+      <div id="pf-cal-grid" class="cal-grid"></div>
+      <p style="font-size:.75rem;color:var(--white-40);margin-top:12px;text-align:center">Available Monday–Saturday.</p>
+      <button class="btn btn-primary btn-full btn-lg" style="margin-top:20px" onclick="pickupFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- PF Step 3: Time Window -->
+  <div id="pf-step-3" class="co-step-content" style="display:none">
+    <div class="co-step-inner">
+      <h2 class="co-step-title">Choose a Time Window</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+        <div class="co-type-card" id="pf-slot-morning" onclick="selectPickupSlot('morning')">
+          <div class="co-type-body">
+            <div class="co-type-name">Morning</div>
+            <div class="co-type-desc">8:00 am – 12:00 pm</div>
+          </div>
+          <div class="co-type-check" id="pf-check-morning"></div>
+        </div>
+        <div class="co-type-card" id="pf-slot-afternoon" onclick="selectPickupSlot('afternoon')">
+          <div class="co-type-body">
+            <div class="co-type-name">Afternoon</div>
+            <div class="co-type-desc">12:00 pm – 4:00 pm</div>
+          </div>
+          <div class="co-type-check" id="pf-check-afternoon"></div>
+        </div>
+        <div class="co-type-card" id="pf-slot-evening" onclick="selectPickupSlot('evening')">
+          <div class="co-type-body">
+            <div class="co-type-name">Evening</div>
+            <div class="co-type-desc">4:00 pm – 7:00 pm</div>
+          </div>
+          <div class="co-type-check" id="pf-check-evening"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" style="margin-top:24px" onclick="pickupFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- PF Step 4: Summary + Confirm -->
+  <div id="pf-step-4" class="co-step-content" style="display:none">
+    <div class="co-step-inner" style="text-align:center">
+      <h2 class="co-step-title">Confirm Pickup</h2>
+      <div id="pf-summary" style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:20px;margin:24px 0;text-align:left;font-size:.9375rem;color:var(--white-70);line-height:2"></div>
+      <button class="btn btn-primary btn-full btn-lg" onclick="savePickupFlow()">Confirm Pickup</button>
+      <div id="pf-confirmed" style="display:none;margin-top:24px">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5" style="width:24px;height:24px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-family:var(--font-head);font-size:1.375rem;font-weight:800;margin-bottom:8px">Pickup Scheduled!</div>
+        <div style="font-size:.875rem;color:var(--white-40);margin-bottom:24px">Your driver will pick up the bottles on the scheduled date.</div>
+        <button class="btn btn-secondary btn-full" onclick="closePickupFlow()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Refill Flow (full-screen multi-step) ────────────────────── -->
+<div id="refill-flow" class="checkout-flow" style="display:none">
+  <div class="co-header">
+    <button class="btn-icon" onclick="refillFlowBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="co-steps-indicator">
+      <div class="co-step-dot" id="rf-dot-1"></div>
+      <div class="co-step-dot" id="rf-dot-2"></div>
+      <div class="co-step-dot" id="rf-dot-3"></div>
+      <div class="co-step-dot" id="rf-dot-4"></div>
+      <div class="co-step-dot" id="rf-dot-5"></div>
+    </div>
+    <button class="btn-icon" onclick="closeRefillFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+
+  <!-- RF Step 1: Bottle Count -->
+  <div id="rf-step-1" class="co-step-content" style="display:none">
+    <div class="co-step-inner" style="text-align:center">
+      <h2 class="co-step-title">Pickup &amp; Refill</h2>
+      <p style="font-size:.875rem;color:var(--white-40);margin-bottom:8px">We pick up your empty jugs, refill them, and deliver them back.</p>
+      <p style="font-size:.8125rem;color:var(--cyan);margin-bottom:32px">Priced at the standard per-jug delivery rate.</p>
+      <p style="font-size:.875rem;font-weight:600;color:var(--white-70);margin-bottom:20px">How many jugs?</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:28px;margin-bottom:32px">
+        <button style="width:56px;height:56px;border-radius:50%;background:var(--white-08);border:1px solid var(--blue-border);font-size:1.75rem;color:var(--white-90);cursor:pointer;display:flex;align-items:center;justify-content:center" onclick="changeRefillCount(-1)">−</button>
+        <div>
+          <span id="rf-bottle-count" style="font-family:var(--font-head);font-size:3.5rem;font-weight:800;color:var(--cyan);line-height:1">1</span>
+          <div style="font-size:.8125rem;color:var(--white-40);margin-top:4px">jug(s)</div>
+        </div>
+        <button style="width:56px;height:56px;border-radius:50%;background:var(--cyan);border:none;font-size:1.75rem;color:var(--blue-deep);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700" onclick="changeRefillCount(1)">+</button>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:1.125rem;font-weight:700;color:var(--cyan);margin-bottom:8px" id="rf-price-preview">$6.99</div>
+      <div style="font-size:.75rem;color:var(--white-40);margin-bottom:32px">Total for refill service</div>
+      <button class="btn btn-primary btn-full btn-lg" onclick="refillFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- RF Step 2: Calendar -->
+  <div id="rf-step-2" class="co-step-content" style="display:none">
+    <div class="co-step-inner">
+      <h2 class="co-step-title">Choose Pickup Date</h2>
+      <div id="rf-cal-month-label" style="font-size:.9375rem;font-weight:700;text-align:center;margin:20px 0 12px;color:var(--white-90)"></div>
+      <div class="cal-grid-head">
+        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+      </div>
+      <div id="rf-cal-grid" class="cal-grid"></div>
+      <p style="font-size:.75rem;color:var(--white-40);margin-top:12px;text-align:center">Available Monday–Saturday.</p>
+      <button class="btn btn-primary btn-full btn-lg" style="margin-top:20px" onclick="refillFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- RF Step 3: Time Window -->
+  <div id="rf-step-3" class="co-step-content" style="display:none">
+    <div class="co-step-inner">
+      <h2 class="co-step-title">Choose a Time Window</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+        <div class="co-type-card" id="rf-slot-morning" onclick="selectRefillSlot('morning')">
+          <div class="co-type-body">
+            <div class="co-type-name">Morning</div>
+            <div class="co-type-desc">8:00 am – 12:00 pm</div>
+          </div>
+          <div class="co-type-check" id="rf-check-morning"></div>
+        </div>
+        <div class="co-type-card" id="rf-slot-afternoon" onclick="selectRefillSlot('afternoon')">
+          <div class="co-type-body">
+            <div class="co-type-name">Afternoon</div>
+            <div class="co-type-desc">12:00 pm – 4:00 pm</div>
+          </div>
+          <div class="co-type-check" id="rf-check-afternoon"></div>
+        </div>
+        <div class="co-type-card" id="rf-slot-evening" onclick="selectRefillSlot('evening')">
+          <div class="co-type-body">
+            <div class="co-type-name">Evening</div>
+            <div class="co-type-desc">4:00 pm – 7:00 pm</div>
+          </div>
+          <div class="co-type-check" id="rf-check-evening"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" style="margin-top:24px" onclick="refillFlowNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- RF Step 4: Notes -->
+  <div id="rf-step-4" class="co-step-content" style="display:none">
+    <div class="co-step-inner">
+      <h2 class="co-step-title">Any Special Instructions?</h2>
+      <p style="font-size:.875rem;color:var(--white-40);margin-bottom:24px">Let your driver know anything helpful about the pickup.</p>
+      <div class="form-group">
+        <label class="form-label">Notes <span style="font-weight:400;color:var(--white-40)">(optional)</span></label>
+        <textarea id="rf-notes-input" class="form-input" style="min-height:100px;resize:none" placeholder="Gate code, leave at door, bottles are in garage…"></textarea>
+      </div>
+      <div style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:14px;margin-top:20px">
+        <div style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white-40);margin-bottom:8px">Pricing</div>
+        <div id="rf-pricing-line" style="font-family:var(--font-mono);font-size:1rem;font-weight:700;color:var(--cyan)"></div>
+        <div style="font-size:.75rem;color:var(--white-40);margin-top:4px">Charged at standard per-jug rate</div>
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" style="margin-top:24px" onclick="refillFlowNext()">Review Order</button>
+    </div>
+  </div>
+
+  <!-- RF Step 5: Summary + Confirm -->
+  <div id="rf-step-5" class="co-step-content" style="display:none">
+    <div class="co-step-inner" style="text-align:center">
+      <h2 class="co-step-title">Confirm Refill Pickup</h2>
+      <div id="rf-summary" style="background:var(--blue-card);border:1px solid var(--blue-border);border-radius:var(--radius-md);padding:20px;margin:24px 0;text-align:left;font-size:.9375rem;color:var(--white-70);line-height:2"></div>
+      <button class="btn btn-primary btn-full btn-lg" onclick="saveRefillFlow()">Confirm Refill Pickup</button>
+      <div id="rf-confirmed" style="display:none;margin-top:24px">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5" style="width:24px;height:24px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-family:var(--font-head);font-size:1.375rem;font-weight:800;margin-bottom:8px">Refill Pickup Scheduled!</div>
+        <div style="font-size:.875rem;color:var(--white-40);margin-bottom:24px">Your driver will pick up and refill your jugs on the scheduled date.</div>
+        <button class="btn btn-secondary btn-full" onclick="closeRefillFlow()">Done</button>
+      </div>
     </div>
   </div>
 </div>

@@ -140,6 +140,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         <span class="nav-label">Rentals</span>
       </div>
+      <div class="sidebar-nav-item" data-page="pickups">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><path d="M13 11v2M17 11v2"/></svg>
+        <span class="nav-label">Pickups</span>
+      </div>
       <div class="sidebar-nav-item" data-page="messages">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         <span class="nav-label">Messages</span>
@@ -716,6 +720,27 @@
             <table class="data-table">
               <thead><tr><th>Customer</th><th>Model</th><th>Duration</th><th>Monthly</th><th>End Date</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="rentals-admin-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PICKUPS PAGE -->
+      <div id="admin-page-pickups" class="admin-page">
+        <div class="page-header">
+          <div><div class="page-header-title">Pickups</div><div class="page-header-sub">Bottle pickups and refill pickup requests</div></div>
+          <button class="btn btn-secondary btn-sm" onclick="exportPickupsCSV()">Export CSV</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap" id="pickups-filter-tabs">
+          <button class="btn btn-primary btn-sm" data-filter="all" onclick="setPickupFilter('all',this)">All</button>
+          <button class="btn btn-secondary btn-sm" data-filter="bottle_pickup" onclick="setPickupFilter('bottle_pickup',this)">Bottle Pickup</button>
+          <button class="btn btn-secondary btn-sm" data-filter="refill_pickup" onclick="setPickupFilter('refill_pickup',this)">Refill Pickup</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="pickups-admin-table" style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>Customer</th><th>Address</th><th>Bottles</th><th>Scheduled Date</th><th>Time Window</th><th>Type</th><th>Status</th></tr></thead>
+              <tbody id="pickups-admin-tbody"></tbody>
             </table>
           </div>
         </div>

@@ -87,9 +87,9 @@ const CHECKOUT_ADDONS = [
 ];
 
 /* ── Zone Calculation ───────────────────────────────────────────── */
-const STORE_LAT=38.4088, STORE_LNG=-121.4208;
+const STORE_LAT=38.4088, STORE_LNG=-121.3716;
 const ZIP_COORDS={
-  '95758':{lat:38.4088,lng:-121.4208},
+  '95758':{lat:38.4088,lng:-121.3716},
   '95757':{lat:38.3930,lng:-121.4490},
   '95624':{lat:38.4380,lng:-121.3850},
   '95759':{lat:38.3780,lng:-121.4300},
