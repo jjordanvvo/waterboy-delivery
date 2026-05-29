@@ -1124,5 +1124,128 @@ function addAlsoBought(name,price,btn){
 }
 
 function updateCoTotal(){
+  var base=getBasePrice();
+  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var addonTotal=alsoAddons.reduce(function(s,a){return s+a.price;},0);
+  var total=base+zoneFee+addonTotal;
+  var tv=document.querySelector('#co-summary-content .sp-total-val');
+  if(tv)tv.textContent='$'+total.toFixed(2);
+  var pt=document.getElementById('pay-text');
+  if(pt)pt.textContent='PAY $'+total.toFixed(2);
+  var list=document.getElementById('also-addons-list');
+  if(list)list.innerHTML=alsoAddons.map(function(a){
+    return '<div class="sp-row"><span>+ '+a.name+'</span><span>$'+a.price.toFixed(2)+'</span></div>';
+  }).join('');
+}
 
+function openCheckout(){
+  if(!validateStep3())return;
+  alsoAddons=[];
+  document.querySelectorAll('.co-also-add').forEach(function(b){b.textContent='+ Add';b.classList.remove('added');});
+  document.getElementById('also-addons-list').innerHTML='';
+  state.name=document.getElementById('f-name').value.trim();
+  state.addr=document.getElementById('f-addr').value.trim();
+  state.city=document.getElementById('f-city').value.trim();
+  state.stateField=document.getElementById('f-state').value.trim();
+  state.phone=document.getElementById('f-phone').value.trim();
+  state.email=document.getElementById('f-email').value.trim();
+  saveDraft();
+  buildCheckoutSummary();
+  document.getElementById('checkout-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(initStripe,50);
+}
 
+function closeCheckout(){
+  document.getElementById('checkout-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function buildCheckoutSummary(){
+  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var base=getBasePrice();
+  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var total=base+zoneFee;
+  var timeLbl=state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  var delLbl=state.delOpt==='asap'?'ASAP — '+timeLbl:'Scheduled: '+(state.calDate||'')+' — '+timeLbl;
+  document.getElementById('co-summary-content').innerHTML=
+    '<div class="sp-row"><span>Water</span><span>'+wtLbl+'</span></div>'
+    +'<div class="sp-row"><span>Amount</span><span>'+amtLbl+'</span></div>'
+    +'<div class="sp-row"><span>Delivery</span><span>'+delLbl+'</span></div>'
+    +'<div class="sp-row"><span>Address</span><span style="font-size:12px">'+state.addr+', '+state.city+', '+state.stateField+' '+state.zip+'</span></div>'
+    +'<hr class="sp-div">'
+    +'<div class="sp-row"><span>Subtotal</span><span>$'+base.toFixed(2)+'</span></div>'
+    +'<div class="sp-row"><span>Delivery</span><span>'+(zoneFee===0?'FREE':'$'+zoneFee.toFixed(2))+'</span></div>'
+    +'<div class="sp-total-row" style="margin-top:14px"><span class="sp-total-lbl">Total</span><span class="sp-total-val">$'+total.toFixed(2)+'</span></div>';
+}
+
+function initStripe(){
+  if(typeof Stripe==='undefined'){
+    var el=document.getElementById('stripe-card-element');
+    if(el)el.innerHTML='<p style="color:#FF6B6B;font-family:Inter,sans-serif;font-size:13px;padding:12px">Stripe unavailable. Payments processed on live site.</p>';
+    return;
+  }
+  if(stripe)return;
+  stripe=Stripe('YOUR_PUBLISHABLE_KEY_HERE');
+  var elements=stripe.elements({fonts:[{cssSrc:'https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap'}]});
+  cardElement=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#B8E6FF'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
+  cardElement.mount('#stripe-card-element');
+  cardElement.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
+}
+
+async function handlePayment(){
+  var btn=document.getElementById('btn-pay');
+  btn.classList.add('loading');btn.disabled=true;
+  var errEl=document.getElementById('stripe-err');
+  if(errEl)errEl.textContent='';
+  var name=(document.getElementById('ch-name')||{}).value||'';
+  if(!name.trim()){if(errEl)errEl.textContent='Please enter the cardholder name.';btn.classList.remove('loading');btn.disabled=false;return;}
+  if(!stripe||!cardElement){
+    setTimeout(function(){btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());},1200);
+    return;
+  }
+  try{
+    var result=await stripe.createPaymentMethod({type:'card',card:cardElement,billing_details:{name:name.trim(),email:state.email,phone:state.phone}});
+    if(result.error){if(errEl)errEl.textContent=result.error.message;btn.classList.remove('loading');btn.disabled=false;return;}
+    setTimeout(function(){btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());},800);
+  }catch(e){if(errEl)errEl.textContent='Payment error. Please try again.';btn.classList.remove('loading');btn.disabled=false;}
+}
+
+function showSuccess(orderId){
+  var base=getBasePrice();
+  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var total=base+zoneFee;
+  var timeLbl=state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  var delivDate=state.delOpt==='asap'?'As Soon As Possible':(state.calDate||'Scheduled');
+  var fullAddr=state.addr+', '+state.city+', '+state.stateField+' '+state.zip;
+  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var now=Date.now();
+  var reschUntil=state.calDate?(new Date(state.calDate).getTime()-86400000):(now+86400000);
+  var order={orderId:orderId,waterType:wtLbl,quantity:amtLbl,bundle:state.amtMode==='bundle'?amtLbl:null,price:total,deliveryTime:timeLbl,deliveryDate:delivDate,address:fullAddr,phone:state.phone,email:state.email,status:'confirmed',placedAt:now,canRescheduleUntil:reschUntil};
+  try{var orders=JSON.parse(localStorage.getItem('wb_orders_v1')||'[]');orders.push(order);localStorage.setItem('wb_orders_v1',JSON.stringify(orders));}catch(_){}
+  try{sessionStorage.removeItem(DRAFT_KEY);}catch(_){}
+  var succId=document.getElementById('success-order-id');if(succId)succId.textContent=orderId;
+  var succDet=document.getElementById('success-details');
+  if(succDet)succDet.innerHTML='<div class="sdr"><span>Water Type</span><strong>'+wtLbl+'</strong></div>'+'<div class="sdr"><span>Amount</span><strong>'+amtLbl+'</strong></div>'+'<div class="sdr"><span>Delivery</span><strong>'+delivDate+'</strong></div>'+'<div class="sdr"><span>Window</span><strong>'+timeLbl+'</strong></div>'+'<div class="sdr"><span>Address</span><strong>'+fullAddr+'</strong></div>'+'<div class="sdr"><span>Total</span><strong>$'+total.toFixed(2)+'</strong></div>';
+  var calBtn=document.getElementById('btn-add-cal');if(calBtn)calBtn.href=buildCalLink(order,timeLbl,delivDate);
+  var succOv=document.getElementById('success-overlay');if(succOv){succOv.classList.add('open');document.body.style.overflow='hidden';}
+  (function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' — '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
+}
+
+function buildCalLink(order,timeLbl,delivDate){
+  var startH=order.deliveryTime.includes('Morning')?8:order.deliveryTime.includes('Afternoon')?12:16;
+  var d=order.deliveryDate==='As Soon As Possible'?new Date():new Date(order.deliveryDate+'T00:00:00');
+  d.setHours(startH,0,0,0);
+  function pad(n){return n.toString().padStart(2,'0');}
+  function fmt(dt){return dt.getFullYear()+''+pad(dt.getMonth()+1)+''+pad(dt.getDate())+'T'+pad(dt.getHours())+'0000';}
+  var start=fmt(d);d.setHours(startH+3);var end=fmt(d);
+  return 'https://www.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Waterboy Delivery — '+order.email+' — '+order.orderId)+'&dates='+start+'/'+end+'&details='+encodeURIComponent('Order: '+order.orderId+'\nWater: '+order.waterType+'\nAmount: '+order.quantity+'\nTotal: $'+order.price.toFixed(2)+'\nPhone: '+order.phone+'\nEmail: '+order.email)+'&location='+encodeURIComponent(order.address);
+}
+</script>
+
+<script src="left-menu.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

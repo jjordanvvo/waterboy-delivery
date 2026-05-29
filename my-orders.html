@@ -317,4 +317,257 @@ a:visited{color:inherit;}#navbar a:visited,#navbar a:active,#navbar a:focus{colo
   </div>
 </main>
 
+<!-- Reschedule Modal -->
+<div class="modal-overlay" id="reschedule-modal" role="dialog" aria-modal="true" aria-label="Reschedule delivery">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeReschedule()" aria-label="Close">&times;</button>
+    <h3 class="modal-h">Reschedule Delivery</h3>
+    <div class="cal-wrap" id="reschedule-cal"></div>
+    <div class="time-pills" id="reschedule-time-pills">
+      <button class="time-pill" onclick="pickTime(this,'Morning (7–11am)')">Morning</button>
+      <button class="time-pill" onclick="pickTime(this,'Afternoon (12–4pm)')">Afternoon</button>
+      <button class="time-pill" onclick="pickTime(this,'Evening (4–7pm)')">Evening</button>
+    </div>
+    <button class="btn-confirm-reschedule" id="btn-confirm-reschedule" onclick="confirmReschedule()" disabled>Confirm Reschedule</button>
+  </div>
+</div>
 
+<!-- Cancel Confirm Dialog -->
+<div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-label="Cancel order">
+  <div class="confirm-dialog">
+    <h3 class="cd-h">Cancel this order?</h3>
+    <p class="cd-p">This cannot be undone. For refunds call <a href="tel:+19166193218" style="color:#00D4FF">(916) 619-3218</a>.</p>
+    <div class="cd-actions">
+      <button class="cd-cancel-btn" onclick="closeCancelModal()">Keep Order</button>
+      <button class="cd-confirm-btn" onclick="doCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer id="footer">
+  <div class="hn-footer-grid">
+    <div class="hn-footer-brand">
+      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Delivery">
+      <div class="hn-footer-tagline">Pure Water. Delivered.</div>
+      <p class="hn-footer-desc">Premium water delivery for homes and businesses in Elk Grove and Sacramento County.</p>
+      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Delivery</h4>
+      <a href="water-delivery.html">Water Delivery</a>
+      <a href="delivery-areas.html">Service Areas</a>
+      <a href="bottle-pickup.html">Bottle Pickup</a>
+      <a href="dispensers.html">Dispensers</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Shop Water</a>
+      <a href="alkaline-water.html">Alkaline Water</a>
+      <a href="reverse-osmosis-water.html">RO Water</a>
+      <a href="products.html">Add-Ons</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="hn-footer-bottom">
+    <p class="hn-footer-copy">&copy; 2026 Waterboy Delivery LLC. All rights reserved.</p>
+    <nav class="hn-footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </nav>
+  </div>
+</footer>
+
+<div id="left-drawer-overlay" class="left-drawer-overlay"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="left-drawer-header">
+    <span class="left-drawer-title">Navigation</span>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="left-drawer-nav">
+    <a href="index.html" class="left-drawer-link">Home</a>
+    <div class="left-drawer-section-label">Shop &amp; Services</div>
+    <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+    <a href="shop.html" class="left-drawer-link">Shop Products</a>
+    <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+    <div class="left-drawer-section-label">Company</div>
+    <a href="about.html" class="left-drawer-link">About</a>
+    <a href="contact.html" class="left-drawer-link">Contact</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
+  </nav>
+</aside>
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script>
+var pendingRescheduleId=null,pendingCancelId=null;
+var reschDate=null,reschTime=null;
+
+function loadOrders(){try{return JSON.parse(localStorage.getItem('wb_orders_v1')||'[]');}catch(e){return[];}}
+function saveOrders(o){try{localStorage.setItem('wb_orders_v1',JSON.stringify(o));}catch(e){}}
+
+var currentFilter='all';
+function setFilter(f){
+  currentFilter=f;
+  document.querySelectorAll('.ft').forEach(function(b){b.classList.toggle('active',b.id==='ft-'+f);});
+  renderOrders();
+}
+
+function renderOrders(){
+  var orders=loadOrders();
+  var filtered=orders.filter(function(o){
+    if(currentFilter==='all')return true;
+    if(currentFilter==='active')return o.status==='confirmed'||o.status==='out';
+    return o.status===currentFilter;
+  }).reverse();
+  var list=document.getElementById('orders-list');
+  var empty=document.getElementById('empty-state');
+  if(!filtered.length){if(list)list.innerHTML='';if(empty)empty.classList.remove('hidden');return;}
+  if(empty)empty.classList.add('hidden');
+  if(!list)return;
+  list.innerHTML=filtered.map(function(o){
+    var placed=new Date(o.placedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    var statusLabel=o.status==='confirmed'?'Confirmed':o.status==='out'?'Out for Delivery':o.status==='delivered'?'Delivered':'Cancelled';
+    var canReschedule=o.status==='confirmed'&&(o.canRescheduleUntil||0)>Date.now();
+    var canCancel=o.status==='confirmed';
+    return '<div class="order-card">'
+      +'<div class="oc-top">'
+      +'<div><div class="oc-id">'+o.orderId+'</div><div class="oc-placed">Placed '+placed+'</div></div>'
+      +'<span class="status-badge '+o.status+'">'+statusLabel+'</span>'
+      +'</div>'
+      +'<div class="oc-grid">'
+      +'<div class="oc-field"><span class="oc-field-lbl">Water</span><span class="oc-field-val">'+o.waterType+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Amount</span><span class="oc-field-val">'+o.quantity+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Delivery</span><span class="oc-field-val">'+o.deliveryDate+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Window</span><span class="oc-field-val">'+o.deliveryTime+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Total</span><span class="oc-field-val mono">$'+o.price.toFixed(2)+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Address</span><span class="oc-field-val" style="font-size:12px">'+o.address+'</span></div>'
+      +'</div>'
+      +'<div class="oc-actions">'
+      +(canReschedule?'<button class="oc-btn reschedule" onclick="openReschedule(\''+o.orderId+'\')">Reschedule</button>':'')
+      +(canCancel?'<button class="oc-btn cancel" onclick="openCancel(\''+o.orderId+'\')">Cancel</button>':'')
+      +'<button class="oc-btn reorder" onclick="reorder(\''+o.orderId+'\')">Reorder</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function openReschedule(id){
+  pendingRescheduleId=id;reschDate=null;reschTime=null;
+  document.querySelectorAll('.time-pill').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('btn-confirm-reschedule').disabled=true;
+  buildRescheduleCalendar();
+  document.getElementById('reschedule-modal').classList.add('open');
+}
+function closeReschedule(){document.getElementById('reschedule-modal').classList.remove('open');}
+
+function pickTime(el,t){
+  document.querySelectorAll('.time-pill').forEach(function(p){p.classList.remove('active');});
+  el.classList.add('active');reschTime=t;checkReschReady();
+}
+function checkReschReady(){
+  document.getElementById('btn-confirm-reschedule').disabled=!(reschDate&&reschTime);
+}
+
+function buildRescheduleCalendar(){
+  var wrap=document.getElementById('reschedule-cal');
+  if(!wrap)return;
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now=new Date(),vy=now.getFullYear(),vm=now.getMonth();
+  function render(){
+    var min=new Date();min.setDate(min.getDate()+1);min.setHours(0,0,0,0);
+    var first=new Date(vy,vm,1).getDay(),days=new Date(vy,vm+1,0).getDate();
+    var html='<div class="cal-nav"><button class="cal-nav-btn" id="rc-prev">&lsaquo;</button><span class="cal-month-lbl">'+MONTHS[vm]+' '+vy+'</span><button class="cal-nav-btn" id="rc-next">&rsaquo;</button></div><div class="cal-weekdays">Su Mo Tu We Th Fr Sa'.split(' ').map(function(d){return'<div class="cal-wd">'+d+'</div>';}).join('')+'</div><div class="cal-grid">';
+    for(var i=0;i<first;i++)html+='<button class="cal-day empty-day" disabled></button>';
+    for(var d=1;d<=days;d++){
+      var dt=new Date(vy,vm,d);dt.setHours(0,0,0,0);
+      var past=dt<min,sun=dt.getDay()===0;
+      var sel=reschDate&&dt.toDateString()===reschDate.toDateString();
+      html+='<button class="cal-day'+(sel?' selected':'')+(past||sun?' cal-off':'')+'" '+(past||sun?'disabled':'')+' data-d="'+dt.toISOString()+'">'+d+'</button>';
+    }
+    html+='</div>';
+    wrap.innerHTML=html;
+    wrap.querySelector('#rc-prev').onclick=function(){vm--;if(vm<0){vm=11;vy--;}render();};
+    wrap.querySelector('#rc-next').onclick=function(){vm++;if(vm>11){vm=0;vy++;}render();};
+    wrap.querySelectorAll('.cal-day:not(:disabled):not(.empty-day)').forEach(function(b){
+      b.onclick=function(){reschDate=new Date(b.dataset.d);render();checkReschReady();};
+    });
+  }
+  render();
+}
+
+function confirmReschedule(){
+  if(!reschDate||!reschTime)return;
+  var orders=loadOrders();
+  var o=orders.find(function(x){return x.orderId===pendingRescheduleId;});
+  if(o){
+    o.deliveryDate=reschDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    o.deliveryTime=reschTime;
+    o.canRescheduleUntil=reschDate.getTime()-86400000;
+    saveOrders(orders);
+  }
+  closeReschedule();
+  showToast('Delivery rescheduled to '+o.deliveryDate+' — '+reschTime+'.');
+  renderOrders();
+}
+
+function openCancel(id){pendingCancelId=id;document.getElementById('cancel-modal').classList.add('open');}
+function closeCancelModal(){document.getElementById('cancel-modal').classList.remove('open');}
+function doCancel(){
+  var orders=loadOrders();
+  var idx=orders.findIndex(function(o){return o.orderId===pendingCancelId;});
+  if(idx!==-1){orders[idx].status='cancelled';saveOrders(orders);}
+  closeCancelModal();showToast('Order cancelled. For refunds call (916) 619-3218.');renderOrders();
+}
+
+function reorder(id){
+  var orders=loadOrders();
+  var o=orders.find(function(x){return x.orderId===id;});
+  if(!o){window.location.href='order.html';return;}
+  var draft={waterType:o.waterType&&o.waterType.toLowerCase().includes('alkaline')?'alkaline':'purified',amtMode:'onetime',qty:1,bundleId:null,delOpt:null,timePref:null,calDate:null,name:'',addr:'',city:'Elk Grove',stateField:'CA',zip:'',phone:o.phone||'',email:o.email||''};
+  try{sessionStorage.setItem('wb_order_draft',JSON.stringify(draft));}catch(_){}
+  window.location.href='order.html';
+}
+
+function showToast(msg){
+  var t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove('show');},3500);
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  // Check sign-in state
+  var user=null;try{user=JSON.parse(localStorage.getItem('wb_user_v1'));}catch(e){}
+  var gate=document.getElementById('signin-gate');
+  var view=document.getElementById('orders-view');
+  var emailEl=document.getElementById('mo-email');
+  if(user){
+    if(gate)gate.classList.add('hidden');
+    if(view)view.style.display='';
+    if(emailEl)emailEl.textContent=user.email||'';
+    renderOrders();
+  } else {
+    if(gate)gate.classList.remove('hidden');
+    if(view)view.style.display='none';
+  }
+  // Close modals on backdrop click
+  document.getElementById('reschedule-modal').addEventListener('click',function(e){if(e.target===this)closeReschedule();});
+  document.getElementById('cancel-modal').addEventListener('click',function(e){if(e.target===this)closeCancelModal();});
+});
+</script>
+
+<script src="left-menu.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
