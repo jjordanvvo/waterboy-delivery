@@ -1678,7 +1678,7 @@ function init(){
   wireDeliveryButton();
   wireRemainingContactLinks();
   wireCatalogCards();
-  injectNavButtons();
+  // injectNavButtons() — disabled: navbar has static cart + sign-in buttons in HTML
   wireFreqTabs();
   // New for v3
   wireWaterTypeModal();
