@@ -1,413 +1,359 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>In-Store Products & Water Shop | Waterboy Delivery Elk Grove</title>
-  <meta name="description" content="Shop water accessories, filtration supplies, cups, and more at Waterboy Delivery in Elk Grove. Pick up in-store or add to your delivery order." />
-  <meta name="keywords" content="water shop Elk Grove, water accessories, filtration supplies, Waterboy store, water products Sacramento" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://waterboydelivery.com/shop.html" />
-
-  <meta property="og:title" content="Shop In-Store Products | Waterboy Delivery Elk Grove" />
-  <meta property="og:description" content="Browse in-store products at Waterboy Delivery's Elk Grove location. Water, accessories, and more available for pickup at 7119 Elk Grove Blvd." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://waterboydelivery.com/shop.html" />
-  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
-
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <title>Shop Water | Waterboy Water Delivery</title>
+  <meta name="description" content="Order RO, Alkaline, or Hydrogen water by the gallon. Delivered to Elk Grove and surrounding areas." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="shop.css" />
-  <link rel="stylesheet" href="water-type-selector.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F5F0EB;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    #navbar{position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;}
+    .nav-menu-btn{background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
+    .nav-logo img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
+    .hn-center-links{display:flex;gap:24px;flex:1;justify-content:center;}
+    .hn-center-links a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;opacity:0.7;}
+    .hn-center-links a:hover{opacity:1;}
+    .hn-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+    .hn-signin-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;cursor:pointer;}
+    .hn-signin-btn:hover{background:transparent;color:#00D4FF;}
+    #info-bar{background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;}
+    #info-bar a{color:#0D0D0D;font-weight:600;}
+    #info-bar a:hover{color:#00D4FF;}
+    .sb-inner{max-width:1100px;margin:0 auto;}
+    .sb-section-light{background:#F5F0EB;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-section-dark{background:#0D0D0D;padding:100px 32px;border-bottom:3px solid #333;}
+    .sb-section-white{background:#FFFFFF;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-eyebrow{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:20px;}
+    .sb-eyebrow-cyan{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#00D4FF;margin-bottom:20px;}
+    .sb-h1{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#0D0D0D;margin-bottom:32px;}
+    .sb-h1-white{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#FFF;margin-bottom:32px;}
+    .sb-h2{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#0D0D0D;margin-bottom:20px;}
+    .sb-h2-white{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#FFF;margin-bottom:20px;}
+    .sb-body{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:#444;}
+    .sb-body-white{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:rgba(255,255,255,0.65);}
+    .sb-btn-dark{display:inline-block;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #0D0D0D;cursor:pointer;text-decoration:none;}
+    .sb-btn-dark:hover{background:#F5F0EB;color:#0D0D0D;}
+    .sb-btn-cyan{display:inline-block;background:#00D4FF;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #00D4FF;cursor:pointer;text-decoration:none;}
+    .sb-btn-cyan:hover{background:transparent;color:#00D4FF;}
+    .sb-btn-outline{display:inline-block;background:transparent;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #FFF;cursor:pointer;text-decoration:none;}
+    .sb-btn-outline:hover{background:#FFF;color:#0D0D0D;}
+    .left-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;}
+    .left-drawer-overlay.active{display:block;}
+    .left-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;background:#0D0D0D;border-right:3px solid #222;z-index:1999;transition:left 0.3s;overflow-y:auto;}
+    .left-drawer.open{left:0;}
+    .left-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:3px solid #222;}
+    .left-drawer-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#00D4FF;font-weight:600;}
+    .left-drawer-close{background:none;border:none;color:#FFF;cursor:pointer;padding:4px;}
+    .left-drawer-nav{padding:16px 0;}
+    .left-drawer-link{display:block;padding:14px 24px;font-size:15px;color:rgba(255,255,255,0.7);font-weight:600;border-bottom:1px solid #1A1A1A;}
+    .left-drawer-link:hover{color:#FFF;background:rgba(255,255,255,0.05);}
+    .left-drawer-section-label{padding:12px 24px 4px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;}
+    #footer{background:#0D0D0D;border-top:3px solid #222;}
+    .hn-footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:64px 32px 48px;}
+    .hn-footer-brand img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:invert(1);margin-bottom:16px;}
+    .hn-footer-tagline{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;color:#00D4FF;text-transform:uppercase;margin-bottom:12px;}
+    .hn-footer-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px;}
+    .hn-footer-phone{font-family:'Space Mono',monospace;font-size:14px;color:#FFF;border-bottom:2px solid #333;padding-bottom:4px;display:inline-block;}
+    .hn-footer-col h4{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFF;margin-bottom:20px;}
+    .hn-footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+    .hn-footer-col a:hover{color:#FFF;}
+    .hn-footer-bottom{border-top:1px solid #222;padding:24px 32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+    .hn-footer-copy{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal{display:flex;gap:24px;}
+    .hn-footer-legal a{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal a:hover{color:#FFF;}
+    #back-to-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;background:#0D0D0D;border:3px solid #333;color:#FFF;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;}
+    #back-to-top.visible{display:flex;}
+    #back-to-top:hover{background:#333;}
+    @media(max-width:900px){.hn-footer-grid{grid-template-columns:1fr 1fr;}.hn-center-links{display:none;}}
+    @media(max-width:640px){.hn-nav-right .hn-signin-btn{display:none;}.sb-section-light,.sb-section-dark,.sb-section-white{padding:64px 20px;}.hn-footer-grid{grid-template-columns:1fr;padding:40px 20px 32px;}.hn-footer-bottom{flex-direction:column;gap:12px;text-align:center;}}
+
+    /* Page-specific */
+    .shop-category{margin-bottom:72px;}
+    .shop-category:last-child{margin-bottom:0;}
+    .shop-category-header{display:flex;align-items:baseline;gap:24px;margin-bottom:32px;padding-bottom:16px;border-bottom:3px solid #0D0D0D;}
+    .shop-category-title{font-family:'Outfit',sans-serif;font-size:36px;font-weight:900;letter-spacing:-1px;color:#0D0D0D;}
+    .shop-category-desc{font-family:'Inter',sans-serif;font-size:14px;color:#666;}
+    .shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:#0D0D0D;}
+    .shop-item{background:#FFF;padding:28px;}
+    .shop-item-size{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+    .shop-item-name{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#0D0D0D;margin-bottom:4px;}
+    .shop-item-vol{font-family:'Inter',sans-serif;font-size:13px;color:#888;margin-bottom:16px;}
+    .shop-item-price{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:#0D0D0D;margin-bottom:20px;}
+    .shop-add-btn{width:100%;padding:12px;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:3px solid #0D0D0D;cursor:pointer;}
+    .shop-add-btn:hover{background:#F5F0EB;color:#0D0D0D;}
+    @media(max-width:900px){.shop-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:500px){.shop-grid{grid-template-columns:1fr;}.shop-category-header{flex-direction:column;gap:8px;}}
+  </style>
 </head>
 <body>
 
-
-
-
-
-
-
 <!-- NAVBAR -->
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
+<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
+  <button id="nav-menu-btn" aria-label="Open navigation" style="background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
   </button>
-  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
+    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
   </a>
-  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
-    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
+    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
+    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
+    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
+    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
+    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
   </div>
-  <div class="nav-center-links">
-      <a href="water-delivery.html" class="nav-link">Delivery</a>
-      <a href="shop.html" class="nav-link active">Shop</a>
-      <a href="products.html" class="nav-link">Add-Ons</a>
-      <a href="dispensers.html" class="nav-link">Dispensers</a>
-      <a href="about.html" class="nav-link">About</a>
-    </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
+    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
+      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+  </div>
+  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
 </nav>
+<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
+  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
+</div>
+<!-- INFO BAR -->
+<div id="info-bar">
+  <span>Free delivery within 3 miles</span>
+  <span>|</span>
+  <a href="tel:+19166193218">(916) 619-3218</a>
+  <span>|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758">Elk Grove, CA 95758</a>
+  <span>|</span>
+  <a href="delivery-areas.html">Check your area</a>
+</div>
 
-
-<!-- BREADCRUMB -->
-<nav class="breadcrumb-nav" aria-label="Breadcrumb">
-  <div class="container">
-    <ol class="breadcrumb">
-      <li><a href="index.html">Home</a></li>
-      <li aria-current="page">Shop</li>
-    </ol>
-  </div>
-</nav>
-
-<!-- PAGE HERO -->
-<header class="page-hero" aria-labelledby="page-hero-title">
-  <div class="page-hero-glow" aria-hidden="true"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <span class="section-label">In-Store &amp; Online</span>
-    <h1 id="page-hero-title" class="page-hero-title">Shop Water Products</h1>
-    <p class="page-hero-sub">Cups, filters, accessories, and more. Pick up in-store at 7119 Elk Grove Blvd or add to your delivery order.</p>
-  </div>
-</header>
-
-<!-- SHOP WATER PRODUCTS GRID -->
-<section class="section section-dark menu-products-section" id="water-products-section" aria-label="Shop Water Products">
-  <div class="container">
-    <div class="menu-grid menu-grid-2col">
-      <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon1.JPG" alt="Gallon 1" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-      </div>
-      <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon2.JPG" alt="Gallon 2" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-      </div>
-      <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon3.JPG" alt="Gallon 3" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-      </div>
-      <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon4.JPG" alt="Gallon 4" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-      </div>
-      <div class="menu-card">
-        <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Gallon5.JPG" alt="Gallon 5" loading="lazy"></div>
-        <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-      </div>
-    </div>
+<!-- HERO -->
+<section class="sb-section-dark">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">Order water</span>
+    <h1 class="sb-h1-white">Shop<br>Water.</h1>
+    <p class="sb-body-white" style="max-width:540px;">Order by the gallon. RO, Alkaline, and Hydrogen water in 1, 2, 3, and 5 gallon bottles. No minimums, no contracts.</p>
   </div>
 </section>
 
-<!-- PRODUCT CATALOG — rendered by shop.js -->
-<section class="section section-dark" id="shop-section" aria-labelledby="shop-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:48px;">
-      <span class="section-label">Full Catalog</span>
-      <h2 id="shop-heading" class="section-title dark">All Products</h2>
-      <p class="section-subtitle dark">Use filters to browse by category. Add to cart and checkout securely.</p>
-    </div>
-    <div id="products-section">
-      <div class="menu-grid menu-grid-all">
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Glass1.JPG" alt="Glass 1" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+<!-- PRODUCTS -->
+<section class="sb-section-white">
+  <div class="sb-inner">
+
+    <!-- Reverse Osmosis -->
+    <div class="shop-category">
+      <div class="shop-category-header">
+        <span class="shop-category-title">Reverse Osmosis</span>
+        <span class="shop-category-desc">99% contaminant removal &mdash; neutral, ultra-pure</span>
+      </div>
+      <div class="shop-grid">
+        <div class="shop-item">
+          <div class="shop-item-size">1 Gallon</div>
+          <div class="shop-item-name">RO Water</div>
+          <div class="shop-item-vol">128 fl oz</div>
+          <div class="shop-item-price">$6.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
         </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Glass2.JPG" alt="Glass 2" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        <div class="shop-item">
+          <div class="shop-item-size">2 Gallon</div>
+          <div class="shop-item-name">RO Water</div>
+          <div class="shop-item-vol">256 fl oz</div>
+          <div class="shop-item-price">$8.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
         </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle1.JPG" alt="Bottle 1" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        <div class="shop-item">
+          <div class="shop-item-size">3 Gallon</div>
+          <div class="shop-item-name">RO Water</div>
+          <div class="shop-item-vol">384 fl oz</div>
+          <div class="shop-item-price">$9.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
         </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle2.JPG" alt="Bottle 2" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Bottle3.JPG" alt="Bottle 3" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Pot.JPG" alt="Pot" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card menu-card-has-carousel"
-             data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Can4.PNG,Images%20for%20Menu/Images%20for%20Menu/Can1.PNG,Images%20for%20Menu/Images%20for%20Menu/Can2.PNG,Images%20for%20Menu/Images%20for%20Menu/Can3.PNG">
-          <div class="menu-card-img">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" alt="Electrolyte Cans" loading="lazy">
-            <div class="menu-card-carousel-hint">Tap for flavors</div>
-          </div>
-          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Cans</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card menu-card-has-carousel"
-             data-carousel-images="Images%20for%20Menu/Images%20for%20Menu/Pack2.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack3.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack4.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack5.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack6.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack7.PNG,Images%20for%20Menu/Images%20for%20Menu/Pack8.PNG">
-          <div class="menu-card-img">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" alt="Electrolyte Packets" loading="lazy">
-            <div class="menu-card-carousel-hint">Tap for flavors</div>
-          </div>
-          <div class="menu-card-info"><span class="menu-card-name">Electrolyte Packets</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" alt="Box" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-card-img"><img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" alt="Hyd" loading="lazy"></div>
-          <div class="menu-card-info"><span class="menu-card-name">?</span><span class="menu-card-price">?</span></div>
+        <div class="shop-item">
+          <div class="shop-item-size">5 Gallon</div>
+          <div class="shop-item-name">RO Water</div>
+          <div class="shop-item-vol">640 fl oz</div>
+          <div class="shop-item-price">$10.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
         </div>
       </div>
     </div>
+
+    <!-- Alkaline -->
+    <div class="shop-category">
+      <div class="shop-category-header">
+        <span class="shop-category-title">Alkaline</span>
+        <span class="shop-category-desc">pH 8.5+ with trace minerals &mdash; smooth, balanced</span>
+      </div>
+      <div class="shop-grid">
+        <div class="shop-item">
+          <div class="shop-item-size">1 Gallon</div>
+          <div class="shop-item-name">Alkaline Water</div>
+          <div class="shop-item-vol">128 fl oz</div>
+          <div class="shop-item-price">$7.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">2 Gallon</div>
+          <div class="shop-item-name">Alkaline Water</div>
+          <div class="shop-item-vol">256 fl oz</div>
+          <div class="shop-item-price">$10.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">3 Gallon</div>
+          <div class="shop-item-name">Alkaline Water</div>
+          <div class="shop-item-vol">384 fl oz</div>
+          <div class="shop-item-price">$11.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">5 Gallon</div>
+          <div class="shop-item-name">Alkaline Water</div>
+          <div class="shop-item-vol">640 fl oz</div>
+          <div class="shop-item-price">$13.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hydrogen -->
+    <div class="shop-category">
+      <div class="shop-category-header">
+        <span class="shop-category-title">Hydrogen</span>
+        <span class="shop-category-desc">Molecular hydrogen infused &mdash; antioxidant-rich</span>
+      </div>
+      <div class="shop-grid">
+        <div class="shop-item">
+          <div class="shop-item-size">1 Gallon</div>
+          <div class="shop-item-name">Hydrogen Water</div>
+          <div class="shop-item-vol">128 fl oz</div>
+          <div class="shop-item-price">$12.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">2 Gallon</div>
+          <div class="shop-item-name">Hydrogen Water</div>
+          <div class="shop-item-vol">256 fl oz</div>
+          <div class="shop-item-price">$17.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">3 Gallon</div>
+          <div class="shop-item-name">Hydrogen Water</div>
+          <div class="shop-item-vol">384 fl oz</div>
+          <div class="shop-item-price">$20.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-size">5 Gallon</div>
+          <div class="shop-item-name">Hydrogen Water</div>
+          <div class="shop-item-vol">640 fl oz</div>
+          <div class="shop-item-price">$24.99</div>
+          <button class="shop-add-btn" onclick="if(typeof openCartDrawer==='function')openCartDrawer()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- CTA BANNER -->
-<section id="cta-banner" aria-labelledby="cta-title">
-  <div class="cta-glow-left" aria-hidden="true"></div>
-  <div class="cta-glow-right" aria-hidden="true"></div>
-  <div class="container">
-    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Need Water Delivered Too?</h2>
-    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">Bundle in-store products with a 5-gallon delivery plan for the best value.</p>
-    <div class="cta-buttons reveal">
-      <a href="water-delivery.html" class="btn-cta-large">
-        View Delivery Plans
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
+<!-- DELIVERY NOTE -->
+<section class="sb-section-dark">
+  <div class="sb-inner" style="text-align:center;">
+    <span class="sb-eyebrow-cyan">Delivery info</span>
+    <h2 class="sb-h2-white">We Deliver<br>to Your Door.</h2>
+    <p class="sb-body-white" style="margin-bottom:40px;max-width:540px;margin-left:auto;margin-right:auto;">Free delivery within 3 miles of our Elk Grove location. Zone 2 (3&ndash;6 mi) adds $4.99. Zone 3 (6&ndash;9 mi) adds $9.99.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="delivery-areas.html" class="sb-btn-cyan">Check My Area</a>
+      <a href="how-it-works.html" class="sb-btn-outline">How It Works</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer id="footer" role="contentinfo">
-  <div class="wave-section" style="background:var(--bg-secondary);height:60px;" aria-hidden="true">
-    <svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/>
-    </svg>
-  </div>
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <img src="logo.png" alt="Waterboy Delivery"
-           onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" />
-      <div class="footer-tagline">PURE WATER. DELIVERED.</div>
-      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p>
-      <a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a>
+<footer id="footer">
+  <div class="hn-footer-grid">
+    <div class="hn-footer-brand">
+      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Water Delivery logo" loading="lazy" />
+      <p class="hn-footer-tagline">Pure water. Delivered.</p>
+      <p class="hn-footer-desc">Elk Grove's trusted water delivery service. RO, Alkaline, and Hydrogen water delivered to your door.</p>
+      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
     </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <nav class="footer-links" aria-label="Service links">
-        <a href="water-delivery.html">Water Delivery</a>
-        <a href="dispensers.html">Dispensers</a>
-        <a href="bottle-pickup.html">Bottle Pickup</a>
-        <a href="shop.html">In-Store Products</a>
-        <a href="delivery-areas.html">Service Area</a>
-        <a href="alkaline-water.html">Alkaline Water</a>
-        <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
-      </nav>
+    <div class="hn-footer-col">
+      <h4>Water</h4>
+      <a href="reverse-osmosis-water.html">Reverse Osmosis</a>
+      <a href="alkaline-water.html">Alkaline</a>
+      <a href="hydrogen-water.html">Hydrogen</a>
+      <a href="water-filtration.html">Filtration</a>
     </div>
-    <div class="footer-col">
-      <h4>Learn</h4>
-            <nav class="footer-links" aria-label="Info links">
-        <a href="how-it-works.html">How It Works</a>
-        <a href="water-filtration.html">Water Filtration</a>
-        <a href="faq.html">FAQ</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <div class="hn-footer-col">
+      <h4>Service</h4>
+      <a href="water-delivery.html">Delivery</a>
+      <a href="delivery-areas.html">Areas</a>
+      <a href="dispensers.html">Dispensers</a>
+      <a href="bottle-pickup.html">Bottle Pickup</a>
     </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <div class="footer-contact-items">
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <a href="tel:+19166193218" style="color:var(--text-muted-dark);">(916) 619-3218</a>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener" style="color:var(--text-muted-dark);">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          <span>Mon–Sat 8 AM – 6 PM · Sun Closed</span>
-        </div>
-      </div>
-      <div class="payment-methods">
-        <span class="payment-methods-label">We Accept</span>
-        <div class="payment-badges">
-          <span class="payment-badge">Apple Pay</span>
-          <span class="payment-badge">Google Pay</span>
-          <span class="payment-badge">Visa</span>
-          <span class="payment-badge">Mastercard</span>
-          <span class="payment-badge">Debit</span>
-        </div>
-      </div>
+    <div class="hn-footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
-  <div class="container">
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved. Serving Elk Grove &amp; Sacramento County.</p>
-      <nav class="footer-legal" aria-label="Legal">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-      </nav>
+  <div class="hn-footer-bottom">
+    <span class="hn-footer-copy">&copy; 2025 Waterboy Water Delivery. All rights reserved.</span>
+    <div class="hn-footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
     </div>
   </div>
 </footer>
 
-<!-- FLAVOR CAROUSEL MODAL -->
-<div id="flavor-carousel-modal" class="flavor-carousel-overlay" aria-hidden="true" role="dialog" aria-label="Flavor carousel">
-  <div class="flavor-carousel-backdrop"></div>
-  <div class="flavor-carousel-box">
-    <button class="flavor-carousel-close" aria-label="Close">&#10005;</button>
-    <div class="flavor-carousel-stage">
-      <button class="flavor-carousel-arrow fca-prev" aria-label="Previous flavor">&#8249;</button>
-      <div class="flavor-carousel-img-wrap">
-        <img id="fci" src="" alt="Flavor">
-      </div>
-      <button class="flavor-carousel-arrow fca-next" aria-label="Next flavor">&#8250;</button>
-    </div>
-    <div class="flavor-carousel-dots" id="fcd"></div>
-  </div>
-</div>
-
-<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
-<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
+<!-- LEFT DRAWER -->
+<div class="left-drawer-overlay" id="leftDrawerOverlay" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()"></div>
+<div class="left-drawer" id="leftDrawer">
   <div class="left-drawer-header">
-    <span class="left-drawer-title">Navigation</span>
-    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <span class="left-drawer-title">Waterboy</span>
+    <button class="left-drawer-close" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 2l16 16M18 2L2 18" stroke="#FFF" stroke-width="2.5"/></svg>
     </button>
   </div>
-  <nav class="left-drawer-nav" aria-label="Full site navigation">
-    <a href="index.html" class="left-drawer-link">Home</a>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Shop &amp; Services</div>
-      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
-      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
-      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
-      <a href="shop.html" class="left-drawer-link">Shop Products</a>
-      <a href="products.html" class="left-drawer-link">Add-Ons</a>
-      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
-      <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Learn</div>
-      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
-      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Company</div>
-      <a href="about.html" class="left-drawer-link">About</a>
-      <a href="contact.html" class="left-drawer-link">Contact</a>
-      <a href="faq.html" class="left-drawer-link">FAQ</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Account</div>
-      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
-      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
-    </div>
+  <nav class="left-drawer-nav">
+    <span class="left-drawer-section-label">Water Types</span>
+    <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis</a>
+    <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+    <a href="hydrogen-water.html" class="left-drawer-link">Hydrogen Water</a>
+    <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
+    <span class="left-drawer-section-label">Service</span>
+    <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+    <a href="delivery-areas.html" class="left-drawer-link">Delivery Areas</a>
+    <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+    <span class="left-drawer-section-label">Company</span>
+    <a href="about.html" class="left-drawer-link">About Us</a>
+    <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
+    <a href="contact.html" class="left-drawer-link">Contact</a>
+    <a href="shop.html" class="left-drawer-link">Shop</a>
   </nav>
-</aside><button id="back-to-top" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 14V4M4 9l5-5 5 5" stroke="#FFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
-<script src="script.js"></script>
-<script src="shop.js"></script>
-<script src="water-type-selector.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
-<script>
-(function(){
-  var imgs=[],idx=0;
-  function openCarousel(images){
-    imgs=images;idx=0;showSlide();
-    var m=document.getElementById('flavor-carousel-modal');
-    m.classList.add('open');m.removeAttribute('aria-hidden');
-    document.body.style.overflow='hidden';
-  }
-  function closeCarousel(){
-    var m=document.getElementById('flavor-carousel-modal');
-    m.classList.remove('open');m.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-  }
-  function showSlide(){
-    var img=document.getElementById('fci');
-    if(img)img.src=imgs[idx];
-    var d=document.getElementById('fcd');
-    if(!d)return;
-    d.innerHTML='';
-    imgs.forEach(function(_,i){
-      var dot=document.createElement('span');
-      dot.className='fcd-dot'+(i===idx?' active':'');
-      dot.addEventListener('click',function(){idx=i;showSlide();});
-      d.appendChild(dot);
-    });
-  }
-  function prev(){idx=(idx-1+imgs.length)%imgs.length;showSlide();}
-  function next(){idx=(idx+1)%imgs.length;showSlide();}
-  document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('.menu-card-has-carousel').forEach(function(card){
-      card.addEventListener('click',function(){
-        var raw=card.getAttribute('data-carousel-images');
-        if(raw)openCarousel(raw.split(','));
-      });
-    });
-    var backdrop=document.querySelector('.flavor-carousel-backdrop');
-    if(backdrop)backdrop.addEventListener('click',closeCarousel);
-    var closeBtn=document.querySelector('.flavor-carousel-close');
-    if(closeBtn)closeBtn.addEventListener('click',closeCarousel);
-    var prevBtn=document.querySelector('.fca-prev');
-    if(prevBtn)prevBtn.addEventListener('click',function(e){e.stopPropagation();prev();});
-    var nextBtn=document.querySelector('.fca-next');
-    if(nextBtn)nextBtn.addEventListener('click',function(e){e.stopPropagation();next();});
-    var stage=document.querySelector('.flavor-carousel-stage');
-    if(stage){
-      var sx=0;
-      stage.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-      stage.addEventListener('touchend',function(e){
-        var dx=e.changedTouches[0].clientX-sx;
-        if(Math.abs(dx)>40){dx<0?next():prev();}
-      });
-    }
-    document.addEventListener('keydown',function(e){
-      var m=document.getElementById('flavor-carousel-modal');
-      if(!m.classList.contains('open'))return;
-      if(e.key==='ArrowLeft')prev();
-      else if(e.key==='ArrowRight')next();
-      else if(e.key==='Escape')closeCarousel();
-    });
-  });
-})();
-</script>
-
-<script>
-(function(){
-  var reviews=[98,143,67,212,84,56,78,134,201,89,43,312,187,52,76];
-  document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('.menu-card-info').forEach(function(info,i){
-      var nameEl=info.querySelector('.menu-card-name');
-      var name=nameEl?nameEl.textContent.trim():'?';
-      var rc=reviews[i]||99;
-      var isCarousel=!!info.closest('.menu-card-has-carousel');
-      info.innerHTML=
-        '<div class="mca-name">'+name+'</div>'+
-        '<div class="mca-stars"><span class="mca-st">★★★★★</span><span class="mca-rc">('+rc+')</span></div>'+
-        '<div class="mca-price">?</div>'+
-        '<div class="mca-badge">📦 <span>Free Delivery</span></div>'+
-        '<button class="mca-atc">Add to Cart</button>';
-      if(isCarousel){
-        info.querySelector('.mca-atc').addEventListener('click',function(e){e.stopPropagation();});
-      }
-    });
-  });
-})();
-</script>
+<script src="shop.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
+

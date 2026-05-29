@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = 'C:\\Users\\silly\\.claude\\projects\\C--Users-silly\\8de9651c-34d4-489e-816a-06ab751d0d7f.jsonl';
 const lines = fs.readFileSync(path, 'utf8').split('\n');
 let found = false;
@@ -24,3 +24,4 @@ for (let i = 0; i < lines.length; i++) {
   }
 }
 if (!found) console.log('Not found in 8de9651c');
+

@@ -1,340 +1,263 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Empty Bottle Pickup Service | Waterboy Delivery Elk Grove</title>
-  <meta name="description" content="We pick up your empty 5-gallon water jugs. Auto swap on every delivery (free), free drop-off at our store, or scheduled home pickup for $4.99. Easy bottle returns in Elk Grove." />
-  <meta name="keywords" content="water bottle pickup Elk Grove, empty jug return, 5 gallon bottle return, water jug pickup Sacramento" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://waterboydelivery.com/bottle-pickup.html" />
-
-  <meta property="og:title" content="Free Bottle Pickup | Waterboy Delivery Elk Grove" />
-  <meta property="og:description" content="Schedule free empty 5-gallon bottle pickup in Elk Grove. We collect your empty bottles and return fresh ones — no hassle, no extra cost." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://waterboydelivery.com/bottle-pickup.html" />
-  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
-
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="shop.css" />
-  <link rel="stylesheet" href="water-type-selector.css" />
-  <link rel="stylesheet" href="global.css" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <title>Bottle Pickup | Water Boy Delivery</title>
+  <meta name="description" content="Water Boy Delivery picks up your empty 5-Gallon bottles on every delivery. No scheduling needed — we swap empties for fulls automatically on every visit.">
   <style>
-    .pickup-options-grid {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:28px;
-    }
-    .pickup-option-card {
-      background:rgba(15,39,64,0.7); border:1px solid rgba(0,212,255,0.15);
-      border-radius:20px; padding:36px 28px; text-align:center;
-      transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    }
-    .pickup-option-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.35); }
-    .pickup-option-card.featured { border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan); }
-    .pickup-option-icon { width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:14px; background:rgba(0,212,255,0.08); margin:0 auto 16px; }
-    .pickup-option-icon svg { width:30px; height:30px; stroke:var(--cyan); }
-    .pickup-option-name { font-family:'Outfit',sans-serif; font-size:20px; font-weight:800; color:var(--frost); margin:0 0 8px; }
-    .pickup-option-price { font-family:'Outfit',sans-serif; font-size:36px; font-weight:800; color:var(--cyan); margin:0 0 8px; }
-    .pickup-option-price.free { color:#22c55e; }
-    .pickup-option-desc { font-size:14px; color:var(--text-muted-dark); line-height:1.6; margin:0 0 24px; }
-    .pickup-option-cta {
-      display:inline-block; padding:12px 28px; border-radius:10px;
-      background:var(--cyan); color:#0B1B2B; font-family:'Outfit',sans-serif;
-      font-size:15px; font-weight:700; text-decoration:none; border:none; cursor:pointer;
-      transition:opacity 0.2s, transform 0.2s;
-    }
-    .pickup-option-cta:hover { opacity:0.9; transform:translateY(-1px); }
-    .pickup-option-cta.outline {
-      background:transparent; color:var(--cyan); border:2px solid rgba(0,212,255,0.4);
-    }
-    .pickup-option-cta.outline:hover { background:rgba(0,212,255,0.1); border-color:var(--cyan); }
-
-    .deposit-box {
-      background:rgba(15,39,64,0.6); border:1px solid rgba(0,212,255,0.15);
-      border-radius:16px; padding:32px; max-width:640px; margin:0 auto;
-    }
-    .deposit-box h3 { font-family:'Outfit',sans-serif; font-size:20px; font-weight:700; color:var(--frost); margin:0 0 12px; }
-    .deposit-box p, .deposit-box li { font-size:14px; color:var(--text-muted-dark); line-height:1.7; }
-    .deposit-box ul { padding-left:20px; margin:12px 0 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F5F0EB;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    #navbar{position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;}
+    .nav-menu-btn{background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
+    .nav-logo img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
+    .hn-center-links{display:flex;gap:24px;flex:1;justify-content:center;}
+    .hn-center-links a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;opacity:0.7;}
+    .hn-center-links a:hover{opacity:1;}
+    .hn-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+    .hn-signin-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;cursor:pointer;}
+    .hn-signin-btn:hover{background:transparent;color:#00D4FF;}
+    #info-bar{background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;}
+    #info-bar a{color:#0D0D0D;font-weight:600;}
+    #info-bar a:hover{color:#00D4FF;}
+    .sb-inner{max-width:1100px;margin:0 auto;}
+    .sb-section-light{background:#F5F0EB;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-section-dark{background:#0D0D0D;padding:100px 32px;border-bottom:3px solid #333;}
+    .sb-section-white{background:#FFFFFF;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-eyebrow{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:20px;}
+    .sb-eyebrow-cyan{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#00D4FF;margin-bottom:20px;}
+    .sb-h1-white{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#FFF;margin-bottom:32px;}
+    .sb-h2{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#0D0D0D;margin-bottom:20px;}
+    .sb-h2-white{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#FFF;margin-bottom:20px;}
+    .sb-body{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:#444;}
+    .sb-body-white{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:rgba(255,255,255,0.65);}
+    .sb-btn-dark{display:inline-block;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #0D0D0D;cursor:pointer;text-decoration:none;}
+    .sb-btn-dark:hover{background:#F5F0EB;color:#0D0D0D;}
+    .sb-btn-outline{display:inline-block;background:transparent;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #FFF;cursor:pointer;text-decoration:none;}
+    .sb-btn-outline:hover{background:#FFF;color:#0D0D0D;}
+    .sb-card-light{border:3px solid #0D0D0D;padding:36px;background:#FFF;}
+    .sb-card-dark{border:3px solid #333;padding:36px;background:rgba(255,255,255,0.04);}
+    .left-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;}
+    .left-drawer-overlay.active{display:block;}
+    .left-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;background:#0D0D0D;border-right:3px solid #222;z-index:1999;transition:left 0.3s;overflow-y:auto;}
+    .left-drawer.open{left:0;}
+    .left-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:3px solid #222;}
+    .left-drawer-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#00D4FF;font-weight:600;}
+    .left-drawer-close{background:none;border:none;color:#FFF;cursor:pointer;padding:4px;}
+    .left-drawer-nav{padding:16px 0;}
+    .left-drawer-link{display:block;padding:14px 24px;font-size:15px;color:rgba(255,255,255,0.7);font-weight:600;border-bottom:1px solid #1A1A1A;}
+    .left-drawer-link:hover{color:#FFF;background:rgba(255,255,255,0.05);}
+    .left-drawer-section-label{padding:12px 24px 4px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;}
+    #footer{background:#0D0D0D;border-top:3px solid #222;}
+    .hn-footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:64px 32px 48px;}
+    .hn-footer-brand img{height:40px;width:auto;object-fit:contain;filter:invert(1);margin-bottom:16px;}
+    .hn-footer-tagline{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;color:#00D4FF;text-transform:uppercase;margin-bottom:12px;}
+    .hn-footer-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px;}
+    .hn-footer-phone{font-family:'Space Mono',monospace;font-size:14px;color:#FFF;border-bottom:2px solid #333;padding-bottom:4px;display:inline-block;}
+    .hn-footer-col h4{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFF;margin-bottom:20px;}
+    .hn-footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+    .hn-footer-col a:hover{color:#FFF;}
+    .hn-footer-bottom{border-top:1px solid #222;padding:24px 32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+    .hn-footer-copy{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal{display:flex;gap:24px;}
+    .hn-footer-legal a{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal a:hover{color:#FFF;}
+    #back-to-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;background:#0D0D0D;border:3px solid #333;color:#FFF;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;}
+    #back-to-top.visible{display:flex;}
+    #back-to-top:hover{background:#333;}
+    .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+    .faq-list{max-width:720px;}
+    .faq-item{border-bottom:3px solid #0D0D0D;padding:28px 0;}
+    .faq-q{font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;color:#0D0D0D;margin-bottom:10px;}
+    .faq-a{font-size:16px;color:#444;line-height:1.7;}
+    @media(max-width:900px){.hn-footer-grid{grid-template-columns:1fr 1fr;}.hn-center-links{display:none;}.steps-grid{grid-template-columns:1fr;}}
+    @media(max-width:640px){.hn-nav-right .hn-signin-btn{display:none;}.sb-section-light,.sb-section-dark,.sb-section-white{padding:64px 20px;}.hn-footer-grid{grid-template-columns:1fr;padding:40px 20px 32px;}.hn-footer-bottom{flex-direction:column;gap:12px;text-align:center;}}
   </style>
 </head>
 <body>
 
-
-
-
-
-
-
-<!-- NAVBAR -->
-<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
-    </a>
-    <div class="nav-center-links">
-      <a href="water-delivery.html" class="nav-link">Delivery</a>
-      <a href="shop.html" class="nav-link">Shop</a>
-      <a href="products.html" class="nav-link">Add-Ons</a>
-      <a href="dispensers.html" class="nav-link">Dispensers</a>
-      <a href="about.html" class="nav-link">About</a>
-    </div>
-    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
-      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
-    </div>
-    <div class="nav-right">
-      <a href="contact.html" class="nav-btn-outline">Sign In</a>
-      <a href="water-delivery.html" class="nav-btn-primary">Get Started</a>
-    </div>
+<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
+  <button id="nav-menu-btn" aria-label="Open navigation" style="background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
+    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+  </a>
+  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
+    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
+    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
+    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
+    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
+    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
   </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
+    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
+      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+  </div>
+  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
 </nav>
-<div id="water-type-bar" class="water-type-bar">
-  <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
-  <button id="wtb-change" class="wtb-change">Change</button>
+<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
+  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
 </div>
 
 
-<!-- BREADCRUMB -->
-<nav class="breadcrumb-nav" aria-label="Breadcrumb">
-  <div class="container">
-    <ol class="breadcrumb">
-      <li><a href="index.html">Home</a></li>
-      <li aria-current="page">Bottle Pickup</li>
-    </ol>
+<section style="background:#0D0D0D;padding:120px 32px 100px;border-bottom:3px solid #333;">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">Zero Hassle</span>
+    <h1 class="sb-h1-white">Bottle Pickup.</h1>
+    <p class="sb-body-white" style="max-width:600px;">We collect your empty bottles on every delivery — no separate scheduling, no drop-off, no effort on your part.</p>
   </div>
-</nav>
+</section>
 
-<!-- PAGE HERO -->
-<header class="page-hero" aria-labelledby="page-hero-title">
-  <div class="page-hero-glow" aria-hidden="true"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <span class="section-label">Hassle-Free Returns</span>
-    <h1 id="page-hero-title" class="page-hero-title">Empty Bottle Pickup</h1>
-    <p class="page-hero-sub">We handle your empty 5-gallon jugs — so you never have to store, haul, or worry about them. Three easy options to return your empties.</p>
-  </div>
-</header>
-
-<!-- PICKUP OPTIONS -->
-<section class="section section-dark" aria-labelledby="options-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:48px;">
-      <span class="section-label">Return Methods</span>
-      <h2 id="options-heading" class="section-title dark">Three Ways to Return Your Jugs</h2>
-    </div>
-    <div class="pickup-options-grid">
-      <div class="pickup-option-card featured reveal reveal-delay-1">
-        <div class="pickup-option-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg></div>
-        <div class="pickup-option-name">Swap on Delivery</div>
-        <div class="pickup-option-price free">FREE</div>
-        <p class="pickup-option-desc">The easiest option. When we arrive with your fresh jugs, we take the empties right then and there. Nothing to schedule, nothing to remember — it just happens automatically on every delivery.</p>
-        <a href="water-delivery.html" class="pickup-option-cta">Start a Delivery Plan</a>
+<section class="sb-section-light">
+  <div class="sb-inner">
+    <span class="sb-eyebrow">How It Works</span>
+    <h2 class="sb-h2" style="margin-bottom:56px;">Swap and go.</h2>
+    <div class="steps-grid">
+      <div class="sb-card-light">
+        <div style="font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:20px;">01</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;margin-bottom:12px;">Leave Empties at the Door</div>
+        <p style="font-size:15px;color:#444;line-height:1.7;">On delivery day, place your empty bottles outside your front door or wherever you normally receive deliveries. No need to rinse them first — we handle that.</p>
       </div>
-      <div class="pickup-option-card reveal reveal-delay-2">
-        <div class="pickup-option-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div class="pickup-option-name">Drop Off at Our Store</div>
-        <div class="pickup-option-price free">FREE</div>
-        <p class="pickup-option-desc">Bring your empties to our store at 7119 Elk Grove Blvd during business hours. We'll take them off your hands and apply the deposit credit to your account, no questions asked.</p>
-        <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener" class="pickup-option-cta outline">Get Directions</a>
+      <div class="sb-card-light">
+        <div style="font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:20px;">02</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;margin-bottom:12px;">We Pick Them Up</div>
+        <p style="font-size:15px;color:#444;line-height:1.7;">Our driver collects the empty bottles and replaces them with fresh, full ones. The whole swap takes less than two minutes. You don't even need to be home.</p>
       </div>
-      <div class="pickup-option-card reveal reveal-delay-3">
-        <div class="pickup-option-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
-        <div class="pickup-option-name">Scheduled Home Pickup</div>
-        <div class="pickup-option-price">$4.99</div>
-        <p class="pickup-option-desc">Can't make it to the store and don't have a delivery coming up? Schedule a dedicated bottle pickup from your home. We'll come at an agreed time, grab your empties, and credit your account.</p>
-        <button class="pickup-option-cta" onclick="document.getElementById('subscribe-modal')?.classList.add('open') || alert('Schedule a pickup by calling (916) 619-3218')">Schedule Pickup</button>
+      <div class="sb-card-light">
+        <div style="font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:20px;">03</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;margin-bottom:12px;">Bottles Are Cleaned &amp; Reused</div>
+        <p style="font-size:15px;color:#444;line-height:1.7;">Every returned bottle is sanitized and inspected before being refilled. We use food-grade sanitizing procedures and replace bottles that show any signs of wear or damage.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEPOSIT POLICY -->
-<section class="section section-light" aria-labelledby="deposit-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:40px;">
-      <span class="section-label">Policy</span>
-      <h2 id="deposit-heading" class="section-title">Jug Deposit &amp; Return Policy</h2>
-    </div>
-    <div class="deposit-box reveal">
-      <h3>How Deposits Work</h3>
-      <p>Each 5-gallon jug carries a <strong style="color:var(--cyan);">$5 refundable deposit</strong>. The deposit is charged when we deliver a new jug and credited back when the empty is returned — whether via swap, drop-off, or scheduled pickup.</p>
-      <ul>
-        <li>Jug deposit: <strong>$5 per jug</strong> — fully refundable</li>
-        <li>Deposits are tracked on your account automatically</li>
-        <li>If a jug is lost or damaged, the deposit is forfeited</li>
-        <li>Cancel your plan? We'll schedule a final pickup and refund all deposits</li>
-        <li>Credit can be applied to future orders or refunded to your payment method</li>
-      </ul>
-    </div>
-    <div class="text-center reveal" style="margin-top:32px;">
-      <p style="color:var(--text-muted-dark);font-size:14px;">Questions about your deposits? <a href="contact.html" style="color:var(--cyan);">Contact us</a> or call <a href="tel:+19166193218" style="color:var(--cyan);">(916) 619-3218</a>.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BANNER -->
-<section id="cta-banner" aria-labelledby="cta-title">
-  <div class="cta-glow-left" aria-hidden="true"></div>
-  <div class="cta-glow-right" aria-hidden="true"></div>
-  <div class="container">
-    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Start with a Delivery Plan</h2>
-    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">Automatic jug swaps included with every delivery — the easiest pickup option of all.</p>
-    <div class="cta-buttons reveal">
-      <a href="water-delivery.html" class="btn-cta-large">
-        View Delivery Plans
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-    </div>
-    <p class="cta-fine-print reveal">No contracts. No commitments. Cancel anytime.</p>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer id="footer" role="contentinfo">
-  <div class="wave-section" style="background:var(--bg-secondary);height:60px;" aria-hidden="true">
-    <svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/>
-    </svg>
-  </div>
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <img src="logo.png" alt="Waterboy Delivery"
-           onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" />
-      <div class="footer-tagline">PURE WATER. DELIVERED.</div>
-      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p>
-      <a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <nav class="footer-links" aria-label="Service links">
-        <a href="water-delivery.html">Water Delivery</a>
-        <a href="dispensers.html">Dispensers</a>
-        <a href="bottle-pickup.html">Bottle Pickup</a>
-        <a href="shop.html">In-Store Products</a>
-        <a href="delivery-areas.html">Service Area</a>
-        <a href="alkaline-water.html">Alkaline Water</a>
-        <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
-      </nav>
-    </div>
-    <div class="footer-col">
-      <h4>Learn</h4>
-            <nav class="footer-links" aria-label="Info links">
-        <a href="how-it-works.html">How It Works</a>
-        <a href="water-filtration.html">Water Filtration</a>
-        <a href="faq.html">FAQ</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <div class="footer-contact-items">
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <a href="tel:+19166193218" style="color:var(--text-muted-dark);transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted-dark)'">(916) 619-3218</a>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener" style="color:var(--text-muted-dark);transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted-dark)'">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          <span>Mon–Sat 8 AM – 6 PM · Sun Closed</span>
-        </div>
+<section class="sb-section-white">
+  <div class="sb-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
+      <div>
+        <span class="sb-eyebrow">What You Need to Know</span>
+        <h2 class="sb-h2">Bottle Deposit &amp; Returns.</h2>
+        <p class="sb-body" style="margin-bottom:24px;">A small deposit is collected on your first order to cover the cost of the bottles. When you return them in good condition, the deposit is fully credited back to your account.</p>
+        <p class="sb-body" style="margin-bottom:24px;">We deliver 5-gallon polycarbonate bottles — the same food-safe, BPA-free bottles used by major water companies. They're built to last for years when properly handled.</p>
+        <p class="sb-body">Lost or damaged bottles are billed at replacement cost. Call us and we'll work something out.</p>
       </div>
-      <div class="payment-methods">
-        <span class="payment-methods-label">We Accept</span>
-        <div class="payment-badges">
-          <span class="payment-badge">Apple Pay</span>
-          <span class="payment-badge">Google Pay</span>
-          <span class="payment-badge">Visa</span>
-          <span class="payment-badge">Mastercard</span>
-          <span class="payment-badge">Debit</span>
+      <div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q">Do I need to rinse the bottles before returning?</div>
+            <p class="faq-a">No — just leave them at the door. We sanitize every returned bottle before it goes back into rotation.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What if I miss a pickup?</div>
+            <p class="faq-a">No problem. Hold onto the empties and set them out on your next delivery day. You can also call us to arrange a separate pickup.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I return bottles if I cancel?</div>
+            <p class="faq-a">Yes — call (916) 619-3218 and we'll schedule a final pickup and refund your deposit.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved. Serving Elk Grove &amp; Sacramento County.</p>
-      <nav class="footer-legal" aria-label="Legal">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-      </nav>
+</section>
+
+<section class="sb-section-dark" style="text-align:center;">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">Start Today</span>
+    <h2 class="sb-h2-white">No contracts. No hassle.</h2>
+    <p class="sb-body-white" style="max-width:500px;margin:0 auto 40px;">Start a delivery plan and we'll handle the empties automatically on every visit.</p>
+    <a href="water-delivery.html" class="sb-btn-outline">View Delivery Plans</a>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="hn-footer-grid">
+    <div class="hn-footer-brand">
+      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Delivery">
+      <div class="hn-footer-tagline">Pure Water. Delivered.</div>
+      <p class="hn-footer-desc">Premium water delivery for homes and businesses in Elk Grove and Sacramento County.</p>
+      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
     </div>
+    <div class="hn-footer-col">
+      <h4>Delivery</h4>
+      <a href="water-delivery.html">Water Delivery</a>
+      <a href="delivery-areas.html">Service Areas</a>
+      <a href="bottle-pickup.html">Bottle Pickup</a>
+      <a href="dispensers.html">Dispensers</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Shop Water</a>
+      <a href="alkaline-water.html">Alkaline Water</a>
+      <a href="reverse-osmosis-water.html">RO Water</a>
+      <a href="products.html">Add-Ons</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <a href="water-filtration.html">Water Filtration</a>
+    </div>
+  </div>
+  <div class="hn-footer-bottom">
+    <p class="hn-footer-copy">&copy; 2026 Waterboy Delivery LLC. All rights reserved.</p>
+    <nav class="hn-footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </nav>
   </div>
 </footer>
 
-<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
-<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
+<div id="left-drawer-overlay" class="left-drawer-overlay"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-modal="true" aria-label="Site navigation">
   <div class="left-drawer-header">
     <span class="left-drawer-title">Navigation</span>
-    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="left-drawer-nav" aria-label="Full site navigation">
+  <nav class="left-drawer-nav">
     <a href="index.html" class="left-drawer-link">Home</a>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Shop &amp; Services</div>
-      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
-      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
-      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
-      <a href="shop.html" class="left-drawer-link">Shop Products</a>
-      <a href="products.html" class="left-drawer-link">Add-Ons</a>
-      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
-      <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Learn</div>
-      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
-      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Company</div>
-      <a href="about.html" class="left-drawer-link">About</a>
-      <a href="contact.html" class="left-drawer-link">Contact</a>
-      <a href="faq.html" class="left-drawer-link">FAQ</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Account</div>
-      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
-      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
-    </div>
+    <div class="left-drawer-section-label">Shop &amp; Services</div>
+    <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+    <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+    <a href="shop.html" class="left-drawer-link">Shop Products</a>
+    <a href="products.html" class="left-drawer-link">Add-Ons</a>
+    <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+    <a href="reverse-osmosis-water.html" class="left-drawer-link">RO Water</a>
+    <div class="left-drawer-section-label">Learn</div>
+    <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+    <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
+    <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
+    <div class="left-drawer-section-label">Company</div>
+    <a href="about.html" class="left-drawer-link">About</a>
+    <a href="contact.html" class="left-drawer-link">Contact</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
   </nav>
-</aside><button id="back-to-top" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+</aside>
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="m18 15-6-6-6 6"/></svg>
 </button>
-
 <script src="script.js"></script>
 <script src="shop.js"></script>
-<script src="water-type-selector.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
-<div id="water-type-overlay" aria-hidden="true">
-  <div class="wt-overlay-box">
-    <h3 class="wt-overlay-title">Select Water Type</h3>
-    <div class="wt-overlay-opts">
-      <button class="wt-overlay-opt" data-type="ro"><span class="wto-name">RO Water</span><span class="wto-sub">Ultra-pure, 99% contaminants removed</span></button>
-      <button class="wt-overlay-opt" data-type="alkaline"><span class="wto-name">Alkaline Water</span><span class="wto-sub">pH 8.5+, smooth taste</span></button>
-      <button class="wt-overlay-opt" data-type="hydrogen"><span class="wto-name">Hydrogen Water</span><span class="wto-sub">Infused molecular hydrogen</span></button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){var L={ro:'RO Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'},V=['ro','alkaline','hydrogen'];function g(){try{var v=localStorage.getItem('wb_water_type');return V.indexOf(v)!==-1?v:null;}catch(e){return null;}}function s(t){try{localStorage.setItem('wb_water_type',t);}catch(e){}try{localStorage.setItem('waterboy_water_type',t);}catch(e){};}document.addEventListener('DOMContentLoaded',function(){var bar=document.getElementById('water-type-bar'),tEl=document.getElementById('wtb-type'),chg=document.getElementById('wtb-change'),ov=document.getElementById('water-type-overlay'),t=g();if(bar&&t){if(tEl)tEl.textContent=L[t]||t;bar.style.display='flex';}if(chg&&ov){chg.addEventListener('click',function(){ov.style.display='flex';});}if(ov){ov.querySelectorAll('.wt-overlay-opt').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-type');s(t);if(tEl)tEl.textContent=L[t]||t;if(bar)bar.style.display='flex';ov.style.display='none';document.querySelectorAll('.nav-wt-btn').forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-type')===t?'true':'false');});});});ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});}});})();
-</script>
 </body>
 </html>
+
+

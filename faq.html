@@ -1,234 +1,259 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ — Frequently Asked Questions | Waterboy Delivery Elk Grove</title>
-  <meta name="description" content="Answers to common questions about Waterboy Delivery — water types, delivery zones, pricing, jug deposits, dispenser rentals, and cancellations." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://waterboydelivery.com/faq.html" />
-
-  <meta property="og:title" content="FAQ | Waterboy Delivery Elk Grove" />
-  <meta property="og:description" content="Answers to common questions about Waterboy Delivery — water types, delivery scheduling, bottle returns, pricing, and more." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://waterboydelivery.com/faq.html" />
-  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="shop.css" />
-  <link rel="stylesheet" href="water-type-selector.css" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What types of water do you deliver?", "acceptedAnswer": { "@type": "Answer", "text": "We deliver RO (reverse osmosis), alkaline (pH 8.5+), and hydrogen water. We are the only local delivery service in Elk Grove that offers alkaline water delivery." } },
-      { "@type": "Question", "name": "How much does delivery cost?", "acceptedAnswer": { "@type": "Answer", "text": "Delivery is free within 3 miles of our store (Zone 1). Zone 2 (3–6 miles) is $4.99 per delivery. Zone 3 (6–9 miles) is $9.99 per delivery." } },
-      { "@type": "Question", "name": "What are your water prices?", "acceptedAnswer": { "@type": "Answer", "text": "RO water: 1 gal $6.99, 2 gal $8.99, 3 gal $9.99, 5 gal $10.99. Alkaline water: 1 gal $7.99, 2 gal $10.99, 3 gal $11.99, 5 gal $13.99. Hydrogen water: 1 gal $12.99, 2 gal $17.99, 3 gal $20.99, 5 gal $24.99. No contracts." } },
-      { "@type": "Question", "name": "Do I need to be home for delivery?", "acceptedAnswer": { "@type": "Answer", "text": "No. Many customers leave empties on the porch and we swap them out. Just coordinate your preferred method when you sign up." } },
-      { "@type": "Question", "name": "How do jug deposits work?", "acceptedAnswer": { "@type": "Answer", "text": "Each jug has a $5 refundable deposit charged on delivery and credited back when the empty is returned — via swap, store drop-off, or scheduled pickup ($4.99)." } },
-      { "@type": "Question", "name": "Can I cancel my subscription?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, anytime. No contracts, no cancellation fees. Call or text us and we'll stop future deliveries and refund outstanding deposits." } },
-      { "@type": "Question", "name": "Do you rent water dispensers?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Brio bottom-load dispensers rent for $25/mo; top-load models rent for $10/mo. Free maintenance and swap-out included. No contracts." } },
-      { "@type": "Question", "name": "What areas do you deliver to?", "acceptedAnswer": { "@type": "Answer", "text": "We deliver to Elk Grove, South Sacramento, Laguna, Rancho Cordova, Galt, Wilton, and surrounding Sacramento County areas within 9 miles of our store." } }
-    ]
-  }
-  </script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <title>FAQ | Water Boy Delivery</title>
+  <meta name="description" content="Frequently asked questions about Water Boy Delivery — pricing, water types, delivery zones, scheduling, cancellation, and more.">
   <style>
-    .faq-list { max-width:720px; margin:0 auto; }
-    .faq-item {
-      border:1px solid rgba(0,212,255,0.12); border-radius:14px;
-      margin-bottom:12px; overflow:hidden;
-      transition:border-color 0.2s;
-    }
-    .faq-item.open { border-color:rgba(0,212,255,0.35); }
-    .faq-q {
-      width:100%; display:flex; justify-content:space-between; align-items:center;
-      padding:20px 24px; background:rgba(15,39,64,0.5); border:none; cursor:pointer;
-      text-align:left; gap:16px; transition:background 0.2s;
-    }
-    .faq-q:hover { background:rgba(15,39,64,0.8); }
-    .faq-q-text { font-family:'Outfit',sans-serif; font-size:16px; font-weight:600; color:var(--frost); }
-    .faq-icon { flex-shrink:0; color:var(--cyan); font-size:20px; line-height:1; transition:transform 0.3s; }
-    .faq-item.open .faq-icon { transform:rotate(45deg); }
-    .faq-a {
-      max-height:0; overflow:hidden;
-      transition:max-height 0.35s ease, padding 0.35s;
-      padding:0 24px;
-    }
-    .faq-item.open .faq-a { max-height:400px; padding:0 24px 20px; }
-    .faq-a p { font-size:15px; color:var(--text-muted-dark); line-height:1.7; margin:0; }
-    .faq-a a { color:var(--cyan); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F5F0EB;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    #navbar{position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;}
+    .nav-menu-btn{background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
+    .nav-logo img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
+    .hn-center-links{display:flex;gap:24px;flex:1;justify-content:center;}
+    .hn-center-links a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;opacity:0.7;}
+    .hn-center-links a:hover{opacity:1;}
+    .hn-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+    .hn-signin-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;cursor:pointer;}
+    .hn-signin-btn:hover{background:transparent;color:#00D4FF;}
+    #info-bar{background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;}
+    #info-bar a{color:#0D0D0D;font-weight:600;}
+    #info-bar a:hover{color:#00D4FF;}
+    .sb-inner{max-width:1100px;margin:0 auto;}
+    .sb-section-light{background:#F5F0EB;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-section-dark{background:#0D0D0D;padding:100px 32px;border-bottom:3px solid #333;}
+    .sb-eyebrow{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:20px;}
+    .sb-eyebrow-cyan{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#00D4FF;margin-bottom:20px;}
+    .sb-h1-white{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#FFF;margin-bottom:32px;}
+    .sb-h2{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#0D0D0D;margin-bottom:20px;}
+    .sb-h2-white{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#FFF;margin-bottom:20px;}
+    .sb-body-white{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:rgba(255,255,255,0.65);}
+    .sb-btn-dark{display:inline-block;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #0D0D0D;cursor:pointer;text-decoration:none;}
+    .sb-btn-dark:hover{background:#F5F0EB;color:#0D0D0D;}
+    .sb-btn-outline{display:inline-block;background:transparent;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #FFF;cursor:pointer;text-decoration:none;}
+    .sb-btn-outline:hover{background:#FFF;color:#0D0D0D;}
+    .left-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;}
+    .left-drawer-overlay.active{display:block;}
+    .left-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;background:#0D0D0D;border-right:3px solid #222;z-index:1999;transition:left 0.3s;overflow-y:auto;}
+    .left-drawer.open{left:0;}
+    .left-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:3px solid #222;}
+    .left-drawer-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#00D4FF;font-weight:600;}
+    .left-drawer-close{background:none;border:none;color:#FFF;cursor:pointer;padding:4px;}
+    .left-drawer-nav{padding:16px 0;}
+    .left-drawer-link{display:block;padding:14px 24px;font-size:15px;color:rgba(255,255,255,0.7);font-weight:600;border-bottom:1px solid #1A1A1A;}
+    .left-drawer-link:hover{color:#FFF;background:rgba(255,255,255,0.05);}
+    .left-drawer-section-label{padding:12px 24px 4px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;}
+    #footer{background:#0D0D0D;border-top:3px solid #222;}
+    .hn-footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:64px 32px 48px;}
+    .hn-footer-brand img{height:40px;width:auto;object-fit:contain;filter:invert(1);margin-bottom:16px;}
+    .hn-footer-tagline{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;color:#00D4FF;text-transform:uppercase;margin-bottom:12px;}
+    .hn-footer-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px;}
+    .hn-footer-phone{font-family:'Space Mono',monospace;font-size:14px;color:#FFF;border-bottom:2px solid #333;padding-bottom:4px;display:inline-block;}
+    .hn-footer-col h4{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFF;margin-bottom:20px;}
+    .hn-footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+    .hn-footer-col a:hover{color:#FFF;}
+    .hn-footer-bottom{border-top:1px solid #222;padding:24px 32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+    .hn-footer-copy{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal{display:flex;gap:24px;}
+    .hn-footer-legal a{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal a:hover{color:#FFF;}
+    #back-to-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;background:#0D0D0D;border:3px solid #333;color:#FFF;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;}
+    #back-to-top.visible{display:flex;}
+    #back-to-top:hover{background:#333;}
+    .faq-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;}
+    .faq-item{border-bottom:3px solid #0D0D0D;padding:32px 0;}
+    .faq-q{font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;color:#0D0D0D;margin-bottom:12px;line-height:1.2;}
+    .faq-a{font-size:16px;color:#555;line-height:1.7;}
+    .faq-a a{text-decoration:underline;}
+    @media(max-width:900px){.hn-footer-grid{grid-template-columns:1fr 1fr;}.hn-center-links{display:none;}.faq-cols{grid-template-columns:1fr;}}
+    @media(max-width:640px){.hn-nav-right .hn-signin-btn{display:none;}.sb-section-light,.sb-section-dark{padding:64px 20px;}.hn-footer-grid{grid-template-columns:1fr;padding:40px 20px 32px;}.hn-footer-bottom{flex-direction:column;gap:12px;text-align:center;}}
   </style>
 </head>
 <body>
 
-
-
-
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
+<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
+  <button id="nav-menu-btn" aria-label="Open navigation" style="background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
   </button>
-  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
+    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
   </a>
-  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
-    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
+    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
+    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
+    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
+    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
+    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
   </div>
-  <div class="nav-center-links">
-      <a href="water-delivery.html" class="nav-link">Delivery</a>
-      <a href="shop.html" class="nav-link">Shop</a>
-      <a href="products.html" class="nav-link">Add-Ons</a>
-      <a href="dispensers.html" class="nav-link">Dispensers</a>
-      <a href="about.html" class="nav-link">About</a>
-    </div>
-</nav>
-
-<nav class="breadcrumb-nav"><div class="container"><ol class="breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">FAQ</li></ol></div></nav>
-
-<header class="page-hero" aria-labelledby="page-hero-title">
-  <div class="page-hero-glow"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <span class="section-label">Got Questions?</span>
-    <h1 id="page-hero-title" class="page-hero-title">Frequently Asked Questions</h1>
-    <p class="page-hero-sub">Everything you need to know about our water delivery, dispensers, and bottle pickup service.</p>
-  </div>
-</header>
-
-<section class="section section-dark" aria-labelledby="faq-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:48px;">
-      <h2 id="faq-heading" class="section-title dark">Common Questions</h2>
-    </div>
-    <div class="faq-list reveal" id="faq-accordion">
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">What types of water do you deliver?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>We deliver RO (reverse osmosis), alkaline (pH 8.5+), and hydrogen water. We are the only local delivery service in Elk Grove that offers alkaline water delivery — that's why we call it "Only Us!"</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">How much does delivery cost?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>Delivery is <strong>free</strong> within 3 miles of our store at 7119 Elk Grove Blvd (Zone 1). Zone 2 (3–6 miles) is $4.99 per delivery. Zone 3 (6–9 miles) is $9.99 per delivery. <a href="delivery-areas.html">Check your zone</a> with our address lookup tool.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">What are your water prices?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p><strong>RO water:</strong> 1 gal $6.99 · 2 gal $8.99 · 3 gal $9.99 · 5 gal $10.99.<br><strong>Alkaline water:</strong> 1 gal $7.99 · 2 gal $10.99 · 3 gal $11.99 · 5 gal $13.99.<br><strong>Hydrogen water:</strong> 1 gal $12.99 · 2 gal $17.99 · 3 gal $20.99 · 5 gal $24.99.<br>No contracts. See full details on our <a href="water-delivery.html">Water Delivery page</a>.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">Do I need to be home for delivery?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>No. Many of our customers leave their empty jugs on the porch and we swap them out while they're away. Let us know your preferred method when you sign up and we'll accommodate it.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">How do jug deposits work?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>Each 5-gallon jug carries a $5 refundable deposit, charged when we deliver and credited when the empty is returned. You can return empties via automatic swap on your next delivery (free), drop-off at our store (free), or a scheduled home pickup ($4.99). See our <a href="bottle-pickup.html">Bottle Pickup page</a> for details.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">Can I cancel my subscription?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>Yes, anytime. There are no contracts or cancellation fees. Just call or text us and we'll stop future deliveries. We'll schedule a final empty jug pickup and refund any outstanding deposits to your original payment method.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">Do you rent water dispensers?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>Yes! We rent Brio dispensers month-to-month. The bottom-load model is $25/month and the top-load is $10/month. Every rental includes free maintenance and a free swap-out if the unit has an issue. No contracts. See our <a href="dispensers.html">Dispensers page</a>.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span class="faq-q-text">What areas do you deliver to?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" role="region"><p>We deliver to Elk Grove, South Sacramento, Laguna, Rancho Cordova, Galt, Wilton, and surrounding Sacramento County areas within 9 miles of our store. Use our <a href="delivery-areas.html">zone checker</a> to confirm your address.</p></div>
-      </div>
-
-    </div>
-    <div class="text-center reveal" style="margin-top:48px;">
-      <p style="color:var(--text-muted-dark);margin-bottom:16px;">Still have questions?</p>
-      <a href="contact.html" class="btn-secondary">Contact Us</a>
-    </div>
-  </div>
-</section>
-
-<section id="cta-banner" aria-labelledby="cta-title">
-  <div class="cta-glow-left"></div><div class="cta-glow-right"></div>
-  <div class="container">
-    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Ready to Start?</h2>
-    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">View plans, check your delivery zone, and get started today.</p>
-    <div class="cta-buttons reveal"><a href="water-delivery.html" class="btn-cta-large">View Plans &amp; Pricing <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
-    <p class="cta-fine-print reveal">No contracts. No commitments. Cancel anytime.</p>
-  </div>
-</section>
-
-<footer id="footer" role="contentinfo">
-  <div class="wave-section" style="background:var(--bg-secondary);height:60px;"><svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg></div>
-  <div class="container footer-grid">
-    <div class="footer-brand"><img src="logo.png" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
-    <div class="footer-col"><h4>Services</h4><nav class="footer-links"><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">In-Store Products</a><a href="delivery-areas.html">Service Area</a><a href="alkaline-water.html">Alkaline Water</a><a href="reverse-osmosis-water.html">Reverse Osmosis Water</a></nav></div>
-    <div class="footer-col"><h4>Learn</h4><nav class="footer-links"><a href="how-it-works.html">How It Works</a><a href="water-filtration.html">Water Filtration</a><a href="faq.html">FAQ</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav></div>
-    <div class="footer-col"><h4>Contact</h4><div class="footer-contact-items"><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+19166193218" style="color:var(--text-muted-dark);">(916) 619-3218</a></div><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>Mon–Sat 8 AM – 6 PM</span></div></div><div class="payment-methods"><span class="payment-methods-label">We Accept</span><div class="payment-badges"><span class="payment-badge">Apple Pay</span><span class="payment-badge">Google Pay</span><span class="payment-badge">Visa</span><span class="payment-badge">Mastercard</span><span class="payment-badge">Debit</span></div></div></div>
-  </div>
-  <div class="container"><div class="footer-bottom"><p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved.</p><nav class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></nav></div></div>
-</footer>
-<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
-<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
-  <div class="left-drawer-header">
-    <span class="left-drawer-title">Navigation</span>
-    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
+    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
+      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
     </button>
   </div>
-  <nav class="left-drawer-nav" aria-label="Full site navigation">
+  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
+</nav>
+<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
+  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
+</div>
+
+
+<section style="background:#0D0D0D;padding:120px 32px 100px;border-bottom:3px solid #333;">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">Questions</span>
+    <h1 class="sb-h1-white">FAQ.</h1>
+    <p class="sb-body-white" style="max-width:600px;">Everything you need to know about Water Boy Delivery — pricing, scheduling, water types, and more.</p>
+  </div>
+</section>
+
+<section class="sb-section-light">
+  <div class="sb-inner">
+    <div class="faq-cols">
+      <div>
+        <div class="faq-item">
+          <div class="faq-q">What types of water do you deliver?</div>
+          <p class="faq-a">We deliver three types: RO (reverse osmosis) water — pure, filtered, neutral taste. Alkaline water — pH 8.5+, with added trace minerals for a smooth, slightly mineral taste. Hydrogen water — infused with molecular hydrogen, our premium option.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How much does delivery cost?</div>
+          <p class="faq-a">Delivery is free for Zone 1 (within 3 miles of our store at 7119 Elk Grove Blvd). Zone 2 (3–6 miles) is $4.99 per delivery. Zone 3 (6–9 miles) is $9.99 per delivery. Call us to confirm your zone.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What container sizes do you offer?</div>
+          <p class="faq-a">We offer 1-gallon, 2-gallon, 3-gallon, and 5-Gallon bottles. The 5-Gallon bottle is our most popular option for home and office delivery. All bottles are food-safe, BPA-free polycarbonate.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do I need to sign a contract?</div>
+          <p class="faq-a">No. We don't require contracts or minimum orders. You can schedule a one-time delivery or set up recurring service — weekly, bi-weekly, or monthly. Cancel or adjust anytime.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I cancel or pause my delivery?</div>
+          <p class="faq-a">Just call us at <a href="tel:+19166193218">(916) 619-3218</a> or send a message through the contact page. We ask for 24 hours notice to skip or cancel a scheduled delivery. No cancellation fees.</p>
+        </div>
+      </div>
+      <div>
+        <div class="faq-item">
+          <div class="faq-q">How does bottle pickup work?</div>
+          <p class="faq-a">Leave your empty bottles at the door on delivery day. Our driver picks them up and replaces them with full ones. You don't need to be home. A small refundable deposit is collected on your first order to cover the bottles.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What days do you deliver?</div>
+          <p class="faq-a">We deliver Monday through Saturday. You'll receive a reminder notification the evening before your delivery, and a notification when the driver is on the way. Exact delivery windows vary by zone and day.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do I need a water dispenser?</div>
+          <p class="faq-a">Not necessarily — you can use a ceramic crock or place the bottle directly in a standard top-load dispenser. If you need a dispenser, we sell and rent Brio models starting at $129.99 to purchase or $10/month to rent.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How is the water filtered?</div>
+          <p class="faq-a">All our water goes through a multi-stage process: sediment pre-filtration, activated carbon block filtration, reverse osmosis membrane, post-carbon polishing, and UV sterilization. Alkaline water has an additional ionization stage. See our <a href="water-filtration.html">Water Filtration page</a> for full details.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do you deliver to my neighborhood?</div>
+          <p class="faq-a">We serve Elk Grove, Sacramento, Rancho Cordova, Wilton, Galt, Florin, and surrounding Sacramento County areas. Check our <a href="delivery-areas.html">Delivery Areas page</a> or call us to confirm availability at your address.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sb-section-dark" style="text-align:center;">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">Still Have Questions?</span>
+    <h2 class="sb-h2-white">We'll answer them.</h2>
+    <p class="sb-body-white" style="max-width:500px;margin:0 auto 40px;">Call us Monday through Saturday, 8 AM to 6 PM — or send a message and we'll respond same day.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="tel:+19166193218" class="sb-btn-outline">Call (916) 619-3218</a>
+      <a href="contact.html" class="sb-btn-outline">Send a Message</a>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="hn-footer-grid">
+    <div class="hn-footer-brand">
+      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Delivery">
+      <div class="hn-footer-tagline">Pure Water. Delivered.</div>
+      <p class="hn-footer-desc">Premium water delivery for homes and businesses in Elk Grove and Sacramento County.</p>
+      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Delivery</h4>
+      <a href="water-delivery.html">Water Delivery</a>
+      <a href="delivery-areas.html">Service Areas</a>
+      <a href="bottle-pickup.html">Bottle Pickup</a>
+      <a href="dispensers.html">Dispensers</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Shop Water</a>
+      <a href="alkaline-water.html">Alkaline Water</a>
+      <a href="reverse-osmosis-water.html">RO Water</a>
+      <a href="products.html">Add-Ons</a>
+    </div>
+    <div class="hn-footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <a href="water-filtration.html">Water Filtration</a>
+    </div>
+  </div>
+  <div class="hn-footer-bottom">
+    <p class="hn-footer-copy">&copy; 2026 Waterboy Delivery LLC. All rights reserved.</p>
+    <nav class="hn-footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </nav>
+  </div>
+</footer>
+
+<div id="left-drawer-overlay" class="left-drawer-overlay"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="left-drawer-header">
+    <span class="left-drawer-title">Navigation</span>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="left-drawer-nav">
     <a href="index.html" class="left-drawer-link">Home</a>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Shop &amp; Services</div>
-      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
-      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
-      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
-      <a href="shop.html" class="left-drawer-link">Shop Products</a>
-      <a href="products.html" class="left-drawer-link">Add-Ons</a>
-      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
-      <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Learn</div>
-      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
-      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Company</div>
-      <a href="about.html" class="left-drawer-link">About</a>
-      <a href="contact.html" class="left-drawer-link">Contact</a>
-      <a href="faq.html" class="left-drawer-link">FAQ</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Account</div>
-      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
-      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
-    </div>
+    <div class="left-drawer-section-label">Shop &amp; Services</div>
+    <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+    <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+    <a href="shop.html" class="left-drawer-link">Shop Products</a>
+    <a href="products.html" class="left-drawer-link">Add-Ons</a>
+    <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+    <a href="reverse-osmosis-water.html" class="left-drawer-link">RO Water</a>
+    <div class="left-drawer-section-label">Learn</div>
+    <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+    <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
+    <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
+    <div class="left-drawer-section-label">Company</div>
+    <a href="about.html" class="left-drawer-link">About</a>
+    <a href="contact.html" class="left-drawer-link">Contact</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
   </nav>
-</aside><button id="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg></button>
-<script src="script.js"></script><script src="shop.js"></script><script src="water-type-selector.js"></script><script src="left-menu.js"></script><script src="shared.js"></script>
-<script>
-(function () {
-  document.querySelectorAll('.faq-q').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var item = btn.closest('.faq-item');
-      var isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function (i) { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
-      if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
-    });
-  });
-})();
-</script>
+</aside>
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="script.js"></script>
+<script src="shop.js"></script>
+<script src="left-menu.js"></script>
+<script src="shared.js"></script>
 </body>
 </html>
+
+

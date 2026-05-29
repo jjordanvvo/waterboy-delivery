@@ -6,13 +6,13 @@
 /* ── Water Type Pricing — Single Source of Truth ───────────────── */
 const WATERBOY_PRICING = {
   bundles: {
-    'Solo':       { jugs:2,  ro:21,  alkaline:25,  hydrogen:30  },
-    'Family':     { jugs:4,  ro:42,  alkaline:47,  hydrogen:55  },
-    'Household':  { jugs:6,  ro:57,  alkaline:63,  hydrogen:72  },
-    'Office':     { jugs:8,  ro:72,  alkaline:79,  hydrogen:90  },
-    'Max Bundle': { jugs:12, ro:95,  alkaline:103, hydrogen:118 },
+    'Solo':       { bottles:2,  ro:21,  alkaline:25,  hydrogen:30  },
+    'Family':     { bottles:4,  ro:42,  alkaline:47,  hydrogen:55  },
+    'Household':  { bottles:6,  ro:57,  alkaline:63,  hydrogen:72  },
+    'Office':     { bottles:8,  ro:72,  alkaline:79,  hydrogen:90  },
+    'Max Bundle': { bottles:12, ro:95,  alkaline:103, hydrogen:118 },
   },
-  perJug: { ro:7.50, alkaline:9.00, hydrogen:11.00 },
+  perBottle: { ro:7.50, alkaline:9.00, hydrogen:11.00 },
 };
 
 /* ── Global Water State ────────────────────────────────────────── */
@@ -42,8 +42,8 @@ function renderPriceTags(){
     const kind = el.dataset.productType;
     if(kind === 'bundle' && WATERBOY_PRICING.bundles[id]){
       el.textContent = '$' + WATERBOY_PRICING.bundles[id][type];
-    } else if(kind === 'per-jug'){
-      el.textContent = '$' + WATERBOY_PRICING.perJug[type].toFixed(2);
+    } else if(kind === 'per-bottle'){
+      el.textContent = '$' + WATERBOY_PRICING.perBottle[type].toFixed(2);
     }
   });
   // Update delivery modal plan cards if open
@@ -68,14 +68,14 @@ function syncWaterPillsUI(){
 
 /* ── Constants & Plans ─────────────────────────────────────────── */
 const PLANS = {
-  'Solo':           { jugs:2,  price:21, alkaline:false },
-  'Family':         { jugs:4,  price:42, alkaline:false },
-  'Household':      { jugs:6,  price:57, alkaline:false },
-  'Office':         { jugs:8,  price:72, alkaline:false },
-  'Max Bundle':     { jugs:12, price:95, alkaline:false },
-  'Alkaline Solo':  { jugs:2,  price:25, alkaline:true  },
-  'Alkaline Family':{ jugs:4,  price:45, alkaline:true  },
-  'Alkaline Max':   { jugs:12, price:60, alkaline:true  },
+  'Solo':           { bottles:2,  price:21, alkaline:false },
+  'Family':         { bottles:4,  price:42, alkaline:false },
+  'Household':      { bottles:6,  price:57, alkaline:false },
+  'Office':         { bottles:8,  price:72, alkaline:false },
+  'Max Bundle':     { bottles:12, price:95, alkaline:false },
+  'Alkaline Solo':  { bottles:2,  price:25, alkaline:true  },
+  'Alkaline Family':{ bottles:4,  price:45, alkaline:true  },
+  'Alkaline Max':   { bottles:12, price:60, alkaline:true  },
 };
 
 /* Checkout add-on data */
@@ -474,18 +474,18 @@ function openProductDetailFromCard(card){
 
 function getProductDesc(name){
   const n=name.toLowerCase();
-  if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water jug compatible with all standard top-load and bottom-load dispensers. Purified or alkaline available on every delivery.';
-  if(n.includes('3-gallon')||n.includes('3 gallon')) return '3-gallon jug, ideal for smaller households or countertop dispensers. Lightweight and easy to handle.';
+  if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water bottle compatible with all standard top-load and bottom-load dispensers. Purified or alkaline available on every delivery.';
+  if(n.includes('3-gallon')||n.includes('3 gallon')) return '3-Gallon bottle, ideal for smaller households or countertop dispensers. Lightweight and easy to handle.';
   if(n.includes('half-gallon')||n.includes('half gallon')) return 'Sleek 64oz glass bottle for daily hydration. Pure taste with zero plastic leach. Dishwasher safe, airtight lid. Great for home or office.';
   if(n.includes('32oz glass')) return 'Compact 32oz glass water bottle — perfect for on-the-go. Crystal clear, BPA-free, easy to clean, fits standard cup holders.';
-  if(n.includes('3-gallon glass')||n.includes('3 gallon glass')) return 'Premium 3-gallon borosilicate glass jug. Pure taste with zero plastic contact — ideal for countertop dispensers. Reusable and eco-friendly.';
-  if(n.includes('glass bottle')||n.includes('glass jug')) return 'Premium glass bottle — pure taste with zero plastic contact. Reusable and eco-friendly.';
+  if(n.includes('3-gallon glass')||n.includes('3 gallon glass')) return 'Premium 3-gallon borosilicate glass bottle. Pure taste with zero plastic contact — ideal for countertop dispensers. Reusable and eco-friendly.';
+  if(n.includes('glass bottle')||n.includes('glass bottle')) return 'Premium glass bottle — pure taste with zero plastic contact. Reusable and eco-friendly.';
   if(n.includes('36oz aluminum')) return 'Wide-mouth 36oz aluminum bottle for active use. Double-wall insulated keeps water cold for hours. Leak-proof, lightweight, built to last.';
   if(n.includes('12oz')||n.includes('skinny')) return 'Slim 12oz aluminum bottle — perfect for the gym, commute, or kids. Leak-proof lid, lightweight design, fits any bag.';
   if(n.includes('coffee mug')) return 'Double-wall 30oz aluminum mug — keeps drinks cold or hot for hours. Fits standard cup holders, spill-resistant sliding lid.';
   if(n.includes('aluminum')) return 'Lightweight aluminum bottle — durable, eco-friendly, perfect for on-the-go hydration.';
-  if(n.includes('dispenser')) return 'Premium water dispenser compatible with our 3 and 5-gallon jugs. Hot and cold taps. Contact us for current pricing and availability.';
-  if(n.includes('crock')) return 'Classic ceramic water crock for elegant home water serving. Gravity-fed, holds a standard 5-gallon jug, no electricity required. Timeless design for any kitchen.';
+  if(n.includes('dispenser')) return 'Premium water dispenser compatible with our 3 and 5-Gallon bottles. Hot and cold taps. Contact us for current pricing and availability.';
+  if(n.includes('crock')) return 'Classic ceramic water crock for elegant home water serving. Gravity-fed, holds a standard 5-Gallon bottle, no electricity required. Timeless design for any kitchen.';
   if(n.includes('prebiotic')||n.includes('hydrogen')) return 'Molecular hydrogen + prebiotic fiber. Crisp Apple. Supports gut health, energy & mental clarity. Sugar-free. Mix with 12–16 oz water.';
   if(n.includes('stick')||n.includes('electrolyte')) return 'Single-serve electrolyte stick. Drop into your water for natural hydration support with essential minerals and electrolytes.';
   if(n.includes('zipfizz')) return 'Zero sugar. 100mg natural caffeine. B12, electrolytes & vitamins in every tube. Grape, Fruit Punch & Peach Mango.';
@@ -728,17 +728,17 @@ function inject(){
     </div>
     <!-- Bottle return for one-time orders -->
     <div id="co-bottle-return-section" class="bottle-return-step" style="display:none">
-     <p class="step-title" style="font-size:13px;margin-bottom:8px">How will you return empty jugs?</p>
+     <p class="step-title" style="font-size:13px;margin-bottom:8px">How will you return empty bottles?</p>
      <div class="br-radio-group">
       <label class="br-radio"><input type="radio" name="br-return" value="dropoff"><div><div class="br-radio-label">Drop off at facility (Free)</div><div class="br-radio-sub">7119 Elk Grove Blvd during business hours</div></div></label>
       <label class="br-radio"><input type="radio" name="br-return" value="pickup"><div><div class="br-radio-label">Schedule pickup (+$4.99)</div><div class="br-radio-sub">We come to you — Mon–Sat</div></div></label>
-      <label class="br-radio"><input type="radio" name="br-return" value="keep"><div><div class="br-radio-label">I'll keep the jugs and accept the $8/jug fee if not returned in 30 days</div></div></label>
+      <label class="br-radio"><input type="radio" name="br-return" value="keep"><div><div class="br-radio-label">I'll keep the bottles and accept the $8/bottle fee if not returned in 30 days</div></div></label>
      </div>
     </div>
     <!-- Recurring reminder -->
     <div id="co-recurring-note" class="br-recurring-note" style="display:none">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-     <p>Empty jugs swapped on every delivery — nothing for you to do.</p>
+     <p>Empty bottles swapped on every delivery — nothing for you to do.</p>
     </div>
     <div id="co-freq-wrap" style="display:none;margin-bottom:14px">
      <label style="font-size:11px;color:#8BB8D4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block">Frequency</label>
@@ -821,7 +821,7 @@ function inject(){
     <p style="margin:14px 0 8px;font-size:12px;font-weight:600;color:#8BB8D4;text-transform:uppercase;letter-spacing:.5px">Water Type</p>
     <div class="wtype-sel">
      <button class="wtype-btn sel" data-wt="purified">Purified</button>
-     <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/jug)</button>
+     <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/bottle)</button>
      <button class="wtype-btn" data-wt="distilled">Distilled</button>
     </div>
     <p class="wtype-ph" style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:#8BB8D4;margin-top:4px"></p>
@@ -908,7 +908,7 @@ function inject(){
       <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.04)">
        <div style="font-weight:800;font-size:15px;color:#fff;font-family:'Outfit',sans-serif">${name}</div>
        <div style="font-family:'Space Grotesk',sans-serif;color:#00D4FF;font-size:18px;margin:4px 0">$${p.price}<span style="font-size:11px;color:#8BB8D4">/mo</span></div>
-       <div style="font-size:12px;color:#8BB8D4">${p.jugs} jugs/delivery</div>
+       <div style="font-size:12px;color:#8BB8D4">${p.Bottles} bottles/delivery</div>
       </div>`).join('')}
     </div>
     <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600">Alkaline Upgrades (pH 8.5+)</p>
@@ -1160,7 +1160,7 @@ function wireCheckout(){
     if(!coState.date){ toast('Pick a date','Select a delivery date',''); return; }
     if(!coState.time){ toast('Pick a time','Select a time window',''); return; }
     if(coState.orderType==='one-time'&&!coState.bottleReturn){
-      toast('Bottle return','Please select how you\'ll return empty jugs',''); return;
+      toast('Bottle return','Please select how you\'ll return empty bottles',''); return;
     }
     // Step 1 → add-ons step → payment
     gotoStep('checkout-overlay',2);
@@ -1192,7 +1192,7 @@ function wireSubscription(){
       $$('.wtype-btn',document.getElementById('sub-overlay')).forEach(b=>b.classList.toggle('sel',b===wb));
       subState.waterType=wb.dataset.wt;
       const ph=document.querySelector('#sub-overlay .wtype-ph');
-      if(ph){ const msgs={purified:'Standard purified water — clean, crisp taste.',alkaline:'Alkaline (pH 8.5+) — add $4/jug to base price.',distilled:'Ultra-pure distilled water — great for appliances.'}; ph.textContent=msgs[subState.waterType]||''; }
+      if(ph){ const msgs={purified:'Standard purified water — clean, crisp taste.',alkaline:'Alkaline (pH 8.5+) — add $4/bottle to base price.',distilled:'Ultra-pure distilled water — great for appliances.'}; ph.textContent=msgs[subState.waterType]||''; }
     }
   });
   document.getElementById('sub-next-0')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
@@ -1205,10 +1205,10 @@ function wireSubscription(){
     if(!subState.date){ toast('Pick a date','Select your first delivery date',''); return; }
     if(!subState.time){ toast('Pick a time','Select a time window',''); return; }
     gotoStep('sub-overlay',3);
-    const plan=PLANS[subState.plan]||{}; const jugs=plan.jugs||0; const extra=subState.waterType==='alkaline'?jugs*4:0;
+    const plan=PLANS[subState.plan]||{}; const bottles=plan.Bottles||0; const extra=subState.waterType==='alkaline'?Bottles*4:0;
     const zd=zoneFeeDisplay(currentZone); const total=(plan.price||0)+extra+zd.fee;
     const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
-    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${jugs} jugs)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
+    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${Bottles} bottles)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
   });
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
@@ -1270,7 +1270,7 @@ function wireDeliveryModal(){
     const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
     const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
     const sumEl=document.getElementById('dv-plan-summary');
-    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.jugs||0)} jugs/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.Bottles||0)} bottles/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
     const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
   });
   document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
@@ -1279,7 +1279,7 @@ function wireDeliveryModal(){
     const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
     const cs=document.getElementById('dv-confirm-summary');
     if(cs) cs.innerHTML=`<strong style="color:#fff;font-size:15px">${esc(dvState.plan||'')} Plan</strong><br>`
-      +`${(plan.jugs||0)} jugs &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
+      +`${(plan.Bottles||0)} bottles &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
       +`${esc(dvState.day)} ${esc(dvState.window)}<br>`
       +`First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD'}<br>`
       +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
@@ -1321,12 +1321,12 @@ function openSubWithPlan(planName){
   // Use water type pricing from WaterboyState
   const bundleData = WATERBOY_PRICING.bundles[planName];
   const displayPrice = bundleData ? bundleData[window.WaterboyState.waterType] : (plan.price||0);
-  const jugs = bundleData ? bundleData.jugs : (plan.jugs||0);
+  const bottles = bundleData ? bundleData.Bottles : (plan.Bottles||0);
   const waterLabel = { ro:'RO', alkaline:'Alkaline', hydrogen:'Hydrogen' }[window.WaterboyState.waterType] || 'RO';
 
   const display = document.getElementById('sub-plan-display');
   if(display){
-    const perks = [`${jugs} × 5-gal ${waterLabel} jugs`, 'Flexible schedule', 'Free delivery 0–3 mi'];
+    const perks = [`${Bottles} × 5-gal ${waterLabel} bottles`, 'Flexible schedule', 'Free delivery 0–3 mi'];
     display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${displayPrice}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
   }
   // Sync water type buttons

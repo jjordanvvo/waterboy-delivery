@@ -1,4 +1,4 @@
-<system-reminder>[Truncated: PARTIAL view — showing lines 1-1004 of 1224 total (25895 tokens, cap 25000). Call Read with offset=1005 limit=1004 for the next page, or Grep to find a specific section. Do NOT answer from this page alone if the answer may be further in the file.]</system-reminder>
+﻿<system-reminder>[Truncated: PARTIAL view — showing lines 1-1004 of 1224 total (25895 tokens, cap 25000). Call Read with offset=1005 limit=1004 for the next page, or Grep to find a specific section. Do NOT answer from this page alone if the answer may be further in the file.]</system-reminder>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +18,13 @@
   <link rel="stylesheet" href="global.css" />
 
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#F5F0EB;color:#0D0D0D;font-family:Inter,sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+a:link,a:visited,a:hover,a:active,a:focus{color:inherit;}
+#navbar a:link,#navbar a:visited,#navbar a:active,#navbar a:focus{color:#FFF;text-decoration:none;}
+#navbar a:hover{color:#FFF;opacity:1 !important;text-decoration:none;}
+a:visited{color:inherit;}#navbar a:visited,#navbar a:active,#navbar a:focus{color:#FFF !important;opacity:0.7;}#navbar a:hover{opacity:1 !important;color:#FFF !important;}
 /* ── Order Page Styles ─────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;}
 .order-page-hero{background:linear-gradient(135deg,#0F2740,#132236);border-bottom:1px solid rgba(0,212,255,0.15);padding:40px 24px 36px;text-align:center;}
@@ -113,7 +120,7 @@
 .bc-name{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#F0F7FF;margin-bottom:4px;}
 .bc-price{font-family:'Inter',sans-serif;font-weight:600;font-size:22px;color:#00D4FF;}
 .bc-price-mo{font-size:12px;color:rgba(255,255,255,0.35);}
-.bc-jugs{font-family:'Inter',sans-serif;font-size:12px;color:#B8E6FF;margin:6px 0 4px;}
+.bc-Bottles{font-family:'Inter',sans-serif;font-size:12px;color:#B8E6FF;margin:6px 0 4px;}
 .bc-savings{font-family:'Inter',sans-serif;font-size:10px;color:rgba(0,212,255,0.65);}
 
 /* Order summary panel (Step 2 + 3) */
@@ -261,32 +268,34 @@
 </head>
 <body>
 
-<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-    <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-      <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
-    </a>
-    <div class="nav-center-links">
-      <a href="water-delivery.html" class="nav-link">Delivery</a>
-      <a href="shop.html" class="nav-link">Shop</a>
-      <a href="how-it-works.html" class="nav-link">How It Works</a>
-      <a href="about.html" class="nav-link">About</a>
-      <a href="my-orders.html" class="nav-link">My Orders</a>
-    </div>
-    <div class="nav-wt-pills" id="nav-wt-pills" role="group" aria-label="Water type selector">
-      <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-      <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-      <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
-    </div>
-    <div class="nav-right">
-      <a href="javascript:void(0)" class="nav-btn-cyan" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-size:13px;padding:8px 18px;">Sign Up / Log In</a>
-      <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():window.openCartSidebar&&window.openCartSidebar()" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"></polyline><line x1="7.68" y1="13.39" x2="5" y2="5"></line><line x1="5" y1="5" x2="21" y2="5"></line></svg><span id="cart-count" style="position:absolute;top:0;right:0;background:#ef4444;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span></button>
-    </div>
+<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
+  <button id="nav-menu-btn" aria-label="Open navigation" style="background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
+    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+  </a>
+  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
+    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
+    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
+    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
+    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
+    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
   </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
+    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
+      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+  </div>
+  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
 </nav>
+<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
+  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
+</div>
 <div id="water-type-bar" class="water-type-bar">
   <span class="wtb-label">Viewing: <strong id="wtb-type">Water</strong></span>
   <button id="wtb-change" class="wtb-change">Change</button>
@@ -296,7 +305,7 @@
 <header class="order-page-hero">
   <span class="oph-label">Waterboy Delivery</span>
   <h1>Order Water</h1>
-  <p>Fresh 5-gallon jugs delivered to your door in Elk Grove &amp; Sacramento County</p>
+  <p>Fresh 5-Gallon bottles delivered to your door in Elk Grove &amp; Sacramento County</p>
 </header>
 
 <!-- Progress bar -->
@@ -335,7 +344,7 @@
           </span>
           <div class="wt-title">Purified Water</div>
           <p class="wt-desc">Clean, crisp, purified water. Perfect for everyday hydration and cooking.</p>
-          <div class="wt-price">from $6.99/jug</div>
+          <div class="wt-price">from $6.99/bottle</div>
         </div>
 
         <div class="wt-card" id="wtc-alkaline" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('alkaline')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('alkaline')">
@@ -346,7 +355,7 @@
           </span>
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste — the only local delivery option.</p>
-          <div class="wt-price">$7.99/jug · from $25/mo</div>
+          <div class="wt-price">$7.99/bottle · from $25/mo</div>
         </div>
 
       </div>
@@ -375,9 +384,9 @@
                 <button class="qty-btn" onclick="adjustQty(-1)" aria-label="Decrease quantity">−</button>
                 <div class="qty-num" id="qty-display">1</div>
                 <button class="qty-btn" onclick="adjustQty(1)" aria-label="Increase quantity">+</button>
-                <span class="qty-label">5-gallon jugs</span>
+                <span class="qty-label">5-Gallon bottles</span>
               </div>
-              <div class="qty-total-line" id="qty-total-line">1 jug × $6.99 = $6.99</div>
+              <div class="qty-total-line" id="qty-total-line">1 bottle × $6.99 = $6.99</div>
             </div>
           </div>
 
@@ -609,7 +618,7 @@
 <footer id="footer" role="contentinfo">
   <div class="wave-section" style="background:var(--bg-secondary);height:60px;"><svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg></div>
   <div class="container footer-grid">
-    <div class="footer-brand"><img src="logo.png" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
+    <div class="footer-brand"><img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
     <div class="footer-col"><h4>Services</h4><nav class="footer-links"><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">In-Store Products</a></nav></div>
     <div class="footer-col"><h4>Learn</h4><nav class="footer-links"><a href="how-it-works.html">How It Works</a><a href="faq.html">FAQ</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav></div>
     <div class="footer-col"><h4>Order</h4><nav class="footer-links"><a href="order.html">Order Now</a><a href="my-orders.html">My Orders</a><a href="water-delivery.html">Pricing</a><a href="delivery-areas.html">Delivery Zones</a></nav></div>
@@ -681,16 +690,16 @@ function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperC
 /* ── Prices & Bundles ────────────────────────────────────────── */
 const PRICES={purified:6.99,alkaline:7.99};
 const BUNDLES_REG=[
-  {id:'solo',    name:'Solo',       price:21, jugs:2,  badge:'STARTER',      pop:false,savings:'Saves $26 vs Water.com'},
-  {id:'family',  name:'Family',     price:42, jugs:4,  badge:'MOST POPULAR', pop:true, savings:'Saves $7'},
-  {id:'household',name:'Household', price:57, jugs:6,  badge:'BEST VALUE',   pop:false,savings:'Saves $9'},
-  {id:'office',  name:'Office',     price:72, jugs:8,  badge:'OFFICE',       pop:false,savings:'Saves $10+'},
-  {id:'max',     name:'Max Bundle', price:95, jugs:12, badge:'PREMIUM',      pop:false,savings:'Saves $22'},
+  {id:'solo',    name:'Solo',       price:21, bottles:2,  badge:'STARTER',      pop:false,savings:'Saves $26 vs Water.com'},
+  {id:'family',  name:'Family',     price:42, bottles:4,  badge:'MOST POPULAR', pop:true, savings:'Saves $7'},
+  {id:'household',name:'Household', price:57, bottles:6,  badge:'BEST VALUE',   pop:false,savings:'Saves $9'},
+  {id:'office',  name:'Office',     price:72, bottles:8,  badge:'OFFICE',       pop:false,savings:'Saves $10+'},
+  {id:'max',     name:'Max Bundle', price:95, bottles:12, badge:'PREMIUM',      pop:false,savings:'Saves $22'},
 ];
 const BUNDLES_ALK=[
-  {id:'alk-solo',  name:'Alkaline Solo',   price:25,jugs:2, badge:'STARTER',      pop:false,savings:''},
-  {id:'alk-family',name:'Alkaline Family', price:45,jugs:4, badge:'MOST POPULAR', pop:true, savings:''},
-  {id:'alk-max',   name:'Alkaline Max',    price:60,jugs:12,badge:'PREMIUM',      pop:false,savings:''},
+  {id:'alk-solo',  name:'Alkaline Solo',   price:25,Bottles:2, badge:'STARTER',      pop:false,savings:''},
+  {id:'alk-family',name:'Alkaline Family', price:45,Bottles:4, badge:'MOST POPULAR', pop:true, savings:''},
+  {id:'alk-max',   name:'Alkaline Max',    price:60,Bottles:12,badge:'PREMIUM',      pop:false,savings:''},
 ];
 
 /* ── State ───────────────────────────────────────────────────── */
@@ -764,7 +773,7 @@ function adjustQty(delta){
 function updateQtyDisplay(){
   var price=PRICES[state.waterType||'purified'];
   document.getElementById('qty-display').textContent=state.qty;
-  document.getElementById('qty-total-line').textContent=state.qty+' jug'+(state.qty>1?'s':'')+' × $'+price.toFixed(2)+' = $'+(state.qty*price).toFixed(2);
+  document.getElementById('qty-total-line').textContent=state.qty+' bottle'+(state.qty>1?'s':'')+' × $'+price.toFixed(2)+' = $'+(state.qty*price).toFixed(2);
 }
 
 function renderBundles(){
@@ -778,7 +787,7 @@ function renderBundles(){
       +'<span class="bc-badge '+badgeCls+'">'+b.badge+'</span>'
       +'<div class="bc-name">'+b.name+'</div>'
       +'<div class="bc-price">$'+b.price+'<span class="bc-price-mo">/mo</span></div>'
-      +'<div class="bc-jugs">'+b.jugs+'×5-gal jugs</div>'
+      +'<div class="bc-Bottles">'+b.Bottles+'×5-gal bottles</div>'
       +(b.savings?'<div class="bc-savings">'+b.savings+'</div>':'')
       +'</div>';
   }).join('');
@@ -818,7 +827,7 @@ function updateS2Summary(){
   var base=getBasePrice();
   if(!state.waterType){content.innerHTML='<div class="sp-empty">Select water type first</div>';return;}
   var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' jug'+(state.qty>1?'s':'');
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
   content.innerHTML='<div class="sp-row"><span>Water Type</span><span>'+wtLbl+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+amtLbl+'</span></div>'
     +'<div class="sp-row"><span>'+(state.amtMode==='bundle'?'Monthly Price':'Subtotal')+'</span><span>$'+base.toFixed(2)+'</span></div>';
@@ -944,7 +953,7 @@ document.addEventListener('DOMContentLoaded',function(){
 /* ── S3 Summary ──────────────────────────────────────────────── */
 function updateS3Summary(){
   var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' jug'+(state.qty>1?'s':'');
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
   var base=getBasePrice();
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
@@ -1004,3 +1013,5 @@ function addAlsoBought(name,price,btn){
 }
 
 function updateCoTotal(){
+
+

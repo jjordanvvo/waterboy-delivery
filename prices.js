@@ -1,4 +1,4 @@
-/* ================================================================
+﻿/* ================================================================
    prices.js — Master Price List
    Waterboy Delivery — single source of truth for all prices
    ================================================================ */
@@ -9,20 +9,20 @@ var WB_PRICES = {
     alkaline5:  { name: '5-Gallon Alkaline Water', price: 7.99,  unit: 'per bottle' },
     hydrogen5:  { name: '5-Gallon Hydrogen Water', price: 9.99,  unit: 'per bottle' },
     ro3:        { name: '3-Gallon RO Water',        price: 4.99,  unit: 'per bottle' },
-    jug5empty:  { name: '5-Gallon Jug (Empty)',     price: 12.99, unit: 'each' },
-    jug3empty:  { name: '3-Gallon Jug (Empty)',     price: 9.99,  unit: 'each' }
+    bottle5empty:  { name: '5-Gallon bottle (Empty)',     price: 12.99, unit: 'each' },
+    bottle3empty:  { name: '3-Gallon bottle (Empty)',     price: 9.99,  unit: 'each' }
   },
   bundles: {
-    solo:      { name: 'Solo Bundle',      price: 21,  jugs: 2,  desc: '2×5-gal / mo' },
-    family:    { name: 'Family Bundle',    price: 42,  jugs: 4,  desc: '4×5-gal / mo' },
-    household: { name: 'Household Bundle', price: 57,  jugs: 6,  desc: '6×5-gal / mo' },
-    office:    { name: 'Office Bundle',    price: 72,  jugs: 8,  desc: '8×5-gal / mo' },
-    max:       { name: 'Max Bundle',       price: 95,  jugs: 12, desc: '12×5-gal / mo' }
+    solo:      { name: 'Solo Bundle',      price: 21,  bottles: 2,  desc: '2×5-gal / mo' },
+    family:    { name: 'Family Bundle',    price: 42,  bottles: 4,  desc: '4×5-gal / mo' },
+    household: { name: 'Household Bundle', price: 57,  bottles: 6,  desc: '6×5-gal / mo' },
+    office:    { name: 'Office Bundle',    price: 72,  bottles: 8,  desc: '8×5-gal / mo' },
+    max:       { name: 'Max Bundle',       price: 95,  bottles: 12, desc: '12×5-gal / mo' }
   },
   alkalineBundles: {
-    solo:   { name: 'Alkaline Solo',   price: 25, jugs: 2,  desc: '2×5-gal / mo' },
-    family: { name: 'Alkaline Family', price: 45, jugs: 4,  desc: '4×5-gal / mo' },
-    max:    { name: 'Alkaline Max',    price: 60, jugs: 12, desc: '12×5-gal / mo' }
+    solo:   { name: 'Alkaline Solo',   price: 25, bottles: 2,  desc: '2×5-gal / mo' },
+    family: { name: 'Alkaline Family', price: 45, bottles: 4,  desc: '4×5-gal / mo' },
+    max:    { name: 'Alkaline Max',    price: 60, bottles: 12, desc: '12×5-gal / mo' }
   },
   addons: {
     lmntCan:     { name: 'LMNT Sparkling Electrolyte Can (16oz)', price: 4.99,  unit: 'per can' },

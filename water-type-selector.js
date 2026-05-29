@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
 
   var STORAGE_KEY = 'wb_water_type';

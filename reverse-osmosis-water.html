@@ -1,346 +1,321 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reverse Osmosis Water Delivery Elk Grove &amp; Sacramento | Waterboy Delivery</title>
-  <meta name="description" content="Reverse osmosis water delivery in Elk Grove and Sacramento County. Ultra-pure 5-gallon RO water delivered to your door — 99% of contaminants removed. Contact us for current pricing." />
-  <meta name="keywords" content="reverse osmosis water delivery Elk Grove, RO water delivery Sacramento, reverse osmosis water subscription, pure water delivery" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://waterboydelivery.com/reverse-osmosis-water.html" />
-
-  <meta property="og:title" content="Reverse Osmosis Water Delivery | Waterboy Delivery Elk Grove" />
-  <meta property="og:description" content="Pure reverse osmosis water delivered to your home or business in Elk Grove. 5-gallon bottles starting at $6.99. Same-day and next-day delivery available." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://waterboydelivery.com/reverse-osmosis-water.html" />
-  <meta property="og:image" content="https://waterboydelivery.com/social-share.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <title>Reverse Osmosis Water Delivery | Waterboy</title>
+  <meta name="description" content="99% contaminant-free reverse osmosis water delivered to your door in Elk Grove. 1, 2, 3, and 5 gallon bottles available." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="shop.css" />
-  <link rel="stylesheet" href="water-type-selector.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    .ro-feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px; }
-    .ro-feature-card { background:rgba(15,39,64,0.6); border:1px solid rgba(56,189,248,0.15); border-radius:16px; padding:28px; }
-    .ro-feature-icon { width:48px; height:48px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(56,189,248,0.1); }
-    .ro-feature-icon svg { width:26px; height:26px; stroke:#38BDF8; }
-    .ro-feature-card h4 { font-family:'Outfit',sans-serif; font-size:16px; font-weight:700; color:var(--frost); margin:0 0 8px; }
-    .ro-feature-card p { font-size:14px; color:var(--text-muted-dark); line-height:1.6; margin:0; }
-    .ro-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); border-radius:12px; padding:12px 20px; font-family:'Outfit',sans-serif; font-size:18px; font-weight:800; color:#38BDF8; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F5F0EB;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    #navbar{position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;}
+    .nav-menu-btn{background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
+    .nav-logo img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
+    .hn-center-links{display:flex;gap:24px;flex:1;justify-content:center;}
+    .hn-center-links a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;opacity:0.7;}
+    .hn-center-links a:hover{opacity:1;}
+    .hn-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+    .hn-signin-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;cursor:pointer;}
+    .hn-signin-btn:hover{background:transparent;color:#00D4FF;}
+    #info-bar{background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;}
+    #info-bar a{color:#0D0D0D;font-weight:600;}
+    #info-bar a:hover{color:#00D4FF;}
+    .sb-inner{max-width:1100px;margin:0 auto;}
+    .sb-section-light{background:#F5F0EB;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-section-dark{background:#0D0D0D;padding:100px 32px;border-bottom:3px solid #333;}
+    .sb-section-white{background:#FFFFFF;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
+    .sb-eyebrow{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:20px;}
+    .sb-eyebrow-cyan{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#00D4FF;margin-bottom:20px;}
+    .sb-h1{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#0D0D0D;margin-bottom:32px;}
+    .sb-h1-white{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#FFF;margin-bottom:32px;}
+    .sb-h2{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#0D0D0D;margin-bottom:20px;}
+    .sb-h2-white{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#FFF;margin-bottom:20px;}
+    .sb-body{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:#444;}
+    .sb-body-white{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:rgba(255,255,255,0.65);}
+    .sb-btn-dark{display:inline-block;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #0D0D0D;cursor:pointer;text-decoration:none;}
+    .sb-btn-dark:hover{background:#F5F0EB;color:#0D0D0D;}
+    .sb-btn-cyan{display:inline-block;background:#00D4FF;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #00D4FF;cursor:pointer;text-decoration:none;}
+    .sb-btn-cyan:hover{background:transparent;color:#00D4FF;}
+    .sb-btn-outline{display:inline-block;background:transparent;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #FFF;cursor:pointer;text-decoration:none;}
+    .sb-btn-outline:hover{background:#FFF;color:#0D0D0D;}
+    .left-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;}
+    .left-drawer-overlay.active{display:block;}
+    .left-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;background:#0D0D0D;border-right:3px solid #222;z-index:1999;transition:left 0.3s;overflow-y:auto;}
+    .left-drawer.open{left:0;}
+    .left-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:3px solid #222;}
+    .left-drawer-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#00D4FF;font-weight:600;}
+    .left-drawer-close{background:none;border:none;color:#FFF;cursor:pointer;padding:4px;}
+    .left-drawer-nav{padding:16px 0;}
+    .left-drawer-link{display:block;padding:14px 24px;font-size:15px;color:rgba(255,255,255,0.7);font-weight:600;border-bottom:1px solid #1A1A1A;}
+    .left-drawer-link:hover{color:#FFF;background:rgba(255,255,255,0.05);}
+    .left-drawer-section-label{padding:12px 24px 4px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;}
+    #footer{background:#0D0D0D;border-top:3px solid #222;}
+    .hn-footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:64px 32px 48px;}
+    .hn-footer-brand img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:invert(1);margin-bottom:16px;}
+    .hn-footer-tagline{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;color:#00D4FF;text-transform:uppercase;margin-bottom:12px;}
+    .hn-footer-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px;}
+    .hn-footer-phone{font-family:'Space Mono',monospace;font-size:14px;color:#FFF;border-bottom:2px solid #333;padding-bottom:4px;display:inline-block;}
+    .hn-footer-col h4{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFF;margin-bottom:20px;}
+    .hn-footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+    .hn-footer-col a:hover{color:#FFF;}
+    .hn-footer-bottom{border-top:1px solid #222;padding:24px 32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+    .hn-footer-copy{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal{display:flex;gap:24px;}
+    .hn-footer-legal a{font-size:13px;color:rgba(255,255,255,0.3);}
+    .hn-footer-legal a:hover{color:#FFF;}
+    #back-to-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;background:#0D0D0D;border:3px solid #333;color:#FFF;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;}
+    #back-to-top.visible{display:flex;}
+    #back-to-top:hover{background:#333;}
+    @media(max-width:900px){.hn-footer-grid{grid-template-columns:1fr 1fr;}.hn-center-links{display:none;}}
+    @media(max-width:640px){.hn-nav-right .hn-signin-btn{display:none;}.sb-section-light,.sb-section-dark,.sb-section-white{padding:64px 20px;}.hn-footer-grid{grid-template-columns:1fr;padding:40px 20px 32px;}.hn-footer-bottom{flex-direction:column;gap:12px;text-align:center;}}
+
+    /* Page-specific */
+    .info-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+    .info-facts{display:flex;flex-direction:column;gap:0;}
+    .info-fact{padding:20px 0;border-bottom:1px solid #DDD;display:flex;gap:20px;align-items:flex-start;}
+    .info-fact:first-child{border-top:1px solid #DDD;}
+    .info-fact-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;min-width:100px;padding-top:3px;}
+    .info-fact-value{font-family:'Inter',sans-serif;font-size:16px;color:#0D0D0D;font-weight:600;}
+    .pricing-table{width:100%;border-collapse:collapse;border:3px solid #0D0D0D;}
+    .pricing-table th{background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 20px;text-align:left;}
+    .pricing-table td{padding:18px 20px;border-bottom:1px solid #E5E5E5;font-family:'Inter',sans-serif;font-size:16px;color:#0D0D0D;}
+    .pricing-table tr:last-child td{border-bottom:none;}
+    .pricing-table td:last-child{font-family:'Space Mono',monospace;font-weight:700;font-size:18px;}
+    .pricing-table tr:hover td{background:#F9F9F9;}
+    @media(max-width:700px){.info-cols{grid-template-columns:1fr;gap:40px;}}
   </style>
 </head>
 <body>
 
-
-
-
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <button class="nav-menu-btn" id="nav-menu-btn" aria-label="Open site navigation" aria-expanded="false" aria-controls="left-drawer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
+<!-- NAVBAR -->
+<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
+  <button id="nav-menu-btn" aria-label="Open navigation" style="background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
   </button>
-  <a href="index.html" class="nav-logo" aria-label="Waterboy Delivery home">
-    <img src="logo.png" alt="Waterboy Delivery logo" onerror="this.style.display='none'" />
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
+    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
   </a>
-  <div class="nav-wt-pills" role="group" aria-label="Water type selector">
-    <button class="nav-wt-btn" data-type="ro" aria-pressed="false">RO</button>
-    <button class="nav-wt-btn" data-type="alkaline" aria-pressed="false">Alkaline</button>
-    <button class="nav-wt-btn" data-type="hydrogen" aria-pressed="false">Hydrogen</button>
+  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
+    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
+    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
+    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
+    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
+    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
   </div>
-  <div class="nav-center-links">
-      <a href="water-delivery.html" class="nav-link active">Delivery</a>
-      <a href="shop.html" class="nav-link">Shop</a>
-      <a href="products.html" class="nav-link">Add-Ons</a>
-      <a href="dispensers.html" class="nav-link">Dispensers</a>
-      <a href="about.html" class="nav-link">About</a>
-    </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
+    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
+      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+  </div>
+  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
 </nav>
+<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
+  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
+</div>
+<!-- INFO BAR -->
+<div id="info-bar">
+  <span>Free delivery within 3 miles</span>
+  <span>|</span>
+  <a href="tel:+19166193218">(916) 619-3218</a>
+  <span>|</span>
+  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758">Elk Grove, CA 95758</a>
+  <span>|</span>
+  <a href="delivery-areas.html">Check your area</a>
+</div>
 
-
-<nav class="breadcrumb-nav" aria-label="Breadcrumb">
-  <div class="container">
-    <ol class="breadcrumb">
-      <li><a href="index.html">Home</a></li>
-      <li aria-current="page">Reverse Osmosis Water</li>
-    </ol>
+<!-- HERO -->
+<section class="sb-section-dark">
+  <div class="sb-inner">
+    <span class="sb-eyebrow-cyan">99% Pure</span>
+    <h1 class="sb-h1-white">Reverse<br>Osmosis.</h1>
+    <p class="sb-body-white" style="max-width:540px;">99% of contaminants removed. The purest drinking water available, delivered to your door.</p>
   </div>
-</nav>
+</section>
 
-<header class="page-hero" aria-labelledby="page-hero-title">
-  <div class="page-hero-glow" aria-hidden="true"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <span class="section-label" style="color:#38BDF8;">Ultra-Pure Water</span>
-    <h1 id="page-hero-title" class="page-hero-title">Reverse Osmosis Water Delivery in Elk Grove &amp; Sacramento</h1>
-    <p class="page-hero-sub">The purest water we offer &mdash; 99% of contaminants removed through multi-stage reverse osmosis filtration. Delivered in 5-gallon jugs to your home or office.</p>
-  </div>
-</header>
-
-<section class="section section-dark" aria-labelledby="ro-what-heading">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;" class="reveal">
+<!-- INFO -->
+<section class="sb-section-light">
+  <div class="sb-inner">
+    <div class="info-cols">
       <div>
-        <span class="section-label">What Is It</span>
-        <h2 id="ro-what-heading" class="section-title dark" style="margin-bottom:20px;">What Is Reverse Osmosis Water?</h2>
-        <p style="font-size:16px;color:var(--text-muted-dark);line-height:1.8;margin-bottom:16px;">Reverse osmosis (RO) is a water purification process that uses a semi-permeable membrane to remove ions, molecules, and larger particles from drinking water. The result is exceptionally pure water with up to 99% of contaminants removed.</p>
-        <p style="font-size:16px;color:var(--text-muted-dark);line-height:1.8;margin-bottom:24px;">Unlike standard purification, RO filtration removes dissolved solids, heavy metals, fluoride, chlorine, nitrates, and many other impurities that typical filters leave behind. It's the gold standard in home water purification.</p>
-        <div class="ro-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-          99% Contaminants Removed
-        </div>
+        <span class="sb-eyebrow">What it is</span>
+        <h2 class="sb-h2">Ultra-Pure Filtration.</h2>
+        <p class="sb-body" style="margin-bottom:24px;">Reverse osmosis forces water through a semi-permeable membrane, removing up to 99% of dissolved solids, chlorine, fluoride, heavy metals, and other contaminants. What's left is exceptionally clean, neutral water.</p>
+        <p class="sb-body">RO water is the baseline — pure and tasteless. It's ideal for drinking, cooking, baby formula, coffee, and anyone who is sensitive to chlorine taste or wants the lowest possible TDS count.</p>
       </div>
-      <div style="background:rgba(15,39,64,0.6);border:1px solid rgba(56,189,248,0.15);border-radius:20px;padding:40px;text-align:center;" class="reveal">
-        <div style="margin-bottom:16px;display:flex;justify-content:center;">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="1.2" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
+      <div>
+        <span class="sb-eyebrow">Specifications</span>
+        <div class="info-facts">
+          <div class="info-fact">
+            <span class="info-fact-label">pH Level</span>
+            <span class="info-fact-value">6.5 &ndash; 7.0 (neutral)</span>
+          </div>
+          <div class="info-fact">
+            <span class="info-fact-label">TDS</span>
+            <span class="info-fact-value">Under 20 ppm</span>
+          </div>
+          <div class="info-fact">
+            <span class="info-fact-label">Process</span>
+            <span class="info-fact-value">5-stage reverse osmosis</span>
+          </div>
+          <div class="info-fact">
+            <span class="info-fact-label">Removal</span>
+            <span class="info-fact-value">99% of contaminants</span>
+          </div>
+          <div class="info-fact">
+            <span class="info-fact-label">Best for</span>
+            <span class="info-fact-value">Drinking, cooking, formula</span>
+          </div>
+          <div class="info-fact">
+            <span class="info-fact-label">Sizes</span>
+            <span class="info-fact-value">1G, 2G, 3G, 5G</span>
+          </div>
         </div>
-        <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#38BDF8;margin-bottom:8px;">Ultra-Pure</div>
-        <p style="font-size:14px;color:var(--text-muted-dark);line-height:1.6;margin:0;">RO water is trusted by families, health-conscious consumers, and industries that require the highest water purity standards. Now available for local delivery in Elk Grove.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-light" aria-labelledby="ro-benefits-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:48px;">
-      <span class="section-label">Why Choose It</span>
-      <h2 id="ro-benefits-heading" class="section-title">Why People Choose RO Water</h2>
-    </div>
-    <div class="ro-feature-grid">
-      <div class="ro-feature-card reveal reveal-delay-1">
-        <div class="ro-feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/></svg>
-        </div>
-        <h4>Maximum Purity</h4>
-        <p>Up to 99% of dissolved contaminants removed &mdash; including lead, fluoride, chlorine, nitrates, and heavy metals that standard filters often miss.</p>
-      </div>
-      <div class="ro-feature-card reveal reveal-delay-2">
-        <div class="ro-feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg>
-        </div>
-        <h4>Clean, Neutral Taste</h4>
-        <p>With dissolved solids removed, RO water has a very clean, neutral taste with no chlorine, metallic, or mineral aftertaste. Pure as water can get.</p>
-      </div>
-      <div class="ro-feature-card reveal reveal-delay-3">
-        <div class="ro-feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <h4>Family Peace of Mind</h4>
-        <p>Many families switch to RO water for infant formula, cooking, and daily hydration when they want to eliminate the guesswork around tap water quality.</p>
-      </div>
-      <div class="ro-feature-card reveal">
-        <div class="ro-feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l4 2"/></svg>
-        </div>
-        <h4>Consistent Quality</h4>
-        <p>Unlike tap water that can vary day to day, our RO water goes through the same rigorous multi-stage filtration process every time &mdash; consistent, reliable purity.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-dark" aria-labelledby="ro-process-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:48px;">
-      <span class="section-label">The Process</span>
-      <h2 id="ro-process-heading" class="section-title dark">How Reverse Osmosis Works</h2>
-      <p class="section-subtitle dark">Multi-stage filtration that removes what others can't.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto;" class="reveal">
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.15);border-radius:16px;padding:28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#38BDF8;margin-bottom:10px;">1</div>
-        <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--frost);margin:0 0 8px;">Sediment Filter</h4>
-        <p style="font-size:13px;color:var(--text-muted-dark);line-height:1.5;margin:0;">Removes particles, rust, and sediment &mdash; the large stuff that clouds water.</p>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.15);border-radius:16px;padding:28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#38BDF8;margin-bottom:10px;">2</div>
-        <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--frost);margin:0 0 8px;">Carbon Block</h4>
-        <p style="font-size:13px;color:var(--text-muted-dark);line-height:1.5;margin:0;">Removes chlorine, chloramines, and organic compounds that affect taste and smell.</p>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:2px solid rgba(56,189,248,0.4);border-radius:16px;padding:28px;text-align:center;box-shadow:0 0 20px rgba(56,189,248,0.1);">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#38BDF8;margin-bottom:10px;">3</div>
-        <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#38BDF8;margin:0 0 8px;">RO Membrane</h4>
-        <p style="font-size:13px;color:var(--text-muted-dark);line-height:1.5;margin:0;">The core stage &mdash; a semi-permeable membrane that blocks dissolved solids, heavy metals, and contaminants at the molecular level.</p>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.15);border-radius:16px;padding:28px;text-align:center;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#38BDF8;margin-bottom:10px;">4</div>
-        <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--frost);margin:0 0 8px;">Post Carbon Polish</h4>
-        <p style="font-size:13px;color:var(--text-muted-dark);line-height:1.5;margin:0;">Final polishing stage for any remaining trace elements, ensuring a crisp, clean taste every time.</p>
-      </div>
+<!-- PRICING -->
+<section class="sb-section-white">
+  <div class="sb-inner">
+    <span class="sb-eyebrow">Pricing</span>
+    <h2 class="sb-h2" style="margin-bottom:48px;">Reverse Osmosis Prices.</h2>
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Volume</th>
+          <th>Price per Bottle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 Gallon</td>
+          <td>128 fl oz</td>
+          <td>$6.99</td>
+        </tr>
+        <tr>
+          <td>2 Gallon</td>
+          <td>256 fl oz</td>
+          <td>$8.99</td>
+        </tr>
+        <tr>
+          <td>3 Gallon</td>
+          <td>384 fl oz</td>
+          <td>$9.99</td>
+        </tr>
+        <tr>
+          <td>5 Gallon</td>
+          <td>640 fl oz</td>
+          <td>$10.99</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-family:'Inter',sans-serif;font-size:14px;color:#666;">Delivery fee may apply depending on your zone. <a href="delivery-areas.html" style="color:#0D0D0D;font-weight:600;text-decoration:underline;">Check your area.</a></p>
+    <div style="margin-top:40px;">
+      <a href="shop.html" class="sb-btn-dark">Order RO Water</a>
     </div>
   </div>
 </section>
 
-<section class="section section-light" aria-labelledby="ro-plans-heading">
-  <div class="container">
-    <div class="text-center reveal" style="margin-bottom:40px;">
-      <span class="section-label" style="color:#38BDF8;">RO Plans</span>
-      <h2 id="ro-plans-heading" class="section-title">Reverse Osmosis Delivery Plans</h2>
-      <p class="section-subtitle" style="margin-bottom:0;">Pricing coming soon &mdash; contact us for current rates. All plans include empty jug swap, no contracts.</p>
-    </div>
-    <div style="background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.2);border-radius:16px;padding:20px 28px;max-width:560px;margin:0 auto 40px;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#38BDF8;" class="reveal">
-      RO pricing is being finalized. Contact us for availability and current rates &mdash; we're happy to set up a custom plan.
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto;" class="reveal">
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.2);border-radius:20px;padding:28px 20px 24px;text-align:center;">
-        <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:var(--frost);margin-bottom:4px;">Solo</div>
-        <div style="font-size:12px;color:var(--text-muted-dark);margin-bottom:16px;">2 &times; 5-gal jugs</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#38BDF8;margin-bottom:16px;">Pricing TBD</div>
-        <a href="contact.html" style="display:block;padding:10px;border-radius:10px;background:rgba(56,189,248,0.15);color:#38BDF8;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;border:1px solid rgba(56,189,248,0.3);text-align:center;text-decoration:none;">Contact Us</a>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.2);border-radius:20px;padding:28px 20px 24px;text-align:center;">
-        <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:var(--frost);margin-bottom:4px;">Family</div>
-        <div style="font-size:12px;color:var(--text-muted-dark);margin-bottom:16px;">4 &times; 5-gal jugs</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#38BDF8;margin-bottom:16px;">Pricing TBD</div>
-        <a href="contact.html" style="display:block;padding:10px;border-radius:10px;background:rgba(56,189,248,0.15);color:#38BDF8;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;border:1px solid rgba(56,189,248,0.3);text-align:center;text-decoration:none;">Contact Us</a>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:2px solid rgba(56,189,248,0.5);border-radius:20px;padding:28px 20px 24px;text-align:center;box-shadow:0 0 20px rgba(56,189,248,0.08);">
-        <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#38BDF8;margin-bottom:4px;">Household</div>
-        <div style="font-size:12px;color:var(--text-muted-dark);margin-bottom:16px;">6 &times; 5-gal jugs</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#38BDF8;margin-bottom:16px;">Pricing TBD</div>
-        <a href="contact.html" style="display:block;padding:10px;border-radius:10px;background:#38BDF8;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;border:none;text-align:center;text-decoration:none;">Contact Us</a>
-      </div>
-      <div style="background:rgba(15,39,64,0.7);border:1px solid rgba(56,189,248,0.2);border-radius:20px;padding:28px 20px 24px;text-align:center;">
-        <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:var(--frost);margin-bottom:4px;">Office / Max</div>
-        <div style="font-size:12px;color:var(--text-muted-dark);margin-bottom:16px;">8&ndash;12 &times; 5-gal jugs</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#38BDF8;margin-bottom:16px;">Pricing TBD</div>
-        <a href="contact.html" style="display:block;padding:10px;border-radius:10px;background:rgba(56,189,248,0.15);color:#38BDF8;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;border:1px solid rgba(56,189,248,0.3);text-align:center;text-decoration:none;">Contact Us</a>
-      </div>
+<!-- CTA -->
+<section class="sb-section-dark">
+  <div class="sb-inner" style="text-align:center;">
+    <span class="sb-eyebrow-cyan">The purest option</span>
+    <h2 class="sb-h2-white">Start with<br>Pure Water.</h2>
+    <p class="sb-body-white" style="margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;">No contracts. Order once or set up recurring delivery. Cancel anytime.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="shop.html" class="sb-btn-cyan">Shop Now</a>
+      <a href="alkaline-water.html" class="sb-btn-outline">Compare Alkaline</a>
     </div>
   </div>
 </section>
 
-<section id="cta-banner" aria-labelledby="cta-title">
-  <div class="cta-glow-left" aria-hidden="true"></div>
-  <div class="cta-glow-right" aria-hidden="true"></div>
-  <div class="container">
-    <h2 id="cta-title" class="section-title dark reveal" style="margin-bottom:18px;">Interested in RO Delivery?</h2>
-    <p class="section-subtitle dark reveal" style="margin-bottom:40px;">We're setting up RO delivery in Elk Grove now. Reach out and we'll get you set up.</p>
-    <div class="cta-buttons reveal">
-      <a href="contact.html" class="btn-cta-large">
-        Contact Us
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
-      <a href="water-delivery.html" class="btn-secondary">View All Plans</a>
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="hn-footer-grid">
+    <div class="hn-footer-brand">
+      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Water Delivery logo" loading="lazy" />
+      <p class="hn-footer-tagline">Pure water. Delivered.</p>
+      <p class="hn-footer-desc">Elk Grove's trusted water delivery service. RO, Alkaline, and Hydrogen water delivered to your door.</p>
+      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
     </div>
-    <p class="cta-fine-print reveal">No contracts. Cancel anytime.</p>
-  </div>
-</section>
-
-<footer id="footer" role="contentinfo">
-  <div class="wave-section" style="background:var(--bg-secondary);height:60px;" aria-hidden="true">
-    <svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg>
-  </div>
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <img src="logo.png" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" />
-      <div class="footer-tagline">PURE WATER. DELIVERED.</div>
-      <p class="footer-desc">Premium 5-gallon water delivery and dispenser solutions for homes and businesses in Elk Grove &amp; Sacramento County.</p>
-      <a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a>
+    <div class="hn-footer-col">
+      <h4>Water</h4>
+      <a href="reverse-osmosis-water.html">Reverse Osmosis</a>
+      <a href="alkaline-water.html">Alkaline</a>
+      <a href="hydrogen-water.html">Hydrogen</a>
+      <a href="water-filtration.html">Filtration</a>
     </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <nav class="footer-links" aria-label="Service links">
-        <a href="water-delivery.html">Water Delivery</a>
-        <a href="dispensers.html">Dispensers</a>
-        <a href="bottle-pickup.html">Bottle Pickup</a>
-        <a href="shop.html">In-Store Products</a>
-        <a href="delivery-areas.html">Service Area</a>
-        <a href="alkaline-water.html">Alkaline Water</a>
-        <a href="reverse-osmosis-water.html">Reverse Osmosis Water</a>
-      </nav>
+    <div class="hn-footer-col">
+      <h4>Service</h4>
+      <a href="water-delivery.html">Delivery</a>
+      <a href="delivery-areas.html">Areas</a>
+      <a href="dispensers.html">Dispensers</a>
+      <a href="bottle-pickup.html">Bottle Pickup</a>
     </div>
-    <div class="footer-col">
-      <h4>Learn</h4>
-            <nav class="footer-links" aria-label="Info links">
-        <a href="how-it-works.html">How It Works</a>
-        <a href="water-filtration.html">Water Filtration</a>
-        <a href="faq.html">FAQ</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <div class="footer-contact-items">
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8a16 16 0 0 0 6.93 6.93l1.46-1.46a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <a href="tel:+19166193218" style="color:var(--text-muted-dark);">(916) 619-3218</a>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          <span>Mon&ndash;Sat 8 AM &ndash; 6 PM</span>
-        </div>
-      </div>
-      <div class="payment-methods">
-        <span class="payment-methods-label">We Accept</span>
-        <div class="payment-badges">
-          <span class="payment-badge">Apple Pay</span>
-          <span class="payment-badge">Google Pay</span>
-          <span class="payment-badge">Visa</span>
-          <span class="payment-badge">Mastercard</span>
-          <span class="payment-badge">Debit</span>
-        </div>
-      </div>
+    <div class="hn-footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
-  <div class="container">
-    <div class="footer-bottom">
-      <p class="footer-copy">&copy; 2026 Waterboy Delivery. All rights reserved.</p>
-      <nav class="footer-legal" aria-label="Legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></nav>
+  <div class="hn-footer-bottom">
+    <span class="hn-footer-copy">&copy; 2025 Waterboy Water Delivery. All rights reserved.</span>
+    <div class="hn-footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
     </div>
   </div>
 </footer>
 
-<div id="left-drawer-overlay" class="left-drawer-overlay" aria-hidden="true"></div>
-<aside id="left-drawer" class="left-drawer" role="dialog" aria-label="Site navigation" aria-modal="true" aria-hidden="true">
+<!-- LEFT DRAWER -->
+<div class="left-drawer-overlay" id="leftDrawerOverlay" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()"></div>
+<div class="left-drawer" id="leftDrawer">
   <div class="left-drawer-header">
-    <span class="left-drawer-title">Navigation</span>
-    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close navigation menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <span class="left-drawer-title">Waterboy</span>
+    <button class="left-drawer-close" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 2l16 16M18 2L2 18" stroke="#FFF" stroke-width="2.5"/></svg>
     </button>
   </div>
-  <nav class="left-drawer-nav" aria-label="Full site navigation">
-    <a href="index.html" class="left-drawer-link">Home</a>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Shop &amp; Services</div>
-      <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
-      <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
-      <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
-      <a href="shop.html" class="left-drawer-link">Shop Products</a>
-      <a href="products.html" class="left-drawer-link">Add-Ons</a>
-      <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
-      <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis Water</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Learn</div>
-      <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-      <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
-      <a href="delivery-areas.html" class="left-drawer-link">Service Area</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Company</div>
-      <a href="about.html" class="left-drawer-link">About</a>
-      <a href="contact.html" class="left-drawer-link">Contact</a>
-      <a href="faq.html" class="left-drawer-link">FAQ</a>
-    </div>
-    <div class="left-drawer-section">
-      <div class="left-drawer-section-label">Account</div>
-      <a href="#" class="left-drawer-link" id="ld-signin-link">Sign In / Account</a>
-      <a href="#" class="left-drawer-link" id="ld-cart-link">Cart</a>
-    </div>
+  <nav class="left-drawer-nav">
+    <span class="left-drawer-section-label">Water Types</span>
+    <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis</a>
+    <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
+    <a href="hydrogen-water.html" class="left-drawer-link">Hydrogen Water</a>
+    <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
+    <span class="left-drawer-section-label">Service</span>
+    <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
+    <a href="delivery-areas.html" class="left-drawer-link">Delivery Areas</a>
+    <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
+    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
+    <span class="left-drawer-section-label">Company</span>
+    <a href="about.html" class="left-drawer-link">About Us</a>
+    <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
+    <a href="contact.html" class="left-drawer-link">Contact</a>
+    <a href="shop.html" class="left-drawer-link">Shop</a>
   </nav>
-</aside>
+</div>
 
-<button id="back-to-top" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 14V4M4 9l5-5 5 5" stroke="#FFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
-<script src="script.js"></script>
-<script src="shop.js"></script>
-<script src="water-type-selector.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<script src="shop.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

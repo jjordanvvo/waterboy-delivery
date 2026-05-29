@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const BASE = 'C:\\Users\\silly\\Desktop\\waterboy-delivery\\';
 
@@ -220,3 +220,4 @@ for (const cfg of pages) {
 
 console.log('=== BULK UPDATE REPORT ===');
 report.forEach(r => console.log(r));
+

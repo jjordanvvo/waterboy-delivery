@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
   var btn = document.getElementById('nav-menu-btn');
   var drawer = document.getElementById('left-drawer');
