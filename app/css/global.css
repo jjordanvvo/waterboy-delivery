@@ -1,10 +1,10 @@
-/* ============================================================
+﻿/* ============================================================
    WATERBOY APP - GLOBAL DESIGN SYSTEM
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&&display=swap');
 
-/* ── Design Tokens ─────────────────────────────────────────── */
+/* â”€â”€ Design Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
   --cyan:       #00D4FF;
   --cyan-dim:   #00A8CC;
@@ -30,9 +30,9 @@
   --warning:    #F59E0B;
   --danger:     #EF4444;
   --info:       #3B82F6;
-  --font-head:  'Outfit', sans-serif;
-  --font-body:  'Inter', sans-serif;
-  --font-mono:  'Space Mono', monospace;
+  --font-head:  'Poppins', sans-serif;
+  --font-body:  'Poppins', sans-serif;
+  --font-mono:  'Poppins', sans-serif;
   --radius-sm:  8px;
   --radius-md:  14px;
   --radius-lg:  20px;
@@ -46,7 +46,7 @@
   --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ── Reset ─────────────────────────────────────────────────── */
+/* â”€â”€ Reset â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
@@ -67,13 +67,13 @@ input, select, textarea {
 a { color: var(--cyan); text-decoration: none; }
 ul { list-style: none; }
 
-/* ── Scrollbar ─────────────────────────────────────────────── */
+/* â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--blue-mid); }
 ::-webkit-scrollbar-thumb { background: var(--blue-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
 
-/* ── Typography ────────────────────────────────────────────── */
+/* â”€â”€ Typography â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1.2; }
 .mono { font-family: var(--font-mono); }
 .text-cyan   { color: var(--cyan); }
@@ -84,7 +84,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .fw-500      { font-weight: 500; }
 .fw-600      { font-weight: 600; }
 
-/* ── Loading / Splash Screens ──────────────────────────────── */
+/* â”€â”€ Loading / Splash Screens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .app-loading {
   position: fixed;
   inset: 0;
@@ -168,7 +168,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   100% { width: 100%; }
 }
 
-/* ── Cards ─────────────────────────────────────────────────── */
+/* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -187,7 +187,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   border-color: var(--cyan-dim);
 }
 
-/* ── Buttons ────────────────────────────────────────────────── */
+/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -243,7 +243,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .btn-icon:hover { background: var(--white-15); color: var(--white-90); }
 .btn-icon svg { width: 18px; height: 18px; }
 
-/* ── Form Elements ─────────────────────────────────────────── */
+/* â”€â”€ Form Elements â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-label {
   font-size: 0.8125rem;
@@ -280,7 +280,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 }
 .input-with-icon .form-input { padding-left: 38px; }
 
-/* ── Badge / Status Pills ───────────────────────────────────── */
+/* â”€â”€ Badge / Status Pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -305,7 +305,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   display: inline-block;
 }
 
-/* ── Toast Notifications ───────────────────────────────────── */
+/* â”€â”€ Toast Notifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #toast-container {
   position: fixed;
   top: 20px;
@@ -364,7 +364,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .toast-close:hover { background: var(--white-15); color: var(--white-90); }
 .toast-close svg { width: 12px; height: 12px; }
 
-/* ── Modal ─────────────────────────────────────────────────── */
+/* â”€â”€ Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -420,7 +420,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   justify-content: flex-end;
 }
 
-/* ── Bottom Sheet ───────────────────────────────────────────── */
+/* â”€â”€ Bottom Sheet â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sheet-overlay {
   position: fixed;
   inset: 0;
@@ -461,7 +461,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .sheet-title { font-size: 1rem; font-weight: 700; }
 .sheet-body { padding: 20px; }
 
-/* ── Skeleton Loaders ───────────────────────────────────────── */
+/* â”€â”€ Skeleton Loaders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -494,7 +494,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   border-radius: var(--radius-md);
 }
 
-/* ── Status Badges ──────────────────────────────────────────── */
+/* â”€â”€ Status Badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .status-pending    { color: var(--warning); }
 .status-confirmed  { color: var(--info); }
 .status-preparing  { color: var(--cyan); }
@@ -502,7 +502,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .status-delivered  { color: var(--success); }
 .status-cancelled  { color: var(--danger); }
 
-/* ── Dividers ───────────────────────────────────────────────── */
+/* â”€â”€ Dividers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .divider {
   height: 1px;
   background: var(--blue-border);
@@ -522,7 +522,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   background: var(--blue-border);
 }
 
-/* ── Empty States ───────────────────────────────────────────── */
+/* â”€â”€ Empty States â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -545,7 +545,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
 .empty-state-title { font-size: 1.0625rem; font-weight: 700; }
 .empty-state-sub   { font-size: 0.875rem; color: var(--white-40); max-width: 260px; }
 
-/* ── Progress Bars ──────────────────────────────────────────── */
+/* â”€â”€ Progress Bars â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .progress-wrap {
   height: 6px;
   background: var(--white-08);
@@ -559,7 +559,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   transition: width 0.6s ease;
 }
 
-/* ── Avatar ─────────────────────────────────────────────────── */
+/* â”€â”€ Avatar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .avatar {
   border-radius: 50%;
   object-fit: cover;
@@ -577,7 +577,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   flex-shrink: 0;
 }
 
-/* ── Quantity Stepper ───────────────────────────────────────── */
+/* â”€â”€ Quantity Stepper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .qty-stepper {
   display: flex;
   align-items: center;
@@ -609,7 +609,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); font-weight: 700; line-height: 1
   color: var(--white-90);
 }
 
-/* ── Toggle Switch ──────────────────────────────────────────── */
+/* â”€â”€ Toggle Switch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .toggle-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .toggle-switch {
   width: 44px; height: 24px;
@@ -637,7 +637,7 @@ input[type="checkbox"]:checked + .toggle-switch::after,
 .toggle-switch.on::after { transform: translateX(20px); }
 input[type="checkbox"] { display: none; }
 
-/* ── Data Table ─────────────────────────────────────────────── */
+/* â”€â”€ Data Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .data-table thead tr th {
   padding: 11px 16px;
@@ -663,7 +663,7 @@ input[type="checkbox"] { display: none; }
 .data-table tbody tr:last-child td { border-bottom: none; }
 .data-table tbody tr:hover td { background: var(--white-04); }
 
-/* ── Chips / Tag pills ──────────────────────────────────────── */
+/* â”€â”€ Chips / Tag pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -684,7 +684,7 @@ input[type="checkbox"] { display: none; }
   color: var(--cyan);
 }
 
-/* ── Stat Blocks ────────────────────────────────────────────── */
+/* â”€â”€ Stat Blocks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stat-block {
   display: flex;
   flex-direction: column;
@@ -708,7 +708,7 @@ input[type="checkbox"] { display: none; }
 .stat-delta.up   { color: var(--success); }
 .stat-delta.down { color: var(--danger); }
 
-/* ── Animations ─────────────────────────────────────────────── */
+/* â”€â”€ Animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -742,7 +742,7 @@ input[type="checkbox"] { display: none; }
 .anim-float { animation: dropFloat 3s ease-in-out infinite; }
 .anim-pulse { animation: pulse 2s ease-in-out infinite; }
 
-/* ── Responsive helpers ─────────────────────────────────────── */
+/* â”€â”€ Responsive helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .d-none { display: none !important; }
 .d-flex { display: flex; }
 .d-grid { display: grid; }
@@ -772,3 +772,5 @@ input[type="checkbox"] { display: none; }
 @media (min-width: 769px) {
   .hide-desktop { display: none !important; }
 }
+
+

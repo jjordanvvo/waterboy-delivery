@@ -1,3 +1,8 @@
+﻿/* ============================================================
+   WATER TYPE SELECTOR - Light Theme | Water Boy Delivery
+   ============================================================ */
+
+body { padding-top: 0; }
 /* ============================================================
    WATER TYPE NAVBAR PILLS
    ============================================================ */
@@ -15,11 +20,11 @@ body { padding-top: 80px; }
 .nav-wt-btn {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1.5px solid rgba(0,212,255,0.25);
+  border: 1.5px solid rgba(13,71,161,0.25);
   background: transparent;
   color: var(--text-muted-dark, #8BB8D4);
   cursor: pointer;
-  font-family: 'Space Mono', monospace;
+  font-family: 'Poppins', sans-serif;
   font-size: 13px;
   font-weight: 600;
   transition: all 0.2s;
@@ -28,19 +33,19 @@ body { padding-top: 80px; }
 }
 
 .nav-wt-btn:hover {
-  border-color: rgba(0,212,255,0.5);
+  border-color: rgba(13,71,161,0.5);
   color: #fff;
 }
 
 .nav-wt-btn[data-type="hydrogen"].active {
-  background: rgba(0,212,255,0.12);
-  border-color: #00D4FF;
-  color: #00D4FF;
-  box-shadow: 0 0 12px rgba(0,212,255,0.2);
+  background: rgba(13,71,161,0.12);
+  border-color: #0D47A1;
+  color: #0D47A1;
+  box-shadow: 0 0 12px rgba(13,71,161,0.2);
 }
 
 .nav-wt-btn[data-type="alkaline"].active {
-  background: linear-gradient(135deg,rgba(0,212,255,0.08),rgba(139,92,246,0.12));
+  background: linear-gradient(135deg,rgba(13,71,161,0.08),rgba(139,92,246,0.12));
   border-color: transparent;
   color: #fff;
   position: relative;
@@ -52,7 +57,7 @@ body { padding-top: 80px; }
   inset: -1.5px;
   border-radius: 999px;
   padding: 1.5px;
-  background: linear-gradient(135deg,#00D4FF,#8B5CF6);
+  background: linear-gradient(135deg,#0D47A1,#8B5CF6);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -73,8 +78,10 @@ body { padding-top: 80px; }
 
 @media (max-width: 500px) {
   .nav-wt-btn { font-size: 0; padding: 5px 8px; }
-  .nav-wt-btn::after { font-size: 10px; font-family: 'Space Mono', monospace; font-weight: 600; letter-spacing: 0.3px; }
+  .nav-wt-btn::after { font-size: 10px; font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0.3px; }
   .nav-wt-btn[data-type="ro"]::after { content: 'RO'; }
   .nav-wt-btn[data-type="alkaline"]::after { content: 'ALK'; }
   .nav-wt-btn[data-type="hydrogen"]::after { content: 'H2'; }
 }
+
+

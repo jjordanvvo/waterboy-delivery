@@ -28,7 +28,8 @@
       "Bash(Select-Object -Last 40)",
       "PowerShell(& \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\_batch_update.ps1\")",
       "Bash(grep -v \"class\\\\|CSS\\\\|--\\\\|^\\\\s*$\")",
-      "PowerShell(Start-Process \"msedge\" \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")"
+      "PowerShell(Start-Process \"msedge\" \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")",
+      "PowerShell(cd \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\"; Get-ChildItem -Recurse -File | Where-Object {$_.Extension -in @\\('.html', '.css', '.js'\\)} | Select-Object FullName | Sort-Object FullName)"
     ]
   }
 }

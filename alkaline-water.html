@@ -1,426 +1,189 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alkaline Water Delivery | Waterboy</title>
-  <meta name="description" content="Premium pH 8.5+ alkaline water with trace minerals delivered to your door in Elk Grove. 1, 2, 3, and 5 gallon bottles available." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+  <title>Alkaline Water Delivery | Water Boy Delivery</title>
+  <meta name="description" content="Premium pH 8.5+ alkaline water with trace minerals delivered to your door in Elk Grove. 1, 2, 3, and 5 gallon bottles available.">
   <style>
-#navbar, #navbar * { color: #FFF !important; }
-#navbar a { color: #FFF !important; opacity: 0.75; text-decoration: none; }
-#navbar a:hover { opacity: 1 !important; color: #FFF !important; }
-#navbar a:visited { color: #FFF !important; }
-#navbar a:active { color: #FFF !important; }
-.hn-center-links a { color: #FFF !important; }
-.hn-signin-btn { color: #0D0D0D !important; }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:#F5F0EB;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:17px;line-height:1.7;overflow-x:hidden;}
-    a{color:inherit;text-decoration:none;}
-    #navbar{position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;}
-    .nav-menu-btn{background:none;border:none;color:#FFF;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
-    .nav-logo img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;}
-    .hn-center-links{display:flex;gap:24px;flex:1;justify-content:center;}
-    .hn-center-links a{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;opacity:0.7;}
-    .hn-center-links a:hover{opacity:1;}
-    .hn-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
-    .hn-signin-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;cursor:pointer;}
-    .hn-signin-btn:hover{background:transparent;color:#00D4FF;}
-    #info-bar{background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;}
-    #info-bar a{color:#0D0D0D;font-weight:600;}
-    #info-bar a:hover{color:#00D4FF;}
-    .sb-inner{max-width:1100px;margin:0 auto;}
-    .sb-section-light{background:#F5F0EB;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
-    .sb-section-dark{background:#0D0D0D;padding:100px 32px;border-bottom:3px solid #333;}
-    .sb-section-white{background:#FFFFFF;padding:100px 32px;border-bottom:3px solid #0D0D0D;}
-    .sb-eyebrow{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:20px;}
-    .sb-eyebrow-cyan{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#00D4FF;margin-bottom:20px;}
-    .sb-h1{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#0D0D0D;margin-bottom:32px;}
-    .sb-h1-white{font-family:'Outfit',sans-serif;font-size:clamp(64px,9vw,120px);font-weight:900;line-height:0.9;letter-spacing:-4px;color:#FFF;margin-bottom:32px;}
-    .sb-h2{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#0D0D0D;margin-bottom:20px;}
-    .sb-h2-white{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1;letter-spacing:-2px;color:#FFF;margin-bottom:20px;}
-    .sb-body{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:#444;}
-    .sb-body-white{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;line-height:1.7;color:rgba(255,255,255,0.65);}
-    .sb-btn-dark{display:inline-block;background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #0D0D0D;cursor:pointer;text-decoration:none;}
-    .sb-btn-dark:hover{background:#F5F0EB;color:#0D0D0D;}
-    .sb-btn-cyan{display:inline-block;background:#00D4FF;color:#0D0D0D;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #00D4FF;cursor:pointer;text-decoration:none;}
-    .sb-btn-cyan:hover{background:transparent;color:#00D4FF;}
-    .sb-btn-outline{display:inline-block;background:transparent;color:#FFF;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:3px solid #FFF;cursor:pointer;text-decoration:none;}
-    .sb-btn-outline:hover{background:#FFF;color:#0D0D0D;}
-    .sb-card-light{border:3px solid #0D0D0D;padding:36px;background:#FFF;}
-    .sb-card-dark{border:3px solid #333;padding:36px;background:rgba(255,255,255,0.04);}
-    .left-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;}
-    .left-drawer-overlay.active{display:block;}
-    .left-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;background:#0D0D0D;border-right:3px solid #222;z-index:1999;transition:left 0.3s;overflow-y:auto;}
-    .left-drawer.open{left:0;}
-    .left-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:3px solid #222;}
-    .left-drawer-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#00D4FF;font-weight:600;}
-    .left-drawer-close{background:none;border:none;color:#FFF;cursor:pointer;padding:4px;}
-    .left-drawer-nav{padding:16px 0;}
-    .left-drawer-link{display:block;padding:14px 24px;font-size:15px;color:rgba(255,255,255,0.7);font-weight:600;border-bottom:1px solid #1A1A1A;}
-    .left-drawer-link:hover{color:#FFF;background:rgba(255,255,255,0.05);}
-    .left-drawer-section-label{padding:12px 24px 4px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;}
-    #footer{background:#0D0D0D;border-top:3px solid #222;}
-    .hn-footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:64px 32px 48px;}
-    .hn-footer-brand img{height:40px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:invert(1);margin-bottom:16px;}
-    .hn-footer-tagline{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;color:#00D4FF;text-transform:uppercase;margin-bottom:12px;}
-    .hn-footer-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px;}
-    .hn-footer-phone{font-family:'Space Mono',monospace;font-size:14px;color:#FFF;border-bottom:2px solid #333;padding-bottom:4px;display:inline-block;}
-    .hn-footer-col h4{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#FFF;margin-bottom:20px;}
-    .hn-footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:10px;}
-    .hn-footer-col a:hover{color:#FFF;}
-    .hn-footer-bottom{border-top:1px solid #222;padding:24px 32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-    .hn-footer-copy{font-size:13px;color:rgba(255,255,255,0.3);}
-    .hn-footer-legal{display:flex;gap:24px;}
-    .hn-footer-legal a{font-size:13px;color:rgba(255,255,255,0.3);}
-    .hn-footer-legal a:hover{color:#FFF;}
-    #back-to-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;background:#0D0D0D;border:3px solid #333;color:#FFF;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;}
-    #back-to-top.visible{display:flex;}
-    #back-to-top:hover{background:#333;}
-    @media(max-width:900px){.hn-footer-grid{grid-template-columns:1fr 1fr;}.hn-center-links{display:none;}}
-    @media(max-width:640px){.hn-nav-right .hn-signin-btn{display:none;}.sb-section-light,.sb-section-dark,.sb-section-white{padding:64px 20px;}.hn-footer-grid{grid-template-columns:1fr;padding:40px 20px 32px;}.hn-footer-bottom{flex-direction:column;gap:12px;text-align:center;}}
-
-    /* Page-specific */
-    .info-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
-    .info-facts{display:flex;flex-direction:column;gap:0;}
-    .info-fact{padding:20px 0;border-bottom:1px solid #DDD;display:flex;gap:20px;align-items:flex-start;}
-    .info-fact:first-child{border-top:1px solid #DDD;}
-    .info-fact-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;min-width:100px;padding-top:3px;}
-    .info-fact-value{font-family:'Inter',sans-serif;font-size:16px;color:#0D0D0D;font-weight:600;}
-    .pricing-table{width:100%;border-collapse:collapse;border:3px solid #0D0D0D;}
-    .pricing-table th{background:#0D0D0D;color:#FFF;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 20px;text-align:left;}
-    .pricing-table td{padding:18px 20px;border-bottom:1px solid #E5E5E5;font-family:'Inter',sans-serif;font-size:16px;color:#0D0D0D;}
-    .pricing-table tr:last-child td{border-bottom:none;}
-    .pricing-table td:last-child{font-family:'Space Mono',monospace;font-weight:700;font-size:18px;}
-    .pricing-table tr:hover td{background:#F9F9F9;}
-    @media(max-width:700px){.info-cols{grid-template-columns:1fr;gap:40px;}}
+    .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .info-facts { display: flex; flex-direction: column; gap: 0; }
+    .info-fact { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--color-border); }
+    .info-fact:first-child { border-top: 1px solid var(--color-border); }
+    .info-fact-label { font-size: 13px; font-weight: 500; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+    .info-fact-value { font-size: 15px; font-weight: 600; color: var(--color-text); font-family: 'Poppins', sans-serif; }
+    .pricing-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .pricing-table th { background: var(--color-primary); color: #FFFFFF; padding: 14px 20px; text-align: left; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+    .pricing-table td { padding: 14px 20px; border-bottom: 1px solid var(--color-border); font-size: 15px; color: var(--color-text); font-family: 'Poppins', sans-serif; }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr:nth-child(even) td { background: var(--color-surface-alt); }
+    .pricing-table td:last-child { font-weight: 600; color: var(--color-primary); }
+    @media (max-width: 768px) { .info-cols { grid-template-columns: 1fr; } }
   </style>
-<style id="mobile-fix">
-@media (max-width: 768px) {
-  /* NAVBAR */
-  #navbar { padding: 0 16px; gap: 12px; height: 56px; }
-  #navbar .hn-center-links { display: none !important; }
-  #navbar a img { height: 40px !important; }
-  .hn-nav-right { margin-left: auto; }
-  .hn-signin-btn { padding: 8px 14px !important; font-size: 11px !important; }
-
-  /* INFO BAR */
-  #navbar + div { flex-direction: column; gap: 6px; padding: 10px 16px; font-size: 12px; text-align: center; }
-
-  /* HERO */
-  #hero, .page-hero, section[style*="min-height:100vh"] { padding: 60px 20px !important; }
-  .sb-h1, h1 { font-size: clamp(42px, 10vw, 64px) !important; letter-spacing: -2px !important; }
-  .sb-h1-white { font-size: clamp(42px, 10vw, 64px) !important; letter-spacing: -2px !important; }
-  .page-hero h1 { font-size: clamp(42px, 10vw, 64px) !important; }
-
-  /* HERO SPLIT — stack vertically */
-  [style*="grid-template-columns: 1fr 1fr"],
-  [style*="grid-template-columns:1fr 1fr"] {
-    grid-template-columns: 1fr !important;
-    gap: 32px !important;
-  }
-  .hn-hero-split, .hero-inner {
-    grid-template-columns: 1fr !important;
-    padding: 60px 20px !important;
-  }
-  .hero-cols { grid-template-columns: 1fr !important; gap: 32px !important; }
-
-  /* SECTIONS */
-  .sb-section-light, .sb-section-dark, .sb-section-white { padding: 60px 20px !important; }
-  section { padding-left: 20px !important; padding-right: 20px !important; }
-  .sb-inner, .order-wrap { padding-left: 20px !important; padding-right: 20px !important; }
-
-  /* GRIDS — single column on mobile */
-  .water-grid { grid-template-columns: 1fr !important; }
-  .water-cards { grid-template-columns: 1fr !important; }
-  .water-card { border-right: none !important; border-bottom: 3px solid #333 !important; }
-  .water-card:last-child { border-bottom: none !important; }
-  .size-grid { grid-template-columns: 1fr 1fr !important; }
-  .freq-grid { grid-template-columns: 1fr !important; }
-  .form-grid { grid-template-columns: 1fr !important; }
-  .hiw-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-  .pricing-cards { grid-template-columns: 1fr !important; }
-  .pricing-card { border-right: none !important; border-bottom: 3px solid #0D0D0D !important; }
-  .pricing-card:last-child { border-bottom: none !important; }
-  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
-  [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
-  [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr 1fr !important; }
-  [style*="grid-template-columns:repeat(4"] { grid-template-columns: 1fr 1fr !important; }
-
-  /* PRICING CARDS */
-  .sb-card-light, .sb-card-dark { padding: 24px 20px !important; }
-
-  /* STATS BAR */
-  .sb-stats-bar { flex-direction: column !important; }
-  .sb-stat-item { border-right: none !important; border-bottom: 1px solid #333 !important; width: 100% !important; padding: 14px 20px !important; }
-  .sb-stat-item:last-child { border-bottom: none !important; }
-
-  /* BUTTONS */
-  .next-btn, .sb-btn-dark, .sb-btn-cyan, .sb-btn-outline { width: 100% !important; text-align: center !important; padding: 18px 20px !important; box-sizing: border-box !important; }
-  a[style*="padding:20px 56px"] { padding: 18px 32px !important; display: block !important; text-align: center !important; }
-
-  /* FOOTER */
-  .hn-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; padding: 40px 20px !important; }
-  .hn-footer-bottom { flex-direction: column !important; gap: 12px !important; text-align: center !important; padding: 20px !important; }
-  .hn-footer-legal { justify-content: center !important; }
-
-  /* TRUST BAR */
-  .trust-bar { flex-direction: column !important; gap: 12px !important; }
-
-  /* STEPS BAR */
-  .steps-bar-inner { gap: 0 !important; }
-  .step-label { display: none !important; }
-  .step-divider { width: 16px !important; }
-  .step-num { width: 28px !important; height: 28px !important; font-size: 11px !important; }
-
-  /* WIZARD BODY */
-  .wizard-body { padding: 32px 16px !important; }
-
-  /* SUMMARY BOX */
-  .summary-block { padding: 0 !important; }
-  .summary-row { flex-direction: column !important; gap: 4px !important; align-items: flex-start !important; padding: 12px 16px !important; }
-  .summary-total-row { padding: 16px !important; }
-
-  /* ZONE GRID */
-  .zone-grid, .zones-grid { grid-template-columns: 1fr !important; }
-  .zone-card { border-right: none !important; border-bottom: 3px solid #0D0D0D !important; }
-  .zone-card:last-child { border-bottom: none !important; }
-
-  /* FREQ CARDS */
-  .freq-card { border-right: none !important; }
-
-  /* GENERAL OVERFLOW FIX */
-  body { overflow-x: hidden !important; }
-  img { max-width: 100% !important; }
-}
-
-@media (max-width: 480px) {
-  .hn-footer-grid { grid-template-columns: 1fr !important; }
-  #navbar .hn-signin-btn { display: none !important; }
-  .hn-nav-right { gap: 4px !important; }
-  .step-tab { padding: 12px 6px !important; }
-}
-</style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav id="navbar" role="navigation" style="position:sticky;top:0;z-index:1000;height:64px;background:#0D0D0D;border-bottom:3px solid #222;display:flex;align-items:center;padding:0 32px;gap:24px;box-sizing:border-box;">
-  
-  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;line-height:1;">
-    <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" style="height:52px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-  </a>
-  <div style="display:flex;gap:24px;flex:1;justify-content:center;align-items:center;">
-    <a href="index.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Home</a>
-    <a href="shop.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Shop Water</a>
-    <a href="water-delivery.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Delivery</a>
-    <a href="about.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">About</a>
-    <a href="contact.html" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#FFF;text-transform:uppercase;letter-spacing:1px;text-decoration:none;opacity:0.75;white-space:nowrap;">Contact</a>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo-link"><img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" loading="lazy"></a>
+    <div class="nav-links-center">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="shop.html" class="nav-link">Water Types</a>
+      <a href="water-delivery.html" class="nav-link">Pricing</a>
+      <a href="delivery-areas.html" class="nav-link">Delivery Area</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <button id="cart-btn" class="nav-cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" aria-label="Cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg><span id="cart-count">0</span></button>
+      <a href="water-delivery.html" class="nav-order-btn">ORDER NOW</a>
+      <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
   </div>
-  <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
-    <a href="javascript:void(0)" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:2px solid #00D4FF;color:#0D0D0D;background:#00D4FF;text-decoration:none;display:inline-block;white-space:nowrap;line-height:1;">Sign In</a>
-    <button id="cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" style="background:none;border:none;cursor:pointer;color:#00D4FF;position:relative;padding:8px;margin-left:4px;display:flex;align-items:center;justify-content:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg>
-      <span id="cart-count" style="position:absolute;top:0;right:0;background:#00D4FF;color:#0D0D0D;font-size:10px;font-weight:700;width:18px;height:18px;display:none;align-items:center;justify-content:center;">0</span>
-    </button>
-  </div>
-  <ul class="nav-links" style="display:none;list-style:none;margin:0;padding:0;"></ul>
 </nav>
-<div style="background:#F5F0EB;border-bottom:3px solid #0D0D0D;padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:'Inter',sans-serif;font-size:13px;color:#444;box-sizing:border-box;">
-  <a href="tel:+19166193218" style="color:#0D0D0D;font-weight:600;text-decoration:none;">(916) 619-3218</a>
-  <span style="opacity:0.3;">|</span>
-  <a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" style="color:#0D0D0D;font-weight:600;text-decoration:none;">7119 Elk Grove Blvd, Elk Grove, CA 95758</a>
-</div>
-<!-- INFO BAR -->
 
-
-<!-- HERO -->
-<section class="sb-section-dark">
-  <div class="sb-inner">
-    <span class="sb-eyebrow-cyan">pH 8.5+</span>
-    <h1 class="sb-h1-white">Alkaline<br>Water.</h1>
-    <p class="sb-body-white" style="max-width:540px;">pH 8.5+ water with trace minerals — clean, smooth, and naturally balanced for daily hydration.</p>
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <div class="mobile-menu-header">
+    <a href="index.html" class="nav-logo-link"><img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" height="44" loading="lazy"></a>
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
-</section>
+  <nav class="mobile-nav-links">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="shop.html" class="mobile-nav-link">Water Types</a>
+    <a href="water-delivery.html" class="mobile-nav-link">Pricing</a>
+    <a href="delivery-areas.html" class="mobile-nav-link">Delivery Area</a>
+    <a href="about.html" class="mobile-nav-link">About</a>
+    <a href="faq.html" class="mobile-nav-link">FAQ</a>
+  </nav>
+  <a href="water-delivery.html" class="mobile-order-btn">ORDER NOW</a>
+</div>
 
-<!-- INFO -->
-<section class="sb-section-light">
-  <div class="sb-inner">
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="page-hero-label">pH 8.5+</span>
+    <h1>Alkaline Water.</h1>
+    <p>pH 8.5+ water with trace minerals - clean, smooth, and naturally balanced for daily hydration.</p>
+  </div>
+</div>
+
+<section class="section section-white">
+  <div class="container">
     <div class="info-cols">
       <div>
-        <span class="sb-eyebrow">What it is</span>
-        <h2 class="sb-h2">Ionized &amp; Mineral-Rich.</h2>
-        <p class="sb-body" style="margin-bottom:24px;">Alkaline water is filtered and ionized to reach a pH between 8.5 and 9.5. Trace minerals like calcium, magnesium, and potassium are reintroduced after filtration, giving the water a smooth, slightly sweet taste profile.</p>
-        <p class="sb-body">Many customers switch from RO water to alkaline for the taste — it has a noticeably different mouthfeel and is particularly popular for daily drinking and smoothies.</p>
+        <span class="section-label">What It Is</span>
+        <h2 style="margin-bottom:20px;">Ionized &amp; Mineral-Rich.</h2>
+        <p style="margin-bottom:20px;">Alkaline water is filtered and ionized to reach a pH between 8.5 and 9.5. Trace minerals like calcium, magnesium, and potassium are reintroduced after filtration, giving the water a smooth, slightly sweet taste profile.</p>
+        <p>Many customers switch from RO water to alkaline for the taste - it has a noticeably different mouthfeel and is particularly popular for daily drinking and smoothies.</p>
       </div>
       <div>
-        <span class="sb-eyebrow">Specifications</span>
+        <span class="section-label">Specifications</span>
         <div class="info-facts">
-          <div class="info-fact">
-            <span class="info-fact-label">pH Level</span>
-            <span class="info-fact-value">8.5 &ndash; 9.5</span>
-          </div>
-          <div class="info-fact">
-            <span class="info-fact-label">TDS</span>
-            <span class="info-fact-value">Low (minerals added)</span>
-          </div>
-          <div class="info-fact">
-            <span class="info-fact-label">Process</span>
-            <span class="info-fact-value">Ionization + remineralization</span>
-          </div>
-          <div class="info-fact">
-            <span class="info-fact-label">Taste</span>
-            <span class="info-fact-value">Smooth, slightly sweet</span>
-          </div>
-          <div class="info-fact">
-            <span class="info-fact-label">Best for</span>
-            <span class="info-fact-value">Daily drinking, smoothies, coffee</span>
-          </div>
-          <div class="info-fact">
-            <span class="info-fact-label">Sizes</span>
-            <span class="info-fact-value">1G, 2G, 3G, 5G</span>
-          </div>
+          <div class="info-fact"><span class="info-fact-label">pH Level</span><span class="info-fact-value">8.5 - 9.5</span></div>
+          <div class="info-fact"><span class="info-fact-label">TDS</span><span class="info-fact-value">Low (minerals added)</span></div>
+          <div class="info-fact"><span class="info-fact-label">Process</span><span class="info-fact-value">Ionization + remineralization</span></div>
+          <div class="info-fact"><span class="info-fact-label">Taste</span><span class="info-fact-value">Smooth, slightly sweet</span></div>
+          <div class="info-fact"><span class="info-fact-label">Best For</span><span class="info-fact-value">Daily drinking, smoothies, coffee</span></div>
+          <div class="info-fact"><span class="info-fact-label">Sizes</span><span class="info-fact-value">1G, 2G, 3G, 5G</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="sb-section-white">
-  <div class="sb-inner">
-    <span class="sb-eyebrow">Pricing</span>
-    <h2 class="sb-h2" style="margin-bottom:48px;">Alkaline Water Prices.</h2>
+<section class="section section-alt">
+  <div class="container">
+    <span class="section-label">Pricing</span>
+    <h2 style="margin-bottom:40px;">Alkaline Water Prices.</h2>
     <table class="pricing-table">
-      <thead>
-        <tr>
-          <th>Size</th>
-          <th>Volume</th>
-          <th>Price per Bottle</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Size</th><th>Volume</th><th>Price per Bottle</th></tr></thead>
       <tbody>
-        <tr>
-          <td>1 Gallon</td>
-          <td>128 fl oz</td>
-          <td>$7.99</td>
-        </tr>
-        <tr>
-          <td>2 Gallon</td>
-          <td>256 fl oz</td>
-          <td>$10.99</td>
-        </tr>
-        <tr>
-          <td>3 Gallon</td>
-          <td>384 fl oz</td>
-          <td>$11.99</td>
-        </tr>
-        <tr>
-          <td>5 Gallon</td>
-          <td>640 fl oz</td>
-          <td>$13.99</td>
-        </tr>
+        <tr><td>1 Gallon</td><td>128 fl oz</td><td>$7.99</td></tr>
+        <tr><td>2 Gallon</td><td>256 fl oz</td><td>$10.99</td></tr>
+        <tr><td>3 Gallon</td><td>384 fl oz</td><td>$11.99</td></tr>
+        <tr><td>5 Gallon</td><td>640 fl oz</td><td>$13.99</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:20px;font-family:'Inter',sans-serif;font-size:14px;color:#666;">Delivery fee may apply depending on your zone. <a href="delivery-areas.html" style="color:#0D0D0D;font-weight:600;text-decoration:underline;">Check your area.</a></p>
-    <div style="margin-top:40px;">
-      <a href="shop.html" class="sb-btn-dark">Order Alkaline Water</a>
-    </div>
+    <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:32px;">Delivery fee may apply depending on your zone. <a href="delivery-areas.html" style="color:var(--color-primary);font-weight:600;text-decoration:underline;">Check your area.</a></p>
+    <a href="water-delivery.html" class="btn-primary">Order Alkaline Water</a>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="sb-section-dark">
-  <div class="sb-inner" style="text-align:center;">
-    <span class="sb-eyebrow-cyan">Try it today</span>
-    <h2 class="sb-h2-white">Upgrade Your<br>Daily Water.</h2>
-    <p class="sb-body-white" style="margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;">No contracts. Order once or set up recurring delivery. Cancel anytime.</p>
+<section class="section section-primary text-center">
+  <div class="container">
+    <h2 style="color:#FFFFFF;margin-bottom:16px;">Upgrade Your Daily Water.</h2>
+    <p style="color:rgba(255,255,255,0.85);max-width:480px;margin:0 auto 40px;font-size:18px;">No contracts. Order once or set up recurring delivery. Cancel anytime.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="shop.html" class="sb-btn-cyan">Shop Now</a>
-      <a href="how-it-works.html" class="sb-btn-outline">How It Works</a>
+      <a href="water-delivery.html" class="btn-inverted">Shop Now</a>
+      <a href="how-it-works.html" class="btn-ghost-white">How It Works</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer id="footer">
-  <div class="hn-footer-grid">
-    <div class="hn-footer-brand">
-      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Water Delivery logo" loading="lazy" />
-      <p class="hn-footer-tagline">Pure water. Delivered.</p>
-      <p class="hn-footer-desc">Elk Grove's trusted water delivery service. RO, Alkaline, and Hydrogen water delivered to your door.</p>
-      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery" class="footer-logo" loading="lazy">
+        <p class="footer-tagline">Clean. Fresh. Local.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-btn" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.75a4.85 4.85 0 0 1-1-.06z"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="X"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Water Types</a><a href="water-delivery.html">Pricing</a><a href="delivery-areas.html">Delivery Area</a><a href="faq.html">FAQ</a></div></div>
+      <div class="footer-col"><h4>Service Area</h4><div class="footer-links"><a href="delivery-areas.html">Elk Grove, CA</a><a href="delivery-areas.html">Sacramento County</a><a href="delivery-areas.html">Zones 1 through 3</a><a href="delivery-areas.html">See Full Map</a></div></div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><a href="tel:+19166193218">(916) 619-3218</a></div>
+        <div class="footer-contact-item"><a href="mailto:hello@waterboydelivery.com">hello@waterboydelivery.com</a></div>
+        <div class="footer-contact-item">7119 Elk Grove Blvd, Elk Grove CA 95758</div>
+        <a href="water-delivery.html" class="footer-order-btn">ORDER NOW</a>
+      </div>
     </div>
-    <div class="hn-footer-col">
-      <h4>Water</h4>
-      <a href="reverse-osmosis-water.html">Reverse Osmosis</a>
-      <a href="alkaline-water.html">Alkaline</a>
-      <a href="hydrogen-water.html">Hydrogen</a>
-      <a href="water-filtration.html">Filtration</a>
-    </div>
-    <div class="hn-footer-col">
-      <h4>Service</h4>
-      <a href="water-delivery.html">Delivery</a>
-      <a href="delivery-areas.html">Areas</a>
-      <a href="dispensers.html">Dispensers</a>
-      <a href="bottle-pickup.html">Bottle Pickup</a>
-    </div>
-    <div class="hn-footer-col">
-      <h4>Company</h4>
-      <a href="about.html">About Us</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="faq.html">FAQ</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </div>
-  <div class="hn-footer-bottom">
-    <span class="hn-footer-copy">&copy; 2025 Waterboy Water Delivery. All rights reserved.</span>
-    <div class="hn-footer-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2024 Water Boy Delivery. All rights reserved.</span>
+      <div class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></div>
     </div>
   </div>
 </footer>
 
-<!-- LEFT DRAWER -->
-<div class="left-drawer-overlay" id="leftDrawerOverlay" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()"></div>
-<div class="left-drawer" id="leftDrawer">
+<div id="left-drawer-overlay" class="left-drawer-overlay"></div>
+<aside id="left-drawer" class="left-drawer" role="dialog" aria-modal="true" aria-label="Site navigation">
   <div class="left-drawer-header">
-    <span class="left-drawer-title">Waterboy</span>
-    <button class="left-drawer-close" onclick="if(typeof closeLeftDrawer==='function')closeLeftDrawer()" aria-label="Close menu">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 2l16 16M18 2L2 18" stroke="#FFF" stroke-width="2.5"/></svg>
-    </button>
+    <span class="left-drawer-title">Navigation</span>
+    <button class="left-drawer-close" id="left-drawer-close" aria-label="Close menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
   <nav class="left-drawer-nav">
-    <span class="left-drawer-section-label">Water Types</span>
+    <a href="index.html" class="left-drawer-link">Home</a>
+    <div class="left-drawer-section-label">Water Types</div>
     <a href="reverse-osmosis-water.html" class="left-drawer-link">Reverse Osmosis</a>
     <a href="alkaline-water.html" class="left-drawer-link">Alkaline Water</a>
-    <a href="hydrogen-water.html" class="left-drawer-link">Hydrogen Water</a>
     <a href="water-filtration.html" class="left-drawer-link">Water Filtration</a>
-    <span class="left-drawer-section-label">Service</span>
+    <div class="left-drawer-section-label">Services</div>
     <a href="water-delivery.html" class="left-drawer-link">Water Delivery</a>
     <a href="delivery-areas.html" class="left-drawer-link">Delivery Areas</a>
     <a href="dispensers.html" class="left-drawer-link">Dispensers</a>
-    <a href="bottle-pickup.html" class="left-drawer-link">Bottle Pickup</a>
-    <span class="left-drawer-section-label">Company</span>
-    <a href="about.html" class="left-drawer-link">About Us</a>
-    <a href="how-it-works.html" class="left-drawer-link">How It Works</a>
-    <a href="faq.html" class="left-drawer-link">FAQ</a>
+    <div class="left-drawer-section-label">Company</div>
+    <a href="about.html" class="left-drawer-link">About</a>
     <a href="contact.html" class="left-drawer-link">Contact</a>
-    <a href="shop.html" class="left-drawer-link">Shop</a>
+    <a href="faq.html" class="left-drawer-link">FAQ</a>
   </nav>
-</div>
+</aside>
+<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="m18 15-6-6-6 6"/></svg></button>
 
-<!-- BACK TO TOP -->
-<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 14V4M4 9l5-5 5 5" stroke="#FFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
-
+<script>
+  document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';});
+  document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
+  window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
+</script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
-
-
 </body>
 </html>

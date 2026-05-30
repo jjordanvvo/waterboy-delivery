@@ -211,6 +211,7 @@ function toast(title, msg, icon){
 function openOverlay(id){
   const el = document.getElementById(id);
   if(!el) return;
+  el.style.display = 'flex';   // clear inline display:none so CSS .open rule can show it
   el.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -218,11 +219,12 @@ function closeOverlay(id){
   const el = document.getElementById(id);
   if(!el) return;
   el.classList.remove('open');
+  el.style.display = 'none';   // re-apply inline hide so element is gone without CSS
   // only restore scroll if no other overlays are open
   if(!document.querySelector('.wb-overlay.open')) document.body.style.overflow = '';
 }
 function closeAll(){
-  $$('.wb-overlay').forEach(o => o.classList.remove('open'));
+  $$('.wb-overlay').forEach(o => { o.classList.remove('open'); o.style.display = 'none'; });
   document.body.style.overflow = '';
 }
 
@@ -398,13 +400,18 @@ function openCartDrawer(){
   renderCartDrawer();
   updateBadge();
   const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
-  if(overlay) overlay.classList.add('open');
-  if(drawer) setTimeout(()=>drawer.classList.add('open'),10);
+  if(overlay){ overlay.style.display='block'; overlay.classList.add('open'); }
+  if(drawer){ drawer.style.transform=''; setTimeout(()=>drawer.classList.add('open'),10); }
+  document.body.style.overflow='hidden';
 }
 function closeCartDrawer(){
   const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
   if(drawer) drawer.classList.remove('open');
-  setTimeout(()=>{ if(overlay) overlay.classList.remove('open'); },300);
+  setTimeout(()=>{
+    if(overlay){ overlay.classList.remove('open'); overlay.style.display='none'; }
+    if(drawer) drawer.style.transform='translateX(100%)';
+    document.body.style.overflow='';
+  },300);
 }
 
 /* ── Qty Modal ─────────────────────────────────────────────────── */
@@ -568,7 +575,7 @@ function inject(){
 <div id="wb-toast"><span class="wb-toast-icon">✓</span><div><div class="wb-toast-title"></div><div class="wb-toast-msg"></div></div></div>
 
 <!-- Contact Overlay -->
-<div class="wb-overlay" id="contact-overlay">
+<div class="wb-overlay" id="contact-overlay" style="display:none">
  <div class="wb-modal">
   <div class="wb-mhead"><h2>Get in Touch</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -597,7 +604,7 @@ function inject(){
 </div>
 
 <!-- Auth Overlay -->
-<div class="wb-overlay" id="auth-overlay">
+<div class="wb-overlay" id="auth-overlay" style="display:none">
  <div class="wb-modal">
   <div class="wb-mhead"><h2>My Account</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -636,8 +643,8 @@ function inject(){
 </div>
 
 <!-- Cart Drawer -->
-<div id="cart-drawer-overlay">
- <div id="cart-drawer">
+<div id="cart-drawer-overlay" style="display:none">
+ <div id="cart-drawer" style="transform:translateX(100%)">
   <div class="cd-head"><span>My Cart (<span id="cd-count">0</span>)</span><button class="wb-mclose" id="cd-close">✕</button></div>
   <div class="cd-body" id="cd-body"></div>
   <div class="cd-foot">
@@ -656,7 +663,7 @@ function inject(){
 </div>
 
 <!-- Qty Modal -->
-<div class="wb-overlay" id="qty-overlay">
+<div class="wb-overlay" id="qty-overlay" style="display:none">
  <div class="wb-modal">
   <div class="wb-mhead"><h2>How Many?</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -672,7 +679,7 @@ function inject(){
 </div>
 
 <!-- Product Detail Overlay -->
-<div class="wb-overlay" id="pd-overlay">
+<div class="wb-overlay" id="pd-overlay" style="display:none">
  <div class="wb-modal wide" id="pd-modal">
   <div class="wb-mhead"><h2>Product Details</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -697,7 +704,7 @@ function inject(){
 </div>
 
 <!-- Checkout Overlay (5 steps) -->
-<div class="wb-overlay" id="checkout-overlay">
+<div class="wb-overlay" id="checkout-overlay" style="display:none">
  <div class="wb-modal wide" id="checkout-modal">
   <div class="wb-mhead"><h2>Checkout</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -760,7 +767,7 @@ function inject(){
      <div class="co-addons-scroll" id="co-addon-row">
       ${CHECKOUT_ADDONS.map(a=>`
       <div class="co-addon-card" data-addon-id="${a.id}">
-       <div class="co-addon-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2C6 8.5 4 12 4 15a8 8 0 0 0 16 0c0-3-2-6.5-8-13z"/></svg></div>
+       <div class="co-addon-img"></div>
        <div class="co-addon-name">${esc(a.name)}</div>
        <div class="co-addon-desc">${esc(a.desc)}</div>
        <div class="co-addon-price">$${a.price.toFixed(2)}</div>
@@ -803,7 +810,7 @@ function inject(){
 </div>
 
 <!-- Subscription Overlay (5 steps) -->
-<div class="wb-overlay" id="sub-overlay">
+<div class="wb-overlay" id="sub-overlay" style="display:none">
  <div class="wb-modal wide" id="sub-modal">
   <div class="wb-mhead"><h2>Start Your Plan</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">
@@ -877,7 +884,7 @@ function inject(){
 </div>
 
 <!-- Delivery Setup Overlay (5 steps) -->
-<div class="wb-overlay" id="delivery-overlay">
+<div class="wb-overlay" id="delivery-overlay" style="display:none">
  <div class="wb-modal wide" id="delivery-modal">
   <div class="wb-mhead"><h2>Set Up Delivery</h2><button class="wb-mclose">✕</button></div>
   <div class="wb-mbody">

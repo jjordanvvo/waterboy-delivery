@@ -1,8 +1,8 @@
-/* ============================================================
+﻿/* ============================================================
    WATERBOY APP - CUSTOMER APP STYLES
    ============================================================ */
 
-/* ── App Shell ─────────────────────────────────────────────── */
+/* â”€â”€ App Shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .customer-app {
   min-height: 100vh;
   background: var(--blue-deep);
@@ -13,7 +13,7 @@
   position: relative;
 }
 
-/* ── Top Header ─────────────────────────────────────────────── */
+/* â”€â”€ Top Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cust-header {
   position: sticky;
   top: 0;
@@ -75,14 +75,14 @@
   padding: 0 3px;
 }
 
-/* ── Page Content Area ──────────────────────────────────────── */
+/* â”€â”€ Page Content Area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cust-main {
   flex: 1;
   overflow-y: auto;
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
 
-/* ── Sections (pages) ───────────────────────────────────────── */
+/* â”€â”€ Sections (pages) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cust-page { display: none; }
 .cust-page.active { display: block; animation: fadeIn 0.2s ease; }
 
@@ -97,7 +97,7 @@
 .cust-page.active.slide-from-right { animation: slideFromRight 0.25s ease; }
 .cust-page.active.slide-from-left  { animation: slideFromLeft  0.25s ease; }
 
-/* ── Bottom Navigation ──────────────────────────────────────── */
+/* â”€â”€ Bottom Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cust-bottom-nav {
   position: fixed;
   bottom: 0; left: 50%;
@@ -147,7 +147,7 @@
   border: 2px solid var(--blue-mid);
 }
 
-/* ── HOME PAGE ──────────────────────────────────────────────── */
+/* â”€â”€ HOME PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .home-greeting-bar {
   padding: 20px 20px 0;
   display: flex;
@@ -374,7 +374,7 @@
 .sub-card-title { font-size: 0.875rem; font-weight: 700; color: var(--white-90); }
 .sub-card-next  { font-size: 0.8125rem; color: var(--white-40); margin-top: 4px; }
 
-/* ── PRODUCTS PAGE ──────────────────────────────────────────── */
+/* â”€â”€ PRODUCTS PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .products-search-bar {
   padding: 16px 20px 8px;
   position: sticky;
@@ -440,7 +440,7 @@
 }
 .product-add-btn:hover { background: #1AE0FF; transform: scale(1.08); }
 
-/* ── CART PAGE ──────────────────────────────────────────────── */
+/* â”€â”€ CART PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cart-list { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
 .cart-item {
   background: var(--blue-card);
@@ -490,7 +490,7 @@
 
 .checkout-btn-wrap { padding: 20px 20px 0; }
 
-/* ── ORDERS PAGE ────────────────────────────────────────────── */
+/* â”€â”€ ORDERS PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .orders-tabs {
   display: flex;
   padding: 0 20px;
@@ -524,7 +524,7 @@
 .order-card-total { font-family: var(--font-mono); font-size: 0.9375rem; font-weight: 700; color: var(--white-90); }
 .order-card-date  { font-size: 0.75rem; color: var(--white-40); }
 
-/* ── TRACKING ────────────────────────────────────────────────── */
+/* â”€â”€ TRACKING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tracking-hero {
   margin: 20px;
   background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, var(--blue-card) 100%);
@@ -575,7 +575,7 @@
 .step-info-title { font-size: 0.875rem; font-weight: 600; color: var(--white-90); }
 .step-info-time  { font-size: 0.75rem; color: var(--white-40); margin-top: 2px; }
 
-/* ── BOTTLES PAGE ────────────────────────────────────────────── */
+/* â”€â”€ BOTTLES PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bottles-summary {
   margin: 20px;
   background: var(--blue-card);
@@ -618,7 +618,7 @@
 .bottles-action-title { font-size: 0.875rem; font-weight: 600; }
 .bottles-action-sub   { font-size: 0.75rem; color: var(--white-40); margin-top: 3px; }
 
-/* ── ACCOUNT PAGE ────────────────────────────────────────────── */
+/* â”€â”€ ACCOUNT PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .account-hero {
   padding: 28px 20px 20px;
   text-align: center;
@@ -684,7 +684,7 @@
   color: var(--white-40);
 }
 
-/* ── NOTIFICATIONS OVERLAY ──────────────────────────────────── */
+/* â”€â”€ NOTIFICATIONS OVERLAY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .notif-panel {
   position: fixed;
   top: 60px; left: 50%;
@@ -727,7 +727,7 @@
 .notif-item-body  { font-size: 0.8125rem; color: var(--white-40); margin-top: 3px; line-height: 1.4; }
 .notif-item-time  { font-size: 0.75rem; color: var(--white-40); margin-top: 4px; }
 
-/* ── Subscription management ─────────────────────────────────── */
+/* â”€â”€ Subscription management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sub-plan-card {
   margin: 16px 20px 0;
   background: var(--blue-card);
@@ -764,7 +764,7 @@
 .freq-option-price { font-size: 0.75rem; color: var(--white-40); margin-top: 2px; }
 .freq-option.active .freq-option-price { color: var(--cyan-dim); }
 
-/* ── Cart Badge Fix ──────────────────────────────────────────── */
+/* â”€â”€ Cart Badge Fix â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav-icon-wrap {
   position: relative;
   display: inline-flex;
@@ -788,7 +788,7 @@
   pointer-events: none;
 }
 
-/* ── Account Sub-Screens ─────────────────────────────────────── */
+/* â”€â”€ Account Sub-Screens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sub-screen {
   position: fixed;
   inset: 0;
@@ -828,7 +828,7 @@
   padding-bottom: 40px;
 }
 
-/* ── Settings ────────────────────────────────────────────────── */
+/* â”€â”€ Settings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .settings-section-head {
   padding: 16px 20px 8px;
   font-size: 0.75rem;
@@ -850,7 +850,7 @@
 .settings-row-label { font-size: 0.9375rem; font-weight: 500; color: var(--white-90); }
 .settings-row-sub   { font-size: 0.8125rem; color: var(--white-40); margin-top: 2px; }
 
-/* ── Checkout Flow ───────────────────────────────────────────── */
+/* â”€â”€ Checkout Flow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .checkout-flow {
   position: fixed;
   inset: 0;
@@ -1057,19 +1057,19 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* ── Sub-plan Featured ───────────────────────────────────────── */
+/* â”€â”€ Sub-plan Featured â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sub-plan-featured {
   border-color: var(--cyan-dim) !important;
   background: linear-gradient(135deg, var(--cyan-soft) 0%, var(--blue-card) 100%);
   box-shadow: 0 0 0 1px var(--cyan-dim), 0 4px 16px rgba(0,212,255,0.1);
 }
 
-/* ── Apple Pay Sheet ─────────────────────────────────────────── */
+/* â”€â”€ Apple Pay Sheet â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #apple-pay-sheet {
   transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1) !important;
 }
 
-/* ── Light Mode ──────────────────────────────────────────────── */
+/* â”€â”€ Light Mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 body.light-mode {
   --blue-deep:  #F0F4F8;
   --blue-mid:   #E2E8F0;
@@ -1095,11 +1095,11 @@ body.light-mode .checkout-flow { background: var(--blue-deep); }
 body.light-mode .co-header { background: rgba(240,244,248,0.95); }
 body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
 
-/* ── Quick actions 5-col ─────────────────────────────────────── */
+/* â”€â”€ Quick actions 5-col â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .quick-actions .quick-action-icon { width: 46px; height: 46px; }
 .quick-actions .quick-action-icon svg { width: 20px; height: 20px; }
 
-/* ── Product Images ──────────────────────────────────────────── */
+/* â”€â”€ Product Images â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .product-item-img-wrap {
   width: 64px; height: 64px;
   border-radius: var(--radius-sm);
@@ -1117,7 +1117,7 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
 .product-item { cursor: pointer; }
 .product-item:active { transform: scale(0.98); }
 
-/* ── Product Category Header ─────────────────────────────────── */
+/* â”€â”€ Product Category Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .prod-cat-head {
   font-size: 0.6875rem;
   font-weight: 700;
@@ -1130,7 +1130,7 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
 }
 .products-grid:first-child .prod-cat-head { padding-top: 4px; }
 
-/* ── Inquire Button ──────────────────────────────────────────── */
+/* â”€â”€ Inquire Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .product-inquire-btn {
   background: transparent !important;
   color: var(--cyan) !important;
@@ -1149,11 +1149,11 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
   transform: none !important;
 }
 
-/* ── Sub Plan Card (updated) ─────────────────────────────────── */
+/* â”€â”€ Sub Plan Card (updated) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #sub-plan-list .sub-plan-card { margin: 0 0 12px; }
 #sub-plan-list .sub-plan-card:last-child { margin-bottom: 0; }
 
-/* ── Chip filter scroll ──────────────────────────────────────── */
+/* â”€â”€ Chip filter scroll â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .products-filter-row {
   overflow-x: auto;
   white-space: nowrap;
@@ -1163,16 +1163,16 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
 .products-filter-row::-webkit-scrollbar { display: none; }
 .products-filter-row .chip { display: inline-flex; margin-right: 6px; }
 
-/* ── Home page additions ─────────────────────────────────────── */
+/* â”€â”€ Home page additions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .home-zone-chip {
   font-size: 0.75rem;
   font-weight: 600;
 }
 
-/* ── white-30 / white-50 / white-60 / white-80 ──────────────── */
+/* â”€â”€ white-30 / white-50 / white-60 / white-80 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .text-white-30 { color: rgba(255,255,255,0.3); }
 
-/* ── Water Type Cards (selector) ────────────────────────────── */
+/* â”€â”€ Water Type Cards (selector) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .water-type-card {
   background: var(--blue-card);
   border: 2px solid var(--blue-border);
@@ -1216,7 +1216,7 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
   font-size: 0.875rem;
 }
 
-/* ── Our Water Section Cards ─────────────────────────────────── */
+/* â”€â”€ Our Water Section Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .our-water-card {
   background: var(--blue-card);
   border: 2px solid var(--blue-border);
@@ -1228,7 +1228,7 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
 .our-water-card:hover { border-color: rgba(0,212,255,0.4); }
 .our-water-card.selected { border-color: var(--cyan); background: var(--cyan-soft); }
 
-/* ── Featured Product Cards ──────────────────────────────────── */
+/* â”€â”€ Featured Product Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .featured-product-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -1259,10 +1259,11 @@ body.light-mode #apple-pay-sheet { background: #1C1C1E !important; }
   font-size: 0.9375rem;
 }
 
-/* ── Water type selector inline (detail view) ────────────────── */
+/* â”€â”€ Water type selector inline (detail view) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #detail-water-type-selector .water-type-card {
   padding: 10px 8px;
 }
 #detail-water-type-selector .wt-desc { display: none; }
 
-/* ── Customer.css comment header ─────────────────────────────── */
+/* â”€â”€ Customer.css comment header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+

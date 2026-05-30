@@ -1,8 +1,8 @@
-/* ============================================================
+﻿/* ============================================================
    WATERBOY APP - ADMIN DASHBOARD STYLES
    ============================================================ */
 
-/* ── Admin Layout ───────────────────────────────────────────── */
+/* â”€â”€ Admin Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 html, body { height: 100%; }
 .admin-app {
   display: flex;
@@ -11,7 +11,7 @@ html, body { height: 100%; }
   overflow: hidden;
 }
 
-/* ── Sidebar ─────────────────────────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .admin-sidebar {
   width: var(--sidebar-w);
   height: 100vh;
@@ -111,7 +111,7 @@ html, body { height: 100%; }
 .sidebar-collapse-btn:hover { background: var(--white-08); color: var(--white-70); }
 .sidebar-collapse-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-/* ── Main Content ────────────────────────────────────────────── */
+/* â”€â”€ Main Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .admin-main {
   flex: 1;
   display: flex;
@@ -119,7 +119,7 @@ html, body { height: 100%; }
   overflow: hidden;
 }
 
-/* ── Top Bar ─────────────────────────────────────────────────── */
+/* â”€â”€ Top Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .admin-topbar {
   height: 60px;
   background: rgba(10,22,40,0.95);
@@ -155,7 +155,7 @@ html, body { height: 100%; }
 }
 .topbar-admin-pill svg { width: 14px; height: 14px; }
 
-/* ── Content Area ────────────────────────────────────────────── */
+/* â”€â”€ Content Area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .admin-content {
   flex: 1;
   overflow-y: auto;
@@ -164,7 +164,7 @@ html, body { height: 100%; }
 .admin-page { display: none; animation: fadeIn 0.2s ease; }
 .admin-page.active { display: block; }
 
-/* ── Page Header ─────────────────────────────────────────────── */
+/* â”€â”€ Page Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .page-header {
   display: flex;
   align-items: flex-start;
@@ -176,7 +176,7 @@ html, body { height: 100%; }
 .page-header-sub   { font-size: 0.875rem; color: var(--white-40); margin-top: 4px; }
 .page-header-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
 
-/* ── Stats Grid ──────────────────────────────────────────────── */
+/* â”€â”€ Stats Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -218,7 +218,7 @@ html, body { height: 100%; }
 .accent-purple .stat-card-icon { background: rgba(168,85,247,0.12); color: #A855F7; }
 .accent-red    .stat-card-icon { background: rgba(239,68,68,0.12); color: var(--danger); }
 
-/* ── Charts ──────────────────────────────────────────────────── */
+/* â”€â”€ Charts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .chart-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -294,7 +294,7 @@ html, body { height: 100%; }
 .bar:hover .bar-tooltip { opacity: 1; }
 .bar-label { font-size: 0.6875rem; color: var(--white-40); text-align: center; }
 
-/* ── Table Wrapper ───────────────────────────────────────────── */
+/* â”€â”€ Table Wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .table-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -358,12 +358,12 @@ html, body { height: 100%; }
 .pagination-btn.active { background: var(--cyan); color: var(--blue-deep); border-color: var(--cyan); font-weight: 700; }
 .pagination-btn:disabled { opacity: 0.3; cursor: default; }
 
-/* ── Grid Layouts ────────────────────────────────────────────── */
+/* â”€â”€ Grid Layouts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .three-col-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .sidebar-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
 
-/* ── Order detail rows ───────────────────────────────────────── */
+/* â”€â”€ Order detail rows â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .order-row { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--blue-border); }
 .order-row:last-child { border-bottom: none; }
 .order-row-num {
@@ -381,7 +381,7 @@ html, body { height: 100%; }
 .order-row-sub  { font-size: 0.75rem; color: var(--white-40); }
 .order-row-val  { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; }
 
-/* ── Driver cards (admin view) ───────────────────────────────── */
+/* â”€â”€ Driver cards (admin view) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .driver-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -415,7 +415,7 @@ html, body { height: 100%; }
 .driver-stat-mini-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--cyan); }
 .driver-stat-mini-lbl { font-size: 0.6875rem; color: var(--white-40); text-transform: uppercase; letter-spacing: 0.04em; }
 
-/* ── Inventory ───────────────────────────────────────────────── */
+/* â”€â”€ Inventory â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .inventory-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -443,7 +443,7 @@ html, body { height: 100%; }
 .inventory-unit  { font-size: 0.75rem; color: var(--white-40); }
 .inventory-progress-wrap { flex: 0 0 100px; }
 
-/* ── Promo / Coupon cards ────────────────────────────────────── */
+/* â”€â”€ Promo / Coupon cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .promo-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -462,7 +462,7 @@ html, body { height: 100%; }
 .promo-usage { font-size: 0.8125rem; color: var(--white-40); }
 .promo-actions { display: flex; gap: 8px; margin-top: 14px; }
 
-/* ── Zone map cards ──────────────────────────────────────────── */
+/* â”€â”€ Zone map cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .zone-card {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -486,7 +486,7 @@ html, body { height: 100%; }
   color: var(--white-70);
 }
 
-/* ── Settings ────────────────────────────────────────────────── */
+/* â”€â”€ Settings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .settings-section {
   background: var(--blue-card);
   border: 1px solid var(--blue-border);
@@ -513,7 +513,7 @@ html, body { height: 100%; }
 .settings-row-sub   { font-size: 0.8125rem; color: var(--white-40); margin-top: 2px; }
 .settings-row-control { flex-shrink: 0; }
 
-/* ── Reports / Analytics ─────────────────────────────────────── */
+/* â”€â”€ Reports / Analytics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .report-metric-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -527,7 +527,7 @@ html, body { height: 100%; }
   padding: 18px;
 }
 
-/* ── Responsive (mobile sidebar overlay) ────────────────────── */
+/* â”€â”€ Responsive (mobile sidebar overlay) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 900px) {
   .admin-sidebar {
     position: fixed;
@@ -556,7 +556,7 @@ html, body { height: 100%; }
   .three-col-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Filter Tabs ─────────────────────────────────────────────── */
+/* â”€â”€ Filter Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .filter-tab {
   padding: 5px 14px;
   border-radius: 20px;
@@ -572,7 +572,7 @@ html, body { height: 100%; }
 .filter-tab:hover { background: var(--white-15); color: var(--white-70); }
 .filter-tab.active { background: var(--cyan-soft); border-color: var(--cyan-dim); color: var(--cyan); }
 
-/* ── Route Stops ─────────────────────────────────────────────── */
+/* â”€â”€ Route Stops â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .route-stop {
   display: flex;
   align-items: center;
@@ -596,7 +596,7 @@ html, body { height: 100%; }
 .route-stop-num input[type="number"]::-webkit-inner-spin-button,
 .route-stop-num input[type="number"]::-webkit-outer-spin-button { opacity: 0; }
 
-/* ── Service Area Map ────────────────────────────────────────── */
+/* â”€â”€ Service Area Map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .service-map-wrap { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; padding: 20px 0; }
 .service-map {
   position: relative;
@@ -647,7 +647,7 @@ html, body { height: 100%; }
 .map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--white-40); }
 .map-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-/* ── Block Calendar ──────────────────────────────────────────── */
+/* â”€â”€ Block Calendar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .block-cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -693,5 +693,6 @@ html, body { height: 100%; }
 }
 .block-cal-day.past { opacity: 0.35; cursor: default !important; }
 
-/* ── Refund / Security badges ────────────────────────────────── */
+/* â”€â”€ Refund / Security badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .badge-blue { background: rgba(59,130,246,0.15); color: #60A5FA; border: 1px solid rgba(59,130,246,0.3); }
+

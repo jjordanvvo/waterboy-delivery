@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Waterboy Admin Dashboard</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#00D4FF" />
+  <meta name="theme-color" content="#0D47A1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Waterboy" />
@@ -38,7 +38,7 @@
 </head>
 <body>
 
-<!-- ── Admin Login ────────────────────────────────────────────── -->
+<!-- â”€â”€ Admin Login â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <div id="admin-login-screen" style="display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;flex-direction:column;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(168,85,247,0.07) 0%,transparent 70%),var(--blue-deep)">
   <div style="width:100%;max-width:380px">
     <div style="text-align:center;margin-bottom:32px">
@@ -57,7 +57,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
-            <input id="admin-password" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+            <input id="admin-password" type="password" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password" />
           </div>
           <div id="admin-login-error" style="font-size:.8125rem;color:var(--danger);min-height:18px"></div>
           <button type="submit" class="btn btn-full btn-lg" style="background:#A855F7;color:#fff">Sign In to Dashboard</button>
@@ -65,11 +65,11 @@
         </div>
       </form>
     </div>
-    <p style="text-align:center;margin-top:20px;font-size:.8125rem;color:var(--white-40)"><a href="index.html">← Back to Portal</a></p>
+    <p style="text-align:center;margin-top:20px;font-size:.8125rem;color:var(--white-40)"><a href="index.html">â† Back to Portal</a></p>
   </div>
 </div>
 
-<!-- ── Admin App ──────────────────────────────────────────────── -->
+<!-- â”€â”€ Admin App â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <div id="admin-app-screen" class="admin-app" style="display:none">
 
   <!-- Sidebar Overlay (mobile) -->
@@ -210,7 +210,7 @@
             <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
             <div class="stat-value" id="stat-revenue">$0.00</div>
             <div class="stat-label">Total Revenue</div>
-            <div class="stat-delta up mt-8">↑ All time</div>
+            <div class="stat-delta up mt-8">â†‘ All time</div>
           </div>
           <div class="stat-card accent-green">
             <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div>
@@ -283,7 +283,7 @@
             <div class="table-toolbar-left" style="flex-wrap:wrap;gap:8px">
               <div class="table-search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                <input id="orders-search" type="search" placeholder="Search orders…" />
+                <input id="orders-search" type="search" placeholder="Search ordersâ€¦" />
               </div>
               <div style="display:flex;gap:4px" id="orders-filter-tabs">
                 <button class="filter-tab active" data-filter="all">All</button>
@@ -426,7 +426,7 @@
           <div class="table-toolbar">
             <div class="table-search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-              <input id="customers-search" type="search" placeholder="Search customers…" />
+              <input id="customers-search" type="search" placeholder="Search customersâ€¦" />
             </div>
           </div>
           <div class="table-wrap">
@@ -497,7 +497,7 @@
             <div class="table-toolbar-left">
               <div class="table-search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                <input id="payments-search" type="search" placeholder="Search payments…" />
+                <input id="payments-search" type="search" placeholder="Search paymentsâ€¦" />
               </div>
               <div style="display:flex;gap:6px" id="payments-filter-tabs">
                 <button class="filter-tab active" data-filter="all">All</button>
@@ -545,7 +545,7 @@
               <div class="service-map-ring ring-outer"></div>
               <div class="service-map-ring ring-mid"></div>
               <div class="service-map-center-dot"></div>
-              <div class="service-map-label-center">7119 Elk Grove Blvd<br><span style="font-size:.625rem;opacity:.6">HQ · 10 mi radius</span></div>
+              <div class="service-map-label-center">7119 Elk Grove Blvd<br><span style="font-size:.625rem;opacity:.6">HQ Â· 10 mi radius</span></div>
               <div class="service-map-dot" style="top:22%;left:58%" title="Elk Grove Central"></div>
               <div class="service-map-dot dot-south" style="top:70%;left:38%" title="Elk Grove South"></div>
               <div class="service-map-dot dot-north" style="top:18%;left:32%" title="Elk Grove North"></div>
@@ -691,9 +691,9 @@
           <div style="padding:16px 20px">
             <div style="font-size:.875rem;color:var(--white-40);margin-bottom:16px">Click any date to block or unblock deliveries. Sundays are pre-blocked. Blocked dates sync to the customer checkout calendar.</div>
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-              <button class="btn btn-secondary btn-sm" onclick="blockCalPrev()">← Prev</button>
+              <button class="btn btn-secondary btn-sm" onclick="blockCalPrev()">â† Prev</button>
               <div id="block-cal-month-label" style="font-weight:700;font-size:.9375rem;min-width:140px;text-align:center"></div>
-              <button class="btn btn-secondary btn-sm" onclick="blockCalNext()">Next →</button>
+              <button class="btn btn-secondary btn-sm" onclick="blockCalNext()">Next â†’</button>
             </div>
             <div id="block-calendar-grid" class="block-cal-grid"></div>
             <div style="display:flex;gap:16px;margin-top:12px;font-size:.8125rem;color:var(--white-40)">
@@ -714,7 +714,7 @@
         <div class="card" style="padding:0;overflow:hidden">
           <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border);display:flex;align-items:center;justify-content:space-between">
             <div style="font-weight:600;color:var(--white-90)">Active Rentals</div>
-            <span id="rentals-expiring-badge" style="display:none;font-size:.75rem;background:rgba(245,158,11,.15);color:#f59e0b;padding:3px 10px;border-radius:20px;border:1px solid rgba(245,158,11,.3)">⚠ Expiring Soon</span>
+            <span id="rentals-expiring-badge" style="display:none;font-size:.75rem;background:rgba(245,158,11,.15);color:#f59e0b;padding:3px 10px;border-radius:20px;border:1px solid rgba(245,158,11,.3)">âš  Expiring Soon</span>
           </div>
           <div id="rentals-admin-table" style="overflow-x:auto">
             <table class="data-table">
@@ -754,7 +754,7 @@
         </div>
         <div id="msg-stats-strip" class="stats-strip" style="margin-bottom:24px"></div>
         <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
-          <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border)"><div style="font-weight:600;color:var(--danger)">⚑ Flagged Conversations</div></div>
+          <div style="padding:16px 20px;border-bottom:1px solid var(--blue-border)"><div style="font-weight:600;color:var(--danger)">âš‘ Flagged Conversations</div></div>
           <div id="admin-flagged-msgs" style="padding:16px 20px"></div>
         </div>
         <div class="card" style="padding:0;overflow:hidden">
@@ -1001,3 +1001,4 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+
