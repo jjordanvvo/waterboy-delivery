@@ -736,3 +736,30 @@ body { background: #FFFFFF !important; }
 #cart-drawer.open { transform: translateX(0) !important; }
 #pay-sim { display: none !important; }
 #pay-sim.open { display: flex !important; }
+
+/* ── Sticky Mobile Order Button ─────────────────────────────── */
+.sticky-order-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #0D47A1;
+  color: #FFFFFF !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 18px;
+  text-align: center;
+  text-decoration: none !important;
+  border-radius: 0;
+  display: none;
+}
+@media (max-width: 767px) {
+  .sticky-order-btn { display: block; }
+  body { padding-bottom: 72px; }
+  #back-to-top { bottom: 88px !important; }
+}
+@media (min-width: 768px) {
+  .sticky-order-btn { display: none !important; }
+}

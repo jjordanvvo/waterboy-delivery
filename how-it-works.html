@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="site.css">
   <title>How It Works | Water Boy Delivery</title>
   <meta name="description" content="Learn how Water Boy Delivery works. Choose your water, schedule delivery, and enjoy pure water at your door. No contracts.">
+  <link rel="canonical" href="https://waterboywebsite.netlify.app/how-it-works.html">
+  <meta property="og:title" content="How It Works | Water Boy Delivery">
+  <meta property="og:description" content="Learn how Water Boy Delivery works. Choose your water, schedule delivery, and enjoy pure water at your door. No contracts.">
+  <meta property="og:image" content="https://waterboywebsite.netlify.app/LOGOnotext.PNG">
+  <meta property="og:url" content="https://waterboywebsite.netlify.app/how-it-works.html">
+  <meta property="og:type" content="website">
   <style>
     .hiw-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-bottom: 40px; }
     .hiw-step { background: #FFFFFF; border-radius: 16px; border: 1px solid var(--color-border); box-shadow: 0 8px 24px rgba(0,0,0,0.06); padding: 40px 32px; }
@@ -38,7 +44,7 @@
     </div>
     <div class="nav-right">
       <button id="cart-btn" class="nav-cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" aria-label="Cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg><span id="cart-count">0</span></button>
-      <a href="water-delivery.html" class="nav-order-btn">ORDER NOW</a>
+      <a href="order.html" class="nav-order-btn">ORDER NOW</a>
       <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -57,7 +63,7 @@
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="faq.html" class="mobile-nav-link">FAQ</a>
   </nav>
-  <a href="water-delivery.html" class="mobile-order-btn">ORDER NOW</a>
+  <a href="order.html" class="mobile-order-btn">ORDER NOW</a>
 </div>
 
 <div class="page-hero">
@@ -90,7 +96,83 @@
         <p class="hiw-step-body">We collect your empty bottles, refill them at our facility, and return them to your door. No store runs, no lugging heavy bottles - just fresh water waiting for you.</p>
       </div>
     </div>
-    <a href="water-delivery.html" class="btn-primary">Start Your Order</a>
+    <a href="order.html" class="btn-primary">ORDER WATER</a>
+  </div>
+</section>
+
+<!-- ORDER MANAGEMENT FLOW -->
+<section class="section section-alt">
+  <div class="container">
+    <span class="section-label">Order Management</span>
+    <h2 style="margin-bottom:12px;">Your Order From Start to Finish</h2>
+    <p style="color:var(--color-text-muted);max-width:560px;margin-bottom:48px;">Here is exactly what happens after you place your order with Water Boy.</p>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-num">01</div>
+        <div class="hiw-step-title">Order Placed</div>
+        <p class="hiw-step-body">Customer places order online. Your selections are saved and sent to our team right away.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">02</div>
+        <div class="hiw-step-title">Order Confirmed</div>
+        <p class="hiw-step-body">Email and SMS confirmation sent immediately. You will have your order number and all the details.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">03</div>
+        <div class="hiw-step-title">Delivery Scheduled</div>
+        <p class="hiw-step-body">Order is added to our delivery route. We plan around your selected date and time window.</p>
+      </div>
+    </div>
+    <div class="hiw-steps" style="margin-top:24px;">
+      <div class="hiw-step">
+        <div class="hiw-step-num">04</div>
+        <div class="hiw-step-title">Driver Notified</div>
+        <p class="hiw-step-body">Driver receives your route and delivery details. You get a notification when the driver is on the way.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">05</div>
+        <div class="hiw-step-title">Delivery Completed</div>
+        <p class="hiw-step-body">Bottles delivered and swapped at your door. No need to be home. Leave empties out and we handle the rest.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">06</div>
+        <div class="hiw-step-title">Follow Up</div>
+        <p class="hiw-step-body">Satisfaction check and reorder reminder sent. We want to make sure everything was perfect.</p>
+      </div>
+    </div>
+    <div style="background:rgba(13,71,161,0.07);border:1px solid rgba(13,71,161,0.2);border-radius:12px;padding:20px 24px;max-width:680px;margin-top:32px;">
+      <p style="color:var(--color-text);font-weight:500;margin:0;">Automated email and SMS notifications at every key step keep you informed from order to delivery.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTLE SWAP PROGRAM -->
+<section class="section section-white">
+  <div class="container">
+    <span class="section-label">Bottle Swap</span>
+    <h2 style="margin-bottom:12px;">How Bottle Swap Works</h2>
+    <p style="color:var(--color-text-muted);max-width:560px;margin-bottom:48px;">Bottle swap is for returning customers only. First-time customers receive all bottles with their first order.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+      <div style="background:#FFFFFF;border:1px solid var(--color-border);border-radius:16px;padding:32px;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+        <h3 style="font-size:20px;margin-bottom:20px;color:var(--color-text);">Swap Rules</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>Bottles must be empty and in good condition</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>Missing bottles will be charged per bottle</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>Damaged bottles may incur a replacement fee</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>Swaps are only available for returning customers</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>Keep your bottles ready for every delivery</li>
+        </ul>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid rgba(220,38,38,0.2);border-radius:16px;padding:32px;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+        <h3 style="font-size:20px;margin-bottom:20px;color:var(--color-text);">Not Accepted</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><path d="M18 6 6 18M6 6l12 12"/></svg>Cracked or damaged bottles</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><path d="M18 6 6 18M6 6l12 12"/></svg>Dirty or contaminated bottles</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><path d="M18 6 6 18M6 6l12 12"/></svg>Non-Water Boy branded bottles</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text-muted);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><path d="M18 6 6 18M6 6l12 12"/></svg>Missing bottles from previous orders</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -132,8 +214,8 @@
     <h2 style="color:#FFFFFF;margin-bottom:16px;">Ready for Better Water?</h2>
     <p style="color:rgba(255,255,255,0.85);max-width:480px;margin:0 auto 40px;font-size:18px;">Join hundreds of Elk Grove households who trust Water Boy for their daily hydration.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="water-delivery.html" class="btn-inverted">Order Water</a>
-      <a href="delivery-areas.html" class="btn-ghost-white">Check Delivery Area</a>
+      <a href="order.html" class="btn-inverted">ORDER WATER</a>
+      <a href="delivery-areas.html" class="btn-ghost-white">VIEW DELIVERY AREA</a>
     </div>
   </div>
 </section>
@@ -157,7 +239,7 @@
         <h4>Contact</h4>
         <div class="footer-contact-item"><a href="tel:+19166193218">(916) 619-3218</a></div>
         <div class="footer-contact-item"><a href="mailto:hello@waterboydelivery.com">hello@waterboydelivery.com</a></div>
-        <div class="footer-contact-item">7119 Elk Grove Blvd, Elk Grove CA 95758</div>
+        <div class="footer-contact-item"><a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener">7119 Elk Grove Blvd, Elk Grove CA 95758</a></div>
         <a href="water-delivery.html" class="footer-order-btn">ORDER NOW</a>
       </div>
     </div>
@@ -196,6 +278,7 @@
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<a href="order.html" class="sticky-order-btn">ORDER WATER</a>
 </body>
 </html>
 

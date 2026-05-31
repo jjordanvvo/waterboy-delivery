@@ -5,8 +5,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Order Water | Waterboy Delivery - Elk Grove, CA</title>
-  <meta name="description" content="Order 5-gallon water delivery in Elk Grove. Choose purified or alkaline water, pick your amount, schedule your delivery, and pay securely." />
+  <title>Order Water | Water Boy Delivery</title>
+  <meta name="description" content="Start your water delivery today. Choose your water type, set your schedule, and we handle the rest." />
+  <link rel="canonical" href="https://waterboywebsite.netlify.app/order.html">
+  <meta property="og:title" content="Order Water | Water Boy Delivery">
+  <meta property="og:description" content="Start your water delivery today. Choose your water type, set your schedule, and we handle the rest.">
+  <meta property="og:image" content="https://waterboywebsite.netlify.app/LOGOnotext.PNG">
+  <meta property="og:url" content="https://waterboywebsite.netlify.app/order.html">
+  <meta property="og:type" content="website">
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://waterboydelivery.com/order.html" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
@@ -250,7 +256,7 @@
     </div>
     <div class="nav-right">
       <button id="cart-btn" class="nav-cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" aria-label="Cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg><span id="cart-count">0</span></button>
-      <a href="water-delivery.html" class="nav-order-btn">ORDER NOW</a>
+      <a href="order.html" class="nav-order-btn">ORDER NOW</a>
       <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -268,7 +274,7 @@
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="faq.html" class="mobile-nav-link">FAQ</a>
   </nav>
-  <a href="water-delivery.html" class="mobile-order-btn">ORDER NOW</a>
+  <a href="order.html" class="mobile-order-btn">ORDER NOW</a>
 </div>
 
 <!-- Page hero -->
@@ -282,18 +288,18 @@
 <div class="order-progress-bar" id="order-progress-bar">
   <div class="progress-track">
     <div class="ps active" id="ps1">
-      <div class="ps-circle"><span class="ps-num">1</span><span class="ps-chk">✓</span></div>
-      <span class="ps-label">Water Type</span>
+      <div class="ps-circle"><span class="ps-num">1</span><span class="ps-chk">&#10003;</span></div>
+      <span class="ps-label">Your Order</span>
     </div>
     <div class="progress-line" id="pl1"></div>
     <div class="ps" id="ps2">
-      <div class="ps-circle"><span class="ps-num">2</span><span class="ps-chk">✓</span></div>
-      <span class="ps-label">Amount</span>
+      <div class="ps-circle"><span class="ps-num">2</span><span class="ps-chk">&#10003;</span></div>
+      <span class="ps-label">Delivery</span>
     </div>
     <div class="progress-line" id="pl2"></div>
     <div class="ps" id="ps3">
-      <div class="ps-circle"><span class="ps-num">3</span><span class="ps-chk">✓</span></div>
-      <span class="ps-label">Schedule</span>
+      <div class="ps-circle"><span class="ps-num">3</span><span class="ps-chk">&#10003;</span></div>
+      <span class="ps-label">Review Order</span>
     </div>
   </div>
 </div>
@@ -303,19 +309,22 @@
   <div class="order-container">
 
     <!-- ══ STEP 1: WATER TYPE ══════════════════════════════════ -->
-    <section class="order-step active" id="step1" aria-label="Step 1: Choose your water">
+    <section class="order-step active" id="step1" aria-label="Step 1: Your order">
+      <div style="background:rgba(13,71,161,0.07);border:1px solid rgba(13,71,161,0.2);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
+        <p style="font-size:14px;color:var(--color-text);margin:0;line-height:1.6;"><strong style="color:#0D47A1;">First delivery? No problem.</strong> We provide all bottles. No bottle swap needed for your first order. Promotions and waived delivery fees apply to first-time customers only.</p>
+      </div>
       <h2 class="step-heading">What type of water?</h2>
       <div class="wt-cards">
 
         <div class="wt-card" id="wtc-purified" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('purified')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('purified')">
-          <div class="wt-card-check" aria-hidden="true">✓</div>
+          <div class="wt-card-check" aria-hidden="true">&#10003;</div>
           <div class="wt-title">Purified Water</div>
           <p class="wt-desc">Clean, crisp, purified water. Perfect for everyday hydration and cooking.</p>
           <div class="wt-price">from $6.99/bottle</div>
         </div>
 
         <div class="wt-card" id="wtc-alkaline" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('alkaline')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('alkaline')">
-          <div class="wt-card-check" aria-hidden="true">✓</div>
+          <div class="wt-card-check" aria-hidden="true">&#10003;</div>
           <span class="wt-badge">ONLY US!</span>
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste - the only local delivery option.</p>
@@ -332,6 +341,12 @@
     <section class="order-step" id="step2" aria-label="Step 2: Choose amount">
       <h2 class="step-heading">How much do you need?</h2>
       <p class="step-sub">One-time delivery or save with a monthly bundle</p>
+      <div style="background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;flex-wrap:wrap;gap:16px;">
+        <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>No subscription required</span>
+        <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Weekly, every 2 weeks, or every 4 weeks</span>
+        <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pause or cancel anytime</span>
+        <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Charged after each delivery</span>
+      </div>
 
       <div class="amount-tabs">
         <button class="amt-tab active" id="tab-onetime" onclick="setAmtMode('onetime')">One-Time Delivery</button>
@@ -387,12 +402,10 @@
           <!-- Delivery option cards -->
           <div class="del-opts">
             <div class="del-card" id="dc-asap" onclick="selectDelOpt('asap')">
-              <span class="del-icon">⚡</span>
               <div class="del-title">As Soon As Possible</div>
               <p class="del-sub">We'll get it to you today or tomorrow based on availability.</p>
             </div>
             <div class="del-card" id="dc-scheduled" onclick="selectDelOpt('scheduled')">
-              <span class="del-icon">📅</span>
               <div class="del-title">Pick a Date &amp; Time</div>
               <p class="del-sub">Choose any available Mon–Sat delivery slot.</p>
             </div>
@@ -402,9 +415,9 @@
           <div class="sub-section" id="asap-time-section">
             <div class="sub-heading">Preferred Delivery Window</div>
             <div class="time-pills">
-              <button class="time-pill" onclick="selectTimePref('morning')" id="tp-morning">Morning (7am–11am)</button>
-              <button class="time-pill" onclick="selectTimePref('afternoon')" id="tp-afternoon">Afternoon (12pm–4pm)</button>
-              <button class="time-pill" onclick="selectTimePref('evening')" id="tp-evening">Evening (4pm–7pm)</button>
+              <button class="time-pill" onclick="selectTimePref('morning')" id="tp-morning">Morning (8am - 12pm)</button>
+              <button class="time-pill" onclick="selectTimePref('afternoon')" id="tp-afternoon">Afternoon (12pm - 4pm)</button>
+              <button class="time-pill" onclick="selectTimePref('evening')" id="tp-evening">Evening (4pm - 6pm)</button>
             </div>
           </div>
 
@@ -427,9 +440,9 @@
             <div class="sub-section visible" id="sched-time-section" style="margin-top:14px;background:none;padding:0;">
               <div class="sub-heading">Delivery Window</div>
               <div class="time-pills">
-                <button class="time-pill" onclick="selectTimePref('morning')" id="stp-morning">Morning (7am–11am)</button>
-                <button class="time-pill" onclick="selectTimePref('afternoon')" id="stp-afternoon">Afternoon (12pm–4pm)</button>
-                <button class="time-pill" onclick="selectTimePref('evening')" id="stp-evening">Evening (4pm–7pm)</button>
+                <button class="time-pill" onclick="selectTimePref('morning')" id="stp-morning">Morning (8am - 12pm)</button>
+                <button class="time-pill" onclick="selectTimePref('afternoon')" id="stp-afternoon">Afternoon (12pm - 4pm)</button>
+                <button class="time-pill" onclick="selectTimePref('evening')" id="stp-evening">Evening (4pm - 6pm)</button>
               </div>
             </div>
           </div>
@@ -486,7 +499,7 @@
             <span class="sp-total-val" id="s3-total">-</span>
           </div>
           <button class="btn-checkout" id="btn-checkout" onclick="openCheckout()">PROCEED TO CHECKOUT →</button>
-          <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin:12px 0 0;">🔒 Secure checkout via Stripe</p>
+          <p style="font-family:'Poppins',sans-serif;font-size:11px;color:var(--color-text-muted);text-align:center;margin:12px 0 0;">Secure checkout via Stripe. Your payment info is encrypted.</p>
         </div>
       </div>
 
@@ -538,7 +551,7 @@
     </div>
     <div class="co-pay">
       <div class="co-heading">
-        <span>🔒</span> Secure Checkout
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure Checkout
       </div>
       <div id="stripe-card-element"></div>
       <div class="stripe-err" id="stripe-err"></div>
@@ -550,7 +563,7 @@
         <span class="pay-text" id="pay-text">PAY $0.00</span>
         <div class="pay-spinner"></div>
       </button>
-      <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin:12px 0 0;">Your payment info is encrypted and never stored on our servers.</p>
+      <p style="font-family:'Poppins',sans-serif;font-size:11px;color:var(--color-text-muted);text-align:center;margin:12px 0 0;">Your payment info is encrypted and never stored on our servers.</p>
     </div>
   </div>
 </div>
@@ -559,13 +572,13 @@
 <div class="ord-overlay" id="success-overlay" role="dialog" aria-modal="true" aria-label="Order confirmed">
   <div class="success-wrap">
     <div class="success-ring">
-      <span class="success-check-icon">✓</span>
+      <span class="success-check-icon">&#10003;</span>
     </div>
     <h2 class="success-h">Order Confirmed!</h2>
     <div class="success-id" id="success-order-id">WB-XXXXXX</div>
     <div class="success-dets" id="success-details"></div>
     <div class="success-btns">
-      <a class="btn-gcal" id="btn-add-cal" href="#" target="_blank" rel="noopener">📅 Add to Client Calendar</a>
+      <a class="btn-gcal" id="btn-add-cal" href="#" target="_blank" rel="noopener">Add to Calendar</a>
       <a class="btn-view-orders" href="my-orders.html">View My Orders</a>
       <a class="btn-view-orders" href="index.html">Return Home</a>
     </div>
@@ -579,15 +592,34 @@
 </div>
 
 <!-- Footer -->
-<footer id="footer" role="contentinfo">
-  <div class="wave-section" style="background:var(--bg-secondary);height:60px;"><svg class="wave-1" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#070F18"/></svg></div>
-  <div class="container footer-grid">
-    <div class="footer-brand"><img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Waterboy Delivery" onerror="this.outerHTML='<div class=\'footer-brand-placeholder\'>WATERBOY</div>'" /><div class="footer-tagline">PURE WATER. DELIVERED.</div><p class="footer-desc">Premium 5-gallon water delivery for homes and businesses in Elk Grove &amp; Sacramento County.</p><a href="tel:+19166193218" class="footer-phone">(916) 619-3218</a></div>
-    <div class="footer-col"><h4>Services</h4><nav class="footer-links"><a href="water-delivery.html">Water Delivery</a><a href="dispensers.html">Dispensers</a><a href="bottle-pickup.html">Bottle Pickup</a><a href="shop.html">In-Store Products</a></nav></div>
-    <div class="footer-col"><h4>Learn</h4><nav class="footer-links"><a href="how-it-works.html">How It Works</a><a href="faq.html">FAQ</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav></div>
-    <div class="footer-col"><h4>Order</h4><nav class="footer-links"><a href="order.html">Order Now</a><a href="my-orders.html">My Orders</a><a href="water-delivery.html">Pricing</a><a href="delivery-areas.html">Delivery Zones</a></nav></div>
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <img src="/LOGOnotext.PNG" alt="Water Boy Delivery logo" style="height: 56px; width: auto; display: block;">
+        <p class="footer-tagline">Clean. Fresh. Local.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-btn" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.75a4.85 4.85 0 0 1-1-.06z"/></svg></a>
+          <a href="#" class="footer-social-btn" aria-label="X"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Water Types</a><a href="water-delivery.html">Pricing</a><a href="delivery-areas.html">Delivery Area</a><a href="faq.html">FAQ</a></div></div>
+      <div class="footer-col"><h4>Service Area</h4><div class="footer-links"><a href="delivery-areas.html">Elk Grove, CA</a><a href="delivery-areas.html">Sacramento County</a><a href="delivery-areas.html">Zones 1 through 3</a><a href="delivery-areas.html">See Full Map</a></div></div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><a href="tel:+19166193218">(916) 619-3218</a></div>
+        <div class="footer-contact-item"><a href="mailto:hello@waterboydelivery.com">hello@waterboydelivery.com</a></div>
+        <div class="footer-contact-item"><a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener">7119 Elk Grove Blvd, Elk Grove CA 95758</a></div>
+        <a href="order.html" class="footer-order-btn">ORDER NOW</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2024 Water Boy Delivery. All rights reserved.</span>
+      <div class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></div>
+    </div>
   </div>
-  <div class="footer-bottom"><p class="footer-copy">© 2026 Waterboy Delivery. All rights reserved. Serving Elk Grove &amp; Sacramento County.</p><nav class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></nav></div>
 </footer>
 
 <!-- Left drawer -->
@@ -886,7 +918,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(res){
       if(zr.unknown)res.innerHTML='<span style="color:#8BB8D4">Delivery fee will be confirmed</span>';
       else if(zr.outside)res.innerHTML='<span class="zout">Sorry, outside our delivery area. Call <a href="tel:+19166193218" style="color:#FF6B6B">(916) 619-3218</a>.</span>';
-      else if(zr.zone===1)res.innerHTML='<span class="z1">✓ Free delivery - you\'re in our core area!</span>';
+      else if(zr.zone===1)res.innerHTML='<span class="z1">Free delivery - you\'re in our core area!</span>';
       else if(zr.zone===2)res.innerHTML='<span class="z2">Zone 2 - $4.99 delivery fee</span>';
       else res.innerHTML='<span class="z3">Zone 3 - $9.99 delivery fee</span>';
     }
@@ -922,7 +954,7 @@ function updateS3Summary(){
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
   var delLbl=!state.delOpt?'Not selected':state.delOpt==='asap'?'As Soon As Possible':'Scheduled: '+(state.calDate||'Pick date');
-  var timeLbl=!state.timePref?'-':state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  var timeLbl=!state.timePref?'-':state.timePref==='morning'?'Morning (8am - 12pm)':state.timePref==='afternoon'?'Afternoon (12pm - 4pm)':'Evening (4pm - 6pm)';
   var feeDisplay=state.zone.unknown?'TBD':state.zone.outside?'N/A (outside area)':zoneFee===0?'FREE':'$'+zoneFee.toFixed(2);
   document.getElementById('s3-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+(state.waterType?wtLbl:'-')+'</span></div>'
@@ -1105,5 +1137,6 @@ function buildCalLink(order,timeLbl,delivDate){
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<a href="order.html" class="sticky-order-btn">ORDER WATER</a>
 </body>
 </html>

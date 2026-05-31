@@ -126,7 +126,7 @@
     </div>
     <div class="nav-right">
       <button id="cart-btn" class="nav-cart-btn" onclick="typeof openCartDrawer==='function'?openCartDrawer():null" aria-label="Cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><polyline points="1 1 5 1 7.68 13.39 6 17 20 17"/><line x1="7.68" y1="13.39" x2="5" y2="5"/><line x1="5" y1="5" x2="21" y2="5"/></svg><span id="cart-count">0</span></button>
-      <a href="water-delivery.html" class="nav-order-btn">ORDER NOW</a>
+      <a href="order.html" class="nav-order-btn">ORDER NOW</a>
       <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -144,7 +144,7 @@
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="faq.html" class="mobile-nav-link">FAQ</a>
   </nav>
-  <a href="water-delivery.html" class="mobile-order-btn">ORDER NOW</a>
+  <a href="order.html" class="mobile-order-btn">ORDER NOW</a>
 </div>
 
 <!-- Hero -->
@@ -161,7 +161,7 @@
 
     <!-- Signed-out gate -->
     <div class="signin-gate hidden" id="signin-gate">
-      <div class="empty-icon">🔒</div>
+      <div class="empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
       <h2>Please sign in to view your orders</h2>
       <p>Your orders are saved to your account. Sign in to track, reschedule, or reorder.</p>
       <a href="javascript:void(0)" class="btn-signin-gate" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
@@ -183,7 +183,7 @@
 
       <!-- Empty state -->
       <div class="empty-state hidden" id="empty-state">
-        <div class="empty-icon">📦</div>
+        <div class="empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
         <h2 class="empty-h">No orders yet</h2>
         <p class="empty-p">You haven't placed any orders. Order your first delivery today - free in Zone 1!</p>
         <a href="order.html" class="btn-order-now">Place Your First Order</a>
@@ -253,7 +253,7 @@
     </div>
   </div>
   <div class="hn-footer-bottom">
-    <p class="hn-footer-copy">&copy; 2026 Waterboy Delivery LLC. All rights reserved.</p>
+    <p class="hn-footer-copy">&copy; 2024 Water Boy Delivery. All rights reserved.</p>
     <nav class="hn-footer-legal">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
@@ -450,5 +450,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<a href="order.html" class="sticky-order-btn">ORDER WATER</a>
 </body>
 </html>

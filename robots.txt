@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://waterboydelivery.com/sitemap.xml
+Sitemap: https://waterboywebsite.netlify.app/sitemap.xml
