@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
   <title>About Us | Water Boy Delivery Elk Grove</title>
   <meta name="description" content="Family-owned water delivery based in Elk Grove, CA. Local people, clean water, reliable service. Serving Sacramento County.">
@@ -27,6 +27,10 @@
     @media (max-width: 768px) {
       .about-cols { grid-template-columns: 1fr; }
       .values-grid { grid-template-columns: 1fr; }
+      .mission-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+    @media (max-width: 480px) {
+      .mission-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -81,6 +85,7 @@
     <span class="page-hero-label">Our Story</span>
     <h1>About Us.</h1>
     <p>Family-owned water delivery based in Elk Grove, CA. Clean water, honest prices, neighbors serving neighbors.</p>
+    <p style="margin-top:16px;max-width:640px;color:var(--color-text-muted);font-size:17px;">We are your neighbors, not a national chain. We make clean, great-tasting water easy to get, delivered by people you can trust.</p>
   </div>
 </div>
 
@@ -123,7 +128,61 @@
   </div>
 </section>
 
+<!-- MISSION SECTION -->
 <section class="section section-alt">
+  <div class="container">
+    <span class="section-label">Our Mission</span>
+    <h2 style="margin-bottom:24px;max-width:760px;">Make Clean Water Accessible for Every Home and Business.</h2>
+    <p style="margin-bottom:12px;max-width:640px;">Water Boy exists to make clean, reliable water delivery simple and accessible for every family and business in our community.</p>
+    <p style="margin-bottom:48px;max-width:640px;">We show up. We deliver. We care. That is the Water Boy standard.</p>
+    <div class="values-grid">
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Convenience</h3>
+        <p>Making reordering effortless and reliable.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Reliability</h3>
+        <p>On-time deliveries, consistent quality, no surprises.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Trust</h3>
+        <p>Safe payments, secure data, excellent support.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-4"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Flexibility</h3>
+        <p>Easy to pause, skip, reschedule, or update anytime.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Value</h3>
+        <p>Fair pricing, clear value, and money-saving options.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,71,161,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Relationship</h3>
+        <p>We know our customers and we value them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-white">
   <div class="container">
     <span class="section-label">Why Choose Us</span>
     <h2 style="margin-bottom:48px;">What We Stand For.</h2>

@@ -30,7 +30,9 @@
       "Bash(grep -v \"class\\\\|CSS\\\\|--\\\\|^\\\\s*$\")",
       "PowerShell(Start-Process \"msedge\" \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\\\\index.html\")",
       "PowerShell(cd \"C:\\\\Users\\\\silly\\\\Desktop\\\\waterboy-delivery\"; Get-ChildItem -Recurse -File | Where-Object {$_.Extension -in @\\('.html', '.css', '.js'\\)} | Select-Object FullName | Sort-Object FullName)",
-      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg|svg|webp\\)$\")"
+      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg|svg|webp\\)$\")",
+      "Bash(grep -Pn \"\\\\x{2014}|&mdash;\" index.html about.html faq.html)",
+      "Bash(grep -Pn \"[\\\\x{1F300}-\\\\x{1F9FF}]\" index.html about.html faq.html)"
     ]
   }
 }
