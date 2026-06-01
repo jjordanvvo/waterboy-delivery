@@ -290,17 +290,17 @@
   <div class="progress-track">
     <div class="ps active" id="ps1">
       <div class="ps-circle"><span class="ps-num">1</span><span class="ps-chk">&#10003;</span></div>
-      <span class="ps-label">Your Order</span>
+      <span class="ps-label">Water Type</span>
     </div>
     <div class="progress-line" id="pl1"></div>
     <div class="ps" id="ps2">
       <div class="ps-circle"><span class="ps-num">2</span><span class="ps-chk">&#10003;</span></div>
-      <span class="ps-label">Delivery</span>
+      <span class="ps-label">Size &amp; Schedule</span>
     </div>
     <div class="progress-line" id="pl2"></div>
     <div class="ps" id="ps3">
       <div class="ps-circle"><span class="ps-num">3</span><span class="ps-chk">&#10003;</span></div>
-      <span class="ps-label">Review Order</span>
+      <span class="ps-label">Review</span>
     </div>
   </div>
 </div>
@@ -311,9 +311,9 @@
 
     <!-- ══ STEP 1: WATER TYPE ══════════════════════════════════ -->
     <section class="order-step active" id="step1" aria-label="Step 1: Your order">
-      <div style="background:rgba(13,71,161,0.07);border:1px solid rgba(13,71,161,0.2);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
-        <p style="font-size:14px;color:var(--color-text);margin:0 0 6px;line-height:1.6;"><strong style="color:#0D47A1;">First delivery? No problem.</strong> We provide all bottles - no swap needed for your first order.</p>
-        <p style="font-size:13px;color:var(--color-text-muted);margin:0;line-height:1.5;">First-time customer promotions and waived delivery fees apply to your first order only.</p>
+      <div style="background:#E8F0FE;border-left:4px solid #0A47A1;border-radius:8px;padding:16px 20px;margin-bottom:24px;">
+        <p style="font-size:14px;color:var(--color-text);margin:0 0 6px;line-height:1.6;"><strong style="color:#0A47A1;">First delivery? No problem.</strong> We provide all bottles for your first order. No bottle swap needed.</p>
+        <p style="font-size:13px;color:var(--color-text-muted);margin:0;line-height:1.5;">First-time promotions and waived delivery fees apply to your first order only.</p>
       </div>
       <h2 class="step-heading">What type of water?</h2>
       <div class="wt-cards">
@@ -339,8 +339,8 @@
       </div>
     </section>
 
-    <!-- ══ STEP 2: AMOUNT ══════════════════════════════════════ -->
-    <section class="order-step" id="step2" aria-label="Step 2: Choose amount">
+    <!-- ══ STEP 2: SIZE & SCHEDULE ═════════════════════════════ -->
+    <section class="order-step" id="step2" aria-label="Step 2: Size and schedule">
       <h2 class="step-heading">How much do you need?</h2>
       <p class="step-sub">One-time delivery or save with a monthly bundle</p>
       <div style="background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;flex-wrap:wrap;gap:16px;">
@@ -389,65 +389,65 @@
         </div>
       </div>
 
+      <!-- Schedule (Step 2: Size and Schedule) -->
+      <h2 class="step-heading" style="margin-top:44px;">When do you want it?</h2>
+      <div class="del-opts">
+        <div class="del-card" id="dc-asap" onclick="selectDelOpt('asap')">
+          <div class="del-title">As Soon As Possible</div>
+          <p class="del-sub">We'll get it to you today or tomorrow based on availability.</p>
+        </div>
+        <div class="del-card" id="dc-scheduled" onclick="selectDelOpt('scheduled')">
+          <div class="del-title">Pick a Date &amp; Time</div>
+          <p class="del-sub">Choose any available Mon–Sat delivery slot.</p>
+        </div>
+      </div>
+
+      <div class="sub-section" id="asap-time-section">
+        <div class="sub-heading">Preferred Delivery Window</div>
+        <div class="time-pills">
+          <button class="time-pill" onclick="selectTimePref('morning')" id="tp-morning">Morning (8am - 12pm)</button>
+          <button class="time-pill" onclick="selectTimePref('afternoon')" id="tp-afternoon">Afternoon (12pm - 4pm)</button>
+          <button class="time-pill" onclick="selectTimePref('evening')" id="tp-evening">Evening (4pm - 6pm)</button>
+        </div>
+      </div>
+
+      <div class="sub-section" id="cal-section">
+        <div class="sub-heading">Pick a Delivery Date (Mon–Sat)</div>
+        <div class="cal-wrap">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="calNav(-1)" aria-label="Previous month">&#8249;</button>
+            <span class="cal-month-lbl" id="cal-month-lbl">Month</span>
+            <button class="cal-nav-btn" onclick="calNav(1)" aria-label="Next month">&#8250;</button>
+          </div>
+          <div class="cal-weekdays">
+            <span class="cal-wd">Mon</span><span class="cal-wd">Tue</span><span class="cal-wd">Wed</span>
+            <span class="cal-wd">Thu</span><span class="cal-wd">Fri</span><span class="cal-wd">Sat</span>
+            <span class="cal-wd" style="color:rgba(255,107,107,0.4);">Sun</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="sub-section visible" id="sched-time-section" style="margin-top:14px;background:none;padding:0;">
+          <div class="sub-heading">Delivery Window</div>
+          <div class="time-pills">
+            <button class="time-pill" onclick="selectTimePref('morning')" id="stp-morning">Morning (8am - 12pm)</button>
+            <button class="time-pill" onclick="selectTimePref('afternoon')" id="stp-afternoon">Afternoon (12pm - 4pm)</button>
+            <button class="time-pill" onclick="selectTimePref('evening')" id="stp-evening">Evening (4pm - 6pm)</button>
+          </div>
+        </div>
+      </div>
+
       <div class="step-foot">
         <button class="btn-back" onclick="goStep(1)">← Back</button>
-        <button class="btn-next" id="s2-next" disabled onclick="goStep(3)">Next →</button>
+        <button class="btn-next" id="s2-next" disabled onclick="validateStep2()">Next →</button>
       </div>
     </section>
 
-    <!-- ══ STEP 3: SCHEDULE ════════════════════════════════════ -->
-    <section class="order-step" id="step3" aria-label="Step 3: Schedule delivery">
+    <!-- ══ STEP 3: REVIEW & PLACE ORDER ════════════════════════ -->
+    <section class="order-step" id="step3" aria-label="Step 3: Review and place order">
       <div class="s3-layout">
         <div class="s3-left">
-          <h2 class="step-heading">When do you want it?</h2>
-
-          <!-- Delivery option cards -->
-          <div class="del-opts">
-            <div class="del-card" id="dc-asap" onclick="selectDelOpt('asap')">
-              <div class="del-title">As Soon As Possible</div>
-              <p class="del-sub">We'll get it to you today or tomorrow based on availability.</p>
-            </div>
-            <div class="del-card" id="dc-scheduled" onclick="selectDelOpt('scheduled')">
-              <div class="del-title">Pick a Date &amp; Time</div>
-              <p class="del-sub">Choose any available Mon–Sat delivery slot.</p>
-            </div>
-          </div>
-
-          <!-- ASAP: time preference -->
-          <div class="sub-section" id="asap-time-section">
-            <div class="sub-heading">Preferred Delivery Window</div>
-            <div class="time-pills">
-              <button class="time-pill" onclick="selectTimePref('morning')" id="tp-morning">Morning (8am - 12pm)</button>
-              <button class="time-pill" onclick="selectTimePref('afternoon')" id="tp-afternoon">Afternoon (12pm - 4pm)</button>
-              <button class="time-pill" onclick="selectTimePref('evening')" id="tp-evening">Evening (4pm - 6pm)</button>
-            </div>
-          </div>
-
-          <!-- Scheduled: calendar -->
-          <div class="sub-section" id="cal-section">
-            <div class="sub-heading">Pick a Delivery Date (Mon–Sat)</div>
-            <div class="cal-wrap">
-              <div class="cal-nav">
-                <button class="cal-nav-btn" onclick="calNav(-1)" aria-label="Previous month">&#8249;</button>
-                <span class="cal-month-lbl" id="cal-month-lbl">Month</span>
-                <button class="cal-nav-btn" onclick="calNav(1)" aria-label="Next month">&#8250;</button>
-              </div>
-              <div class="cal-weekdays">
-                <span class="cal-wd">Mon</span><span class="cal-wd">Tue</span><span class="cal-wd">Wed</span>
-                <span class="cal-wd">Thu</span><span class="cal-wd">Fri</span><span class="cal-wd">Sat</span>
-                <span class="cal-wd" style="color:rgba(255,107,107,0.4);">Sun</span>
-              </div>
-              <div class="cal-grid" id="cal-grid"></div>
-            </div>
-            <div class="sub-section visible" id="sched-time-section" style="margin-top:14px;background:none;padding:0;">
-              <div class="sub-heading">Delivery Window</div>
-              <div class="time-pills">
-                <button class="time-pill" onclick="selectTimePref('morning')" id="stp-morning">Morning (8am - 12pm)</button>
-                <button class="time-pill" onclick="selectTimePref('afternoon')" id="stp-afternoon">Afternoon (12pm - 4pm)</button>
-                <button class="time-pill" onclick="selectTimePref('evening')" id="stp-evening">Evening (4pm - 6pm)</button>
-              </div>
-            </div>
-          </div>
+          <h2 class="step-heading">Review &amp; place your order</h2>
+          <p class="step-sub">Enter your delivery details below, then continue to secure checkout.</p>
 
           <!-- Address form -->
           <div class="addr-form">
@@ -598,8 +598,8 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div>
-        <img src="/LOGOnotext.PNG" alt="Water Boy Delivery logo" width="180" height="56" loading="lazy" style="height: 56px; width: auto; display: block;">
-        <p class="footer-tagline">Clean. Fresh. Local.</p>
+        <img src="/LOGOnotext.PNG" alt="Water Boy Delivery logo" width="auto" height="56" loading="lazy" style="height: 56px; width: auto; display: block;">
+        <p class="footer-tagline">Clean Water. Better Lives.</p>
         <div class="footer-social">
           <a href="#" class="footer-social-btn" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
           <a href="#" class="footer-social-btn" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
@@ -716,8 +716,8 @@ function goStep(n){
   document.querySelectorAll('.order-step').forEach(function(s){s.classList.remove('active');});
   document.getElementById('step'+n).classList.add('active');
   updateProgress(n);
-  if(n===2)renderBundles();
-  if(n===3){renderCal();updateS3Summary();}
+  if(n===2){renderBundles();renderCal();}
+  if(n===3){updateS3Summary();}
   window.scrollTo({top:document.getElementById('order-progress-bar').offsetTop-70,behavior:'smooth'});
 }
 
@@ -990,6 +990,14 @@ function validateStep3(){
   if(!state.timePref){alert('Please select a delivery time window (Morning, Afternoon, or Evening).');ok=false;}
   if(state.zone.outside){alert('Your ZIP code is outside our delivery area. Please call (916) 619-3218 for options.');ok=false;}
   return ok;
+}
+
+/* ── Step 2 → 3 validation (Size & Schedule must be complete) ──── */
+function validateStep2(){
+  if(!state.delOpt){alert('Please select a delivery option (ASAP or scheduled).');return;}
+  if(state.delOpt==='scheduled'&&!state.calDate){alert('Please select a delivery date on the calendar.');return;}
+  if(!state.timePref){alert('Please select a delivery time window (Morning, Afternoon, or Evening).');return;}
+  goStep(3);
 }
 
 /* ── Checkout ────────────────────────────────────────────────── */

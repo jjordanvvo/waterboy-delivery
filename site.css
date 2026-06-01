@@ -241,7 +241,7 @@ button, a.btn-primary, a.btn-secondary, a.btn-inverted, a.btn-ghost-white,
   position: relative;
   padding: 8px;
   display: flex; align-items: center; justify-content: center;
-  min-width: 44px; min-height: 44px;
+  min-width: 40px; min-height: 40px; overflow: visible;
 }
 #cart-count {
   position: absolute; top: 2px; right: 2px;
@@ -816,6 +816,7 @@ body { background: #FFFFFF !important; }
   .nav-cart-btn {
     min-width: 40px !important;
     min-height: 40px !important;
+    overflow: visible !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
