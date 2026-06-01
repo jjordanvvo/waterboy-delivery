@@ -699,9 +699,7 @@ textarea.form-input { height: 140px; resize: vertical; }
 @media (max-width: 640px) {
   .hn-footer-grid { grid-template-columns: 1fr !important; padding: 40px 20px 32px !important; }
 }
-@media (max-width: 480px) {
-  .nav-order-btn { display: none !important; }
-}
+/* nav-order-btn hidden on mobile via main 768px block */
 
 /* ── Utility overrides for old class names used in pages ─────── */
 .sb-inner { max-width: 1200px !important; margin: 0 auto !important; }
@@ -767,9 +765,80 @@ body { background: #FFFFFF !important; }
 }
 @media (max-width: 767px) {
   .sticky-order-btn { display: block; }
-  body { padding-bottom: 72px; }
   #back-to-top { bottom: 88px !important; }
 }
 @media (min-width: 768px) {
   .sticky-order-btn { display: none !important; }
+}
+
+/* ── MOBILE LAYOUT OVERRIDES ─────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Global overflow prevention */
+  html, body { overflow-x: hidden !important; }
+
+  /* 1 - Navbar */
+  #navbar { padding: 0 20px !important; height: auto !important; min-height: 64px; }
+  .nav-logo-link img { height: 48px !important; max-height: 48px !important; }
+  .nav-links-center { display: none !important; }
+  .nav-order-btn { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-right { gap: 16px !important; }
+  .nav-cart-btn { min-width: 40px !important; width: 40px; }
+
+  /* Sections - consistent padding */
+  .section { padding: 56px 24px !important; }
+
+  /* 15 - Footer */
+  .footer-inner { padding: 0 !important; }
+  .footer-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+    padding: 48px 24px 24px !important;
+    margin-bottom: 0 !important;
+  }
+  .footer-grid > div { width: 100% !important; min-width: 0 !important; }
+  .footer-col h4 {
+    font-size: 12px !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 16px !important;
+  }
+  .footer-links { gap: 0 !important; }
+  .footer-links a { font-size: 15px !important; line-height: 2.2 !important; }
+  .footer-order-btn {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 20px !important;
+  }
+  .footer-bottom {
+    padding: 16px 24px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    text-align: center !important;
+  }
+  .footer-copy { font-size: 13px !important; }
+  .footer-legal {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+  }
+  .footer-legal a { font-size: 13px !important; display: block; text-align: center; }
+
+  /* Card radius */
+  .card { border-radius: 12px !important; }
+
+  /* Page hero */
+  .page-hero { padding: 56px 24px !important; }
+}
+
+/* 16 - Sticky button safe area & body padding */
+@media (max-width: 767px) {
+  body { padding-bottom: max(80px, calc(72px + env(safe-area-inset-bottom, 0px))) !important; }
+  .sticky-order-btn {
+    padding: 18px 24px !important;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
