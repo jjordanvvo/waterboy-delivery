@@ -44,7 +44,9 @@
       "Bash(sed -n '1144,1146p' order.html)",
       "Bash(node --check /tmp/order_2.js)",
       "Bash(git stat *)",
-      "Bash(git --no-pager diff --stat)"
+      "Bash(git --no-pager diff --stat)",
+      "Bash(echo \"---ORIGIN EXIT: $?---\")",
+      "Bash(echo \"---MINE EXIT: $?---\")"
     ]
   }
 }
