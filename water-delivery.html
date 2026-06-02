@@ -436,9 +436,9 @@
 
 <script>
 const PRICING = {
-  ro:       {'1 Gallon': 6.99,  '2 Gallon': 8.99,  '3 Gallon': 9.99,  '5 Gallon': 10.99},
-  alkaline: {'1 Gallon': 7.99,  '2 Gallon': 10.99, '3 Gallon': 11.99, '5 Gallon': 13.99},
-  hydrogen: {'1 Gallon': 12.99, '2 Gallon': 17.99, '3 Gallon': 20.99, '5 Gallon': 24.99}
+  ro:       {'3 Gallon': 9.99,  '5 Gallon': 10.99},
+  alkaline: {'3 Gallon': 11.99, '5 Gallon': 13.99},
+  hydrogen: {'3 Gallon': 20.99, '5 Gallon': 24.99}
 };
 const WATER_NAMES = {ro: 'Reverse Osmosis', alkaline: 'Alkaline', hydrogen: 'Hydrogen'};
 let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null};
@@ -454,6 +454,8 @@ function buildSizeGrid() {
   if (!order.water) { grid.innerHTML = ''; return; }
   var prices = PRICING[order.water];
   grid.innerHTML = Object.entries(prices).map(function(e){var size=e[0],price=e[1];return '<div class="size-card" id="sc-'+size.replace(' ','')+'" onclick="selectSize(\''+size+'\')"><div class="size-label">'+size+'</div><div class="size-price">$'+price.toFixed(2)+'</div></div>';}).join('');
+  // Default the selected size to 5 Gallon
+  if (prices['5 Gallon']) selectSize('5 Gallon');
 }
 function selectSize(size) {
   order.size = size;
