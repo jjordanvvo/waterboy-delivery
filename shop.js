@@ -122,18 +122,18 @@ function getZoneForZip(zip){
   const c=ZIP_COORDS[zip];
   if(!c) return {zone:0,fee:0,outside:false,unknown:true};
   const d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);
-  if(d<=3)  return {zone:1,fee:0,   dist:d,outside:false,unknown:false};
-  if(d<=6)  return {zone:2,fee:4.99,dist:d,outside:false,unknown:false};
-  if(d<=9)  return {zone:3,fee:9.99,dist:d,outside:false,unknown:false};
+  if(d<=3)  return {zone:1,fee:2.99,dist:d,outside:false,unknown:false};
+  if(d<=6)  return {zone:2,fee:5.99,dist:d,outside:false,unknown:false};
+  if(d<=9)  return {zone:3,fee:8.99,dist:d,outside:false,unknown:false};
   return {zone:4,fee:0,dist:d,outside:true,unknown:false};
 }
 
 function zoneFeeDisplay(zr){
   if(zr.unknown) return {text:'TBD',color:'#8BB8D4',tag:'',fee:0};
   if(zr.outside) return {text:'Contact us',color:'#ff6b6b',tag:'',fee:0};
-  if(zr.zone===1) return {text:'FREE',color:'#6DCF70',tag:'Zone 1 — Free',fee:0};
-  if(zr.zone===2) return {text:'$4.99',color:'#C5DFF0',tag:'Zone 2',fee:4.99};
-  if(zr.zone===3) return {text:'$9.99',color:'#FFD700',tag:'Zone 3',fee:9.99};
+  if(zr.zone===1) return {text:'$2.99',color:'#C5DFF0',tag:'Zone 1',fee:2.99};
+  if(zr.zone===2) return {text:'$5.99',color:'#C5DFF0',tag:'Zone 2',fee:5.99};
+  if(zr.zone===3) return {text:'$8.99',color:'#FFD700',tag:'Zone 3',fee:8.99};
   return {text:'TBD',color:'#8BB8D4',tag:'',fee:0};
 }
 
@@ -141,16 +141,16 @@ function renderZoneResult(zr,resEl,nextBtn){
   if(!resEl) return;
   currentZone=zr;
   if(zr.unknown){
-    resEl.innerHTML='<div class="zone-inline zone-unk">📦 Delivery fee will be confirmed after order is placed</div>';
+    resEl.innerHTML='<div class="zone-inline zone-unk">Delivery fee will be confirmed after order is placed</div>';
     if(nextBtn) nextBtn.disabled=false;
   } else if(zr.outside){
-    resEl.innerHTML='<div class="zone-inline zone-out">⚠ Outside delivery area — call <a href="tel:+19166193218">(916) 619-3218</a> for options</div>';
+    resEl.innerHTML='<div class="zone-inline zone-out">Beyond 9 miles - Custom Quote. We may still be able to help. Call <a href="tel:+19166193218">(916) 619-3218</a></div>';
     if(nextBtn) nextBtn.disabled=true;
   } else {
     const msgs={
-      1:'<div class="zone-inline zone-z1">✓ Free delivery — you\'re in our core area!</div>',
-      2:'<div class="zone-inline zone-z2">📍 Zone 2 — $4.99 delivery fee (Laguna, Rancho area)</div>',
-      3:'<div class="zone-inline zone-z3">📍 Zone 3 — $9.99 delivery fee (extended area)</div>',
+      1:'<div class="zone-inline zone-z1">Zone 1 - $2.99 delivery fee (core area)</div>',
+      2:'<div class="zone-inline zone-z2">Zone 2 - $5.99 delivery fee (Laguna, Rancho area)</div>',
+      3:'<div class="zone-inline zone-z3">Zone 3 - $8.99 delivery fee (extended area)</div>',
     };
     resEl.innerHTML=msgs[zr.zone]||'';
     if(nextBtn) nextBtn.disabled=false;
@@ -650,7 +650,7 @@ function inject(){
   <div class="cd-foot">
    <div class="promo-row"><input id="promo-input" placeholder="Promo code"><button class="promo-apply" id="promo-apply">Apply</button></div>
    <div class="totals-row"><span>Subtotal</span><span id="cd-subtotal">$0.00</span></div>
-   <div class="totals-row"><span>Delivery</span><span>FREE</span></div>
+   <div class="totals-row"><span>Delivery</span><span>Calculated at checkout</span></div>
    <div class="totals-row grand"><span>Total</span><span id="cd-grand">$0.00</span></div>
    <button class="wb-btn" id="cd-checkout-btn" style="margin-top:14px">Proceed to Checkout</button>
    <button class="wb-btn-ghost" id="cd-continue-btn">Continue Shopping</button>
@@ -1333,7 +1333,7 @@ function openSubWithPlan(planName){
 
   const display = document.getElementById('sub-plan-display');
   if(display){
-    const perks = [`${Bottles} × 5-gal ${waterLabel} bottles`, 'Flexible schedule', 'Free delivery 0–3 mi'];
+    const perks = [`${Bottles} × 5-gal ${waterLabel} bottles`, 'Flexible schedule', 'Delivery from $2.99'];
     display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${displayPrice}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
   }
   // Sync water type buttons

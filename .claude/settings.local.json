@@ -42,7 +42,9 @@
       "Bash(sed -n '677,1140p' order.html)",
       "Bash(node --check /tmp/order_main.js)",
       "Bash(sed -n '1144,1146p' order.html)",
-      "Bash(node --check /tmp/order_2.js)"
+      "Bash(node --check /tmp/order_2.js)",
+      "Bash(git stat *)",
+      "Bash(git --no-pager diff --stat)"
     ]
   }
 }

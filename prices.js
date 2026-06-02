@@ -35,8 +35,8 @@ var WB_PRICES = {
     brioTop:    { name: 'Brio Top-Load Dispenser',    price: 129.99 }
   },
   delivery: {
-    zone1: { label: 'Zone 1 (0–3mi)', price: 0,    display: 'FREE' },
-    zone2: { label: 'Zone 2 (3–6mi)', price: 4.99, display: '$4.99' },
-    zone3: { label: 'Zone 3 (6–9mi)', price: 9.99, display: '$9.99' }
+    zone1: { label: 'Zone 1 (0-3mi)', price: 2.99, display: '$2.99' },
+    zone2: { label: 'Zone 2 (3-6mi)', price: 5.99, display: '$5.99' },
+    zone3: { label: 'Zone 3 (6-9mi)', price: 8.99, display: '$8.99' }
   }
 };
