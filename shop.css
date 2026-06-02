@@ -141,7 +141,7 @@
 .nav-user-drop.open{display:block}
 .nud-out{color:rgba(255,100,100,.7)!important}
 .nud-out:hover{background:rgba(255,80,80,.08)!important;color:#ff6464!important}
-.cd-head>span{font-family:'Poppins',sans-serif;font-size:19px;font-weight:800;color:#fff}
+.cd-head>span{font-family:'Poppins',sans-serif;font-size:19px;font-weight:800;color:var(--color-text)}
 
 /* â”€â”€ Cart Drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #cart-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9000;opacity:0;pointer-events:none;transition:opacity .3s}
