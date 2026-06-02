@@ -615,6 +615,59 @@
       .loyalty-redeem-strip { flex-wrap: wrap; padding: 20px; }
       .loyalty-redeem-item { flex: 1 1 40%; }
     }
+
+    /* ── Bottle Sizes Section (NEW) ─────────────────────────── */
+    .sizes-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 24px; max-width: 820px; margin: 0 auto;
+    }
+    .size-card {
+      background: #FFFFFF; border: 1px solid var(--color-border);
+      border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      padding: 32px; text-align: center; position: relative;
+      display: flex; flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .size-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.10); }
+    .size-card.popular { border: 2px solid var(--color-primary); }
+    .size-badge {
+      position: absolute; top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-primary); color: #FFFFFF;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+      white-space: nowrap; font-family: 'Poppins', sans-serif;
+    }
+    .size-card-img {
+      width: 100%; height: 240px; object-fit: contain;
+      display: block; margin-bottom: 20px;
+    }
+    .size-card h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; color: var(--color-text); }
+    .size-card-bullets { list-style: none; margin: 0 0 24px; padding: 0; text-align: left; }
+    .size-card-bullets li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 15px;
+      color: var(--color-text-muted); line-height: 1.6; margin-bottom: 10px;
+    }
+    .size-card-bullets svg { color: var(--color-success); flex-shrink: 0; margin-top: 4px; }
+    .size-card .btn-primary { margin-top: auto; width: 100%; }
+
+    /* ── Compact CTA Band (NEW) ─────────────────────────────── */
+    .cta-band {
+      background: var(--color-surface-alt);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 44px 24px; text-align: center;
+    }
+    .cta-band h2 { font-size: clamp(22px, 3vw, 28px); margin-bottom: 8px; color: var(--color-text); }
+    .cta-band p { font-size: 16px; color: var(--color-text-muted); margin-bottom: 24px; }
+
+    @media (max-width: 768px) {
+      .sizes-grid { grid-template-columns: 1fr; gap: 16px; }
+      .size-card { padding: 28px 24px; }
+      .cta-band .btn-primary { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -794,6 +847,15 @@
   </div>
 </section>
 
+<!-- COMPACT CTA BAND (after How It Works) -->
+<section class="cta-band">
+  <div class="container">
+    <h2>Ready to get started?</h2>
+    <p>Choose your water, size, and schedule delivery.</p>
+    <a href="water-delivery.html" class="btn-primary">ORDER NOW</a>
+  </div>
+</section>
+
 <!-- SECTION 03B: WHY CHOOSE WATER BOY -->
 <section class="section section-alt text-center">
   <div class="container">
@@ -871,6 +933,47 @@
         <a href="water-filtration.html" class="water-type-link">Learn More <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- SECTION: BOTTLE SIZES (NEW) -->
+<section class="section section-white text-center">
+  <div class="container">
+    <span class="section-label">Bottle Sizes</span>
+    <h2 style="margin-bottom:12px;">Available in 3 Gallon and 5 Gallon</h2>
+    <p class="section-subtext" style="margin-left:auto;margin-right:auto;">Pick the size that fits your home, office, or routine.</p>
+    <div class="sizes-grid">
+      <div class="size-card">
+        <img class="size-card-img" src="3gallonwaterboy.PNG" alt="Water Boy 3 gallon water bottle" width="320" height="320" loading="lazy">
+        <h3>3 Gallon</h3>
+        <ul class="size-card-bullets">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Easy to carry</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Great for smaller households</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Perfect for apartments and personal use</li>
+        </ul>
+        <a href="water-delivery.html" class="btn-primary">Order Now</a>
+      </div>
+      <div class="size-card popular">
+        <div class="size-badge">Most Popular</div>
+        <img class="size-card-img" src="5gallonwaterboy.PNG" alt="Water Boy 5 gallon water bottle, most popular size" width="320" height="320" loading="lazy">
+        <h3>5 Gallon</h3>
+        <ul class="size-card-bullets">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Best value</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Ideal for families and offices</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fewer refills, more convenience</li>
+        </ul>
+        <a href="water-delivery.html" class="btn-primary">Order Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPACT CTA BAND (after Bottle Sizes) -->
+<section class="cta-band">
+  <div class="container">
+    <h2>Ready to get started?</h2>
+    <p>Choose your water, size, and schedule delivery.</p>
+    <a href="water-delivery.html" class="btn-primary">ORDER NOW</a>
   </div>
 </section>
 
