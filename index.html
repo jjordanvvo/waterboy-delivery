@@ -83,13 +83,13 @@
       border-radius: 20px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.08);
       border: 1px solid var(--color-border);
-      padding: 40px;
+      padding: 12px;
       display: flex; align-items: center; justify-content: center;
       min-height: 400px;
     }
     .hero-image-side img {
-      max-width: 320px; width: 100%; height: auto;
-      object-fit: contain; mix-blend-mode: multiply;
+      width: 100%; max-width: 100%; height: 400px;
+      object-fit: cover; border-radius: 16px; display: block;
     }
 
     /* Trust Strip */
@@ -358,7 +358,8 @@
       /* 2 - Hero */
       .hero-section { padding: 56px 24px 40px !important; }
       .hero-inner { grid-template-columns: 1fr !important; gap: 0 !important; }
-      .hero-image-side { display: none !important; }
+      .hero-image-side { display: flex !important; margin-top: 28px !important; padding: 8px !important; min-height: 0 !important; }
+      .hero-image-side img { height: 240px !important; }
       .hero-left h1 { font-size: clamp(32px, 8vw, 42px) !important; }
       .hero-left p { font-size: 16px !important; line-height: 1.6 !important; max-width: 100% !important; }
       .hero-buttons { flex-direction: column !important; gap: 12px !important; }
@@ -694,7 +695,7 @@
       </div>
     </div>
     <div class="hero-image-side">
-      <img src="Images%20for%20Menu/Images%20for%20Menu/LOGO%20(1).PNG" alt="Water Boy Delivery - pure water delivered to your door in Elk Grove" width="320" height="320" loading="lazy">
+      <img src="Talenrealimg.PNG" alt="Water Boy delivery driver with a 5 gallon water bottle and delivery truck" width="520" height="400" loading="eager">
     </div>
   </div>
 </section>
