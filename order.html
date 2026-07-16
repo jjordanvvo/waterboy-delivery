@@ -816,13 +816,13 @@ function renderBundles(){
   var grid=document.getElementById('bundle-grid');
   grid.innerHTML=bundles.map(function(b){
     var sel=state.bundleId===b.id;
-    return '<div class="bc'+(b.pop?' popular':'')+(sel?' selected':'')+'" id="bc-'+b.id+'" onclick="selectBundle(\''+b.id+'\')">'
-      +'<div class="bc-chk">✓</div>'
-      +'<span class="bc-badge '+badgeCls+'">'+b.badge+'</span>'
-      +'<div class="bc-name">'+b.name+'</div>'
-      +'<div class="bc-price">$'+b.price+'<span class="bc-price-mo">/mo</span></div>'
-      +'<div class="bc-bottles">'+b.bottles+'×5-gal bottles</div>'
-      +'</div>';
+    var html='<div class="bc'+(b.pop?' popular':'')+(sel?' selected':'')+'" id="bc-'+b.id+'" onclick="selectBundle(\''+b.id+'\')">';
+    html+='<div class="bc-chk">✓</div>';
+    html+='<div class="bc-name">'+b.name+'</div>';
+    html+='<div class="bc-price">$'+b.price+'<span class="bc-price-mo">/mo</span></div>';
+    html+='<div class="bc-bottles">'+b.bottles+'×5-gal bottles</div>';
+    html+='</div>';
+    return html;
   }).join('');
 }
 
