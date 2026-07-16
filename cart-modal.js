@@ -430,7 +430,7 @@
         '<div class="wbcs-total-row"><span>Total</span><span id="cart-total">$0.00</span></div>' +
         '<a href="order.html" class="wbcs-shop-btn" style="margin-bottom:12px;">Checkout →</a>' +
         '<div id="wbcs-also-bought" style="margin-top:4px;">' +
-          '<div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>' +
+          '<div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>' +
           '<div style="display:flex;flex-direction:column;gap:8px;" id="wbcs-also-items"></div>' +
         '</div>' +
       '</div>';
@@ -445,7 +445,7 @@
     alsoBought.forEach(function(p){
       var row=document.createElement('div');
       row.style.cssText='display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);border-radius:8px;';
-      row.innerHTML='<img src="'+p.img+'" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="'+p.name+'" /><div style="flex:1;min-width:0;"><div style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#F0F7FF;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+p.name+'</div><div style="font-family:'Inter',sans-serif;font-size:12px;color:#00D4FF;font-weight:700;">'+p.price+'</div></div><button style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;" data-also-name="'+p.name+'" data-also-price="'+p.priceNum+'" data-also-img="'+p.img+'">+ Add</button>';
+      row.innerHTML='<img src="'+p.img+'" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="'+p.name+'" /><div style="flex:1;min-width:0;"><div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#F0F7FF;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+p.name+'</div><div style="font-family:'Poppins',sans-serif;font-size:12px;color:#00D4FF;font-weight:700;">'+p.price+'</div></div><button style="background:#00D4FF;border:none;color:#0B1B2B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;padding:6px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:background 0.15s;" data-also-name="'+p.name+'" data-also-price="'+p.priceNum+'" data-also-img="'+p.img+'">+ Add</button>';
       alsoContainer.appendChild(row);
     });
     alsoContainer.addEventListener('click',function(e){
