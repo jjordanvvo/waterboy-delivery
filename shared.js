@@ -90,26 +90,23 @@
 
   /* ── Page transitions ──────────────────────────────────────── */
   function initPageTransitions() {
-    // Fade in on load
-    document.body.classList.add('page-ready');
-
-    // Fade out before navigating away
     document.addEventListener('click', function (e) {
       var link = e.target.closest('a[href]');
       if (!link) return;
       var href = link.getAttribute('href');
-      // Skip: anchors, tel/mailto, external links, new-tab links, modifier keys
       if (!href || href.charAt(0) === '#' || href.indexOf('tel:') === 0 || href.indexOf('mailto:') === 0) return;
       if (link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
       if (href.indexOf('http') === 0 && href.indexOf(window.location.hostname) === -1) return;
       e.preventDefault();
-      document.body.classList.remove('page-ready');
-      setTimeout(function () { window.location.href = href; }, 220);
+      document.body.style.transition = 'opacity 0.18s ease';
+      document.body.style.opacity = '0';
+      setTimeout(function () { window.location.href = href; }, 200);
     });
-
-    // Also fade in after back/forward navigation (bfcache)
     window.addEventListener('pageshow', function (e) {
-      if (e.persisted) document.body.classList.add('page-ready');
+      if (e.persisted) {
+        document.body.style.transition = '';
+        document.body.style.opacity = '';
+      }
     });
   }
   if (document.readyState === 'loading') {
