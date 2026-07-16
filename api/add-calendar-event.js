@@ -15,11 +15,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: false, reason: 'not_configured' });
   }
 
-  // Only create a real calendar event for scheduled deliveries
-  const isAsap = !deliveryDate || deliveryDate === 'As Soon As Possible';
-
   try {
-    // Exchange refresh token for access token
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -33,59 +29,41 @@ export default async function handler(req, res) {
     const tokenData = await tokenRes.json();
     if (!tokenData.access_token) throw new Error('Token error: ' + (tokenData.error || 'unknown'));
 
-    // Build event start / end in Pacific time
+    const isAsap = !deliveryDate || deliveryDate === 'As Soon As Possible';
     const startH = deliveryWindow && deliveryWindow.includes('Morning')   ? 8
                  : deliveryWindow && deliveryWindow.includes('Afternoon') ? 12 : 16;
-    const endH   = startH + 3;
 
-    // For ASAP we still log it as "today" but mark it clearly
     const base  = isAsap ? new Date() : new Date(deliveryDate + 'T00:00:00');
     const start = new Date(base); start.setHours(startH, 0, 0, 0);
-    const end   = new Date(base); end.setHours(endH,   0, 0, 0);
-
-    const windowLabel = deliveryWindow && deliveryWindow.includes('Morning')   ? 'Morning (8am–11am)'
-                      : deliveryWindow && deliveryWindow.includes('Afternoon') ? 'Afternoon (12pm–3pm)'
-                      : 'Evening (4pm–7pm)';
-
-    const desc = [
-      '📋 Order ID: '  + (orderId      || '—'),
-      '👤 Customer: '  + (customerName || '—'),
-      '📞 Phone: '     + (phone        || '—'),
-      '📧 Email: '     + (email        || '—'),
-      '📍 Address: '   + (address      || '—'),
-      '💧 Bundle: '    + (bundle       || '—'),
-      '🕐 Window: '    + windowLabel,
-      isAsap ? '⚡ Delivery: ASAP (today)' : '📅 Date: ' + deliveryDate,
-    ].join('\n');
-
-    // Attendees: customer gets a calendar invite; business org is the organizer
-    const attendees = [];
-    if (email && email.includes('@')) {
-      attendees.push({ email, displayName: customerName || '', responseStatus: 'accepted' });
-    }
+    const end   = new Date(base); end.setHours(startH + 3, 0, 0, 0);
 
     const event = {
-      summary:     '💧 ' + (bundle || 'Delivery') + ' — ' + (customerName || ''),
-      description: desc,
-      location:    address || '',
+      summary:  (isAsap ? '⚡ ASAP' : '📅 Delivery') + ' — ' + (customerName || '') + ' — ' + (address || ''),
+      description: [
+        'DELIVER TO: ' + (address      || '—'),
+        'NAME: '       + (customerName || '—'),
+        'PHONE: '      + (phone        || '—'),
+        'EMAIL: '      + (email        || '—'),
+        'ORDER: '      + (bundle       || '—') + ' (' + (waterType || '') + ')',
+        'WINDOW: '     + (deliveryWindow || '—'),
+        'ORDER ID: '   + (orderId      || '—'),
+      ].join('\n'),
+      location: address || '',
       start: { dateTime: start.toISOString(), timeZone: 'America/Los_Angeles' },
       end:   { dateTime: end.toISOString(),   timeZone: 'America/Los_Angeles' },
-      colorId:   '7',
-      attendees,
+      colorId: '7',
       reminders: {
         useDefault: false,
         overrides: [
-          { method: 'email', minutes: 24 * 60 }, // day-before email
           { method: 'popup', minutes: 60 },
           { method: 'popup', minutes: 15 }
         ]
       }
     };
 
-    // sendUpdates='all' makes Google send the customer a calendar invite email
     const calRes = await fetch(
       'https://www.googleapis.com/calendar/v3/calendars/' +
-        encodeURIComponent(CALENDAR_ID) + '/events?sendUpdates=all',
+        encodeURIComponent(CALENDAR_ID) + '/events',
       {
         method: 'POST',
         headers: {
@@ -98,7 +76,7 @@ export default async function handler(req, res) {
     const calData = await calRes.json();
     if (!calRes.ok) throw new Error((calData.error && calData.error.message) || 'Calendar API error');
 
-    res.status(200).json({ ok: true, eventId: calData.id, invited: attendees.length > 0 });
+    res.status(200).json({ ok: true, eventId: calData.id });
   } catch (err) {
     console.error('Calendar event error:', err.message);
     res.status(200).json({ ok: false, error: err.message });
