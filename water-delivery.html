@@ -474,26 +474,7 @@ function applyDistance(lat, lng) {
     el.innerHTML = '&#10003; In our delivery area &mdash; delivery fee <strong>$' + order.zoneFee.toFixed(2) + '</strong> (' + dist.toFixed(1) + ' mi).';
   }
 }
-// Google Places autocomplete (needs a Google Maps JavaScript API key)
-function initAddressAutocomplete() {
-  var inp = document.getElementById('f-address');
-  if (!inp || !window.google || !google.maps || !google.maps.places) return;
-  var ac = new google.maps.places.Autocomplete(inp, {
-    types: ['address'],
-    componentRestrictions: { country: 'us' },
-    fields: ['geometry', 'formatted_address']
-  });
-  ac.addListener('place_changed', function () {
-    var p = ac.getPlace();
-    if (p && p.formatted_address) inp.value = p.formatted_address;
-    if (p && p.geometry && p.geometry.location) {
-      order.geocodeChecked = true;
-      applyDistance(p.geometry.location.lat(), p.geometry.location.lng());
-    }
-  });
-}
-window.initAddressAutocomplete = initAddressAutocomplete;
-// Fallback geocoder (OpenStreetMap) — used when Google Places isn't available
+// Geocode a typed address (keyless, OpenStreetMap) — used to verify delivery area on submit
 function geocodeAddress(cb) {
   var addr = document.getElementById('f-address').value.trim();
   if (!addr) { cb(false); return; }
@@ -616,24 +597,89 @@ function submitOrder() {
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';});
 document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
-// Re-check delivery area whenever the address is edited
+// ── Keyless address autocomplete (Photon / OpenStreetMap — no API key needed) ──
 (function(){
   var addr = document.getElementById('f-address');
   if (!addr) return;
-  addr.addEventListener('input', function () {
+  var box = null, items = [], activeIdx = -1, timer = null;
+
+  function ensureBox(){
+    if (box) return;
+    addr.parentElement.style.position = 'relative';
+    box = document.createElement('div');
+    box.setAttribute('role','listbox');
+    box.style.cssText = 'position:absolute;z-index:9999;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin-top:4px;max-height:260px;overflow-y:auto;display:none;';
+    addr.parentElement.appendChild(box);
+  }
+  function place(){
+    ensureBox();
+    box.style.left = addr.offsetLeft + 'px';
+    box.style.top = (addr.offsetTop + addr.offsetHeight) + 'px';
+    box.style.width = addr.offsetWidth + 'px';
+  }
+  function hide(){ if (box) box.style.display = 'none'; activeIdx = -1; }
+  function label(p){
+    var main = p.name || '';
+    if (p.housenumber && main) main = p.housenumber + ' ' + main;
+    var sub = [p.city, p.state, p.postcode].filter(Boolean).join(', ');
+    if (!main) { main = sub; sub = ''; }
+    return { main: main, sub: sub };
+  }
+  function draw(){
+    place();
+    if (!items.length) { hide(); return; }
+    box.innerHTML = items.map(function(f,i){
+      var l = label(f.properties);
+      return '<div class="as-item" data-i="'+i+'" role="option" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'">'
+        + '<div style="font-size:14px;color:#0A1F44;font-weight:600;">'+ l.main +'</div>'
+        + (l.sub ? '<div style="font-size:12px;color:#64748B;">'+ l.sub +'</div>' : '') + '</div>';
+    }).join('');
+    box.style.display = 'block';
+    Array.prototype.forEach.call(box.querySelectorAll('.as-item'), function(el){
+      el.addEventListener('mousedown', function(e){ e.preventDefault(); pick(parseInt(el.getAttribute('data-i'),10)); });
+    });
+  }
+  function pick(i){
+    var f = items[i]; if (!f) return;
+    var l = label(f.properties);
+    addr.value = (l.main + (l.sub ? ', ' + l.sub : '')).trim();
+    order.geocodeChecked = true;
+    var c = f.geometry.coordinates; // [lng, lat]
+    applyDistance(c[1], c[0]);
+    hide();
+  }
+  function query(q){
+    fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat=38.4088&lon=-121.4208&q=' + encodeURIComponent(q))
+      .then(function(r){ return r.json(); })
+      .then(function(j){ items = (j.features || []).filter(function(f){ return f.geometry && f.geometry.coordinates; }); activeIdx = -1; draw(); })
+      .catch(function(){ hide(); });
+  }
+  addr.addEventListener('input', function(){
+    // Any edit invalidates a previously chosen address
     order.coords = null; order.dist = null; order.outside = false; order.zoneFee = 0; order.geocodeChecked = false;
     var zr = document.getElementById('zone-result'); if (zr) zr.innerHTML = '';
     addr.style.borderColor = '';
+    var q = addr.value.trim();
+    clearTimeout(timer);
+    if (q.length < 4) { hide(); return; }
+    timer = setTimeout(function(){ query(q); }, 300);
   });
-  // If a real address was typed but not picked from suggestions, verify on blur
-  addr.addEventListener('blur', function () {
+  addr.addEventListener('keydown', function(e){
+    if (!box || box.style.display === 'none') return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, items.length - 1); draw(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); draw(); }
+    else if (e.key === 'Enter' && activeIdx >= 0) { e.preventDefault(); pick(activeIdx); }
+    else if (e.key === 'Escape') { hide(); }
+  });
+  // If a real address was typed but not picked from suggestions, verify area on blur
+  addr.addEventListener('blur', function(){
+    setTimeout(hide, 150);
     if (order.coords || !addr.value.trim()) return;
     order.geocodeChecked = true;
-    geocodeAddress(function () {});
+    geocodeAddress(function(){});
   });
 })();
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&libraries=places&callback=initAddressAutocomplete" async defer></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
 <a href="/order" class="sticky-order-btn">ORDER WATER</a>
