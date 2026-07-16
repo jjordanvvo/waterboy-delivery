@@ -319,8 +319,9 @@
         </div>
         <div class="form-group full">
           <label class="form-label" for="f-address">Delivery Address</label>
-          <input class="form-input" type="text" id="f-address" name="address" placeholder="123 Main St, Elk Grove, CA 95758" autocomplete="street-address" required>
-          <p id="zone-note">Delivery is priced by zone. Zone 1 (0-3 mi): $2.99 - Zone 2 (3-6 mi): $5.99 - Zone 3 (6-9 mi): $8.99 - Beyond 9 mi: custom quote, call (916) 753-3866.</p>
+          <input class="form-input" type="text" id="f-address" name="address" placeholder="Start typing your address…" autocomplete="off" required>
+          <div id="zone-result" style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;margin-top:8px;"></div>
+          <p id="zone-note" style="font-size:13px;color:var(--color-text-muted);margin-top:8px;">Delivery fee is based on distance: $2.99 within 1 mile up to $11.99 at 9 miles. Beyond 9 miles: custom quote, call (916) 753-3866.</p>
         </div>
         <div class="form-group full">
           <label class="form-label" for="f-day">Preferred Delivery Day (Recurring only)</label>
@@ -441,7 +442,69 @@ const PRICING = {
   hydrogen: {'1 Gallon': 10.99, '3 Gallon': 32.97}
 };
 const WATER_NAMES = {ro: 'Reverse Osmosis', alkaline: 'Alkaline', hydrogen: 'Hydrogen'};
-let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null};
+let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null, coords: null, dist: null, zoneFee: 0, outside: false, geocodeChecked: false};
+
+/* ── Delivery-area / distance logic ─────────────────────────── */
+const STORE_LAT = 38.4088, STORE_LNG = -121.4208;
+function haversine(a, b, c, d) {
+  var R = 3959, dLat = (c - a) * Math.PI / 180, dLng = (d - b) * Math.PI / 180;
+  var x = Math.sin(dLat / 2) ** 2 + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+function feeForDist(d) {
+  if (d <= 1) return 2.99;  if (d <= 2) return 3.99;  if (d <= 3) return 5.99;
+  if (d <= 4) return 6.99;  if (d <= 5) return 7.99;  if (d <= 6) return 8.99;
+  if (d <= 7) return 9.99;  if (d <= 8) return 10.99; if (d <= 9) return 11.99;
+  return null; // outside
+}
+function applyDistance(lat, lng) {
+  var dist = haversine(STORE_LAT, STORE_LNG, lat, lng);
+  var fee = feeForDist(dist);
+  order.coords = { lat: lat, lng: lng };
+  order.dist = dist;
+  order.outside = (fee === null);
+  order.zoneFee = fee || 0;
+  var el = document.getElementById('zone-result');
+  if (!el) return;
+  if (order.outside) {
+    el.style.color = '#dc2626';
+    el.innerHTML = '&#9888; This address is about ' + dist.toFixed(1) + ' miles away &mdash; outside our 9-mile delivery area. Call <a href="tel:+19167533866" style="color:#dc2626;font-weight:700;">(916) 753-3866</a> for a custom quote.';
+  } else {
+    el.style.color = '#0A47A1';
+    el.innerHTML = '&#10003; In our delivery area &mdash; delivery fee <strong>$' + order.zoneFee.toFixed(2) + '</strong> (' + dist.toFixed(1) + ' mi).';
+  }
+}
+// Google Places autocomplete (needs a Google Maps JavaScript API key)
+function initAddressAutocomplete() {
+  var inp = document.getElementById('f-address');
+  if (!inp || !window.google || !google.maps || !google.maps.places) return;
+  var ac = new google.maps.places.Autocomplete(inp, {
+    types: ['address'],
+    componentRestrictions: { country: 'us' },
+    fields: ['geometry', 'formatted_address']
+  });
+  ac.addListener('place_changed', function () {
+    var p = ac.getPlace();
+    if (p && p.formatted_address) inp.value = p.formatted_address;
+    if (p && p.geometry && p.geometry.location) {
+      order.geocodeChecked = true;
+      applyDistance(p.geometry.location.lat(), p.geometry.location.lng());
+    }
+  });
+}
+window.initAddressAutocomplete = initAddressAutocomplete;
+// Fallback geocoder (OpenStreetMap) — used when Google Places isn't available
+function geocodeAddress(cb) {
+  var addr = document.getElementById('f-address').value.trim();
+  if (!addr) { cb(false); return; }
+  fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent(addr))
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (j && j.length) { applyDistance(parseFloat(j[0].lat), parseFloat(j[0].lon)); cb(true); }
+      else cb(false);
+    })
+    .catch(function () { cb(false); });
+}
 
 function selectWater(type) {
   order.water = type; order.size = null; order.freq = null; order.freqType = null; order.freqLabel = null;
@@ -495,6 +558,21 @@ function goToStep(n) {
     var valid = true;
     required.forEach(function(id){var el=document.getElementById(id);if(!el.value.trim()){el.style.borderColor='#ef4444';valid=false;}else{el.style.borderColor='';}});
     if (!valid) return;
+    // Delivery-area check: if we don't yet have coordinates, geocode first, then retry
+    if (!order.coords && !order.geocodeChecked) {
+      order.geocodeChecked = true;
+      var addrInput = document.getElementById('f-address');
+      addrInput.style.borderColor = '';
+      var zr = document.getElementById('zone-result');
+      if (zr) { zr.style.color = 'var(--color-text-muted)'; zr.textContent = 'Checking your delivery area…'; }
+      geocodeAddress(function () { goToStep(4); });
+      return;
+    }
+    if (order.outside) {
+      alert('Sorry — ' + document.getElementById('f-address').value.trim() + ' is outside our delivery area (about ' + (order.dist ? order.dist.toFixed(1) : '9+') + ' miles away). We deliver within 9 miles of Elk Grove. Call (916) 753-3866 for a custom quote.');
+      var ai = document.getElementById('f-address'); ai.style.borderColor = '#dc2626'; ai.focus();
+      return;
+    }
     buildSummary();
   }
   document.querySelectorAll('.step-panel').forEach(function(p,i){p.classList.toggle('active',i+1===n);});
@@ -523,6 +601,10 @@ function buildSummary() {
     '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
 }
 function submitOrder() {
+  if (order.outside) {
+    alert('This address is outside our delivery area. Call (916) 753-3866 for a custom quote.');
+    return;
+  }
   var btn = document.getElementById('btn-submit');
   btn.disabled = true; btn.textContent = 'Submitting...';
   var phone = document.getElementById('f-phone').value.trim();
@@ -534,7 +616,24 @@ function submitOrder() {
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';});
 document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
+// Re-check delivery area whenever the address is edited
+(function(){
+  var addr = document.getElementById('f-address');
+  if (!addr) return;
+  addr.addEventListener('input', function () {
+    order.coords = null; order.dist = null; order.outside = false; order.zoneFee = 0; order.geocodeChecked = false;
+    var zr = document.getElementById('zone-result'); if (zr) zr.innerHTML = '';
+    addr.style.borderColor = '';
+  });
+  // If a real address was typed but not picked from suggestions, verify on blur
+  addr.addEventListener('blur', function () {
+    if (order.coords || !addr.value.trim()) return;
+    order.geocodeChecked = true;
+    geocodeAddress(function () {});
+  });
+})();
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&libraries=places&callback=initAddressAutocomplete" async defer></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
 <a href="/order" class="sticky-order-btn">ORDER WATER</a>
