@@ -1250,7 +1250,9 @@ function showSuccess(orderId){
   if(succDet)succDet.innerHTML='<div class="sdr"><span>Water Type</span><strong>'+wtLbl+'</strong></div>'+'<div class="sdr"><span>Amount</span><strong>'+amtLbl+'</strong></div>'+'<div class="sdr"><span>Delivery</span><strong>'+delivDate+'</strong></div>'+'<div class="sdr"><span>Window</span><strong>'+timeLbl+'</strong></div>'+'<div class="sdr"><span>Address</span><strong>'+fullAddr+'</strong></div>'+'<div class="sdr"><span>Total</span><strong>$'+total.toFixed(2)+'</strong></div>';
   var calBtn=document.getElementById('btn-add-cal');if(calBtn)calBtn.href=buildCalLink(order,timeLbl,delivDate);
   var succOv=document.getElementById('success-overlay');if(succOv){succOv.classList.add('open');document.body.style.overflow='hidden';}
-  (function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
+  
+  // Auto-add delivery to business Google Calendar
+  (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
 }
 
 function buildCalLink(order,timeLbl,delivDate){
@@ -1260,7 +1262,7 @@ function buildCalLink(order,timeLbl,delivDate){
   function pad(n){return n.toString().padStart(2,'0');}
   function fmt(dt){return dt.getFullYear()+''+pad(dt.getMonth()+1)+''+pad(dt.getDate())+'T'+pad(dt.getHours())+'0000';}
   var start=fmt(d);d.setHours(startH+3);var end=fmt(d);
-  return 'https://www.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Waterboy Delivery - '+order.email+' - '+order.orderId)+'&dates='+start+'/'+end+'&details='+encodeURIComponent('Order: '+order.orderId+'\nWater: '+order.waterType+'\nAmount: '+order.quantity+'\nTotal: $'+order.price.toFixed(2)+'\nPhone: '+order.phone+'\nEmail: '+order.email)+'&location='+encodeURIComponent(order.address);
+  return 'https://www.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Water Delivery — Waterboy')+'&dates='+start+'/'+end+'&details='+encodeURIComponent('Order: '+order.orderId+'\nWater: '+order.waterType+'\nAmount: '+order.quantity+'\nTotal: $'+order.price.toFixed(2)+'\nPhone: '+order.phone+'\nEmail: '+order.email)+'&location='+encodeURIComponent(order.address);
 }
 </script>
 
