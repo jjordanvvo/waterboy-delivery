@@ -1,4 +1,4 @@
-﻿<system-reminder>[Truncated: PARTIAL view - showing lines 1-1004 of 1224 total (25895 tokens, cap 25000). Call Read with offset=1005 limit=1004 for the next page, or Grep to find a specific section. Do NOT answer from this page alone if the answer may be further in the file.]</system-reminder>
+<system-reminder>[Truncated: PARTIAL view - showing lines 1-1004 of 1224 total (25895 tokens, cap 25000). Call Read with offset=1005 limit=1004 for the next page, or Grep to find a specific section. Do NOT answer from this page alone if the answer may be further in the file.]</system-reminder>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -611,8 +611,8 @@
       <div class="footer-col"><h4>Service Area</h4><div class="footer-links"><a href="delivery-areas.html">Elk Grove, CA</a><a href="delivery-areas.html">Sacramento County</a><a href="delivery-areas.html">Zones 1 through 3</a><a href="delivery-areas.html">See Full Map</a></div></div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <div class="footer-contact-item"><a href="tel:+19166193218">(916) 619-3218</a></div>
-        <div class="footer-contact-item"><a href="mailto:hello@waterboydelivery.com">hello@waterboydelivery.com</a></div>
+        <div class="footer-contact-item"><a href="tel:+19167533866">(916) 753-3866</a></div>
+        <div class="footer-contact-item"><a href="mailto:info@elkgrovewaterboy.com">info@elkgrovewaterboy.com</a></div>
         <div class="footer-contact-item"><a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener">7119 Elk Grove Blvd, Elk Grove CA 95758</a></div>
         <a href="order.html" class="footer-order-btn">ORDER NOW</a>
       </div>
@@ -682,7 +682,7 @@
 const STORE_LAT=38.4088,STORE_LNG=-121.4208;
 const ZIP_COORDS={'95758':{lat:38.4088,lng:-121.4208},'95757':{lat:38.3930,lng:-121.4490},'95624':{lat:38.4380,lng:-121.3850},'95759':{lat:38.3780,lng:-121.4300},'95830':{lat:38.4750,lng:-121.4350},'95829':{lat:38.4700,lng:-121.3900},'95828':{lat:38.4900,lng:-121.4100},'95823':{lat:38.5100,lng:-121.4500},'95822':{lat:38.5200,lng:-121.4900},'95832':{lat:38.4600,lng:-121.4800},'95630':{lat:38.5800,lng:-121.2700},'95670':{lat:38.5900,lng:-121.2800},'95826':{lat:38.5400,lng:-121.3800},'95831':{lat:38.4900,lng:-121.5200},'95655':{lat:38.3500,lng:-121.5000},'95693':{lat:38.3200,lng:-121.3500},'95820':{lat:38.5300,lng:-121.4600},'95825':{lat:38.5700,lng:-121.4000}};
 function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,x=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
-function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:false,unknown:true};var d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);if(d<=3)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
+function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:false,unknown:true};var d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);if(d<=1)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=2)return{zone:1,fee:3.99,dist:d,outside:false,unknown:false};if(d<=3)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=4)return{zone:3,fee:6.99,dist:d,outside:false,unknown:false};if(d<=5)return{zone:3,fee:7.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};if(d<=7)return{zone:3,fee:9.99,dist:d,outside:false,unknown:false};if(d<=8)return{zone:3,fee:10.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:11.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
@@ -734,6 +734,7 @@ function updateProgress(n){
 
 /* ── Step 1 ──────────────────────────────────────────────────── */
 function selectWaterType(type){
+setTimeout(function(){var b=document.getElementById('btn-next-wt');if(b&&b.offsetParent!==null)b.click();},400);
   state.waterType=type;
   state.bundleId=null;
   saveDraft();
@@ -919,7 +920,7 @@ document.addEventListener('DOMContentLoaded',function(){
     state.zip=z;state.zone=zr;saveDraft();
     if(res){
       if(zr.unknown)res.innerHTML='<span style="color:#8BB8D4">Delivery fee will be confirmed</span>';
-      else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles - Custom Quote. We may still be able to help. Call <a href="tel:+19166193218" style="color:#FF6B6B">(916) 619-3218</a>.</span>';
+      else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles - Custom Quote. We may still be able to help. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';
       else if(zr.zone===1)res.innerHTML='<span class="z1">Zone 1 - $2.99 delivery fee</span>';
       else if(zr.zone===2)res.innerHTML='<span class="z2">Zone 2 - $5.99 delivery fee</span>';
       else res.innerHTML='<span class="z3">Zone 3 - $8.99 delivery fee</span>';
@@ -988,7 +989,7 @@ function validateStep3(){
   if(!state.delOpt){alert('Please select a delivery option (ASAP or scheduled).');ok=false;}
   else if(state.delOpt==='scheduled'&&!state.calDate){alert('Please select a delivery date on the calendar.');ok=false;}
   if(!state.timePref){alert('Please select a delivery time window (Morning, Afternoon, or Evening).');ok=false;}
-  if(state.zone.outside){alert('Your ZIP code is outside our delivery area. Please call (916) 619-3218 for options.');ok=false;}
+  if(state.zone.outside){alert('Your ZIP code is outside our delivery area. Please call (916) 753-3866 for options.');ok=false;}
   return ok;
 }
 
@@ -1082,7 +1083,7 @@ function initStripe(){
     return;
   }
   if(stripe)return;
-  stripe=Stripe('YOUR_PUBLISHABLE_KEY_HERE');
+  stripe=Stripe('pk_live_51Tqi6kLXa6QDwCZAvbMmFTcFOaLMaNQOApvlYV2GBUnH90DXSJySe23wyFW4wogkwhyswHdHnnyg5mXIvC8yY4Wm00LxlXeDfz');
   var elements=stripe.elements({fonts:[{cssSrc:'https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap'}]});
   cardElement=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#B8E6FF'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
   cardElement.mount('#stripe-card-element');
@@ -1101,9 +1102,13 @@ async function handlePayment(){
     return;
   }
   try{
-    var result=await stripe.createPaymentMethod({type:'card',card:cardElement,billing_details:{name:name.trim(),email:state.email,phone:state.phone}});
+    var total=getBasePrice()+(state.zone&&state.zone.fee?state.zone.fee:0);
+    var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:state.email,customerName:name.trim()})});
+    var piData=await piResp.json();
+    if(piData.error){if(errEl)errEl.textContent=piData.error;btn.classList.remove('loading');btn.disabled=false;return;}
+    var result=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:{card:cardElement,billing_details:{name:name.trim(),email:state.email,phone:state.phone}}});
     if(result.error){if(errEl)errEl.textContent=result.error.message;btn.classList.remove('loading');btn.disabled=false;return;}
-    setTimeout(function(){btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());},800);
+    btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());
   }catch(e){if(errEl)errEl.textContent='Payment error. Please try again.';btn.classList.remove('loading');btn.disabled=false;}
 }
 
