@@ -244,7 +244,7 @@
       <p class="step-desc">Pick a bottle size, then choose how often you want delivery.</p>
       <div class="size-grid" id="size-grid"></div>
       <h2 class="step-headline" style="margin-top:32px;">One-time or recurring?</h2>
-      <p class="step-subtext">Choose how you want your deliveries. <strong>Save up to 15% with a recurring plan.</strong> Skip, pause, or cancel anytime.</p>
+      <p class="step-subtext">Choose how you want your deliveries. Skip, pause, or cancel anytime.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
         <div class="freq-card" data-freq="one-time" data-freq-label="One-Time Delivery" onclick="selectFreqType(this,'one-time')">
           <div class="freq-title">One-Time</div>
@@ -277,15 +277,15 @@
         <span class="step-section-label" style="margin-bottom:14px;display:block;">How often?</span>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
           <div class="freq-card" data-recurring="weekly" data-recurring-label="Weekly" onclick="selectRecurring(this)">
-            <div class="freq-title">Weekly <span style="background:var(--color-primary);color:#FFFFFF;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px;margin-left:4px;">10% OFF</span></div>
+            <div class="freq-title">Weekly</div>
             <div class="freq-note">Every 7 days</div>
           </div>
           <div class="freq-card" data-recurring="biweekly" data-recurring-label="Every 2 Weeks" onclick="selectRecurring(this)">
-            <div class="freq-title">Every 2 Weeks <span style="background:var(--color-primary);color:#FFFFFF;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px;margin-left:4px;">15% OFF</span></div>
+            <div class="freq-title">Every 2 Weeks</div>
             <div class="freq-note">Most popular - Every 14 days</div>
           </div>
           <div class="freq-card" data-recurring="monthly" data-recurring-label="Monthly" onclick="selectRecurring(this)">
-            <div class="freq-title">Monthly <span style="background:var(--color-primary);color:#FFFFFF;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px;margin-left:4px;">5% OFF</span></div>
+            <div class="freq-title">Monthly</div>
             <div class="freq-note">Every 30 days</div>
           </div>
         </div>
@@ -436,7 +436,7 @@
 
 <script>
 const PRICING = {
-  ro:       {'3 Gallon': 9.99,  '5 Gallon': 10.99},
+  ro:       {'3 Gallon': 9.99,  '5 Gallon': 11.99},
   alkaline: {'3 Gallon': 11.99, '5 Gallon': 13.99},
   hydrogen: {'3 Gallon': 20.99, '5 Gallon': 24.99}
 };
