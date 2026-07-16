@@ -655,14 +655,14 @@ function inject(){
   <div class="cd-head"><span>My Cart (<span id="cd-count">0</span>)</span><button class="wb-mclose" id="cd-close">✕</button></div>
   <div class="cd-body" id="cd-body"></div>
   <div class="cd-foot">
-   <div class="promo-row"><input id="promo-input" placeholder="Promo code"><button class="promo-apply" id="promo-apply">Apply</button></div>
+
    <div class="totals-row"><span>Subtotal</span><span id="cd-subtotal">$0.00</span></div>
    <div class="totals-row"><span>Delivery</span><span>Calculated at checkout</span></div>
    <div class="totals-row grand"><span>Total</span><span id="cd-grand">$0.00</span></div>
    <button class="wb-btn" id="cd-checkout-btn" style="margin-top:14px">Proceed to Checkout</button>
    <button class="wb-btn-ghost" id="cd-continue-btn">Continue Shopping</button>
-   <div class="cd-also-bought" style="margin-top:16px;border-top:1px solid rgba(0,212,255,0.12);padding-top:14px;">
-    <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.55);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>
+   <div class="cd-also-bought" style="margin-top:16px;border-top:1px solid rgba(0,0,0,0.08);padding-top:14px;">
+    <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:#5A6A7A;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>
     <div id="cd-also-items" style="display:flex;flex-direction:column;gap:8px;"></div>
    </div>
   </div>
