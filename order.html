@@ -166,6 +166,11 @@
 .fi:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(13,71,161,0.1);}
 .fi.err{border-color:#dc2626;}
 .fi::placeholder{color:var(--color-text-muted);}
+.pac-container{border-radius:10px;border:1px solid #E2E8F0;box-shadow:0 8px 24px rgba(0,0,0,.12);font-family:'Poppins',sans-serif;margin-top:4px;z-index:99999;}
+.pac-item{padding:9px 14px;font-size:13px;cursor:pointer;color:#0A1F44;}
+.pac-item:hover,.pac-item-selected{background:#F0F6FF;}
+.pac-item-query{font-weight:600;color:#0A47A1;font-size:13px;}
+.pac-matched{font-weight:700;}
 .zone-inline{font-family:'Poppins',sans-serif;font-size:13px;margin-top:6px;}
 .zone-inline.z1{color:var(--color-success);}
 .zone-inline.z2,.zone-inline.z3{color:var(--color-primary);}
@@ -704,6 +709,7 @@
 
 <!-- Stripe.js - REPLACE 'YOUR_PUBLISHABLE_KEY_HERE' with your Stripe publishable key -->
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&libraries=places&callback=initAddressAutocomplete" async defer></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
 
@@ -717,6 +723,48 @@ const STORE_LAT=38.4088,STORE_LNG=-121.4208;
 const ZIP_COORDS={'95758':{lat:38.4088,lng:-121.4208},'95757':{lat:38.3930,lng:-121.4490},'95624':{lat:38.4380,lng:-121.3850},'95759':{lat:38.3780,lng:-121.4300},'95830':{lat:38.4750,lng:-121.4350},'95829':{lat:38.4700,lng:-121.3900},'95828':{lat:38.4900,lng:-121.4100},'95823':{lat:38.5100,lng:-121.4500},'95822':{lat:38.5200,lng:-121.4900},'95832':{lat:38.4600,lng:-121.4800},'95630':{lat:38.5800,lng:-121.2700},'95670':{lat:38.5900,lng:-121.2800},'95826':{lat:38.5400,lng:-121.3800},'95831':{lat:38.4900,lng:-121.5200},'95655':{lat:38.3500,lng:-121.5000},'95693':{lat:38.3200,lng:-121.3500},'95820':{lat:38.5300,lng:-121.4600},'95825':{lat:38.5700,lng:-121.4000}};
 function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,x=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
 function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:false,unknown:true};var d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);if(d<=1)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=2)return{zone:1,fee:3.99,dist:d,outside:false,unknown:false};if(d<=3)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=4)return{zone:3,fee:6.99,dist:d,outside:false,unknown:false};if(d<=5)return{zone:3,fee:7.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};if(d<=7)return{zone:3,fee:9.99,dist:d,outside:false,unknown:false};if(d<=8)return{zone:3,fee:10.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:11.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
+function getZoneForLatLng(lat,lng){var d=haversine(STORE_LAT,STORE_LNG,lat,lng);if(d<=1)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=2)return{zone:1,fee:3.99,dist:d,outside:false,unknown:false};if(d<=3)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=4)return{zone:3,fee:6.99,dist:d,outside:false,unknown:false};if(d<=5)return{zone:3,fee:7.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};if(d<=7)return{zone:3,fee:9.99,dist:d,outside:false,unknown:false};if(d<=8)return{zone:3,fee:10.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:11.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
+function initAddressAutocomplete(){
+  var inp=document.getElementById('f-addr');
+  if(!inp||!window.google)return;
+  var ac=new google.maps.places.Autocomplete(inp,{
+    types:['address'],
+    componentRestrictions:{country:'us'},
+    bounds:{north:38.9,south:38.0,east:-120.8,west:-122.2},
+    strictBounds:false,
+    fields:['address_components','geometry']
+  });
+  ac.addListener('place_changed',function(){
+    var p=ac.getPlace();
+    if(!p||!p.geometry)return;
+    var sn='',rt='',city='',sta='',zip='';
+    (p.address_components||[]).forEach(function(c){
+      if(c.types.indexOf('street_number')>=0)sn=c.long_name;
+      if(c.types.indexOf('route')>=0)rt=c.short_name;
+      if(c.types.indexOf('locality')>=0)city=c.long_name;
+      if(c.types.indexOf('administrative_area_level_1')>=0)sta=c.short_name;
+      if(c.types.indexOf('postal_code')>=0)zip=c.long_name;
+    });
+    var street=(sn+' '+rt).trim();
+    if(street)inp.value=street;
+    var ce=document.getElementById('f-city');if(ce&&city)ce.value=city;
+    var se=document.getElementById('f-state');if(se&&sta)se.value=sta;
+    var ze=document.getElementById('f-zip');
+    if(ze&&zip){ze.value=zip;ze.dispatchEvent(new Event('input'));}
+    if(p.geometry.location){
+      var lat=p.geometry.location.lat(),lng=p.geometry.location.lng();
+      var zr=getZoneForLatLng(lat,lng);
+      state.zip=zip;state.zone=zr;
+      if(typeof saveDraft==='function')saveDraft();
+      var res=document.getElementById('zone-result');
+      if(res){
+        if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles &mdash; Custom Quote. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';
+        else res.innerHTML='<span class="z'+zr.zone+'">&check; Delivery fee: $'+zr.fee.toFixed(2)+'</span>';
+      }
+      if(typeof updateS3Summary==='function')updateS3Summary();
+    }
+  });
+}
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
@@ -1192,6 +1240,7 @@ function buildCalLink(order,timeLbl,delivDate){
   document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
   window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&libraries=places&callback=initAddressAutocomplete" async defer></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
 <a href="order.html" class="sticky-order-btn">ORDER WATER</a>
