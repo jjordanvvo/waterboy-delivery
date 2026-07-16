@@ -236,7 +236,7 @@
 .co-also-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
 .co-also-card{flex:0 0 110px;background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:10px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
 .co-also-img{width:80px;height:80px;object-fit:cover;border-radius:6px;}
-.co-also-name{font-family:'Poppins',sans-serif;font-size:11px;color:var(--color-text-muted);line-height:1.3;margin:0;}
+.co-also-name{font-family:'Poppins',sans-serif;font-size:11px;color:var(--color-text);line-height:1.3;margin:0;}
 .co-also-price{font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:var(--color-primary);margin:0;}
 .co-also-add{font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;background:transparent;border:1.5px solid rgba(13,71,161,0.3);color:var(--color-primary);border-radius:6px;padding:5px 10px;cursor:pointer;transition:all 0.15s;width:100%;}
 .co-also-add:hover{background:rgba(13,71,161,0.08);}
@@ -477,7 +477,7 @@
             </div>
             <div class="fg">
               <label for="f-addr">Street Address</label>
-              <input class="fi" id="f-addr" type="text" placeholder="1234 Oak Street" autocomplete="street-address" />
+              <input class="fi" id="f-addr" type="text" placeholder="1234 Oak Street" autocomplete="off" />
             </div>
             <div class="form-row-2">
               <div class="fg">
@@ -601,7 +601,7 @@
 </div><div id="stripe-card-element"></div>
       <div class="stripe-err" id="stripe-err"></div>
       <div class="ch-name-wrap fg">
-        <label for="ch-name" style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.06em;">Cardholder Name</label>
+        <label for="ch-name" style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(0,0,0,0.5);text-transform:uppercase;letter-spacing:0.06em;">Cardholder Name</label>
         <input class="fi" id="ch-name" type="text" placeholder="Jane Smith" autocomplete="cc-name" />
       </div>
       <button class="btn-pay" id="btn-pay" onclick="handlePayment()">
