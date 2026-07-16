@@ -128,7 +128,7 @@
 .nav-cart-btn,.nav-user-btn{position:relative;background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;color:#5A6A7A;padding:6px 8px;border-radius:8px;font-size:13px;font-family:'Poppins',sans-serif;transition:color .2s;vertical-align:middle}
 .nav-cart-btn:hover,.nav-user-btn:hover{color:#0D47A1}
 .nav-cart-btn svg,.nav-user-btn svg{stroke:currentColor;display:block}
-.nav-cart-btn{min-width:40px;min-height:40px;overflow:visible;display:flex;align-items:center;justify-content:center}
+.nav-cart-btn{background:var(--color-primary);color:#FFFFFF;min-width:44px;min-height:44px;padding:10px 14px;border-radius:12px;overflow:visible;display:flex;align-items:center;justify-content:center;transition:transform 0.2s ease,box-shadow 0.2s ease}.nav-cart-btn:hover{color:#FFFFFF!important;transform:scale(1.04);box-shadow:0 8px 24px rgba(13,71,161,0.25)}
 .cart-badge{position:absolute;top:-4px;right:-4px;background:#0D47A1;color:#1A1A2E;font-size:10px;font-weight:800;font-family:'Poppins',sans-serif;min-width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 3px;line-height:1}
 
 /* â”€â”€ User Dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
