@@ -105,14 +105,12 @@
 .bc.popular.selected{box-shadow:0 8px 24px rgba(13,71,161,0.15),0 0 0 1px var(--color-primary);}
 .bc-chk{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--color-primary);display:flex;align-items:center;justify-content:center;opacity:0;font-size:11px;color:#FFFFFF;font-weight:800;transition:opacity 0.2s;}
 .bc.selected .bc-chk{opacity:1;}
-.bc-badge{font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:12px;display:inline-block;margin-bottom:10px;}
-.bc-badge.pop{background:var(--color-primary);color:#FFFFFF;}
-.bc-badge.reg{background:var(--color-surface-alt);color:var(--color-text-muted);}
+
 .bc-name{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:4px;}
 .bc-price{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--color-primary);}
 .bc-price-mo{font-size:12px;color:var(--color-text-muted);}
 .bc-Bottles{font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:6px 0 4px;}
-.bc-savings{font-family:'Poppins',sans-serif;font-size:10px;color:var(--color-success);}
+
 
 .summary-panel{background:#FFFFFF;border:1px solid var(--color-border);border-radius:16px;padding:26px;position:sticky;top:160px;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
 .sp-title{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px;margin:0 0 16px;}
@@ -313,7 +311,7 @@
     <section class="order-step active" id="step1" aria-label="Step 1: Your order">
       <div style="background:#E8F0FE;border-left:4px solid #0A47A1;border-radius:8px;padding:16px 20px;margin-bottom:24px;">
         <p style="font-size:14px;color:var(--color-text);margin:0 0 6px;line-height:1.6;"><strong style="color:#0A47A1;">First delivery? No problem.</strong> We provide all bottles for your first order. No bottle swap needed.</p>
-        <p style="font-size:13px;color:var(--color-text-muted);margin:0;line-height:1.5;">First-time promotions and waived delivery fees apply to your first order only.</p>
+
       </div>
       <h2 class="step-heading">What type of water?</h2>
       <div class="wt-cards">
@@ -322,7 +320,7 @@
           <div class="wt-card-check" aria-hidden="true">&#10003;</div>
           <div class="wt-title">Purified Water</div>
           <p class="wt-desc">Clean, crisp, purified water. Perfect for everyday hydration and cooking.</p>
-          <div class="wt-price">from $6.99/bottle</div>
+          <div class="wt-price">$11.99/bottle</div>
         </div>
 
         <div class="wt-card" id="wtc-alkaline" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('alkaline')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('alkaline')">
@@ -330,7 +328,7 @@
           <span class="wt-badge">ONLY US!</span>
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste - the only local delivery option.</p>
-          <div class="wt-price">$7.99/bottle · from $25/mo</div>
+          <div class="wt-price">$13.99/bottle</div>
         </div>
 
       </div>
@@ -342,7 +340,7 @@
     <!-- ══ STEP 2: SIZE & SCHEDULE ═════════════════════════════ -->
     <section class="order-step" id="step2" aria-label="Step 2: Size and schedule">
       <h2 class="step-heading">How much do you need?</h2>
-      <p class="step-sub">One-time delivery or save with a monthly bundle</p>
+      <p class="step-sub">One-time delivery or monthly bundle</p>
       <div style="background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;flex-wrap:wrap;gap:16px;">
         <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>No subscription required</span>
         <span style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Weekly, every 2 weeks, or every 4 weeks</span>
@@ -586,7 +584,7 @@
     </div>
     <div class="recurring-card" id="recurring-card">
       <div class="rp-h">Want this automatically?</div>
-      <p class="rp-sub">Set up a recurring delivery and never run out of water again. Save money every month with our bundle plans.</p>
+      <p class="rp-sub">Set up a recurring delivery and never run out of water again.</p>
       <a class="btn-recur" href="water-delivery.html">YES - SET UP RECURRING DELIVERY</a>
       <button class="btn-no-recur" onclick="document.getElementById('recurring-card').style.display='none'">No thanks, one-time only</button>
     </div>
@@ -686,18 +684,20 @@ function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
-const PRICES={purified:6.99,alkaline:7.99};
+const PRICES={purified:11.99,alkaline:13.99};
 const BUNDLES_REG=[
-  {id:'solo',    name:'Solo',       price:21, bottles:2,  badge:'STARTER',      pop:false,savings:'Saves $26 vs Water.com'},
-  {id:'family',  name:'Family',     price:42, bottles:4,  badge:'MOST POPULAR', pop:true, savings:'Saves $7'},
-  {id:'household',name:'Household', price:57, bottles:6,  badge:'BEST VALUE',   pop:false,savings:'Saves $9'},
-  {id:'office',  name:'Office',     price:72, bottles:8,  badge:'OFFICE',       pop:false,savings:'Saves $10+'},
-  {id:'max',     name:'Max Bundle', price:95, bottles:12, badge:'PREMIUM',      pop:false,savings:'Saves $22'},
+  {id:'solo',      name:'Solo',       price:24.99,  bottles:2,  pop:false},
+  {id:'family',    name:'Family',     price:45.99,  bottles:4,  pop:true},
+  {id:'household', name:'Household',  price:69.99,  bottles:6,  pop:false},
+  {id:'office',    name:'Office',     price:94.99,  bottles:8,  pop:false},
+  {id:'max',       name:'Max Bundle', price:140.99, bottles:12, pop:false},
 ];
 const BUNDLES_ALK=[
-  {id:'alk-solo',  name:'Alkaline Solo',   price:25,Bottles:2, badge:'STARTER',      pop:false,savings:''},
-  {id:'alk-family',name:'Alkaline Family', price:45,Bottles:4, badge:'MOST POPULAR', pop:true, savings:''},
-  {id:'alk-max',   name:'Alkaline Max',    price:60,Bottles:12,badge:'PREMIUM',      pop:false,savings:''},
+  {id:'alk-solo',      name:'Alkaline Solo',      price:27.99,  bottles:2,  pop:false},
+  {id:'alk-family',    name:'Alkaline Family',    price:54.99,  bottles:4,  pop:true},
+  {id:'alk-household', name:'Alkaline Household', price:74.99,  bottles:6,  pop:false},
+  {id:'alk-office',    name:'Alkaline Office',    price:99.99,  bottles:8,  pop:false},
+  {id:'alk-max',       name:'Alkaline Max',       price:149.99, bottles:12, pop:false},
 ];
 
 /* ── State ───────────────────────────────────────────────────── */
