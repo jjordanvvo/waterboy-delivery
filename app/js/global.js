@@ -484,7 +484,7 @@ const SEED = {
   settings: {
     businessName: 'Waterboy Delivery',
     phone: '(916) 555-0199',
-    email: 'info@waterboydelivery.com',
+    email: 'info@elkgrovewaterboy.com',
     address: '9210 Laguna Main St, Elk Grove, CA 95758',
     deliveryFee: 299,
     freeDeliveryThreshold: 3000,

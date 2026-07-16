@@ -218,22 +218,22 @@
           <div class="water-card-tag">Most Popular</div>
           <div class="water-card-name">Reverse Osmosis</div>
           <div class="water-card-desc">99% pure filtered water. Removes contaminants, heavy metals, and impurities.</div>
-          <div class="water-card-price">From $6.99 / gal</div>
+          <div class="water-card-price">$11.99 / 5-gal</div>
         </div>
         <div class="water-card" id="wc-alkaline" onclick="selectWater('alkaline')">
           <div class="water-card-tag">pH 8.5+</div>
           <div class="water-card-name">Alkaline</div>
           <div class="water-card-desc">Ionized water with added minerals. Smooth taste and higher pH balance.</div>
-          <div class="water-card-price">From $7.99 / gal</div>
+          <div class="water-card-price">$13.99 / 5-gal</div>
         </div>
         <div class="water-card" id="wc-hydrogen" onclick="selectWater('hydrogen')">
           <div class="water-card-tag">Premium</div>
           <div class="water-card-name">Hydrogen</div>
-          <div class="water-card-desc">Hydrogen-infused water rich in antioxidants. The highest level of purity.</div>
-          <div class="water-card-price">From $12.99 / gal</div>
+          <div class="water-card-desc">Hydrogen-infused water rich in antioxidants. Available in 1 &amp; 3 gallon.</div>
+          <div class="water-card-price">$10.99 / gal</div>
         </div>
       </div>
-      <div class="step-nav">
+      <div class="step-nav" style="display:none;">
         <button class="btn-next" id="btn-next-1" onclick="goToStep(2)" disabled>Next: Size &amp; Schedule &rarr;</button>
       </div>
     </div>
@@ -320,7 +320,7 @@
         <div class="form-group full">
           <label class="form-label" for="f-address">Delivery Address</label>
           <input class="form-input" type="text" id="f-address" name="address" placeholder="123 Main St, Elk Grove, CA 95758" autocomplete="street-address" required>
-          <p id="zone-note">Delivery is priced by zone. Zone 1 (0-3 mi): $2.99 - Zone 2 (3-6 mi): $5.99 - Zone 3 (6-9 mi): $8.99 - Beyond 9 mi: custom quote, call (916) 619-3218.</p>
+          <p id="zone-note">Delivery is priced by zone. Zone 1 (0-3 mi): $2.99 - Zone 2 (3-6 mi): $5.99 - Zone 3 (6-9 mi): $8.99 - Beyond 9 mi: custom quote, call (916) 753-3866.</p>
         </div>
         <div class="form-group full">
           <label class="form-label" for="f-day">Preferred Delivery Day (Recurring only)</label>
@@ -396,8 +396,8 @@
       <div class="footer-col"><h4>Service Area</h4><div class="footer-links"><a href="delivery-areas.html">Elk Grove, CA</a><a href="delivery-areas.html">Sacramento County</a><a href="delivery-areas.html">Zones 1 through 3</a><a href="delivery-areas.html">See Full Map</a></div></div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <div class="footer-contact-item"><a href="tel:+19166193218">(916) 619-3218</a></div>
-        <div class="footer-contact-item"><a href="mailto:hello@waterboydelivery.com">hello@waterboydelivery.com</a></div>
+        <div class="footer-contact-item"><a href="tel:+19167533866">(916) 753-3866</a></div>
+        <div class="footer-contact-item"><a href="mailto:info@elkgrovewaterboy.com">info@elkgrovewaterboy.com</a></div>
         <div class="footer-contact-item"><a href="https://maps.google.com/?q=7119+Elk+Grove+Blvd,+Elk+Grove,+CA+95758" target="_blank" rel="noopener">7119 Elk Grove Blvd, Elk Grove CA 95758</a></div>
         <a href="order.html" class="footer-order-btn">ORDER NOW</a>
       </div>
@@ -438,7 +438,7 @@
 const PRICING = {
   ro:       {'3 Gallon': 9.99,  '5 Gallon': 11.99},
   alkaline: {'3 Gallon': 11.99, '5 Gallon': 13.99},
-  hydrogen: {'3 Gallon': 20.99, '5 Gallon': 24.99}
+  hydrogen: {'1 Gallon': 10.99, '3 Gallon': 32.97}
 };
 const WATER_NAMES = {ro: 'Reverse Osmosis', alkaline: 'Alkaline', hydrogen: 'Hydrogen'};
 let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null};
@@ -448,14 +448,16 @@ function selectWater(type) {
   ['ro','alkaline','hydrogen'].forEach(function(t){document.getElementById('wc-'+t).classList.toggle('selected',t===type);});
   document.getElementById('btn-next-1').disabled = false;
   buildSizeGrid();
+  goToStep(2);
 }
 function buildSizeGrid() {
   var grid = document.getElementById('size-grid');
   if (!order.water) { grid.innerHTML = ''; return; }
   var prices = PRICING[order.water];
   grid.innerHTML = Object.entries(prices).map(function(e){var size=e[0],price=e[1];return '<div class="size-card" id="sc-'+size.replace(' ','')+'" onclick="selectSize(\''+size+'\')"><div class="size-label">'+size+'</div><div class="size-price">$'+price.toFixed(2)+'</div></div>';}).join('');
-  // Default the selected size to 5 Gallon
+  // Default the selected size to 5 Gallon, or the largest available size
   if (prices['5 Gallon']) selectSize('5 Gallon');
+  else { var szs = Object.keys(prices); if (szs.length) selectSize(szs[szs.length - 1]); }
 }
 function selectSize(size) {
   order.size = size;

@@ -213,7 +213,7 @@
 <div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-label="Cancel order">
   <div class="confirm-dialog">
     <h3 class="cd-h">Cancel this order?</h3>
-    <p class="cd-p">This cannot be undone. For refunds call <a href="tel:+19166193218" style="color:#00D4FF">(916) 619-3218</a>.</p>
+    <p class="cd-p">This cannot be undone. For refunds call <a href="tel:+19167533866" style="color:#00D4FF">(916) 753-3866</a>.</p>
     <div class="cd-actions">
       <button class="cd-cancel-btn" onclick="closeCancelModal()">Keep Order</button>
       <button class="cd-confirm-btn" onclick="doCancel()">Yes, Cancel</button>
@@ -229,7 +229,7 @@
       <img src="/LOGOnotext.PNG" alt="Water Boy Delivery logo" width="auto" height="56" loading="lazy" style="height:56px;width:auto;display:block;">
       <div class="hn-footer-tagline">Pure Water. Delivered.</div>
       <p class="hn-footer-desc">Premium water delivery for homes and businesses in Elk Grove and Sacramento County.</p>
-      <a href="tel:+19166193218" class="hn-footer-phone">(916) 619-3218</a>
+      <a href="tel:+19167533866" class="hn-footer-phone">(916) 753-3866</a>
     </div>
     <div class="hn-footer-col">
       <h4>Delivery</h4>
@@ -405,7 +405,7 @@ function doCancel(){
   var orders=loadOrders();
   var idx=orders.findIndex(function(o){return o.orderId===pendingCancelId;});
   if(idx!==-1){orders[idx].status='cancelled';saveOrders(orders);}
-  closeCancelModal();showToast('Order cancelled. For refunds call (916) 619-3218.');renderOrders();
+  closeCancelModal();showToast('Order cancelled. For refunds call (916) 753-3866.');renderOrders();
 }
 
 function reorder(id){

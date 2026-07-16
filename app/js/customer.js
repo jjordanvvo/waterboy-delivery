@@ -246,7 +246,7 @@ function handleSignup() {
 
   const zoneInfo = getZoneForZip(zip);
   if (zoneInfo.outside) {
-    errEl.textContent = 'Sorry, your ZIP code is outside our delivery area. Call us at (916) 619-3218.';
+    errEl.textContent = 'Sorry, your ZIP code is outside our delivery area. Call us at (916) 753-3866.';
     return;
   }
 
@@ -1777,7 +1777,7 @@ function cancelSubscription() {
 window.cancelSubscription = cancelSubscription;
 
 function contactForBusiness() {
-  window.location.href = 'tel:9166193218';
+  window.location.href = 'tel:9167533866';
 }
 window.contactForBusiness = contactForBusiness;
 
@@ -2835,9 +2835,9 @@ function openPlanDetail(planId) {
        </div>` : '';
 
   const actionHtml = plan.id === 'business'
-    ? `<a href="tel:9166193218" class="btn btn-primary btn-full btn-lg" style="margin-top:20px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px">
+    ? `<a href="tel:9167533866" class="btn btn-primary btn-full btn-lg" style="margin-top:20px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px">
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.09-1.16a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 14.92z"/></svg>
-         Contact Us: (916) 619-3218
+         Contact Us: (916) 753-3866
        </a>`
     : isCurrent
     ? `<div style="margin-top:20px;padding:12px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-md);text-align:center">

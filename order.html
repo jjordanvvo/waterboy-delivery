@@ -822,7 +822,6 @@ function updateProgress(n){
 
 /* ── Step 1 ──────────────────────────────────────────────────── */
 function selectWaterType(type){
-setTimeout(function(){var b=document.getElementById('btn-next-wt');if(b&&b.offsetParent!==null)b.click();},400);
   state.waterType=type;
   state.bundleId=null;
   saveDraft();
@@ -832,6 +831,8 @@ setTimeout(function(){var b=document.getElementById('btn-next-wt');if(b&&b.offse
   document.getElementById('wtc-alkaline').setAttribute('aria-pressed',type==='alkaline');
   document.getElementById('s1-next').disabled=false;
   updateQtyDisplay();
+  // Click to continue — auto-advance to Step 2 after a brief highlight
+  setTimeout(function(){goStep(2);},250);
 }
 
 /* ── Step 2 ──────────────────────────────────────────────────── */
