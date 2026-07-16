@@ -237,6 +237,21 @@
 .co-also-add{font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;background:transparent;border:1.5px solid rgba(13,71,161,0.3);color:var(--color-primary);border-radius:6px;padding:5px 10px;cursor:pointer;transition:all 0.15s;width:100%;}
 .co-also-add:hover{background:rgba(13,71,161,0.08);}
 .co-also-add.added{background:rgba(13,71,161,0.1);border-color:var(--color-primary);}
+.bottle-modal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,0.65);display:none;align-items:center;justify-content:center;padding:20px;}
+.bottle-modal.open{display:flex;}
+.bm-card{background:#FFFFFF;border:2.5px solid #0A47A1;border-radius:16px;max-width:360px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.35);}
+.bm-header{padding:22px 24px 16px;text-align:center;border-bottom:2px solid #0A47A1;}
+.bm-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:#0A47A1;margin:0 0 4px;}
+.bm-sub{font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#888;margin:0;}
+.bm-body{padding:22px 24px 14px;text-align:center;}
+.bm-warn{font-size:32px;margin-bottom:12px;line-height:1;}
+.bm-msg{font-family:'Poppins',sans-serif;font-size:14px;color:#1a1a1a;line-height:1.65;margin:0 0 10px;}
+.bm-charge{color:#CC2200;font-weight:700;}
+.bm-note{font-family:'Poppins',sans-serif;font-size:13px;color:#0A47A1;font-weight:600;line-height:1.5;margin:0;}
+.bm-footer{padding:16px 24px 22px;border-top:2px solid #0A47A1;text-align:center;}
+.bm-contact{font-family:'Poppins',sans-serif;font-size:13px;color:#0A47A1;line-height:1.9;margin-bottom:14px;}
+.bm-btn{display:block;width:100%;background:#0A47A1;color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;border:none;padding:15px;border-radius:10px;cursor:pointer;transition:background 0.15s;}
+.bm-btn:hover{background:#083b8e;}
 </style>
 </head>
 <body>
@@ -350,7 +365,7 @@
 
       <div class="amount-tabs">
         <button class="amt-tab active" id="tab-onetime" onclick="setAmtMode('onetime')">One-Time Delivery</button>
-        <button class="amt-tab" id="tab-bundle" onclick="setAmtMode('bundle')">Monthly Bundle</button>
+        <button class="amt-tab" id="tab-bundle" onclick="setAmtMode('bundle')">Subscribe</button>
       </div>
 
       <div class="s2-layout">
@@ -511,6 +526,27 @@
   </div><!-- /order-container -->
 </main>
 
+<!-- ══ BOTTLE RETURN POLICY MODAL ════════════════════════════ -->
+<div class="bottle-modal" id="bottle-modal" role="dialog" aria-modal="true" aria-label="Bottle return policy">
+  <div class="bm-card">
+    <div class="bm-header">
+      <div class="bm-title">Water Boy Water Delivery</div>
+      <div class="bm-sub">Elk Grove &amp; Sacramento</div>
+    </div>
+    <div class="bm-body">
+      <div class="bm-warn">⚠️</div>
+      <p class="bm-msg">This bottle must be <strong>reordered or returned</strong> within <strong>30 days</strong>.<br>If not, a <span class="bm-charge">$18 replacement charge</span> will apply.</p>
+      <p class="bm-note">Please leave this bottle outside with your new order for pickup.</p>
+    </div>
+    <div class="bm-footer">
+      <div class="bm-contact">
+        📞 (916) 753-3866<br>
+        🌐 www.elkgrovewaterboy.com
+      </div>
+      <button class="bm-btn" onclick="acknowledgeBottlePolicy()">Got it — Continue to Checkout</button>
+    </div>
+  </div>
+</div>
 <!-- ══ CHECKOUT OVERLAY ════════════════════════════════════════ -->
 <div class="ord-overlay" id="checkout-overlay" role="dialog" aria-modal="true" aria-label="Secure checkout">
   <button class="overlay-x" onclick="closeCheckout()" aria-label="Close checkout">✕</button>
@@ -1036,6 +1072,12 @@ function updateCoTotal(){
 
 function openCheckout(){
   if(!validateStep3())return;
+  document.getElementById('bottle-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function acknowledgeBottlePolicy(){
+  document.getElementById('bottle-modal').classList.remove('open');
   alsoAddons=[];
   document.querySelectorAll('.co-also-add').forEach(function(b){b.textContent='+ Add';b.classList.remove('added');});
   document.getElementById('also-addons-list').innerHTML='';
@@ -1048,7 +1090,6 @@ function openCheckout(){
   saveDraft();
   buildCheckoutSummary();
   document.getElementById('checkout-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
   setTimeout(initStripe,50);
 }
 
