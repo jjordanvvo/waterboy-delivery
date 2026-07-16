@@ -106,10 +106,10 @@
 .bc-chk{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--color-primary);display:flex;align-items:center;justify-content:center;opacity:0;font-size:11px;color:#FFFFFF;font-weight:800;transition:opacity 0.2s;}
 .bc.selected .bc-chk{opacity:1;}
 
-.bc-name{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:4px;}
-.bc-price{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--color-primary);}
-.bc-price-mo{font-size:12px;color:var(--color-text-muted);}
-.bc-bottles{font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:6px 0 4px;}
+.bc-name{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;color:var(--color-text);margin-bottom:6px;line-height:1.2;}
+.bc-price{font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;color:var(--color-primary);}
+.bc-price-mo{font-size:13px;font-weight:500;color:var(--color-text-muted);}
+.bc-bottles{font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:8px 0 0;}
 
 
 .summary-panel{background:#FFFFFF;border:1px solid var(--color-border);border-radius:16px;padding:26px;position:sticky;top:160px;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
@@ -722,11 +722,11 @@ function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperC
 /* ── Prices & Bundles ────────────────────────────────────────── */
 const PRICES={purified:11.99,alkaline:13.99};
 const BUNDLES_REG=[
-  {id:'solo',      name:'Solo',       price:24.99,  bottles:2,  pop:false},
-  {id:'family',    name:'Family',     price:45.99,  bottles:4,  pop:true},
-  {id:'household', name:'Household',  price:69.99,  bottles:6,  pop:false},
-  {id:'office',    name:'Office',     price:94.99,  bottles:8,  pop:false},
-  {id:'max',       name:'Max Bundle', price:140.99, bottles:12, pop:false},
+  {id:'solo',      name:'RO Solo',       price:24.99,  bottles:2,  pop:false},
+  {id:'family',    name:'RO Family',     price:45.99,  bottles:4,  pop:true},
+  {id:'household', name:'RO Household',  price:69.99,  bottles:6,  pop:false},
+  {id:'office',    name:'RO Office',     price:94.99,  bottles:8,  pop:false},
+  {id:'max',       name:'RO Max Bundle', price:140.99, bottles:12, pop:false},
 ];
 const BUNDLES_ALK=[
   {id:'alk-solo',      name:'Alkaline Solo',      price:27.99,  bottles:2,  pop:false},
