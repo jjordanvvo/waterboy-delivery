@@ -252,6 +252,7 @@
 .bm-contact{font-family:'Poppins',sans-serif;font-size:13px;color:#0A47A1;line-height:1.9;margin-bottom:14px;}
 .bm-btn{display:block;width:100%;background:#0A47A1;color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;border:none;padding:15px;border-radius:10px;cursor:pointer;transition:background 0.15s;}
 .bm-btn:hover{background:#083b8e;}
+.bundle-type-label{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-primary);background:rgba(13,71,161,0.08);border:1px solid rgba(13,71,161,0.2);border-radius:20px;padding:4px 14px;display:inline-block;margin-bottom:14px;}
 </style>
 </head>
 <body>
@@ -386,6 +387,7 @@
 
           <!-- Bundle section -->
           <div id="bundle-section" class="hidden">
+            <div style="text-align:center;margin-bottom:4px;"><span class="bundle-type-label" id="bundle-type-label">Select a Plan</span></div>
             <div class="bundle-grid" id="bundle-grid">
               <!-- Injected by JS -->
             </div>
@@ -813,7 +815,10 @@ function updateQtyDisplay(){
 
 function renderBundles(){
   var bundles=state.waterType==='alkaline'?BUNDLES_ALK:BUNDLES_REG;
+  var label=state.waterType==='alkaline'?'Alkaline Water Plans':'Purified RO Water Plans';
   var grid=document.getElementById('bundle-grid');
+  var labelEl=document.getElementById('bundle-type-label');
+  if(labelEl)labelEl.textContent=label;
   grid.innerHTML=bundles.map(function(b){
     var sel=state.bundleId===b.id;
     var html='<div class="bc'+(b.pop?' popular':'')+(sel?' selected':'')+'" id="bc-'+b.id+'" onclick="selectBundle(\''+b.id+'\')">';
