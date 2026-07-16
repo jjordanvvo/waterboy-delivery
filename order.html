@@ -194,7 +194,8 @@
 #stripe-card-element{background:var(--color-surface-alt);border:1.5px solid var(--color-border);border-radius:10px;padding:16px;margin-bottom:14px;}
 .stripe-err{color:#dc2626;font-family:'Poppins',sans-serif;font-size:13px;min-height:18px;margin-bottom:12px;}
 .ch-name-wrap{margin-bottom:16px;}
-.btn-pay{display:block;width:100%;background:var(--color-primary);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;border:none;padding:20px;border-radius:12px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;min-height:58px;}
+.pay-divider{display:flex;align-items:center;gap:12px;margin-top:18px;font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);}
+.pay-divider::before,.pay-divider::after{content:'';flex:1;height:1px;background:var(--color-border);}.btn-pay{display:block;width:100%;background:var(--color-primary);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;border:none;padding:20px;border-radius:12px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;min-height:58px;}
 .btn-pay:hover:not(:disabled){transform:scale(1.02);box-shadow:0 8px 24px rgba(13,71,161,0.25);}
 .btn-pay:disabled{opacity:0.6;cursor:not-allowed;}
 .btn-pay .pay-spinner{display:none;width:22px;height:22px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#FFFFFF;border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto;}
@@ -594,7 +595,10 @@
       <div class="co-heading">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure Checkout
       </div>
-      <div id="stripe-card-element"></div>
+      <div id="apple-pay-wrap" style="display:none;margin-bottom:20px;">
+  <div id="stripe-payment-request-btn"></div>
+  <div class="pay-divider"><span>or pay by card</span></div>
+</div><div id="stripe-card-element"></div>
       <div class="stripe-err" id="stripe-err"></div>
       <div class="ch-name-wrap fg">
         <label for="ch-name" style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.06em;">Cardholder Name</label>
@@ -1138,6 +1142,7 @@ function acknowledgeBottlePolicy(){
   state.email=document.getElementById('f-email').value.trim();
   saveDraft();
   buildCheckoutSummary();
+  if(window._wbPR){var _t=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0);window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(_t*100)}});}
   document.getElementById('checkout-overlay').classList.add('open');
   setTimeout(initStripe,50);
 }
@@ -1177,6 +1182,30 @@ function initStripe(){
   var elements=stripe.elements({fonts:[{cssSrc:'https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap'}]});
   cardElement=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#B8E6FF'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
   cardElement.mount('#stripe-card-element');
+  // ── Apple Pay / Google Pay via Stripe Payment Request ──
+  var _prTotal=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0);
+  var pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.round(_prTotal*100)},requestPayerName:true,requestPayerEmail:true});
+  var prBtn=elements.create('paymentRequestButton',{paymentRequest:pr,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'52px'}}});
+  pr.canMakePayment().then(function(result){
+    if(result){document.getElementById('apple-pay-wrap').style.display='block';prBtn.mount('#stripe-payment-request-btn');}
+  });
+  window._wbPR=pr;
+  pr.on('paymentmethod',async function(ev){
+    var grandTotal=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0)+alsoAddons.reduce(function(s,a){return s+a.price;},0);
+    try{
+      var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:grandTotal,customerEmail:ev.payerEmail||state.email||'',customerName:ev.payerName||state.name||''})});
+      var piData=await piResp.json();
+      if(piData.error){ev.complete('fail');return;}
+      var cr=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false});
+      if(cr.error){ev.complete('fail');var errEl=document.getElementById('stripe-err');if(errEl)errEl.textContent=cr.error.message;return;}
+      ev.complete('success');
+      if(cr.paymentIntent&&cr.paymentIntent.status==='requires_action'){
+        var ar=await stripe.confirmCardPayment(piData.clientSecret);
+        if(ar.error){var errEl=document.getElementById('stripe-err');if(errEl)errEl.textContent=ar.error.message;return;}
+      }
+      closeCheckout();showSuccess(genOrderId());
+    }catch(e){ev.complete('fail');}
+  });
   cardElement.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
 }
 
