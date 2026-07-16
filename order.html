@@ -109,7 +109,7 @@
 .bc-name{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:4px;}
 .bc-price{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--color-primary);}
 .bc-price-mo{font-size:12px;color:var(--color-text-muted);}
-.bc-Bottles{font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:6px 0 4px;}
+.bc-bottles{font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:6px 0 4px;}
 
 
 .summary-panel{background:#FFFFFF;border:1px solid var(--color-border);border-radius:16px;padding:26px;position:sticky;top:160px;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
@@ -815,15 +815,13 @@ function renderBundles(){
   var bundles=state.waterType==='alkaline'?BUNDLES_ALK:BUNDLES_REG;
   var grid=document.getElementById('bundle-grid');
   grid.innerHTML=bundles.map(function(b){
-    var badgeCls=b.pop?'pop':'reg';
     var sel=state.bundleId===b.id;
     return '<div class="bc'+(b.pop?' popular':'')+(sel?' selected':'')+'" id="bc-'+b.id+'" onclick="selectBundle(\''+b.id+'\')">'
       +'<div class="bc-chk">✓</div>'
       +'<span class="bc-badge '+badgeCls+'">'+b.badge+'</span>'
       +'<div class="bc-name">'+b.name+'</div>'
       +'<div class="bc-price">$'+b.price+'<span class="bc-price-mo">/mo</span></div>'
-      +'<div class="bc-Bottles">'+b.Bottles+'×5-gal bottles</div>'
-      +(b.savings?'<div class="bc-savings">'+b.savings+'</div>':'')
+      +'<div class="bc-bottles">'+b.bottles+'×5-gal bottles</div>'
       +'</div>';
   }).join('');
 }
