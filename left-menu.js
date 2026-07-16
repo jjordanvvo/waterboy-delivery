@@ -49,8 +49,9 @@
     else if (typeof openCartSidebar === 'function') openCartSidebar();
   });
 
-  var current = window.location.pathname.split('/').pop() || 'index.html';
+  var current = window.location.pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, '');
   drawer.querySelectorAll('.left-drawer-link[href]').forEach(function (a) {
-    if ((a.getAttribute('href') || '') === current) a.classList.add('active');
+    var href = (a.getAttribute('href') || '').replace(/^\//, '').replace(/\.html$/, '');
+    if (href === current) a.classList.add('active');
   });
 })();

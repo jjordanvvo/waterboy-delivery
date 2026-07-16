@@ -203,14 +203,14 @@
     document.querySelectorAll('[onclick*="openAuthModal"][onclick*="signin"]').forEach(function (el) {
       el.textContent = name;
       el.removeAttribute('onclick');
-      el.href = 'my-orders.html';
+      el.href = '/my-orders';
     });
 
     // Also handle index.html Sign In (hn-sign-in class)
     document.querySelectorAll('.hn-sign-in[onclick*="signin"]').forEach(function (el) {
       el.textContent = name;
       el.removeAttribute('onclick');
-      el.href = 'my-orders.html';
+      el.href = '/my-orders';
     });
 
     // Hide Get Started buttons
@@ -225,7 +225,7 @@
     var ldLink = document.getElementById('ld-signin-link');
     if (ldLink) {
       ldLink.textContent = name + "’s Account";
-      ldLink.href = 'my-orders.html';
+      ldLink.href = '/my-orders';
       ldLink.removeAttribute('onclick');
     }
 

@@ -1375,7 +1375,7 @@ function wireDeliveryButton(){
 /* ── Wire remaining #contact links to Contact Modal ────────────── */
 function wireRemainingContactLinks(){
   // After pricing & delivery are wired, change all remaining #contact anchors
-  $$('a[href="#contact"], a[href="index.html#contact"]').forEach(link=>{
+  $$('a[href="#contact"], a[href="index.html#contact"], a[href="/index#contact"], a[href="/#contact"]').forEach(link=>{
     // Skip if already handled (has data-wired attribute)
     if(link.dataset.wired) return;
     link.dataset.wired='1';

@@ -428,7 +428,7 @@
       '<div class="wbcs-footer">' +
         '<div class="wbcs-total-row"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>' +
         '<div class="wbcs-total-row"><span>Total</span><span id="cart-total">$0.00</span></div>' +
-        '<a href="order.html" class="wbcs-shop-btn" style="margin-bottom:12px;">Checkout →</a>' +
+        '<a href="/order" class="wbcs-shop-btn" style="margin-bottom:12px;">Checkout →</a>' +
         '<div id="wbcs-also-bought" style="margin-top:4px;">' +
           '<div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(184,230,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Customers Also Bought</div>' +
           '<div style="display:flex;flex-direction:column;gap:8px;" id="wbcs-also-items"></div>' +

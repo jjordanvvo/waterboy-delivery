@@ -78,10 +78,11 @@
 
   /* Highlight current page in the nav */
   function highlightActivePage() {
-    var current = window.location.pathname.split('/').pop() || 'index.html';
+    // Normalize to a bare page name that works with clean URLs (/about) or .html
+    var current = window.location.pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, '');
     document.querySelectorAll('#navbar a[href], .nav-more-dropdown a[href]').forEach(function (a) {
-      var href = a.getAttribute('href') || '';
-      if (href === current || (current === '' && href === 'index.html')) {
+      var href = (a.getAttribute('href') || '').replace(/^\//, '').replace(/\.html$/, '');
+      if (href === current) {
         a.classList.add('nav-active');
       }
     });
