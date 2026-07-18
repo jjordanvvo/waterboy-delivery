@@ -8,12 +8,15 @@
   <link rel="canonical" href="https://waterboywebsite.netlify.app/order.html">
   <meta property="og:title" content="Order Water | Water Boy Delivery">
   <meta property="og:description" content="Start your water delivery today. Choose your water type, set your schedule, and we handle the rest.">
-  <meta property="og:image" content="https://waterboywebsite.netlify.app/LOGOnotext.PNG">
+  <meta property="og:image" content="https://www.elkgrovewaterboy.com/favicon-512.png">
   <meta property="og:url" content="https://waterboywebsite.netlify.app/order.html">
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://waterboydelivery.com/order.html" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -192,7 +195,11 @@
 .co-pay{padding:40px 32px;}
 @media(max-width:680px){.co-pay{padding:32px 24px;}}
 .co-heading{font-family:'Poppins',sans-serif;font-size:19px;font-weight:700;color:var(--color-text);margin:0 0 22px;display:flex;align-items:center;gap:9px;}
-#stripe-card-element{background:var(--color-surface-alt);border:1.5px solid var(--color-border);border-radius:10px;padding:16px;margin-bottom:14px;}
+.stripe-field{background:#FFFFFF;border:1.5px solid var(--color-border);border-radius:10px;padding:14px 14px;transition:border-color .15s,box-shadow .15s;}
+.stripe-field.StripeElement--focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(13,71,161,0.12);}
+.stripe-field.StripeElement--invalid{border-color:#dc2626;}
+.sc-label{display:block;font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(0,0,0,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.co-pay .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .stripe-err{color:#dc2626;font-family:'Poppins',sans-serif;font-size:13px;min-height:18px;margin-bottom:12px;}
 .ch-name-wrap{margin-bottom:16px;}
 .pay-divider{display:flex;align-items:center;gap:12px;margin-top:18px;font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);}
@@ -606,7 +613,12 @@
       <div id="apple-pay-wrap" style="display:none;margin-bottom:20px;">
   <div id="stripe-payment-request-btn"></div>
   <div class="pay-divider"><span>or pay by card</span></div>
-</div><div id="stripe-card-element"></div>
+</div>
+      <div class="fg"><label class="sc-label" for="sc-number">Card Number</label><div id="sc-number" class="stripe-field"></div></div>
+      <div class="form-row-2">
+        <div class="fg"><label class="sc-label" for="sc-expiry">Expiry</label><div id="sc-expiry" class="stripe-field"></div></div>
+        <div class="fg"><label class="sc-label" for="sc-cvc">CVC</label><div id="sc-cvc" class="stripe-field"></div></div>
+      </div>
       <div class="stripe-err" id="stripe-err"></div>
       <div class="ch-name-wrap fg">
         <label for="ch-name" style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:rgba(0,0,0,0.5);text-transform:uppercase;letter-spacing:0.06em;">Cardholder Name</label>
@@ -1056,7 +1068,7 @@ function updateS3Summary(){
   var total=base+zoneFee;
   var delLbl=!state.delOpt?'Not selected':state.delOpt==='asap'?'As Soon As Possible':'Scheduled: '+(state.calDate||'Pick date');
   var timeLbl=!state.timePref?'-':state.timePref==='morning'?'Morning (8am - 12pm)':state.timePref==='afternoon'?'Afternoon (12pm - 4pm)':'Evening (4pm - 6pm)';
-  var feeDisplay=state.zone.unknown?'TBD':state.zone.outside?'Custom Quote':'$'+zoneFee.toFixed(2);
+  var feeDisplay=(state.zone.unknown||state.zone.outside)?'<span style="color:#dc2626;font-weight:600">Not available &mdash; call (916) 753-3866</span>':'$'+zoneFee.toFixed(2);
   document.getElementById('s3-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+(state.waterType?wtLbl:'-')+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+(state.waterType?amtLbl:'-')+'</span></div>'
@@ -1100,7 +1112,7 @@ function validateStep2(){
 }
 
 /* ── Checkout ────────────────────────────────────────────────── */
-var stripe=null,cardElement=null;
+var stripe=null,cardNumber=null,cardExpiry=null,cardCvc=null;
 var alsoAddons=[];
 
 function addAlsoBought(name,price,btn){
@@ -1182,15 +1194,18 @@ function buildCheckoutSummary(){
 
 function initStripe(){
   if(typeof Stripe==='undefined'){
-    var el=document.getElementById('stripe-card-element');
-    if(el)el.innerHTML='<p style="color:#FF6B6B;font-family:Inter,sans-serif;font-size:13px;padding:12px">Stripe unavailable. Payments processed on live site.</p>';
+    var el=document.getElementById('stripe-err');
+    if(el)el.textContent='Payment could not load. Please refresh and try again.';
     return;
   }
   if(stripe)return;
   stripe=Stripe('pk_live_51Tqi6kLXa6QDwCZAvbMmFTcFOaLMaNQOApvlYV2GBUnH90DXSJySe23wyFW4wogkwhyswHdHnnyg5mXIvC8yY4Wm00LxlXeDfz');
   var elements=stripe.elements({fonts:[{cssSrc:'https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap'}]});
-  cardElement=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#B8E6FF'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
-  cardElement.mount('#stripe-card-element');
+  var _scStyle={base:{color:'#0A1F44',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#94A3B8'},iconColor:'#0A47A1'},invalid:{color:'#dc2626',iconColor:'#dc2626'}};
+  cardNumber=elements.create('cardNumber',{style:_scStyle,showIcon:true,placeholder:'1234 1234 1234 1234'});
+  cardExpiry=elements.create('cardExpiry',{style:_scStyle});
+  cardCvc=elements.create('cardCvc',{style:_scStyle});
+  cardNumber.mount('#sc-number');cardExpiry.mount('#sc-expiry');cardCvc.mount('#sc-cvc');
   // ── Apple Pay / Google Pay via Stripe Payment Request ──
   var _prTotal=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0);
   var pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.round(_prTotal*100)},requestPayerName:true,requestPayerEmail:true});
@@ -1215,7 +1230,7 @@ function initStripe(){
       closeCheckout();showSuccess(genOrderId());
     }catch(e){ev.complete('fail');}
   });
-  cardElement.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
+  cardNumber.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
 }
 
 async function handlePayment(){
@@ -1225,8 +1240,9 @@ async function handlePayment(){
   if(errEl)errEl.textContent='';
   var name=(document.getElementById('ch-name')||{}).value||'';
   if(!name.trim()){if(errEl)errEl.textContent='Please enter the cardholder name.';btn.classList.remove('loading');btn.disabled=false;return;}
-  if(!stripe||!cardElement){
-    setTimeout(function(){btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());},1200);
+  if(!stripe||!cardNumber){
+    if(errEl)errEl.textContent='Payment is still loading — please try again in a moment.';
+    btn.classList.remove('loading');btn.disabled=false;
     return;
   }
   try{
@@ -1234,7 +1250,7 @@ async function handlePayment(){
     var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:state.email,customerName:name.trim()})});
     var piData=await piResp.json();
     if(piData.error){if(errEl)errEl.textContent=piData.error;btn.classList.remove('loading');btn.disabled=false;return;}
-    var result=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:{card:cardElement,billing_details:{name:name.trim(),email:state.email,phone:state.phone}}});
+    var result=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:{card:cardNumber,billing_details:{name:name.trim(),email:state.email,phone:state.phone}}});
     if(result.error){if(errEl)errEl.textContent=result.error.message;btn.classList.remove('loading');btn.disabled=false;return;}
     btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());
   }catch(e){if(errEl)errEl.textContent='Payment error. Please try again.';btn.classList.remove('loading');btn.disabled=false;}
