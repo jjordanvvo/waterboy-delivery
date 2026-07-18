@@ -479,7 +479,7 @@ function openProductDetailFromCard(card){
   if(buyNowBtn){
     if(price){
       buyNowBtn.style.display='flex';
-      buyNowBtn.onclick=()=>{ addToCartRaw(name,price,img,modal._qty); closeOverlay('pd-overlay'); gotoStep('checkout-overlay',0); openOverlay('checkout-overlay'); };
+      buyNowBtn.onclick=()=>{ addToCartRaw(name,price,img,modal._qty); closeOverlay('pd-overlay'); gotoStep('checkout-overlay',0); openOverlay('checkout-overlay'); setupCheckoutStripe(); };
     } else {
       buyNowBtn.style.display='none';
     }
@@ -572,6 +572,64 @@ function showPaySim(type, onSuccess){
   requestAnimationFrame(()=>{ sim.classList.add('open'); if(sheet) sheet.classList.add('open'); });
   setTimeout(()=>{ if(faceEl) faceEl.classList.add('auth'); },600);
   setTimeout(()=>{ sim.classList.remove('open'); if(sheet) sheet.classList.remove('open'); setTimeout(()=>{ sim.style.display='none'; onSuccess&&onSuccess(); },350); },2800);
+}
+
+/* ── Real Stripe payment (card + Apple/Google Pay) ─────────────── */
+var WB_STRIPE_PK='pk_live_51Tqi6kLXa6QDwCZAvbMmFTcFOaLMaNQOApvlYV2GBUnH90DXSJySe23wyFW4wogkwhyswHdHnnyg5mXIvC8yY4Wm00LxlXeDfz';
+var _wbStripe=null,_wbStripePromise=null,_coCard=null,_coPR=null,_coStripeSetup=false;
+function loadStripe(){
+  if(_wbStripePromise) return _wbStripePromise;
+  _wbStripePromise=new Promise(function(resolve){
+    if(window.Stripe){ _wbStripe=Stripe(WB_STRIPE_PK); resolve(_wbStripe); return; }
+    var s=document.createElement('script'); s.src='https://js.stripe.com/v3/';
+    s.onload=function(){ _wbStripe=Stripe(WB_STRIPE_PK); resolve(_wbStripe); };
+    s.onerror=function(){ resolve(null); };
+    document.head.appendChild(s);
+  });
+  return _wbStripePromise;
+}
+function coChargeTotal(){ return cartTotal()+(zoneFeeDisplay(currentZone).fee||0); }
+function coOrderSuccess(){
+  gotoStep('checkout-overlay',4);
+  var n=document.getElementById('co-order-num'); if(n) n.textContent=genId();
+  cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
+  toast('Order placed!','Payment successful','✓');
+}
+function setupCheckoutStripe(){
+  if(_coStripeSetup) return;
+  _coStripeSetup=true;
+  loadStripe().then(function(stripe){
+    if(!stripe){ _coStripeSetup=false; return; }
+    var elements=stripe.elements();
+    _coCard=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Poppins,sans-serif',fontSize:'15px','::placeholder':{color:'#8BB8D4'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
+    if(document.getElementById('co-stripe-card')) _coCard.mount('#co-stripe-card');
+    _coCard.on('change',function(e){ var el=document.getElementById('co-card-err'); if(el) el.textContent=e.error?e.error.message:''; });
+    var amt=Math.max(Math.round(coChargeTotal()*100),50);
+    _coPR=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:amt},requestPayerName:true,requestPayerEmail:true});
+    var prBtn=elements.create('paymentRequestButton',{paymentRequest:_coPR,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'48px'}}});
+    _coPR.canMakePayment().then(function(res){
+      var wrap=document.getElementById('co-pr-wrap');
+      if(res){ if(wrap) wrap.style.display='block'; prBtn.mount('#co-pr-btn'); }
+      else if(wrap){ wrap.style.display='none'; }
+    });
+    _coPR.on('paymentmethod',function(ev){
+      var email=ev.payerEmail||(document.getElementById('co-email')||{}).value||'';
+      fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:coChargeTotal(),customerEmail:email,customerName:ev.payerName||''})})
+        .then(function(r){return r.json();})
+        .then(function(pi){
+          if(pi.error||!pi.clientSecret){ ev.complete('fail'); return; }
+          stripe.confirmCardPayment(pi.clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false}).then(function(cr){
+            if(cr.error){ ev.complete('fail'); var el=document.getElementById('co-card-err'); if(el) el.textContent=cr.error.message; return; }
+            ev.complete('success');
+            if(cr.paymentIntent&&cr.paymentIntent.status==='requires_action'){ stripe.confirmCardPayment(pi.clientSecret).then(function(a){ if(!a.error) coOrderSuccess(); }); }
+            else coOrderSuccess();
+          });
+        }).catch(function(){ ev.complete('fail'); });
+    });
+  });
+}
+function updateCoPRTotal(){
+  if(_coPR){ _coPR.update({total:{label:'Water Boy Delivery',amount:Math.max(Math.round(coChargeTotal()*100),50)}}); }
 }
 
 /* ── HTML Injection ────────────────────────────────────────────── */
@@ -788,14 +846,10 @@ function inject(){
    <!-- Step 2: Payment -->
    <div class="step-panel" id="co-step-2">
     <p class="step-title">Payment</p>
-    <div class="pay-opts">
-     <button class="pay-apple" id="co-apple-pay">🍎 Apple Pay</button>
-     <button class="pay-google" id="co-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
-    </div>
-    <div class="pay-or"><span>or pay with card</span></div>
-    <div class="wb-field"><label>Card Number</label><input id="co-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="co-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="co-cvv" placeholder="123" maxlength="4"></div></div>
+    <div id="co-pr-wrap" style="display:none;margin-bottom:14px"><div id="co-pr-btn"></div><div class="pay-or"><span>or pay with card</span></div></div>
     <div class="wb-field"><label>Name on Card</label><input id="co-cname" placeholder="Jane Smith"></div>
+    <div class="wb-field"><label>Card</label><div id="co-stripe-card" style="background:#0B1B2B;border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:13px 12px"></div></div>
+    <div id="co-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
     <div id="co-order-summary" style="margin:14px 0"></div>
     <div class="terms-row">By placing your order you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>.</div>
     <div class="stripe-badge">🔒 Secured by Stripe</div>
@@ -1105,6 +1159,7 @@ function wireCartDrawer(){
       f('co-fname',parts[0]); f('co-lname',parts.slice(1).join(' ')); f('co-email',user.email); f('co-phone',user.phone); f('co-addr',user.addr); f('co-city',user.city||'Sacramento'); f('co-zip',user.zip);
     }
     openOverlay('checkout-overlay');
+    setupCheckoutStripe();
   });
   document.getElementById('promo-apply')?.addEventListener('click',()=>{
     const code=(document.getElementById('promo-input')?.value||'').trim().toUpperCase();
@@ -1180,21 +1235,27 @@ function wireCheckout(){
     gotoStep('checkout-overlay',2);
   });
   document.getElementById('co-back-addons')?.addEventListener('click',()=>gotoStep('checkout-overlay',1));
-  document.getElementById('co-next-addons')?.addEventListener('click',()=>{ gotoStep('checkout-overlay',3); buildOrderSummary('co-order-summary'); });
+  document.getElementById('co-next-addons')?.addEventListener('click',()=>{ gotoStep('checkout-overlay',3); buildOrderSummary('co-order-summary'); updateCoPRTotal(); });
   document.getElementById('co-back-1')?.addEventListener('click',()=>gotoStep('checkout-overlay',0));
   document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',2));
-  document.getElementById('co-place-order')?.addEventListener('click',()=>{
-    if(!(document.getElementById('co-card')?.value)||!(document.getElementById('co-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
-    gotoStep('checkout-overlay',4);
-    const numEl=document.getElementById('co-order-num'); if(numEl) numEl.textContent=genId();
-    cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
-    toast('Order placed!','Check your email for confirmation','');
+  document.getElementById('co-place-order')?.addEventListener('click',function(){
+    var name=(document.getElementById('co-cname')||{}).value||'';
+    var errEl=document.getElementById('co-card-err'); if(errEl) errEl.textContent='';
+    if(!name.trim()){ if(errEl) errEl.textContent='Enter the name on the card.'; return; }
+    if(!_wbStripe||!_coCard){ if(errEl) errEl.textContent='Payment is still loading — try again in a moment.'; return; }
+    var btn=this, orig=btn.textContent; btn.disabled=true; btn.textContent='Processing…';
+    var email=(document.getElementById('co-email')||{}).value||'';
+    fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:coChargeTotal(),customerEmail:email,customerName:name})})
+      .then(function(r){return r.json();})
+      .then(function(pi){
+        if(pi.error||!pi.clientSecret){ if(errEl) errEl.textContent=pi.error||'Could not start payment.'; btn.disabled=false; btn.textContent=orig; return; }
+        _wbStripe.confirmCardPayment(pi.clientSecret,{payment_method:{card:_coCard,billing_details:{name:name,email:email}}}).then(function(cr){
+          if(cr.error){ if(errEl) errEl.textContent=cr.error.message; btn.disabled=false; btn.textContent=orig; return; }
+          btn.disabled=false; btn.textContent=orig; coOrderSuccess();
+        });
+      }).catch(function(){ if(errEl) errEl.textContent='Payment failed. Please try again.'; btn.disabled=false; btn.textContent=orig; });
   });
-  document.getElementById('co-apple-pay')?.addEventListener('click',()=>showPaySim('apple',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Apple Pay successful',''); }));
-  document.getElementById('co-google-pay')?.addEventListener('click',()=>showPaySim('google',()=>{ gotoStep('checkout-overlay',4); const n=document.getElementById('co-order-num'); if(n) n.textContent=genId(); cart=[]; coAddonQtys={}; saveCart(cart); updateBadge(); toast('Order placed!','Google Pay successful',''); }));
   document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
-  const coCard=document.getElementById('co-card'); coCard?.addEventListener('input',()=>{ let v=coCard.value.replace(/\D/g,'').slice(0,16); coCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
-  const coExp=document.getElementById('co-exp'); coExp?.addEventListener('input',()=>{ let v=coExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); coExp.value=v; });
   wireZipField('co-zip','co-zone-result','co-next-0');
 }
 
