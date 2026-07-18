@@ -999,7 +999,7 @@ function inject(){
       <div class="dv-plan-card" data-plan="${name}" style="border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;background:rgba(0,212,255,.04)">
        <div style="font-weight:800;font-size:15px;color:#fff;font-family:'Outfit',sans-serif">${name}</div>
        <div style="font-family:'Space Grotesk',sans-serif;color:#00D4FF;font-size:18px;margin:4px 0">$${p.price}<span style="font-size:11px;color:#8BB8D4">/mo</span></div>
-       <div style="font-size:12px;color:#8BB8D4">${p.Bottles} bottles/delivery</div>
+       <div style="font-size:12px;color:#8BB8D4">${p.bottles} bottles/delivery</div>
       </div>`).join('')}
     </div>
     <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600">Alkaline Upgrades (pH 8.5+)</p>
@@ -1391,12 +1391,12 @@ function openSubWithPlan(planName){
   // Use water type pricing from WaterboyState
   const bundleData = WATERBOY_PRICING.bundles[planName];
   const displayPrice = bundleData ? bundleData[window.WaterboyState.waterType] : (plan.price||0);
-  const bottles = bundleData ? bundleData.Bottles : (plan.bottles||0);
+  const bottles = bundleData ? bundleData.bottles : (plan.bottles||0);
   const waterLabel = { ro:'RO', alkaline:'Alkaline', hydrogen:'Hydrogen' }[window.WaterboyState.waterType] || 'RO';
 
   const display = document.getElementById('sub-plan-display');
   if(display){
-    const perks = [`${Bottles} × 5-gal ${waterLabel} bottles`, 'Flexible schedule', 'Delivery from $2.99'];
+    const perks = [`${bottles} × 5-gal ${waterLabel} bottles`, 'Flexible schedule', 'Delivery from $2.99'];
     display.innerHTML=`<div class="sub-plan-name">${esc(planName)}</div><div class="sub-plan-price">$${displayPrice}<span>/mo</span></div><div class="sub-plan-tags">${perks.map(p=>`<span class="sub-tag">${esc(p)}</span>`).join('')}</div>`;
   }
   // Sync water type buttons
