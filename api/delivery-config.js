@@ -39,13 +39,7 @@ module.exports = async (req, res) => {
 
   if (req.method === 'GET') {
     const cfg = await storeGet();
-    // TEMP: live read/write test to confirm the Redis connection actually works
-    let _redisOk = null;
-    try {
-      const r = getRedis();
-      if (r) { await r.set('_wb_ping', '1', 'EX', 60); _redisOk = (await r.get('_wb_ping')) === '1'; }
-    } catch (e) { _redisOk = 'err:' + e.message; }
-    return res.status(200).json({ ...(cfg || DEFAULTS), storageConnected: !!REDIS_URL, _redisOk });
+    return res.status(200).json({ ...(cfg || DEFAULTS), storageConnected: !!REDIS_URL });
   }
 
   if (req.method === 'POST') {
