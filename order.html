@@ -57,7 +57,8 @@
 .step-heading{font-family:'Poppins',sans-serif;font-size:30px;font-weight:700;color:var(--color-text);margin:0 0 8px;}
 .step-sub{font-family:'Poppins',sans-serif;font-size:16px;color:var(--color-text-muted);margin:0 0 32px;line-height:1.5;}
 
-.wt-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;}
+.wt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px;}
+@media(max-width:760px){.wt-cards{grid-template-columns:1fr 1fr;}}
 @media(max-width:580px){.wt-cards{grid-template-columns:1fr;}}
 .wt-card{background:#FFFFFF;border:2px solid var(--color-border);border-radius:16px;padding:30px 26px;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.05);}
 .wt-card:hover{border-color:var(--color-primary-sky);}
@@ -349,6 +350,13 @@
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste - the only local delivery option.</p>
           <div class="wt-price">$13.99/bottle</div>
+        </div>
+
+        <div class="wt-card" id="wtc-hydrogen" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('hydrogen')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('hydrogen')">
+          <div class="wt-card-check" aria-hidden="true">&#10003;</div>
+          <div class="wt-title">Hydrogen Water</div>
+          <p class="wt-desc">Hydrogen-infused water rich in antioxidants. Sold by the gallon (1 &amp; 3 gal).</p>
+          <div class="wt-price">$10.99/gallon</div>
         </div>
 
       </div>
@@ -761,7 +769,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
-const PRICES={purified:11.99,alkaline:13.99};
+const PRICES={purified:11.99,alkaline:13.99,hydrogen:10.99};
+const WT_LABELS={purified:'Purified Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'};
+function wtLabel(){return WT_LABELS[state.waterType]||'Purified Water';}
+function unitWord(){return state.waterType==='hydrogen'?'gallon':'bottle';}
+function qtyLabel(){return state.qty+' '+unitWord()+(state.qty>1?'s':'');}
 const BUNDLES_REG=[
   {id:'solo',      name:'RO Solo',       price:24.99,  bottles:2,  pop:false},
   {id:'family',    name:'RO Family',     price:45.99,  bottles:4,  pop:true},
@@ -814,11 +826,18 @@ function selectWaterType(type){
   state.waterType=type;
   state.bundleId=null;
   saveDraft();
-  document.getElementById('wtc-purified').classList.toggle('selected',type==='purified');
-  document.getElementById('wtc-alkaline').classList.toggle('selected',type==='alkaline');
-  document.getElementById('wtc-purified').setAttribute('aria-pressed',type==='purified');
-  document.getElementById('wtc-alkaline').setAttribute('aria-pressed',type==='alkaline');
+  ['purified','alkaline','hydrogen'].forEach(function(t){
+    var el=document.getElementById('wtc-'+t);
+    if(el){el.classList.toggle('selected',type===t);el.setAttribute('aria-pressed',type===t);}
+  });
   document.getElementById('s1-next').disabled=false;
+  // Hydrogen is sold by the gallon, one-time only (no monthly bundle)
+  var isH=type==='hydrogen';
+  var bundleTab=document.getElementById('tab-bundle');
+  if(bundleTab)bundleTab.style.display=isH?'none':'';
+  var qtyLabelEl=document.querySelector('.qty-label');
+  if(qtyLabelEl)qtyLabelEl.textContent=isH?'gallons':'5-Gallon bottles';
+  if(isH&&state.amtMode==='bundle')setAmtMode('onetime');
   updateQtyDisplay();
   // Click to continue — auto-advance to Step 2 after a brief highlight
   setTimeout(function(){goStep(2);},250);
@@ -850,7 +869,7 @@ function adjustQty(delta){
 function updateQtyDisplay(){
   var price=PRICES[state.waterType||'purified'];
   document.getElementById('qty-display').textContent=state.qty;
-  document.getElementById('qty-total-line').textContent=state.qty+' bottle'+(state.qty>1?'s':'')+' × $'+price.toFixed(2)+' = $'+(state.qty*price).toFixed(2);
+  document.getElementById('qty-total-line').textContent=qtyLabel()+' × $'+price.toFixed(2)+' = $'+(state.qty*price).toFixed(2);
 }
 
 function renderBundles(){
@@ -904,8 +923,8 @@ function updateS2Summary(){
   var content=document.getElementById('s2-summary-content');
   var base=getBasePrice();
   if(!state.waterType){content.innerHTML='<div class="sp-empty">Select water type first</div>';return;}
-  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var wtLbl=wtLabel();
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   content.innerHTML='<div class="sp-row"><span>Water Type</span><span>'+wtLbl+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+amtLbl+'</span></div>'
     +'<div class="sp-row"><span>'+(state.amtMode==='bundle'?'Monthly Price':'Subtotal')+'</span><span>$'+base.toFixed(2)+'</span></div>';
@@ -1030,8 +1049,8 @@ document.addEventListener('DOMContentLoaded',function(){
 
 /* ── S3 Summary ──────────────────────────────────────────────── */
 function updateS3Summary(){
-  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var wtLbl=wtLabel();
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   var base=getBasePrice();
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
@@ -1143,8 +1162,8 @@ function closeCheckout(){
 }
 
 function buildCheckoutSummary(){
-  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var wtLbl=wtLabel();
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   var base=getBasePrice();
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
@@ -1228,8 +1247,8 @@ function showSuccess(orderId){
   var timeLbl=state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
   var delivDate=state.delOpt==='asap'?'As Soon As Possible':(state.calDate||'Scheduled');
   var fullAddr=state.addr+', '+state.city+', '+state.stateField+' '+state.zip;
-  var wtLbl=state.waterType==='alkaline'?'Alkaline Water':'Purified Water';
-  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':state.qty+' bottle'+(state.qty>1?'s':'');
+  var wtLbl=wtLabel();
+  var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   var now=Date.now();
   var reschUntil=state.calDate?(new Date(state.calDate).getTime()-86400000):(now+86400000);
   var order={orderId:orderId,waterType:wtLbl,quantity:amtLbl,bundle:state.amtMode==='bundle'?amtLbl:null,price:total,deliveryTime:timeLbl,deliveryDate:delivDate,address:fullAddr,phone:state.phone,email:state.email,status:'confirmed',placedAt:now,canRescheduleUntil:reschUntil};
