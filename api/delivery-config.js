@@ -38,7 +38,9 @@ module.exports = async (req, res) => {
 
   if (req.method === 'GET') {
     const cfg = await kvGet();
-    return res.status(200).json({ ...(cfg || DEFAULTS), storageConnected: !!(KV_URL && KV_TOKEN) });
+    // TEMP diagnostic: which storage-related env var NAMES exist (names only, no values)
+    const _storageVars = Object.keys(process.env).filter((k) => /REDIS|KV|UPSTASH|STORAGE/i.test(k));
+    return res.status(200).json({ ...(cfg || DEFAULTS), storageConnected: !!(KV_URL && KV_TOKEN), _storageVars });
   }
 
   if (req.method === 'POST') {
