@@ -985,6 +985,12 @@ var CAL_MONTHS=['January','February','March','April','May','June','July','August
    SAME_DAY_CUTOFF_HOUR: orders placed after this hour (24h) can't get same-day delivery. */
 var BLOCKED_DATES=['2026-12-25','2026-01-01','2026-11-26','2026-07-04'];
 var SAME_DAY_CUTOFF_HOUR=14;
+/* Load owner-managed blocked dates + cutoff (from /admin). Falls back to the defaults above. */
+fetch('/api/delivery-config').then(function(r){return r.json();}).then(function(c){
+  if(c&&Array.isArray(c.blockedDates))BLOCKED_DATES=c.blockedDates;
+  if(c&&typeof c.cutoffHour==='number')SAME_DAY_CUTOFF_HOUR=c.cutoffHour;
+  if(typeof renderCal==='function'&&document.getElementById('cal-grid'))renderCal();
+}).catch(function(){});
 
 function calNav(dir){
   state.calMonth+=dir;
