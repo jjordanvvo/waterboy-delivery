@@ -158,6 +158,7 @@
 .cal-day.today{background:rgba(13,71,161,0.06);border:1px solid rgba(13,71,161,0.2);}
 .cal-day.selected{background:var(--color-primary)!important;color:#FFFFFF!important;font-weight:600;}
 .cal-day:disabled{opacity:0.25;cursor:not-allowed;}
+.cal-day.blocked{position:relative;color:#dc2626;opacity:0.5;text-decoration:line-through;}
 .cal-day.empty-day{visibility:hidden;cursor:default;}
 
 .addr-form{background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:16px;padding:28px;margin-top:20px;}
@@ -555,9 +556,14 @@
       <div class="bm-sub">Elk Grove &amp; Sacramento</div>
     </div>
     <div class="bm-body">
-      <div class="bm-warn">⚠️</div>
-      <p class="bm-msg">This bottle must be <strong>reordered or returned</strong> within <strong>30 days</strong>.<br>If not, a <span class="bm-charge">$18 replacement charge</span> will apply.</p>
-      <p class="bm-note">Please leave this bottle outside with your new order for pickup.</p>
+      <div class="bm-warn">🔄</div>
+      <p class="bm-msg"><strong>5-Gallon Bottle Exchange &amp; Deposit</strong></p>
+      <p class="bm-note" style="text-align:left;line-height:1.9;">
+        &bull; Your first order includes the 5-gallon bottle.<br>
+        &bull; On each delivery, <strong>leave your empty bottle outside</strong> &mdash; we swap it for a full one at no extra charge.<br>
+        &bull; Reorder or return the bottle within <strong>30 days</strong>.<br>
+        &bull; If a bottle isn&rsquo;t returned, a <span class="bm-charge">$18 bottle deposit / replacement</span> charge applies.
+      </p>
     </div>
     <div class="bm-footer">
       <div class="bm-contact">
@@ -974,6 +980,11 @@ function updateTimePillUI(){
 
 /* ── Calendar ────────────────────────────────────────────────── */
 var CAL_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+/* ── Delivery availability config (owner-editable) ──────────────
+   BLOCKED_DATES: days you do NOT deliver (holidays, time off). Format 'YYYY-MM-DD'.
+   SAME_DAY_CUTOFF_HOUR: orders placed after this hour (24h) can't get same-day delivery. */
+var BLOCKED_DATES=['2026-12-25','2026-01-01','2026-11-26','2026-07-04'];
+var SAME_DAY_CUTOFF_HOUR=14;
 
 function calNav(dir){
   state.calMonth+=dir;
@@ -995,18 +1006,22 @@ function renderCal(){
   // Monday-first offset: (getDay()+6)%7 → Mon=0, Sat=5, Sun=6
   var offset=(firstDay.getDay()+6)%7;
   var total=Math.ceil((offset+lastDay.getDate())/7)*7;
+  var nowHour=new Date().getHours();
   var html='';
   for(var i=0;i<total;i++){
     var dayNum=i-offset+1;
     if(dayNum<1||dayNum>lastDay.getDate()){html+='<button class="cal-day empty-day" disabled tabindex="-1"> </button>';continue;}
     var date=new Date(state.calYear,state.calMonth,dayNum);
+    var dateStr=date.toISOString().split('T')[0];
     var isSun=date.getDay()===0;
     var isPast=date<today;
     var isFar=date>maxDate;
-    var disabled=isSun||isPast||isFar;
-    var dateStr=date.toISOString().split('T')[0];
-    var cls='cal-day'+(date.getTime()===today.getTime()?' today':'')+(state.calDate===dateStr?' selected':'');
-    html+='<button class="'+cls+'"'+(disabled?' disabled':'')+' onclick="selectCalDate(\''+dateStr+'\')">'+(isSun?'<span style="opacity:0.2">'+dayNum+'</span>':dayNum)+'</button>';
+    var isBlocked=BLOCKED_DATES.indexOf(dateStr)>=0;
+    var isCutoff=(date.getTime()===today.getTime())&&(nowHour>=SAME_DAY_CUTOFF_HOUR);
+    var disabled=isSun||isPast||isFar||isBlocked||isCutoff;
+    var cls='cal-day'+(date.getTime()===today.getTime()?' today':'')+(state.calDate===dateStr?' selected':'')+(isBlocked?' blocked':'');
+    var ttl=isBlocked?' title="Unavailable — no delivery this day"':(isCutoff?' title="Past today\'s cutoff"':'');
+    html+='<button class="'+cls+'"'+(disabled?' disabled':'')+ttl+' onclick="selectCalDate(\''+dateStr+'\')">'+(isSun?'<span style="opacity:0.2">'+dayNum+'</span>':dayNum)+'</button>';
   }
   grid.innerHTML=html;
 }
