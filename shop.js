@@ -576,7 +576,7 @@ function showPaySim(type, onSuccess){
 
 /* ── Real Stripe payment (card + Apple/Google Pay) ─────────────── */
 var WB_STRIPE_PK='pk_live_51Tqi6kLXa6QDwCZAvbMmFTcFOaLMaNQOApvlYV2GBUnH90DXSJySe23wyFW4wogkwhyswHdHnnyg5mXIvC8yY4Wm00LxlXeDfz';
-var _wbStripe=null,_wbStripePromise=null,_coCard=null,_coPR=null,_coStripeSetup=false;
+var _wbStripe=null,_wbStripePromise=null,subFlowInst=null,dvFlowInst=null;
 function loadStripe(){
   if(_wbStripePromise) return _wbStripePromise;
   _wbStripePromise=new Promise(function(resolve){
@@ -595,42 +595,69 @@ function coOrderSuccess(){
   cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
   toast('Order placed!','Payment successful','✓');
 }
-function setupCheckoutStripe(){
-  if(_coStripeSetup) return;
-  _coStripeSetup=true;
-  loadStripe().then(function(stripe){
-    if(!stripe){ _coStripeSetup=false; return; }
-    var elements=stripe.elements();
-    _coCard=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Poppins,sans-serif',fontSize:'15px','::placeholder':{color:'#8BB8D4'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
-    if(document.getElementById('co-stripe-card')) _coCard.mount('#co-stripe-card');
-    _coCard.on('change',function(e){ var el=document.getElementById('co-card-err'); if(el) el.textContent=e.error?e.error.message:''; });
-    var amt=Math.max(Math.round(coChargeTotal()*100),50);
-    _coPR=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:amt},requestPayerName:true,requestPayerEmail:true});
-    var prBtn=elements.create('paymentRequestButton',{paymentRequest:_coPR,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'48px'}}});
-    _coPR.canMakePayment().then(function(res){
-      var wrap=document.getElementById('co-pr-wrap');
-      if(res){ if(wrap) wrap.style.display='block'; prBtn.mount('#co-pr-btn'); }
-      else if(wrap){ wrap.style.display='none'; }
-    });
-    _coPR.on('paymentmethod',function(ev){
-      var email=ev.payerEmail||(document.getElementById('co-email')||{}).value||'';
-      fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:coChargeTotal(),customerEmail:email,customerName:ev.payerName||''})})
-        .then(function(r){return r.json();})
-        .then(function(pi){
-          if(pi.error||!pi.clientSecret){ ev.complete('fail'); return; }
-          stripe.confirmCardPayment(pi.clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false}).then(function(cr){
-            if(cr.error){ ev.complete('fail'); var el=document.getElementById('co-card-err'); if(el) el.textContent=cr.error.message; return; }
-            ev.complete('success');
-            if(cr.paymentIntent&&cr.paymentIntent.status==='requires_action'){ stripe.confirmCardPayment(pi.clientSecret).then(function(a){ if(!a.error) coOrderSuccess(); }); }
-            else coOrderSuccess();
-          });
-        }).catch(function(){ ev.complete('fail'); });
-    });
-  });
+function subChargeTotal(){
+  var plan=PLANS[subState.plan]||{};
+  var extra=subState.waterType==='alkaline'?(plan.bottles||0)*4:0;
+  return (plan.price||0)+extra+(zoneFeeDisplay(currentZone).fee||0);
 }
-function updateCoPRTotal(){
-  if(_coPR){ _coPR.update({total:{label:'Water Boy Delivery',amount:Math.max(Math.round(coChargeTotal()*100),50)}}); }
+function dvChargeTotal(){
+  var plan=PLANS[dvState.plan]||{};
+  return (plan.price||0)+(zoneFeeDisplay(currentZone).fee||0);
 }
+/* Reusable real-Stripe payment for any checkout flow (co / sub / dv) */
+function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess){
+  var st={card:null,pr:null,setup:false};
+  function doSetup(){
+    if(st.setup) return; st.setup=true;
+    loadStripe().then(function(stripe){
+      if(!stripe){ st.setup=false; return; }
+      var elements=stripe.elements();
+      st.card=elements.create('card',{style:{base:{color:'#F0F7FF',fontFamily:'Poppins,sans-serif',fontSize:'15px','::placeholder':{color:'#8BB8D4'},iconColor:'#00D4FF'},invalid:{color:'#FF6B6B',iconColor:'#FF6B6B'}}});
+      if(document.getElementById(prefix+'-stripe-card')) st.card.mount('#'+prefix+'-stripe-card');
+      st.card.on('change',function(e){ var el=document.getElementById(prefix+'-card-err'); if(el) el.textContent=e.error?e.error.message:''; });
+      st.pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.max(Math.round(getTotal()*100),50)},requestPayerName:true,requestPayerEmail:true});
+      var prBtn=elements.create('paymentRequestButton',{paymentRequest:st.pr,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'48px'}}});
+      st.pr.canMakePayment().then(function(res){ var wrap=document.getElementById(prefix+'-pr-wrap'); if(res){ if(wrap) wrap.style.display='block'; prBtn.mount('#'+prefix+'-pr-btn'); } else if(wrap){ wrap.style.display='none'; } });
+      st.pr.on('paymentmethod',function(ev){
+        var email=ev.payerEmail||(document.getElementById(emailId)||{}).value||'';
+        fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:getTotal(),customerEmail:email,customerName:ev.payerName||''})})
+          .then(function(r){return r.json();})
+          .then(function(pi){
+            if(pi.error||!pi.clientSecret){ ev.complete('fail'); return; }
+            stripe.confirmCardPayment(pi.clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false}).then(function(cr){
+              if(cr.error){ ev.complete('fail'); var el=document.getElementById(prefix+'-card-err'); if(el) el.textContent=cr.error.message; return; }
+              ev.complete('success');
+              if(cr.paymentIntent&&cr.paymentIntent.status==='requires_action'){ stripe.confirmCardPayment(pi.clientSecret).then(function(a){ if(!a.error) onSuccess(); }); }
+              else onSuccess();
+            });
+          }).catch(function(){ ev.complete('fail'); });
+      });
+    });
+  }
+  function pay(btn){
+    var name=(document.getElementById(nameId)||{}).value||'';
+    var errEl=document.getElementById(prefix+'-card-err'); if(errEl) errEl.textContent='';
+    if(!name.trim()){ if(errEl) errEl.textContent='Enter the name on the card.'; return; }
+    if(!_wbStripe||!st.card){ if(errEl) errEl.textContent='Payment is still loading — try again in a moment.'; return; }
+    var orig=btn.textContent; btn.disabled=true; btn.textContent='Processing…';
+    var email=(document.getElementById(emailId)||{}).value||'';
+    fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:getTotal(),customerEmail:email,customerName:name})})
+      .then(function(r){return r.json();})
+      .then(function(pi){
+        if(pi.error||!pi.clientSecret){ if(errEl) errEl.textContent=pi.error||'Could not start payment.'; btn.disabled=false; btn.textContent=orig; return; }
+        _wbStripe.confirmCardPayment(pi.clientSecret,{payment_method:{card:st.card,billing_details:{name:name,email:email}}}).then(function(cr){
+          if(cr.error){ if(errEl) errEl.textContent=cr.error.message; btn.disabled=false; btn.textContent=orig; return; }
+          btn.disabled=false; btn.textContent=orig; onSuccess();
+        });
+      }).catch(function(){ if(errEl) errEl.textContent='Payment failed. Please try again.'; btn.disabled=false; btn.textContent=orig; });
+  }
+  function updateTotal(){ if(st.pr){ st.pr.update({total:{label:'Water Boy Delivery',amount:Math.max(Math.round(getTotal()*100),50)}}); } }
+  return { setup:doSetup, pay:pay, updateTotal:updateTotal };
+}
+var _coFlow=null;
+function coFlow(){ if(!_coFlow) _coFlow=makeFlowStripe('co',coChargeTotal,'co-email','co-cname',coOrderSuccess); return _coFlow; }
+function setupCheckoutStripe(){ coFlow().setup(); }
+function updateCoPRTotal(){ coFlow().updateTotal(); }
 
 /* ── HTML Injection ────────────────────────────────────────────── */
 function inject(){
@@ -916,14 +943,10 @@ function inject(){
    <!-- Step 3: Payment -->
    <div class="step-panel" id="sub-step-3">
     <p class="step-title">Payment</p>
-    <div class="pay-opts">
-     <button class="pay-apple" id="sub-apple-pay">🍎 Apple Pay</button>
-     <button class="pay-google" id="sub-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
-    </div>
-    <div class="pay-or"><span>or pay with card</span></div>
-    <div class="wb-field"><label>Card Number</label><input id="sub-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="sub-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="sub-cvv" placeholder="123" maxlength="4"></div></div>
+    <div id="sub-pr-wrap" style="display:none;margin-bottom:14px"><div id="sub-pr-btn"></div><div class="pay-or"><span>or pay with card</span></div></div>
     <div class="wb-field"><label>Name on Card</label><input id="sub-cname" placeholder="Jane Smith"></div>
+    <div class="wb-field"><label>Card</label><div id="sub-stripe-card" style="background:#0B1B2B;border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:13px 12px"></div></div>
+    <div id="sub-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
     <div id="sub-order-summary" style="margin:14px 0"></div>
     <div class="terms-row">By subscribing you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</div>
     <div class="stripe-badge">🔒 Secured by Stripe</div>
@@ -1016,14 +1039,10 @@ function inject(){
    <div class="step-panel" id="dv-step-3">
     <p class="step-title">Payment</p>
     <div id="dv-plan-summary" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:12px;padding:14px;margin-bottom:18px"></div>
-    <div class="pay-opts">
-     <button class="pay-apple" id="dv-apple-pay">🍎 Apple Pay</button>
-     <button class="pay-google" id="dv-google-pay"><span style="font-weight:700;color:#4285F4">G</span><span style="font-weight:700;color:#EA4335">o</span><span style="font-weight:700;color:#FBBC05">o</span><span style="font-weight:700;color:#34A853">g</span><span style="font-weight:700;color:#4285F4">l</span><span style="font-weight:700;color:#EA4335">e</span> Pay</button>
-    </div>
-    <div class="pay-or"><span>or pay with card</span></div>
-    <div class="wb-field"><label>Card Number</label><input id="dv-card" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-    <div class="wb-row"><div class="wb-field"><label>Expiry</label><input id="dv-exp" placeholder="MM/YY" maxlength="5"></div><div class="wb-field"><label>CVV</label><input id="dv-cvv" placeholder="123" maxlength="4"></div></div>
+    <div id="dv-pr-wrap" style="display:none;margin-bottom:14px"><div id="dv-pr-btn"></div><div class="pay-or"><span>or pay with card</span></div></div>
     <div class="wb-field"><label>Name on Card</label><input id="dv-cname" placeholder="Jane Smith"></div>
+    <div class="wb-field"><label>Card</label><div id="dv-stripe-card" style="background:#0B1B2B;border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:13px 12px"></div></div>
+    <div id="dv-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
     <div class="wb-field"><label>Promo Code (optional)</label><input id="dv-promo" placeholder="WATERBOY10"></div>
     <div class="terms-row"><input type="checkbox" id="dv-terms"><label for="dv-terms">I agree to the <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</label></div>
     <div class="stripe-badge">🔒 Secured by Stripe</div>
@@ -1238,23 +1257,7 @@ function wireCheckout(){
   document.getElementById('co-next-addons')?.addEventListener('click',()=>{ gotoStep('checkout-overlay',3); buildOrderSummary('co-order-summary'); updateCoPRTotal(); });
   document.getElementById('co-back-1')?.addEventListener('click',()=>gotoStep('checkout-overlay',0));
   document.getElementById('co-back-2')?.addEventListener('click',()=>gotoStep('checkout-overlay',2));
-  document.getElementById('co-place-order')?.addEventListener('click',function(){
-    var name=(document.getElementById('co-cname')||{}).value||'';
-    var errEl=document.getElementById('co-card-err'); if(errEl) errEl.textContent='';
-    if(!name.trim()){ if(errEl) errEl.textContent='Enter the name on the card.'; return; }
-    if(!_wbStripe||!_coCard){ if(errEl) errEl.textContent='Payment is still loading — try again in a moment.'; return; }
-    var btn=this, orig=btn.textContent; btn.disabled=true; btn.textContent='Processing…';
-    var email=(document.getElementById('co-email')||{}).value||'';
-    fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:coChargeTotal(),customerEmail:email,customerName:name})})
-      .then(function(r){return r.json();})
-      .then(function(pi){
-        if(pi.error||!pi.clientSecret){ if(errEl) errEl.textContent=pi.error||'Could not start payment.'; btn.disabled=false; btn.textContent=orig; return; }
-        _wbStripe.confirmCardPayment(pi.clientSecret,{payment_method:{card:_coCard,billing_details:{name:name,email:email}}}).then(function(cr){
-          if(cr.error){ if(errEl) errEl.textContent=cr.error.message; btn.disabled=false; btn.textContent=orig; return; }
-          btn.disabled=false; btn.textContent=orig; coOrderSuccess();
-        });
-      }).catch(function(){ if(errEl) errEl.textContent='Payment failed. Please try again.'; btn.disabled=false; btn.textContent=orig; });
-  });
+  document.getElementById('co-place-order')?.addEventListener('click',function(){ coFlow().pay(this); });
   document.getElementById('co-done-btn')?.addEventListener('click',()=>closeOverlay('checkout-overlay'));
   wireZipField('co-zip','co-zone-result','co-next-0');
 }
@@ -1280,23 +1283,18 @@ function wireSubscription(){
     if(!subState.date){ toast('Pick a date','Select your first delivery date',''); return; }
     if(!subState.time){ toast('Pick a time','Select a time window',''); return; }
     gotoStep('sub-overlay',3);
-    const plan=PLANS[subState.plan]||{}; const bottles=plan.Bottles||0; const extra=subState.waterType==='alkaline'?Bottles*4:0;
+    const plan=PLANS[subState.plan]||{}; const bottles=plan.bottles||0; const extra=subState.waterType==='alkaline'?bottles*4:0;
     const zd=zoneFeeDisplay(currentZone); const total=(plan.price||0)+extra+zd.fee;
     const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
-    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${Bottles} bottles)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
+    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${bottles} bottles)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
+    if(subFlowInst) subFlowInst.updateTotal();
   });
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
   const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!',''); };
-  document.getElementById('sub-subscribe-btn')?.addEventListener('click',()=>{
-    if(!(document.getElementById('sub-card')?.value)||!(document.getElementById('sub-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
-    doSubConfirm();
-  });
-  document.getElementById('sub-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doSubConfirm));
-  document.getElementById('sub-google-pay')?.addEventListener('click',()=>showPaySim('google',doSubConfirm));
+  subFlowInst=makeFlowStripe('sub',subChargeTotal,'sub-email','sub-cname',doSubConfirm);
+  document.getElementById('sub-subscribe-btn')?.addEventListener('click',function(){ subFlowInst.pay(this); });
   document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
-  const subCard=document.getElementById('sub-card'); subCard?.addEventListener('input',()=>{ let v=subCard.value.replace(/\D/g,'').slice(0,16); subCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
-  const subExp=document.getElementById('sub-exp'); subExp?.addEventListener('input',()=>{ let v=subExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); subExp.value=v; });
   wireZipField('sub-zip','sub-zone-result','sub-next-1');
 }
 
@@ -1345,8 +1343,9 @@ function wireDeliveryModal(){
     const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
     const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
     const sumEl=document.getElementById('dv-plan-summary');
-    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.Bottles||0)} bottles/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.bottles||0)} bottles/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
     const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
+    if(dvFlowInst) dvFlowInst.updateTotal();
   });
   document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
   const doDvConfirm=()=>{
@@ -1354,22 +1353,18 @@ function wireDeliveryModal(){
     const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
     const cs=document.getElementById('dv-confirm-summary');
     if(cs) cs.innerHTML=`<strong style="color:#fff;font-size:15px">${esc(dvState.plan||'')} Plan</strong><br>`
-      +`${(plan.Bottles||0)} bottles &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
+      +`${(plan.bottles||0)} bottles &nbsp;·&nbsp; ${esc(dvState.freq)}<br>`
       +`${esc(dvState.day)} ${esc(dvState.window)}<br>`
       +`First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD'}<br>`
       +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
     toast('Delivery scheduled!','Welcome to Waterboy Delivery!','');
   };
-  document.getElementById('dv-subscribe-btn')?.addEventListener('click',()=>{
+  dvFlowInst=makeFlowStripe('dv',dvChargeTotal,'dv-email','dv-cname',doDvConfirm);
+  document.getElementById('dv-subscribe-btn')?.addEventListener('click',function(){
     if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service',''); return; }
-    if(!(document.getElementById('dv-card')?.value)||!(document.getElementById('dv-cname')?.value)){ toast('Payment info','Enter card details',''); return; }
-    doDvConfirm();
+    dvFlowInst.pay(this);
   });
-  document.getElementById('dv-apple-pay')?.addEventListener('click',()=>showPaySim('apple',doDvConfirm));
-  document.getElementById('dv-google-pay')?.addEventListener('click',()=>showPaySim('google',doDvConfirm));
   document.getElementById('dv-done-btn')?.addEventListener('click',()=>closeOverlay('delivery-overlay'));
-  const dvCard=document.getElementById('dv-card'); dvCard?.addEventListener('input',()=>{ let v=dvCard.value.replace(/\D/g,'').slice(0,16); dvCard.value=v.replace(/(.{4})/g,'$1 ').trim(); });
-  const dvExp=document.getElementById('dv-exp'); dvExp?.addEventListener('input',()=>{ let v=dvExp.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); dvExp.value=v; });
   wireZipField('dv-zip','dv-zone-result','dv-next-0');
 }
 
@@ -1396,7 +1391,7 @@ function openSubWithPlan(planName){
   // Use water type pricing from WaterboyState
   const bundleData = WATERBOY_PRICING.bundles[planName];
   const displayPrice = bundleData ? bundleData[window.WaterboyState.waterType] : (plan.price||0);
-  const bottles = bundleData ? bundleData.Bottles : (plan.Bottles||0);
+  const bottles = bundleData ? bundleData.Bottles : (plan.bottles||0);
   const waterLabel = { ro:'RO', alkaline:'Alkaline', hydrogen:'Hydrogen' }[window.WaterboyState.waterType] || 'RO';
 
   const display = document.getElementById('sub-plan-display');
@@ -1408,6 +1403,7 @@ function openSubWithPlan(planName){
   $$('#sub-overlay .wtype-btn').forEach(b=>b.classList.toggle('sel',b.dataset.wt===subState.waterType));
   gotoStep('sub-overlay',0);
   openOverlay('sub-overlay');
+  if(subFlowInst) subFlowInst.setup();
 }
 
 /* ── Wire "Set Up Delivery" button ─────────────────────────────── */
@@ -1428,6 +1424,7 @@ function wireDeliveryButton(){
           f('dv-fname',parts[0]); f('dv-lname',parts.slice(1).join(' ')); f('dv-email',user.email||''); f('dv-phone',user.phone||''); f('dv-addr',user.addr||''); f('dv-city',user.city||''); f('dv-zip',user.zip||'');
         }
         openOverlay('delivery-overlay');
+        if(dvFlowInst) dvFlowInst.setup();
       });
     }
   });
