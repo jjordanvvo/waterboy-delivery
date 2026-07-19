@@ -46,6 +46,10 @@
     .banner{background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:13px;padding:12px 14px;border-radius:10px;margin-bottom:16px;line-height:1.6;}
     .banner code{background:#fff;padding:1px 5px;border-radius:4px;border:1px solid #fde68a;font-size:12px;}
     a{color:var(--blue);}
+    .prod-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--border);}
+    .prod-row:last-child{border-bottom:none;}
+    .prod-row input{width:auto;}
+    .prod-row label{margin:0;font-size:14px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--navy);flex:1;cursor:pointer;}
   </style>
 </head>
 <body>
@@ -86,6 +90,11 @@
     <div class="list" id="blocked-list"></div>
 
     <div style="height:24px"></div>
+    <label>Add-ons for sale</label>
+    <p style="font-size:12px;color:var(--muted);margin-top:-2px;margin-bottom:10px">Uncheck an item to discontinue it — it disappears from checkout instantly.</p>
+    <div id="product-list"></div>
+
+    <div style="height:24px"></div>
     <button class="btn" id="save-btn" onclick="save()">Save Changes</button>
     <div class="msg" id="save-msg"></div>
   </div>
@@ -97,8 +106,18 @@
 var adminPass='';
 var blockedDates=[];
 var cutoffHour=14;
+var disabledProducts=[];
 var viewYear, viewMonth;
 var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var PRODUCT_CATALOG=[
+  {id:'lmnt-cans',      name:'LMNT Sparkling Cans ($4.99)'},
+  {id:'lmnt-packets',   name:'LMNT Electrolyte Packets ($2.99)'},
+  {id:'ice-bags',       name:'Ice Bags ($4.99)'},
+  {id:'hydrogen-sticks',name:'Hydrogen Sticks ($29.99)'},
+  {id:'h2-tabs',        name:'H2 Tabs ($1.00)'},
+  {id:'zipfizz',        name:'Zipfizz Energy Drink Mix'},
+  {id:'echo-hydrogen',  name:'Echo Hydrogen Prebiotic Drink Mix'}
+];
 
 function showMsg(id,type,text){var el=document.getElementById(id);el.className='msg '+type;el.textContent=text;}
 
@@ -113,6 +132,7 @@ async function unlock(){
     var c=await r.json();
     blockedDates=Array.isArray(c.blockedDates)?c.blockedDates:[];
     cutoffHour=typeof c.cutoffHour==='number'?c.cutoffHour:14;
+    disabledProducts=Array.isArray(c.disabledProducts)?c.disabledProducts:[];
     adminPass=pass;
     document.getElementById('login-card').classList.add('hidden');
     document.getElementById('mgr-card').classList.remove('hidden');
@@ -122,6 +142,7 @@ async function unlock(){
       b.innerHTML='<strong>Storage not connected yet.</strong> Saving needs a free Vercel KV store. In Vercel: <b>Storage → Create Database → KV</b>, connect it to this project, then add an env var <code>ADMIN_PASSWORD</code>. Until then you can preview changes but not save.';
     }
     buildCutoff();
+    renderProducts();
     var now=new Date(); viewYear=now.getFullYear(); viewMonth=now.getMonth();
     renderCal(); renderList();
   }catch(e){
@@ -186,6 +207,20 @@ function renderList(){
   }).join('');
 }
 
+function renderProducts(){
+  var el=document.getElementById('product-list');
+  el.innerHTML=PRODUCT_CATALOG.map(function(p){
+    var checked=disabledProducts.indexOf(p.id)<0;
+    return '<div class="prod-row"><input type="checkbox" id="prod-'+p.id+'"'+(checked?' checked':'')+
+      ' onchange="toggleProduct(\''+p.id+'\',this.checked)"><label for="prod-'+p.id+'">'+p.name+'</label></div>';
+  }).join('');
+}
+function toggleProduct(id,enabled){
+  var i=disabledProducts.indexOf(id);
+  if(enabled&&i>=0)disabledProducts.splice(i,1);
+  if(!enabled&&i<0)disabledProducts.push(id);
+}
+
 async function save(){
   document.getElementById('save-btn').disabled=true;
   showMsg('save-msg','ok','Saving…');
@@ -193,7 +228,7 @@ async function save(){
     var r=await fetch('/api/delivery-config',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-admin-pass':adminPass},
-      body:JSON.stringify({blockedDates:blockedDates,cutoffHour:cutoffHour})
+      body:JSON.stringify({blockedDates:blockedDates,cutoffHour:cutoffHour,disabledProducts:disabledProducts})
     });
     var d=await r.json();
     if(!r.ok){showMsg('save-msg','err',d.error||'Save failed.');}

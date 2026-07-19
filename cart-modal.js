@@ -5,6 +5,14 @@
 (function () {
   'use strict';
 
+  /* Owner-managed discontinued add-ons (from /admin), loaded async — checked
+     when the sidebar is actually built (lazy, on first open), giving this
+     plenty of time to resolve first. */
+  var disabledProductIds = [];
+  fetch('/api/delivery-config').then(function (r) { return r.json(); }).then(function (c) {
+    if (c && Array.isArray(c.disabledProducts)) disabledProductIds = c.disabledProducts;
+  }).catch(function () {});
+
   var MODAL_CSS = [
     '#wb-cart-overlay{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.85);',
     'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);',
@@ -436,11 +444,11 @@
       '</div>';
     document.body.appendChild(aside);
     var alsoBought=[
-      {name:'LMNT Electrolyte Cans',price:'$4.99',img:'Images%20for%20Menu/Images%20for%20Menu/Cans.jpg',priceNum:4.99},
-      {name:'LMNT Electrolyte Packets',price:'$2.99',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG',priceNum:2.99},
-      {name:'Zipfizz Energy Drink Mix',price:'$34.99',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG',priceNum:34.99},
-      {name:'Echo Hydrogen Prebiotic Packet',price:'$1.99',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG',priceNum:1.99}
-    ];
+      {id:'lmnt-cans',     name:'LMNT Electrolyte Cans',price:'$4.99',img:'Images%20for%20Menu/Images%20for%20Menu/Can1.PNG',priceNum:4.99},
+      {id:'lmnt-packets',  name:'LMNT Electrolyte Packets',price:'$2.99',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG',priceNum:2.99},
+      {id:'zipfizz',       name:'Zipfizz Energy Drink Mix',price:'$34.99',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG',priceNum:34.99},
+      {id:'echo-hydrogen', name:'Echo Hydrogen Prebiotic Packet',price:'$1.99',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG',priceNum:1.99}
+    ].filter(function(p){ return disabledProductIds.indexOf(p.id)<0; });
     var alsoContainer=aside.querySelector('#wbcs-also-items');
     alsoBought.forEach(function(p){
       var row=document.createElement('div');
