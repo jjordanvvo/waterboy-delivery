@@ -1467,7 +1467,7 @@ function showSuccess(orderId){
   // Auto-add delivery to business Google Calendar
   (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
   // Text the customer an order confirmation (no-ops until Twilio env vars are set)
-  if(state.phone){(function(){fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:state.phone,orderId:orderId,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();}
+  (function(){fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:state.phone,orderId:orderId,deliveryDate:delivDate,deliveryWindow:timeLbl,customerName:state.name,address:fullAddr,total:total.toFixed(2)})}).catch(function(){});})();
 }
 
 function buildCalLink(order,timeLbl,delivDate){
