@@ -26,6 +26,7 @@
 
 <style>
 *,*::before,*::after{box-sizing:border-box;}
+html,body{overflow-x:hidden;max-width:100%;}
 /* ── Order Page Light Theme ── */
 .order-page-hero{background:var(--color-surface-alt);border-bottom:1px solid var(--color-border);padding:40px 24px 36px;text-align:center;}
 .order-page-hero .oph-label{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-primary);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:12px;}
@@ -192,11 +193,11 @@
 .ord-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.5);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
 .ord-overlay.open{display:flex;}
 
-.checkout-wrap{background:#FFFFFF;border:1px solid var(--color-border);border-radius:20px;max-width:880px;width:100%;display:grid;grid-template-columns:1fr 1fr;margin:auto;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.15);}
+.checkout-wrap{background:#FFFFFF;border:1px solid var(--color-border);border-radius:20px;max-width:880px;width:100%;display:grid;grid-template-columns:1fr 1fr;margin:auto;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.15);min-width:0;}
 @media(max-width:680px){.checkout-wrap{grid-template-columns:1fr;}}
-.co-sum{padding:40px 32px;border-right:1px solid var(--color-border);}
+.co-sum{padding:40px 32px;border-right:1px solid var(--color-border);min-width:0;}
 @media(max-width:680px){.co-sum{border-right:none;border-bottom:1px solid var(--color-border);padding:32px 24px;}}
-.co-pay{padding:40px 32px;}
+.co-pay{padding:40px 32px;min-width:0;}
 @media(max-width:680px){.co-pay{padding:32px 24px;}}
 .co-heading{font-family:'Poppins',sans-serif;font-size:19px;font-weight:700;color:var(--color-text);margin:0 0 22px;display:flex;align-items:center;gap:9px;}
 .stripe-field{background:#FFFFFF;border:1.5px solid var(--color-border);border-radius:10px;padding:14px 14px;transition:border-color .15s,box-shadow .15s;}
@@ -1466,7 +1467,7 @@ function showSuccess(orderId){
   // Auto-add delivery to business Google Calendar
   (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
   // Text the customer an order confirmation (no-ops until Twilio env vars are set)
-  if(state.phone){(function(){fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:state.phone,orderId:orderId,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();}
+  (function(){fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:state.phone,orderId:orderId,deliveryDate:delivDate,deliveryWindow:timeLbl,customerName:state.name,address:fullAddr,total:total.toFixed(2)})}).catch(function(){});})();
 }
 
 function buildCalLink(order,timeLbl,delivDate){
