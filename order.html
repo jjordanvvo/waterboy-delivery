@@ -133,6 +133,7 @@
 .del-card{background:#FFFFFF;border:2px solid var(--color-border);border-radius:14px;padding:22px 20px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
 .del-card:hover{border-color:var(--color-primary-sky);}
 .del-card.selected{border-color:var(--color-primary);}
+.del-card.del-card-disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}
 .del-icon{font-size:26px;margin-bottom:10px;display:block;}
 .del-title{font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;color:var(--color-text);margin-bottom:5px;}
 .del-sub{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);line-height:1.5;}
@@ -144,6 +145,8 @@
 .time-pill{font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;padding:10px 22px;border-radius:30px;border:1.5px solid var(--color-border);background:none;color:var(--color-text-muted);cursor:pointer;transition:all 0.2s;}
 .time-pill:hover{border-color:var(--color-primary);color:var(--color-primary);}
 .time-pill.active{background:rgba(13,71,161,0.08);border-color:var(--color-primary);color:var(--color-primary);}
+.time-pill:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through;}
+.time-pill:disabled:hover{border-color:var(--color-border);color:var(--color-text-muted);}
 
 .cal-wrap{margin-top:0;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
@@ -585,25 +588,25 @@
       <div class="co-also-section">
         <p class="co-also-label">Customers Also Bought</p>
         <div class="co-also-row">
-          <div class="co-also-card">
-            <img src="Images%20for%20Menu/Images%20for%20Menu/Cans.jpg" class="co-also-img" alt="LMNT Electrolyte Cans" width="80" height="80" loading="lazy" />
+          <div class="co-also-card" data-addon-id="lmnt-cans">
+            <img src="Images%20for%20Menu/Images%20for%20Menu/Can1.PNG" class="co-also-img" alt="LMNT Electrolyte Cans" width="80" height="80" loading="lazy" />
             <p class="co-also-name">LMNT Electrolyte Cans</p>
             <p class="co-also-price">$4.99</p>
             <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Cans',4.99,this)">+ Add</button>
           </div>
-          <div class="co-also-card">
+          <div class="co-also-card" data-addon-id="lmnt-packets">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" class="co-also-img" alt="LMNT Electrolyte Packets" width="80" height="80" loading="lazy" />
             <p class="co-also-name">LMNT Electrolyte Packets</p>
             <p class="co-also-price">$2.99</p>
             <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Packets',2.99,this)">+ Add</button>
           </div>
-          <div class="co-also-card">
+          <div class="co-also-card" data-addon-id="zipfizz">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" class="co-also-img" alt="Zipfizz Energy Drink Mix" width="80" height="80" loading="lazy" />
             <p class="co-also-name">Zipfizz Energy Drink Mix</p>
             <p class="co-also-price">$34.99</p>
             <button class="co-also-add" onclick="addAlsoBought('Zipfizz Energy Drink Mix',34.99,this)">+ Add</button>
           </div>
-          <div class="co-also-card">
+          <div class="co-also-card" data-addon-id="echo-hydrogen">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" class="co-also-img" alt="Echo Hydrogen Prebiotic Packet" width="80" height="80" loading="lazy" />
             <p class="co-also-name">Echo Hydrogen Prebiotic Packet</p>
             <p class="co-also-price">$1.99</p>
@@ -949,7 +952,17 @@ function updateS2Summary(){
 }
 
 /* ── Step 3 ──────────────────────────────────────────────────── */
+/* Delivery windows — single source of truth for labels + same-day filtering.
+   Business hours: Mon–Sat, 8am–6pm. Sunday closed (see isSun checks below). */
+var TIME_WINDOWS={
+  morning:  {label:'Morning (8am - 12pm)',  short:'Morning (8am–12pm)',  start:8,  end:12},
+  afternoon:{label:'Afternoon (12pm - 4pm)',short:'Afternoon (12pm–4pm)',start:12, end:16},
+  evening:  {label:'Evening (4pm - 6pm)',   short:'Evening (4pm–6pm)',   start:16, end:18}
+};
+function timeLabel(pref){ return pref&&TIME_WINDOWS[pref]?TIME_WINDOWS[pref].short:'-'; }
+
 function selectDelOpt(opt){
+  if(opt==='asap'&&document.getElementById('dc-asap').classList.contains('del-card-disabled'))return;
   state.delOpt=opt;
   saveDraft();
   document.getElementById('dc-asap').classList.toggle('selected',opt==='asap');
@@ -962,6 +975,9 @@ function selectDelOpt(opt){
 }
 
 function selectTimePref(pref){
+  var prefix=state.delOpt==='asap'?'tp-':'stp-';
+  var btn=document.getElementById(prefix+pref);
+  if(btn&&btn.disabled)return;
   state.timePref=pref;
   saveDraft();
   updateTimePillUI();
@@ -972,7 +988,7 @@ function updateTimePillUI(){
   var ids=['morning','afternoon','evening'];
   ids.forEach(function(id){
     var pill=document.getElementById('tp-'+id);
-    if(pill)pill.className='time-pill'+(state.timePref===id?' active':'');
+    if(pill)pill.className='time-pill'+(state.timePref===id?' active':'')+(pill.disabled?' pill-disabled':'');
     var spill=document.getElementById('stp-'+id);
     if(spill)spill.className='time-pill'+(state.timePref===id?' active':'');
   });
@@ -985,12 +1001,66 @@ var CAL_MONTHS=['January','February','March','April','May','June','July','August
    SAME_DAY_CUTOFF_HOUR: orders placed after this hour (24h) can't get same-day delivery. */
 var BLOCKED_DATES=['2026-12-25','2026-01-01','2026-11-26','2026-07-04'];
 var SAME_DAY_CUTOFF_HOUR=14;
+
+function isSunday(d){ return (d||new Date()).getDay()===0; }
+
+/* Grey out ASAP windows that have already ended today, and hide the whole ASAP
+   option once we're past the same-day cutoff, past closing time, or it's a
+   non-delivery day (Sunday) — so a customer can never submit an order for a
+   delivery window that has already passed. Re-run after the owner's real
+   cutoff/blocked-dates config loads from /api/delivery-config. */
+function refreshAsapAvailability(){
+  var now=new Date();
+  var nowHour=now.getHours()+now.getMinutes()/60;
+  var todayStr=now.toISOString().split('T')[0];
+  var closedToday=isSunday(now)||BLOCKED_DATES.indexOf(todayStr)>=0;
+  var pastCutoff=nowHour>=SAME_DAY_CUTOFF_HOUR;
+  var anyWindowLeft=false;
+
+  ['morning','afternoon','evening'].forEach(function(id){
+    var w=TIME_WINDOWS[id];
+    var passed=nowHour>=w.end;
+    if(!passed)anyWindowLeft=true;
+    var tp=document.getElementById('tp-'+id);
+    if(tp)tp.disabled=passed||closedToday||pastCutoff;
+  });
+
+  var asapBlocked=closedToday||pastCutoff||!anyWindowLeft;
+  var asapCard=document.getElementById('dc-asap');
+  var asapSub=asapCard?asapCard.querySelector('.del-sub'):null;
+  if(asapCard)asapCard.classList.toggle('del-card-disabled',asapBlocked);
+  if(asapSub)asapSub.textContent=asapBlocked
+    ?"Same-day delivery isn't available right now — please pick a date."
+    :"We'll get it to you today based on availability.";
+
+  if(state.delOpt==='asap'){
+    if(asapBlocked){
+      state.delOpt=null;
+      asapCard.classList.remove('selected');
+      document.getElementById('asap-time-section').classList.remove('visible');
+      state.timePref=null;
+    } else if(state.timePref&&TIME_WINDOWS[state.timePref]&&nowHour>=TIME_WINDOWS[state.timePref].end){
+      state.timePref=null;
+    }
+  }
+  updateTimePillUI();
+  updateS3Summary();
+}
+
 /* Load owner-managed blocked dates + cutoff (from /admin). Falls back to the defaults above. */
 fetch('/api/delivery-config').then(function(r){return r.json();}).then(function(c){
   if(c&&Array.isArray(c.blockedDates))BLOCKED_DATES=c.blockedDates;
   if(c&&typeof c.cutoffHour==='number')SAME_DAY_CUTOFF_HOUR=c.cutoffHour;
   if(typeof renderCal==='function'&&document.getElementById('cal-grid'))renderCal();
+  refreshAsapAvailability();
+  if(c&&Array.isArray(c.disabledProducts)){
+    c.disabledProducts.forEach(function(id){
+      var card=document.querySelector('.co-also-card[data-addon-id="'+id+'"]');
+      if(card)card.style.display='none';
+    });
+  }
 }).catch(function(){});
+refreshAsapAvailability();
 
 function calNav(dir){
   state.calMonth+=dir;
@@ -1036,7 +1106,26 @@ function selectCalDate(dateStr){
   state.calDate=dateStr;
   saveDraft();
   renderCal();
+  refreshScheduledWindowAvailability();
   updateS3Summary();
+}
+
+/* If the picked scheduled date is today, grey out any window that has already
+   ended (same fix as the ASAP path) so a customer can't book a delivery window
+   that's already passed. Future dates get every window enabled. */
+function refreshScheduledWindowAvailability(){
+  var now=new Date();
+  var nowHour=now.getHours()+now.getMinutes()/60;
+  var isToday=state.calDate===now.toISOString().split('T')[0];
+  ['morning','afternoon','evening'].forEach(function(id){
+    var passed=isToday&&nowHour>=TIME_WINDOWS[id].end;
+    var spill=document.getElementById('stp-'+id);
+    if(spill)spill.disabled=passed;
+  });
+  if(isToday&&state.timePref&&nowHour>=TIME_WINDOWS[state.timePref].end){
+    state.timePref=null;
+    updateTimePillUI();
+  }
 }
 
 /* ── Zone calculation on zip ────────────────────────────────── */
@@ -1076,6 +1165,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(state.waterType)selectWaterType(state.waterType);
   if(state.amtMode)setAmtMode(state.amtMode);
   if(state.delOpt)selectDelOpt(state.delOpt);
+  if(state.calDate)refreshScheduledWindowAvailability();
   if(state.timePref)updateTimePillUI();
   goStep(state.step||1);
 });
@@ -1088,7 +1178,7 @@ function updateS3Summary(){
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
   var delLbl=!state.delOpt?'Not selected':state.delOpt==='asap'?'As Soon As Possible':'Scheduled: '+(state.calDate||'Pick date');
-  var timeLbl=!state.timePref?'-':state.timePref==='morning'?'Morning (8am - 12pm)':state.timePref==='afternoon'?'Afternoon (12pm - 4pm)':'Evening (4pm - 6pm)';
+  var timeLbl=timeLabel(state.timePref);
   var feeDisplay=(state.zone.unknown||state.zone.outside)?'<span style="color:#dc2626;font-weight:600">Not available &mdash; call (916) 753-3866</span>':'$'+zoneFee.toFixed(2);
   document.getElementById('s3-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+(state.waterType?wtLbl:'-')+'</span></div>'
@@ -1200,7 +1290,7 @@ function buildCheckoutSummary(){
   var base=getBasePrice();
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
-  var timeLbl=state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  var timeLbl=timeLabel(state.timePref);
   var delLbl=state.delOpt==='asap'?'ASAP - '+timeLbl:'Scheduled: '+(state.calDate||'')+' - '+timeLbl;
   document.getElementById('co-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+wtLbl+'</span></div>'
@@ -1281,7 +1371,7 @@ function showSuccess(orderId){
   var base=getBasePrice();
   var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
   var total=base+zoneFee;
-  var timeLbl=state.timePref==='morning'?'Morning (7–11am)':state.timePref==='afternoon'?'Afternoon (12–4pm)':'Evening (4–7pm)';
+  var timeLbl=timeLabel(state.timePref);
   var delivDate=state.delOpt==='asap'?'As Soon As Possible':(state.calDate||'Scheduled');
   var fullAddr=state.addr+', '+state.city+', '+state.stateField+' '+state.zip;
   var wtLbl=wtLabel();

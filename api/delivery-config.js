@@ -9,7 +9,7 @@ const Redis = require('ioredis');
 
 const REDIS_URL = process.env.REDIS_URL || process.env.KV_URL || process.env.UPSTASH_REDIS_URL || '';
 const KEY = 'delivery_config';
-const DEFAULTS = { blockedDates: ['2026-12-25', '2026-01-01', '2026-11-26', '2026-07-04'], cutoffHour: 14 };
+const DEFAULTS = { blockedDates: ['2026-12-25', '2026-01-01', '2026-11-26', '2026-07-04'], cutoffHour: 14, disabledProducts: [] };
 
 let _redis = null;
 function getRedis() {
@@ -54,10 +54,13 @@ module.exports = async (req, res) => {
       : [];
     let cutoffHour = parseInt(body.cutoffHour, 10);
     if (isNaN(cutoffHour) || cutoffHour < 0 || cutoffHour > 23) cutoffHour = 14;
+    const disabledProducts = Array.isArray(body.disabledProducts)
+      ? [...new Set(body.disabledProducts.filter((id) => typeof id === 'string' && id.length < 60))]
+      : [];
 
-    const ok = await storeSet({ blockedDates, cutoffHour });
+    const ok = await storeSet({ blockedDates, cutoffHour, disabledProducts });
     if (!ok) return res.status(500).json({ error: 'Save failed — check your storage connection.' });
-    return res.status(200).json({ ok: true, blockedDates, cutoffHour });
+    return res.status(200).json({ ok: true, blockedDates, cutoffHour, disabledProducts });
   }
 
   return res.status(405).json({ error: 'Method not allowed' });

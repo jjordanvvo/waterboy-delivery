@@ -306,17 +306,28 @@ function buildTimeWindows(containerId, onSelect){
 
 /* ── Customers Also Bought ───────────────────────────────────────── */
 const ALSO_BOUGHT=[
-  {name:'LMNT Electrolyte Cans',price:4.99,display:'$4.99 / can',img:'Images%20for%20Menu/Images%20for%20Menu/Cans.jpg'},
-  {name:'LMNT Electrolyte Packets',price:2.99,display:'$2.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG'},
-  {name:'Zipfizz Energy Drink Mix',price:39.99,display:'$39.99 / 30-pack',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG'},
-  {name:'Echo Hydrogen Prebiotic Drink Mix',price:4.99,display:'$4.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG'},
+  {id:'lmnt-cans',     name:'LMNT Electrolyte Cans',price:4.99,display:'$4.99 / can',img:'Images%20for%20Menu/Images%20for%20Menu/Can1.PNG'},
+  {id:'lmnt-packets',  name:'LMNT Electrolyte Packets',price:2.99,display:'$2.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG'},
+  {id:'zipfizz',       name:'Zipfizz Energy Drink Mix',price:39.99,display:'$39.99 / 30-pack',img:'Images%20for%20Menu/Images%20for%20Menu/Box.PNG'},
+  {id:'echo-hydrogen', name:'Echo Hydrogen Prebiotic Drink Mix',price:4.99,display:'$4.99 / pkt',img:'Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG'},
 ];
+
+/* Owner-managed discontinued add-ons (from /admin) — loaded async, checked at
+   render time since these upsell widgets are only built when a user actually
+   opens the cart/checkout, giving the fetch plenty of time to resolve first. */
+let DISABLED_PRODUCTS=new Set();
+fetch('/api/delivery-config').then(r=>r.json()).then(c=>{
+  if(c&&Array.isArray(c.disabledProducts))DISABLED_PRODUCTS=new Set(c.disabledProducts);
+  document.querySelectorAll('.co-addon-card').forEach(el=>{
+    if(DISABLED_PRODUCTS.has(el.dataset.addonId))el.style.display='none';
+  });
+}).catch(()=>{});
 
 function renderAlsoBought(){
   const wrap=document.getElementById('cd-also-items');
   if(!wrap) return;
   const inCart=cart.map(i=>(i.name||i.id||'').toLowerCase());
-  const toShow=ALSO_BOUGHT.filter(p=>!inCart.some(n=>n.includes(p.name.slice(0,6).toLowerCase())));
+  const toShow=ALSO_BOUGHT.filter(p=>!DISABLED_PRODUCTS.has(p.id)&&!inCart.some(n=>n.includes(p.name.slice(0,6).toLowerCase())));
   const parent=wrap.closest('.cd-also-bought');
   if(!toShow.length){if(parent)parent.style.display='none';return;}
   if(parent)parent.style.display='';
@@ -1117,28 +1128,64 @@ function wireAuth(){
   $$('.pw-eye').forEach(btn=>btn.addEventListener('click',()=>{
     const inp=btn.previousElementSibling; inp.type=inp.type==='password'?'text':'password';
   }));
-  document.getElementById('si-submit')?.addEventListener('click',()=>{
-    const email=(document.getElementById('si-email').value||'').trim();
+  document.getElementById('si-submit')?.addEventListener('click', async ()=>{
+    const email=(document.getElementById('si-email').value||'').trim().toLowerCase();
     const pass=document.getElementById('si-pass').value||'';
     const errEl=document.getElementById('si-error');
+    const btn=document.getElementById('si-submit');
+    errEl.style.display='none';
     if(!email||!pass){ errEl.textContent='Please fill in all fields.'; errEl.style.display='block'; return; }
-    if((email===DEMO_EMAIL&&pass===DEMO_PASS)||pass.length>=6){
-      user={name:email===DEMO_EMAIL?'Demo User':email.split('@')[0], email, phone:'', addr:'', city:'Sacramento', zip:''};
+
+    if(email===DEMO_EMAIL&&pass===DEMO_PASS){
+      user={name:'Demo User', email, phone:'', addr:'', city:'Sacramento', zip:''};
       saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-      const firstName=user.name.split(' ')[0];
-      toast('Welcome back, '+firstName+'!','You are now signed in','');
-    } else { errEl.textContent='Invalid email or password.'; errEl.style.display='block'; }
+      toast('Welcome back, Demo!','You are now signed in','');
+      return;
+    }
+
+    const origText=btn.textContent;
+    btn.disabled=true; btn.textContent='Signing in…';
+    try{
+      const res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,password:pass})});
+      const data=await res.json();
+      if(!res.ok){ errEl.textContent=data.error||'Invalid email or password.'; errEl.style.display='block'; return; }
+      user={name:`${data.user.firstName||''} ${data.user.lastName||''}`.trim()||data.user.email.split('@')[0], email:data.user.email, phone:data.user.phone||'', addr:data.user.addr||'', city:data.user.city||'', zip:data.user.zip||''};
+      saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
+      toast('Welcome back, '+(data.user.firstName||user.name.split(' ')[0])+'!','You are now signed in','');
+    }catch(e){
+      errEl.textContent='Network error — please try again.'; errEl.style.display='block';
+    }finally{
+      btn.disabled=false; btn.textContent=origText;
+    }
   });
-  document.getElementById('su-submit')?.addEventListener('click',()=>{
+  document.getElementById('su-submit')?.addEventListener('click', async ()=>{
     const fname=(document.getElementById('su-fname').value||'').trim();
     const lname=(document.getElementById('su-lname').value||'').trim();
-    const email=(document.getElementById('su-email').value||'').trim();
+    const email=(document.getElementById('su-email').value||'').trim().toLowerCase();
     const pass=document.getElementById('su-pass').value||'';
     const errEl=document.getElementById('su-error');
+    const btn=document.getElementById('su-submit');
+    errEl.style.display='none';
     if(!fname||!email||pass.length<8){ errEl.textContent='Name, email and 8-char password required.'; errEl.style.display='block'; return; }
-    user={name:`${fname} ${lname}`.trim(), email, phone:(document.getElementById('su-phone').value||''), addr:(document.getElementById('su-addr').value||''), city:(document.getElementById('su-city').value||''), zip:(document.getElementById('su-zip').value||'')};
-    saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
-    toast('Welcome to Waterboy, '+fname+'!','Your account is ready','');
+    const phone=(document.getElementById('su-phone').value||'');
+    const addr=(document.getElementById('su-addr').value||'');
+    const city=(document.getElementById('su-city').value||'');
+    const zip=(document.getElementById('su-zip').value||'');
+
+    const origText=btn.textContent;
+    btn.disabled=true; btn.textContent='Creating account…';
+    try{
+      const res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signup',firstName:fname,lastName:lname,email,phone,addr,city,zip,password:pass})});
+      const data=await res.json();
+      if(!res.ok){ errEl.textContent=data.error||'Could not create account.'; errEl.style.display='block'; return; }
+      user={name:`${fname} ${lname}`.trim(), email, phone, addr, city, zip};
+      saveUser(user); updateNavUser(); closeOverlay('auth-overlay');
+      toast('Welcome to Waterboy, '+fname+'!','Your account is ready','');
+    }catch(e){
+      errEl.textContent='Network error — please try again.'; errEl.style.display='block';
+    }finally{
+      btn.disabled=false; btn.textContent=origText;
+    }
   });
 }
 
