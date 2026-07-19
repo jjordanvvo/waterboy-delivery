@@ -664,8 +664,8 @@ document.getElementById('mobile-menu-close').addEventListener('click',function()
     addr.style.borderColor = '';
     var q = addr.value.trim();
     clearTimeout(timer);
-    if (q.length < 4) { hide(); return; }
-    timer = setTimeout(function(){ query(q); }, 300);
+    if (q.length < 3) { hide(); return; }
+    timer = setTimeout(function(){ query(q); }, 120);
   });
   addr.addEventListener('keydown', function(e){
     if (!box || box.style.display === 'none') return;
