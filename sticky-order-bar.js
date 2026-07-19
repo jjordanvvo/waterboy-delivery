@@ -44,7 +44,7 @@
         '<option value="3gallon">3 Gallon</option>' +
         '<option value="5gallon" selected>5 Gallon</option>' +
       '</select>' +
-      '<a id="sob-continue" class="btn-primary sob-continue" href="/water-delivery?water=ro&size=5gallon">Continue</a>' +
+      '<a id="sob-continue" class="btn-primary sob-continue" href="/order?water=ro&size=5gallon">Continue</a>' +
       '<span class="sob-spacer"></span>' +
       '<button id="sob-dismiss" class="sob-dismiss" type="button" aria-label="Dismiss order bar">' +
         '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>' +
@@ -57,7 +57,7 @@
 
     function updateLink() {
       cont.setAttribute('href',
-        '/water-delivery?water=' + encodeURIComponent(waterSel.value) +
+        '/order?water=' + encodeURIComponent(waterSel.value) +
         '&size=' + encodeURIComponent(sizeSel.value));
     }
     waterSel.addEventListener('change', updateLink);

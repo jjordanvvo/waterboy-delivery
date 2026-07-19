@@ -853,6 +853,16 @@ function saveDraft(){try{sessionStorage.setItem(DRAFT_KEY,JSON.stringify(state))
 function loadDraft(){try{var d=JSON.parse(sessionStorage.getItem(DRAFT_KEY));if(d){state=Object.assign(state,d);}}catch(_){}}
 loadDraft();
 
+/* Pre-select water type from a ?water= link (e.g. the sticky order bar on
+   marketing pages). 'ro' (Reverse Osmosis) is this flow's Purified Water. */
+(function applyWaterParam(){
+  try{
+    var p=new URLSearchParams(location.search).get('water');
+    var map={ro:'purified',purified:'purified',alkaline:'alkaline',hydrogen:'hydrogen'};
+    if(p&&map[p])state.waterType=map[p];
+  }catch(_){}
+})();
+
 /* ── Step navigation ─────────────────────────────────────────── */
 function goStep(n){
   if(n<1||n>3)return;
