@@ -585,6 +585,11 @@
       <div class="co-heading">Order Summary</div>
       <div id="co-summary-content"></div>
       <div id="also-addons-list"></div>
+      <div style="display:flex;gap:8px;margin:10px 0 4px;">
+        <input id="co-promo-input" placeholder="Promo code" maxlength="30" style="flex:1;padding:10px 12px;border:1.5px solid var(--color-border);border-radius:8px;font-family:'Poppins',sans-serif;font-size:14px;text-transform:uppercase;" />
+        <button type="button" onclick="applyPromoCode()" style="padding:0 16px;border-radius:8px;border:1.5px solid var(--color-border);background:none;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:var(--color-text);cursor:pointer;">Apply</button>
+      </div>
+      <div id="co-promo-msg" style="font-size:12px;margin:2px 0 12px;"></div>
       <div class="co-also-section">
         <p class="co-also-label">Customers Also Bought</p>
         <div class="co-also-row">
@@ -592,25 +597,25 @@
             <img src="Images%20for%20Menu/Images%20for%20Menu/Can1.PNG" class="co-also-img" alt="LMNT Electrolyte Cans" width="80" height="80" loading="lazy" />
             <p class="co-also-name">LMNT Electrolyte Cans</p>
             <p class="co-also-price">$4.99</p>
-            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Cans',4.99,this)">+ Add</button>
+            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Cans',4.99,'lmnt-cans',this)">+ Add</button>
           </div>
           <div class="co-also-card" data-addon-id="lmnt-packets">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Pack1.PNG" class="co-also-img" alt="LMNT Electrolyte Packets" width="80" height="80" loading="lazy" />
             <p class="co-also-name">LMNT Electrolyte Packets</p>
             <p class="co-also-price">$2.99</p>
-            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Packets',2.99,this)">+ Add</button>
+            <button class="co-also-add" onclick="addAlsoBought('LMNT Electrolyte Packets',2.99,'lmnt-packets',this)">+ Add</button>
           </div>
           <div class="co-also-card" data-addon-id="zipfizz">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Box.PNG" class="co-also-img" alt="Zipfizz Energy Drink Mix" width="80" height="80" loading="lazy" />
             <p class="co-also-name">Zipfizz Energy Drink Mix</p>
             <p class="co-also-price">$34.99</p>
-            <button class="co-also-add" onclick="addAlsoBought('Zipfizz Energy Drink Mix',34.99,this)">+ Add</button>
+            <button class="co-also-add" onclick="addAlsoBought('Zipfizz Energy Drink Mix',34.99,'zipfizz',this)">+ Add</button>
           </div>
           <div class="co-also-card" data-addon-id="echo-hydrogen">
             <img src="Images%20for%20Menu/Images%20for%20Menu/Hyd.PNG" class="co-also-img" alt="Echo Hydrogen Prebiotic Packet" width="80" height="80" loading="lazy" />
             <p class="co-also-name">Echo Hydrogen Prebiotic Packet</p>
             <p class="co-also-price">$1.99</p>
-            <button class="co-also-add" onclick="addAlsoBought('Echo Hydrogen Prebiotic Packet',1.99,this)">+ Add</button>
+            <button class="co-also-add" onclick="addAlsoBought('Echo Hydrogen Prebiotic Packet',1.99,'echo-hydrogen',this)">+ Add</button>
           </div>
         </div>
       </div>
@@ -756,32 +761,62 @@ const ZIP_COORDS={'95758':{lat:38.4088,lng:-121.4208},'95757':{lat:38.3930,lng:-
 function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,x=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
 function getZoneForZip(z){var c=ZIP_COORDS[z];if(!c)return{zone:0,fee:0,outside:false,unknown:true};var d=haversine(STORE_LAT,STORE_LNG,c.lat,c.lng);if(d<=1)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=2)return{zone:1,fee:3.99,dist:d,outside:false,unknown:false};if(d<=3)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=4)return{zone:3,fee:6.99,dist:d,outside:false,unknown:false};if(d<=5)return{zone:3,fee:7.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};if(d<=7)return{zone:3,fee:9.99,dist:d,outside:false,unknown:false};if(d<=8)return{zone:3,fee:10.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:11.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
 function getZoneForLatLng(lat,lng){var d=haversine(STORE_LAT,STORE_LNG,lat,lng);if(d<=1)return{zone:1,fee:2.99,dist:d,outside:false,unknown:false};if(d<=2)return{zone:1,fee:3.99,dist:d,outside:false,unknown:false};if(d<=3)return{zone:2,fee:5.99,dist:d,outside:false,unknown:false};if(d<=4)return{zone:3,fee:6.99,dist:d,outside:false,unknown:false};if(d<=5)return{zone:3,fee:7.99,dist:d,outside:false,unknown:false};if(d<=6)return{zone:3,fee:8.99,dist:d,outside:false,unknown:false};if(d<=7)return{zone:3,fee:9.99,dist:d,outside:false,unknown:false};if(d<=8)return{zone:3,fee:10.99,dist:d,outside:false,unknown:false};if(d<=9)return{zone:3,fee:11.99,dist:d,outside:false,unknown:false};return{zone:4,fee:0,dist:d,outside:true,unknown:false};}
-/* Keyless address autocomplete (Photon / OpenStreetMap — no API key needed) */
+/* Address autocomplete — Google Places when GOOGLE_MAPS_API_KEY is configured
+   (server-side proxy in /api/places-autocomplete + /api/place-details keeps the
+   key off the client), falling back automatically to the keyless Photon /
+   OpenStreetMap service if it isn't set up yet. Google-ness is detected once
+   per page load and cached so we don't hit our own API on every keystroke. */
 function initAddressAutocomplete(){
   var inp=document.getElementById('f-addr');
   if(!inp)return;
-  var box=null,items=[],activeIdx=-1,timer=null;
+  var box=null,items=[],activeIdx=-1,timer=null,googleConfigured=null;
   function ensureBox(){if(box)return;inp.parentElement.style.position='relative';box=document.createElement('div');box.setAttribute('role','listbox');box.style.cssText='position:absolute;z-index:99999;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin-top:4px;max-height:260px;overflow-y:auto;display:none;';inp.parentElement.appendChild(box);}
   function place(){ensureBox();box.style.left=inp.offsetLeft+'px';box.style.top=(inp.offsetTop+inp.offsetHeight)+'px';box.style.width=inp.offsetWidth+'px';}
   function hide(){if(box)box.style.display='none';activeIdx=-1;}
-  function label(p){var main=p.name||'';if(p.housenumber&&main)main=p.housenumber+' '+main;var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', ');if(!main){main=sub;sub='';}return{main:main,sub:sub};}
-  function draw(){place();if(!items.length){hide();return;}box.innerHTML=items.map(function(f,i){var l=label(f.properties);return '<div class="as-item" data-i="'+i+'" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'"><div style="font-size:14px;color:#0A1F44;font-weight:600;">'+l.main+'</div>'+(l.sub?'<div style="font-size:12px;color:#64748B;">'+l.sub+'</div>':'')+'</div>';}).join('');box.style.display='block';Array.prototype.forEach.call(box.querySelectorAll('.as-item'),function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pick(parseInt(el.getAttribute('data-i'),10));});});}
-  function pick(i){
-    var f=items[i];if(!f)return;var p=f.properties;
-    var street=((p.housenumber?p.housenumber+' ':'')+(p.name||'')).trim();
+  function draw(){place();if(!items.length){hide();return;}box.innerHTML=items.map(function(it,i){return '<div class="as-item" data-i="'+i+'" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'"><div style="font-size:14px;color:#0A1F44;font-weight:600;">'+it.main+'</div>'+(it.sub?'<div style="font-size:12px;color:#64748B;">'+it.sub+'</div>':'')+'</div>';}).join('');box.style.display='block';Array.prototype.forEach.call(box.querySelectorAll('.as-item'),function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pick(parseInt(el.getAttribute('data-i'),10));});});}
+
+  function applyAddress(street,city,st,zip,lat,lng){
     if(street)inp.value=street;
-    var ce=document.getElementById('f-city');if(ce&&p.city)ce.value=p.city;
-    var se=document.getElementById('f-state');if(se)se.value=(p.state==='California'?'CA':(p.state||''));
-    var ze=document.getElementById('f-zip');if(ze&&p.postcode){ze.value=p.postcode;ze.dispatchEvent(new Event('input'));}
-    var c=f.geometry.coordinates;var zr=getZoneForLatLng(c[1],c[0]);
-    state.zip=p.postcode||state.zip;state.zone=zr;
+    var ce=document.getElementById('f-city');if(ce&&city)ce.value=city;
+    var se=document.getElementById('f-state');if(se)se.value=(st==='California'?'CA':(st||''));
+    var ze=document.getElementById('f-zip');if(ze&&zip){ze.value=zip;ze.dispatchEvent(new Event('input'));}
+    var zr=(typeof lat==='number'&&typeof lng==='number')?getZoneForLatLng(lat,lng):(zip?getZoneForZip(zip):{zone:0,fee:0,outside:false,unknown:true});
+    state.zip=zip||state.zip;state.zone=zr;
     if(typeof saveDraft==='function')saveDraft();
     var res=document.getElementById('zone-result');
-    if(res){if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles &mdash; Custom Quote. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';else res.innerHTML='<span class="z'+zr.zone+'">&check; Delivery fee: $'+zr.fee.toFixed(2)+'</span>';}
+    if(res){if(zr.unknown)res.innerHTML='';else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles &mdash; Custom Quote. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';else res.innerHTML='<span class="z'+zr.zone+'">&check; Delivery fee: $'+zr.fee.toFixed(2)+'</span>';}
     if(typeof updateS3Summary==='function')updateS3Summary();
     hide();
   }
-  function query(q){fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat=38.4088&lon=-121.4208&q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(j){items=(j.features||[]).filter(function(f){return f.geometry&&f.geometry.coordinates;});activeIdx=-1;draw();}).catch(function(){hide();});}
+
+  function pick(i){
+    var it=items[i];if(!it)return;
+    if(it.source==='google'){
+      fetch('/api/place-details?placeId='+encodeURIComponent(it.placeId)).then(function(r){return r.json();}).then(function(d){
+        if(!d.ok)return;
+        applyAddress(d.street,d.city,d.state,d.zip,d.lat,d.lng);
+      }).catch(function(){});
+      return;
+    }
+    var p=it.raw.properties;
+    var street=((p.housenumber?p.housenumber+' ':'')+(p.name||'')).trim();
+    var c=it.raw.geometry.coordinates;
+    applyAddress(street,p.city,p.state,p.postcode,c[1],c[0]);
+  }
+
+  function queryPhoton(q){fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat=38.4088&lon=-121.4208&q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(j){items=(j.features||[]).filter(function(f){return f.geometry&&f.geometry.coordinates;}).map(function(f){var p=f.properties;var main=p.name||'';if(p.housenumber&&main)main=p.housenumber+' '+main;var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', ');if(!main){main=sub;sub='';}return{source:'photon',main:main,sub:sub,raw:f};});activeIdx=-1;draw();}).catch(function(){hide();});}
+
+  function queryGoogle(q){
+    fetch('/api/places-autocomplete?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(d){
+      if(googleConfigured===null)googleConfigured=!!d.configured;
+      if(!d.configured){queryPhoton(q);return;}
+      items=(d.predictions||[]).map(function(p){return{source:'google',main:p.main,sub:p.sub,placeId:p.placeId};});
+      activeIdx=-1;draw();
+    }).catch(function(){queryPhoton(q);});
+  }
+
+  function query(q){ googleConfigured===false ? queryPhoton(q) : queryGoogle(q); }
+
   inp.addEventListener('input',function(){var q=inp.value.trim();clearTimeout(timer);if(q.length<4){hide();return;}timer=setTimeout(function(){query(q);},300);});
   inp.addEventListener('keydown',function(e){if(!box||box.style.display==='none')return;if(e.key==='ArrowDown'){e.preventDefault();activeIdx=Math.min(activeIdx+1,items.length-1);draw();}else if(e.key==='ArrowUp'){e.preventDefault();activeIdx=Math.max(activeIdx-1,0);draw();}else if(e.key==='Enter'&&activeIdx>=0){e.preventDefault();pick(activeIdx);}else if(e.key==='Escape'){hide();}});
   inp.addEventListener('blur',function(){setTimeout(hide,150);});
@@ -922,13 +957,58 @@ function selectBundle(id){
   updateS2Summary();
 }
 
+/* ── Promo codes ─────────────────────────────────────────────
+   activePromo: {code, percentOff, productId} once a valid code is applied.
+   productId is a water type, an add-on id, or 'all' (whole subtotal).
+   Discounts apply to one-time orders only, not subscription bundles. */
+var activePromo=null;
+
 function getBasePrice(){
+  var price;
   if(state.amtMode==='bundle'&&state.bundleId){
     var bundles=state.waterType==='alkaline'?BUNDLES_ALK:BUNDLES_REG;
     var b=bundles.find(function(x){return x.id===state.bundleId;});
-    return b?b.price:0;
+    price=b?b.price:0;
+  } else {
+    price=state.qty*(PRICES[state.waterType||'purified']);
   }
-  return state.qty*(PRICES[state.waterType||'purified']);
+  if(activePromo&&state.amtMode!=='bundle'&&(activePromo.productId==='all'||activePromo.productId===state.waterType)){
+    price=Math.max(0,price*(1-activePromo.percentOff/100));
+  }
+  return price;
+}
+
+function addonPrice(a){
+  if(activePromo&&state.amtMode!=='bundle'&&(activePromo.productId==='all'||activePromo.productId===a.id)){
+    return Math.max(0,a.price*(1-activePromo.percentOff/100));
+  }
+  return a.price;
+}
+function addonsTotal(){ return alsoAddons.reduce(function(s,a){return s+addonPrice(a);},0); }
+function getGrandTotal(){
+  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  return getBasePrice()+zoneFee+addonsTotal();
+}
+
+async function applyPromoCode(){
+  var inp=document.getElementById('co-promo-input');
+  var msg=document.getElementById('co-promo-msg');
+  var code=(inp.value||'').trim().toUpperCase();
+  if(!code)return;
+  if(state.amtMode==='bundle'){
+    msg.style.color='#dc2626';msg.textContent='Promo codes apply to one-time orders only.';return;
+  }
+  msg.style.color='#64748B';msg.textContent='Checking…';
+  var productIds=[state.waterType].concat(alsoAddons.map(function(a){return a.id;}));
+  try{
+    var res=await fetch('/api/validate-promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,productIds:productIds})});
+    var data=await res.json();
+    if(!data.valid){activePromo=null;msg.style.color='#dc2626';msg.textContent=data.error||'Invalid code.';}
+    else{activePromo={code:data.code,percentOff:data.percentOff,productId:data.productId};msg.style.color='#16a34a';msg.textContent=data.percentOff+'% off applied!';}
+  }catch(e){activePromo=null;msg.style.color='#dc2626';msg.textContent='Network error — try again.';}
+  if(typeof buildCheckoutSummary==='function'&&document.getElementById('co-summary-content').innerHTML)buildCheckoutSummary();
+  if(typeof updateCoTotal==='function')updateCoTotal();
+  if(window._wbPR)window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)}});
 }
 
 function getTotal(){return getBasePrice()+(state.zone.unknown||state.zone.outside?0:state.zone.fee);}
@@ -1226,14 +1306,14 @@ function validateStep2(){
 var stripe=null,cardNumber=null,cardExpiry=null,cardCvc=null;
 var alsoAddons=[];
 
-function addAlsoBought(name,price,btn){
+function addAlsoBought(name,price,id,btn){
   var idx=alsoAddons.findIndex(function(a){return a.name===name;});
   if(idx>=0){
     alsoAddons.splice(idx,1);
     btn.textContent='+ Add';
     btn.classList.remove('added');
   } else {
-    alsoAddons.push({name:name,price:price});
+    alsoAddons.push({name:name,price:price,id:id});
     btn.textContent='Added ✓';
     btn.classList.add('added');
   }
@@ -1241,17 +1321,14 @@ function addAlsoBought(name,price,btn){
 }
 
 function updateCoTotal(){
-  var base=getBasePrice();
-  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
-  var addonTotal=alsoAddons.reduce(function(s,a){return s+a.price;},0);
-  var total=base+zoneFee+addonTotal;
+  var total=getGrandTotal();
   var tv=document.querySelector('#co-summary-content .sp-total-val');
   if(tv)tv.textContent='$'+total.toFixed(2);
   var pt=document.getElementById('pay-text');
   if(pt)pt.textContent='PAY $'+total.toFixed(2);
   var list=document.getElementById('also-addons-list');
   if(list)list.innerHTML=alsoAddons.map(function(a){
-    return '<div class="sp-row"><span>+ '+a.name+'</span><span>$'+a.price.toFixed(2)+'</span></div>';
+    return '<div class="sp-row"><span>+ '+a.name+'</span><span>$'+addonPrice(a).toFixed(2)+'</span></div>';
   }).join('');
 }
 
@@ -1274,7 +1351,7 @@ function acknowledgeBottlePolicy(){
   state.email=document.getElementById('f-email').value.trim();
   saveDraft();
   buildCheckoutSummary();
-  if(window._wbPR){var _t=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0);window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(_t*100)}});}
+  if(window._wbPR){window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)}});}
   document.getElementById('checkout-overlay').classList.add('open');
   setTimeout(initStripe,50);
 }
@@ -1292,11 +1369,13 @@ function buildCheckoutSummary(){
   var total=base+zoneFee;
   var timeLbl=timeLabel(state.timePref);
   var delLbl=state.delOpt==='asap'?'ASAP - '+timeLbl:'Scheduled: '+(state.calDate||'')+' - '+timeLbl;
+  var promoRow=activePromo?'<div class="sp-row" style="color:#16a34a"><span>Promo '+activePromo.code+'</span><span>-'+activePromo.percentOff+'%</span></div>':'';
   document.getElementById('co-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+wtLbl+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+amtLbl+'</span></div>'
     +'<div class="sp-row"><span>Delivery</span><span>'+delLbl+'</span></div>'
     +'<div class="sp-row"><span>Address</span><span style="font-size:12px">'+state.addr+', '+state.city+', '+state.stateField+' '+state.zip+'</span></div>'
+    +promoRow
     +'<hr class="sp-div">'
     +'<div class="sp-row"><span>Subtotal</span><span>$'+base.toFixed(2)+'</span></div>'
     +'<div class="sp-row"><span>Delivery</span><span>'+(state.zone.unknown?'TBD':state.zone.outside?'Custom Quote':'$'+zoneFee.toFixed(2))+'</span></div>'
@@ -1318,15 +1397,14 @@ function initStripe(){
   cardCvc=elements.create('cardCvc',{style:_scStyle});
   cardNumber.mount('#sc-number');cardExpiry.mount('#sc-expiry');cardCvc.mount('#sc-cvc');
   // ── Apple Pay / Google Pay via Stripe Payment Request ──
-  var _prTotal=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0);
-  var pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.round(_prTotal*100)},requestPayerName:true,requestPayerEmail:true});
+  var pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)},requestPayerName:true,requestPayerEmail:true});
   var prBtn=elements.create('paymentRequestButton',{paymentRequest:pr,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'52px'}}});
   pr.canMakePayment().then(function(result){
     if(result){document.getElementById('apple-pay-wrap').style.display='block';prBtn.mount('#stripe-payment-request-btn');}
   });
   window._wbPR=pr;
   pr.on('paymentmethod',async function(ev){
-    var grandTotal=getBasePrice()+(state.zone&&!state.zone.unknown&&!state.zone.outside?state.zone.fee:0)+alsoAddons.reduce(function(s,a){return s+a.price;},0);
+    var grandTotal=getGrandTotal();
     try{
       var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:grandTotal,customerEmail:ev.payerEmail||state.email||'',customerName:ev.payerName||state.name||''})});
       var piData=await piResp.json();
@@ -1357,7 +1435,7 @@ async function handlePayment(){
     return;
   }
   try{
-    var total=getBasePrice()+(state.zone&&state.zone.fee?state.zone.fee:0);
+    var total=getGrandTotal();
     var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:state.email,customerName:name.trim()})});
     var piData=await piResp.json();
     if(piData.error){if(errEl)errEl.textContent=piData.error;btn.classList.remove('loading');btn.disabled=false;return;}
@@ -1368,9 +1446,7 @@ async function handlePayment(){
 }
 
 function showSuccess(orderId){
-  var base=getBasePrice();
-  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
-  var total=base+zoneFee;
+  var total=getGrandTotal();
   var timeLbl=timeLabel(state.timePref);
   var delivDate=state.delOpt==='asap'?'As Soon As Possible':(state.calDate||'Scheduled');
   var fullAddr=state.addr+', '+state.city+', '+state.stateField+' '+state.zip;
@@ -1389,6 +1465,8 @@ function showSuccess(orderId){
   
   // Auto-add delivery to business Google Calendar
   (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
+  // Text the customer an order confirmation (no-ops until Twilio env vars are set)
+  if(state.phone){(function(){fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:state.phone,orderId:orderId,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();}
 }
 
 function buildCalLink(order,timeLbl,delivDate){
