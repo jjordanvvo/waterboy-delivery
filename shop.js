@@ -221,19 +221,19 @@ function openOverlay(id){
   if(!el) return;
   el.style.display = 'flex';   // clear inline display:none so CSS .open rule can show it
   el.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  lockBodyScroll();
 }
 function closeOverlay(id){
   const el = document.getElementById(id);
   if(!el) return;
   el.classList.remove('open');
   el.style.display = 'none';   // re-apply inline hide so element is gone without CSS
-  // only restore scroll if no other overlays are open
-  if(!document.querySelector('.wb-overlay.open')) document.body.style.overflow = '';
+  unlockBodyScroll();
 }
 function closeAll(){
+  const openCount = $$('.wb-overlay.open').length;
   $$('.wb-overlay').forEach(o => { o.classList.remove('open'); o.style.display = 'none'; });
-  document.body.style.overflow = '';
+  for(let i=0;i<openCount;i++) unlockBodyScroll();
 }
 
 /* ── Step panels ───────────────────────────────────────────────── */
@@ -421,7 +421,7 @@ function openCartDrawer(){
   const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
   if(overlay){ overlay.style.display='block'; overlay.classList.add('open'); }
   if(drawer){ drawer.style.transform=''; setTimeout(()=>drawer.classList.add('open'),10); }
-  document.body.style.overflow='hidden';
+  lockBodyScroll();
 }
 function closeCartDrawer(){
   const overlay=document.getElementById('cart-drawer-overlay'), drawer=document.getElementById('cart-drawer');
@@ -429,7 +429,7 @@ function closeCartDrawer(){
   setTimeout(()=>{
     if(overlay){ overlay.classList.remove('open'); overlay.style.display='none'; }
     if(drawer) drawer.style.transform='translateX(100%)';
-    document.body.style.overflow='';
+    unlockBodyScroll();
   },300);
 }
 
@@ -1565,7 +1565,7 @@ function wireWaterTypeModal(){
   // Show modal on first visit (no localStorage key set)
   const saved=localStorage.getItem('waterboy_water_type');
   if(!saved){
-    setTimeout(()=>{ overlay.classList.add('open'); document.body.style.overflow='hidden'; }, 900);
+    setTimeout(()=>{ overlay.classList.add('open'); lockBodyScroll(); }, 900);
   }
 
   // Sync initial pill state
@@ -1591,13 +1591,13 @@ function wireWaterTypeModal(){
     if(!t) return;
     window.WaterboyState.setType(t);
     overlay.classList.remove('open');
-    document.body.style.overflow='';
+    unlockBodyScroll();
   });
 
   // Browse link — close without saving
   document.getElementById('wt-browse')?.addEventListener('click',()=>{
     overlay.classList.remove('open');
-    document.body.style.overflow='';
+    unlockBodyScroll();
     // Default to RO rendering without saving to localStorage
     renderPriceTags();
     syncWaterPillsUI();
@@ -1607,7 +1607,7 @@ function wireWaterTypeModal(){
   document.addEventListener('keydown', e=>{
     if(e.key==='Escape'&&overlay.classList.contains('open')){
       overlay.classList.remove('open');
-      document.body.style.overflow='';
+      unlockBodyScroll();
     }
   });
 }
@@ -1624,14 +1624,14 @@ function wireLeftMenu(){
   function openMenu(){
     menu.classList.add('open');
     hamburger?.setAttribute('aria-expanded','true');
-    document.body.style.overflow='hidden';
+    lockBodyScroll();
     // Focus first focusable element in panel
     setTimeout(()=>{ closeBtn?.focus(); }, 350);
   }
   function closeMenu(){
     menu.classList.remove('open');
     hamburger?.setAttribute('aria-expanded','false');
-    document.body.style.overflow='';
+    unlockBodyScroll();
     hamburger?.focus();
   }
 

@@ -598,8 +598,8 @@ function submitOrder() {
     .catch(function(){document.getElementById('wizard-wrap').style.display='none';document.getElementById('confirm-phone').textContent=phone;document.getElementById('success-panel').style.display='block';window.scrollTo({top:0,behavior:'smooth'});});
 }
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
-document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';});
-document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
+document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});
+document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');unlockBodyScroll();});
 // ── Keyless address autocomplete (Photon / OpenStreetMap — no API key needed) ──
 (function(){
   var addr = document.getElementById('f-address');

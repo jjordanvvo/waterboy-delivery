@@ -11,7 +11,8 @@
     overlay.classList.add('open');
     drawer.setAttribute('aria-hidden', 'false');
     btn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
+    if (typeof window.lockBodyScroll === 'function') window.lockBodyScroll();
+    else document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
@@ -19,7 +20,8 @@
     overlay.classList.remove('open');
     drawer.setAttribute('aria-hidden', 'true');
     btn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
+    else document.body.style.overflow = '';
   }
 
   btn.addEventListener('click', openDrawer);

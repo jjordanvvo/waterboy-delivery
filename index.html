@@ -1332,11 +1332,11 @@
   /* Mobile menu */
   document.getElementById('hamburger-btn').addEventListener('click', function() {
     document.getElementById('mobile-menu').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
   });
   document.getElementById('mobile-menu-close').addEventListener('click', function() {
     document.getElementById('mobile-menu').classList.remove('open');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
   });
 
   /* FAQ accordion */

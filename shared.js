@@ -5,6 +5,35 @@
 (function () {
   'use strict';
 
+  /* ── iOS-safe body scroll lock (shared globally) ──────────────
+     `body.style.overflow='hidden'` does not reliably block touch
+     scrolling on iOS Safari, which makes fixed-position modals
+     render mid-scroll and overlap the page behind them. Pinning
+     body itself with position:fixed fixes it everywhere. */
+  var _scrollLockY = 0, _scrollLockDepth = 0;
+  window.lockBodyScroll = function () {
+    if (_scrollLockDepth === 0) {
+      _scrollLockY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.position = 'fixed';
+      document.body.style.top = (-_scrollLockY) + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+    }
+    _scrollLockDepth++;
+  };
+  window.unlockBodyScroll = function () {
+    _scrollLockDepth = Math.max(0, _scrollLockDepth - 1);
+    if (_scrollLockDepth === 0) {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      window.scrollTo(0, _scrollLockY);
+    }
+  };
+
   function init() {
     initPageTransitions();
     initHamburger();
@@ -22,12 +51,12 @@
     function openMenu() {
       menu.classList.add('open');
       btn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
+      window.lockBodyScroll();
     }
     function closeMenu() {
       menu.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      window.unlockBodyScroll();
     }
 
     btn.addEventListener('click', function () {

@@ -190,7 +190,7 @@ html,body{overflow-x:hidden;max-width:100%;}
 .btn-checkout:hover:not(:disabled){transform:scale(1.02);box-shadow:0 8px 24px rgba(13,71,161,0.25);}
 .btn-checkout:disabled{opacity:0.45;cursor:not-allowed;}
 
-.ord-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.5);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+.ord-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.5);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .ord-overlay.open{display:flex;}
 
 .checkout-wrap{background:#FFFFFF;border:1px solid var(--color-border);border-radius:20px;max-width:880px;width:100%;display:grid;grid-template-columns:1fr 1fr;margin:auto;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.15);min-width:0;}
@@ -748,8 +748,6 @@ html,body{overflow-x:hidden;max-width:100%;}
 
 <!-- Stripe.js - REPLACE 'YOUR_PUBLISHABLE_KEY_HERE' with your Stripe publishable key -->
 <script src="https://js.stripe.com/v3/"></script>
-<script src="left-menu.js"></script>
-<script src="shared.js"></script>
 
 <script>
 /* ============================================================
@@ -1303,6 +1301,36 @@ function validateStep2(){
   goStep(3);
 }
 
+/* ── iOS-safe body scroll lock ──────────────────────────────────
+   `document.body.style.overflow='hidden'` does not reliably block
+   touch scrolling on iOS Safari, which causes fixed-position modals
+   (like the success/checkout overlays) to render mid-scroll and
+   overlap the page behind them. Pinning body itself with position:fixed
+   fixes it on all browsers. */
+var _scrollLockY=0,_scrollLockDepth=0;
+function lockBodyScroll(){
+  if(_scrollLockDepth===0){
+    _scrollLockY=window.scrollY||window.pageYOffset||0;
+    document.body.style.position='fixed';
+    document.body.style.top=(-_scrollLockY)+'px';
+    document.body.style.left='0';
+    document.body.style.right='0';
+    document.body.style.width='100%';
+  }
+  _scrollLockDepth++;
+}
+function unlockBodyScroll(){
+  _scrollLockDepth=Math.max(0,_scrollLockDepth-1);
+  if(_scrollLockDepth===0){
+    document.body.style.position='';
+    document.body.style.top='';
+    document.body.style.left='';
+    document.body.style.right='';
+    document.body.style.width='';
+    window.scrollTo(0,_scrollLockY);
+  }
+}
+
 /* ── Checkout ────────────────────────────────────────────────── */
 var stripe=null,cardNumber=null,cardExpiry=null,cardCvc=null;
 var alsoAddons=[];
@@ -1336,7 +1364,7 @@ function updateCoTotal(){
 function openCheckout(){
   if(!validateStep3())return;
   document.getElementById('bottle-modal').classList.add('open');
-  document.body.style.overflow='hidden';
+  lockBodyScroll();
 }
 
 function acknowledgeBottlePolicy(){
@@ -1359,7 +1387,7 @@ function acknowledgeBottlePolicy(){
 
 function closeCheckout(){
   document.getElementById('checkout-overlay').classList.remove('open');
-  document.body.style.overflow='';
+  unlockBodyScroll();
 }
 
 function buildCheckoutSummary(){
@@ -1462,7 +1490,7 @@ function showSuccess(orderId){
   var succDet=document.getElementById('success-details');
   if(succDet)succDet.innerHTML='<div class="sdr"><span>Water Type</span><strong>'+wtLbl+'</strong></div>'+'<div class="sdr"><span>Amount</span><strong>'+amtLbl+'</strong></div>'+'<div class="sdr"><span>Delivery</span><strong>'+delivDate+'</strong></div>'+'<div class="sdr"><span>Window</span><strong>'+timeLbl+'</strong></div>'+'<div class="sdr"><span>Address</span><strong>'+fullAddr+'</strong></div>'+'<div class="sdr"><span>Total</span><strong>$'+total.toFixed(2)+'</strong></div>';
   var calBtn=document.getElementById('btn-add-cal');if(calBtn)calBtn.href=buildCalLink(order,timeLbl,delivDate);
-  var succOv=document.getElementById('success-overlay');if(succOv){succOv.classList.add('open');document.body.style.overflow='hidden';}
+  var succOv=document.getElementById('success-overlay');if(succOv){succOv.classList.add('open');lockBodyScroll();}
   
   // Auto-add delivery to business Google Calendar
   (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
@@ -1482,8 +1510,8 @@ function buildCalLink(order,timeLbl,delivDate){
 </script>
 
 <script>
-  document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';});
-  document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';});
+  document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});
+  document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');unlockBodyScroll();});
   window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 </script>
 <script src="left-menu.js"></script>
