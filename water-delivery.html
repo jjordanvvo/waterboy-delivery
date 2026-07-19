@@ -600,11 +600,14 @@ function submitOrder() {
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});
 document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');unlockBodyScroll();});
-// ── Keyless address autocomplete (Photon / OpenStreetMap — no API key needed) ──
+// ── Address autocomplete — Google Places when GOOGLE_MAPS_API_KEY is configured
+//    (server-side proxy in /api/places-autocomplete + /api/place-details keeps
+//    the key off the client), falling back automatically to the keyless
+//    Photon / OpenStreetMap service if it isn't set up. ──
 (function(){
   var addr = document.getElementById('f-address');
   if (!addr) return;
-  var box = null, items = [], activeIdx = -1, timer = null;
+  var box = null, items = [], activeIdx = -1, timer = null, googleConfigured = null;
 
   function ensureBox(){
     if (box) return;
@@ -621,21 +624,13 @@ document.getElementById('mobile-menu-close').addEventListener('click',function()
     box.style.width = addr.offsetWidth + 'px';
   }
   function hide(){ if (box) box.style.display = 'none'; activeIdx = -1; }
-  function label(p){
-    var main = p.name || '';
-    if (p.housenumber && main) main = p.housenumber + ' ' + main;
-    var sub = [p.city, p.state, p.postcode].filter(Boolean).join(', ');
-    if (!main) { main = sub; sub = ''; }
-    return { main: main, sub: sub };
-  }
   function draw(){
     place();
     if (!items.length) { hide(); return; }
-    box.innerHTML = items.map(function(f,i){
-      var l = label(f.properties);
+    box.innerHTML = items.map(function(it,i){
       return '<div class="as-item" data-i="'+i+'" role="option" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'">'
-        + '<div style="font-size:14px;color:#0A1F44;font-weight:600;">'+ l.main +'</div>'
-        + (l.sub ? '<div style="font-size:12px;color:#64748B;">'+ l.sub +'</div>' : '') + '</div>';
+        + '<div style="font-size:14px;color:#0A1F44;font-weight:600;">'+ it.main +'</div>'
+        + (it.sub ? '<div style="font-size:12px;color:#64748B;">'+ it.sub +'</div>' : '') + '</div>';
     }).join('');
     box.style.display = 'block';
     Array.prototype.forEach.call(box.querySelectorAll('.as-item'), function(el){
@@ -643,20 +638,46 @@ document.getElementById('mobile-menu-close').addEventListener('click',function()
     });
   }
   function pick(i){
-    var f = items[i]; if (!f) return;
-    var l = label(f.properties);
-    addr.value = (l.main + (l.sub ? ', ' + l.sub : '')).trim();
+    var it = items[i]; if (!it) return;
+    if (it.source === 'google') {
+      fetch('/api/place-details?placeId='+encodeURIComponent(it.placeId)).then(function(r){return r.json();}).then(function(d){
+        if (!d.ok) return;
+        var full = [d.street, d.city, d.state].filter(Boolean).join(', ') + (d.zip ? (' ' + d.zip) : '');
+        addr.value = full || it.main;
+        order.geocodeChecked = true;
+        if (typeof d.lat === 'number' && typeof d.lng === 'number') applyDistance(d.lat, d.lng);
+        hide();
+      }).catch(function(){});
+      return;
+    }
+    addr.value = (it.main + (it.sub ? ', ' + it.sub : '')).trim();
     order.geocodeChecked = true;
-    var c = f.geometry.coordinates; // [lng, lat]
+    var c = it.raw.geometry.coordinates; // [lng, lat]
     applyDistance(c[1], c[0]);
     hide();
   }
-  function query(q){
+  function queryPhoton(q){
     fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat=38.4088&lon=-121.4208&q=' + encodeURIComponent(q))
       .then(function(r){ return r.json(); })
-      .then(function(j){ items = (j.features || []).filter(function(f){ return f.geometry && f.geometry.coordinates; }); activeIdx = -1; draw(); })
+      .then(function(j){
+        items = (j.features || []).filter(function(f){ return f.geometry && f.geometry.coordinates; }).map(function(f){
+          var p = f.properties; var main = p.name || ''; if (p.housenumber && main) main = p.housenumber + ' ' + main;
+          var sub = [p.city, p.state, p.postcode].filter(Boolean).join(', '); if (!main) { main = sub; sub = ''; }
+          return { source:'photon', main:main, sub:sub, raw:f };
+        });
+        activeIdx = -1; draw();
+      })
       .catch(function(){ hide(); });
   }
+  function queryGoogle(q){
+    fetch('/api/places-autocomplete?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(d){
+      if (googleConfigured===null) googleConfigured = !!d.configured;
+      if (!d.configured) { queryPhoton(q); return; }
+      items = (d.predictions||[]).map(function(p){ return { source:'google', main:p.main, sub:p.sub, placeId:p.placeId }; });
+      activeIdx = -1; draw();
+    }).catch(function(){ queryPhoton(q); });
+  }
+  function query(q){ googleConfigured===false ? queryPhoton(q) : queryGoogle(q); }
   addr.addEventListener('input', function(){
     // Any edit invalidates a previously chosen address
     order.coords = null; order.dist = null; order.outside = false; order.zoneFee = 0; order.geocodeChecked = false;
