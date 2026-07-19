@@ -50,6 +50,12 @@
     .prod-row:last-child{border-bottom:none;}
     .prod-row input{width:auto;}
     .prod-row label{margin:0;font-size:14px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--navy);flex:1;cursor:pointer;}
+    .promo-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--border);}
+    .promo-row:last-child{border-bottom:none;}
+    .promo-row .pc-code{font-weight:700;font-family:monospace;background:#F4F7FB;border-radius:6px;padding:3px 8px;font-size:13px;}
+    .promo-row .pc-detail{flex:1;font-size:13px;color:var(--muted);}
+    .promo-row button{background:none;color:var(--red);font-size:13px;font-weight:600;padding:4px 8px;}
+    .promo-empty{color:var(--muted);font-size:13px;padding:8px 4px;}
   </style>
 </head>
 <body>
@@ -99,6 +105,24 @@
     <div class="msg" id="save-msg"></div>
   </div>
 
+  <!-- DISCOUNT CODES -->
+  <div class="card hidden" id="promo-card">
+    <h1>Discount Codes</h1>
+    <p class="sub">Create a code that gives a percent off one product (or the whole order). Applies on the main "Order Water" checkout.</p>
+
+    <div id="promo-list"></div>
+
+    <div style="height:20px"></div>
+    <label>New code</label>
+    <div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:8px;">
+      <input type="text" id="promo-code-input" placeholder="SAVE20" style="text-transform:uppercase">
+      <input type="number" id="promo-pct-input" placeholder="% off" min="1" max="100">
+    </div>
+    <select id="promo-product-input" style="margin-bottom:10px"></select>
+    <button class="btn" id="promo-add-btn" onclick="addPromo()">Add Code</button>
+    <div class="msg" id="promo-msg"></div>
+  </div>
+
   <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:8px">Water Boy Delivery · <a href="/">Back to site</a></p>
 </div>
 
@@ -118,6 +142,13 @@ var PRODUCT_CATALOG=[
   {id:'zipfizz',        name:'Zipfizz Energy Drink Mix'},
   {id:'echo-hydrogen',  name:'Echo Hydrogen Prebiotic Drink Mix'}
 ];
+var promoCodes=[];
+var PROMO_PRODUCT_CATALOG=[
+  {id:'all',       name:'All Products (whole order)'},
+  {id:'purified',  name:'Purified Water'},
+  {id:'alkaline',  name:'Alkaline Water'},
+  {id:'hydrogen',  name:'Hydrogen Water'}
+].concat(PRODUCT_CATALOG);
 
 function showMsg(id,type,text){var el=document.getElementById(id);el.className='msg '+type;el.textContent=text;}
 
@@ -133,9 +164,18 @@ async function unlock(){
     blockedDates=Array.isArray(c.blockedDates)?c.blockedDates:[];
     cutoffHour=typeof c.cutoffHour==='number'?c.cutoffHour:14;
     disabledProducts=Array.isArray(c.disabledProducts)?c.disabledProducts:[];
+
+    // promo-codes.js requires the admin password even for GET, so this also
+    // doubles as the real password check (delivery-config's GET is public).
+    var pr=await fetch('/api/promo-codes',{headers:{'x-admin-pass':pass}});
+    if(pr.status===401){showMsg('login-msg','err','Incorrect password.');document.getElementById('login-btn').disabled=false;return;}
+    var pd=await pr.json();
+    promoCodes=Array.isArray(pd.codes)?pd.codes:[];
+
     adminPass=pass;
     document.getElementById('login-card').classList.add('hidden');
     document.getElementById('mgr-card').classList.remove('hidden');
+    document.getElementById('promo-card').classList.remove('hidden');
     if(!c.storageConnected){
       var b=document.getElementById('storage-banner');
       b.classList.remove('hidden');
@@ -143,6 +183,8 @@ async function unlock(){
     }
     buildCutoff();
     renderProducts();
+    buildPromoProductSelect();
+    renderPromos();
     var now=new Date(); viewYear=now.getFullYear(); viewMonth=now.getMonth();
     renderCal(); renderList();
   }catch(e){
@@ -219,6 +261,58 @@ function toggleProduct(id,enabled){
   var i=disabledProducts.indexOf(id);
   if(enabled&&i>=0)disabledProducts.splice(i,1);
   if(!enabled&&i<0)disabledProducts.push(id);
+}
+
+function promoProductName(id){
+  var p=PROMO_PRODUCT_CATALOG.find(function(x){return x.id===id;});
+  return p?p.name:id;
+}
+function buildPromoProductSelect(){
+  document.getElementById('promo-product-input').innerHTML=PROMO_PRODUCT_CATALOG.map(function(p){
+    return '<option value="'+p.id+'">'+p.name+'</option>';
+  }).join('');
+}
+function renderPromos(){
+  var el=document.getElementById('promo-list');
+  if(!promoCodes.length){el.innerHTML='<div class="promo-empty">No discount codes yet.</div>';return;}
+  el.innerHTML=promoCodes.map(function(c,i){
+    return '<div class="promo-row"><span class="pc-code">'+c.code+'</span>'+
+      '<span class="pc-detail">'+c.percentOff+'% off &middot; '+promoProductName(c.productId)+(c.active?'':' &middot; disabled')+'</span>'+
+      '<button onclick="deletePromo('+i+')">Remove</button></div>';
+  }).join('');
+}
+async function savePromos(){
+  showMsg('promo-msg','ok','Saving…');
+  try{
+    var r=await fetch('/api/promo-codes',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-admin-pass':adminPass},
+      body:JSON.stringify({codes:promoCodes})
+    });
+    var d=await r.json();
+    if(!r.ok){showMsg('promo-msg','err',d.error||'Save failed.');return;}
+    promoCodes=d.codes;renderPromos();
+    showMsg('promo-msg','ok','Saved! Live on checkout now.');
+  }catch(e){showMsg('promo-msg','err','Network error. Try again.');}
+}
+function addPromo(){
+  var codeEl=document.getElementById('promo-code-input');
+  var pctEl=document.getElementById('promo-pct-input');
+  var prodEl=document.getElementById('promo-product-input');
+  var code=(codeEl.value||'').trim().toUpperCase();
+  var pct=parseInt(pctEl.value,10);
+  if(!code){showMsg('promo-msg','err','Enter a code.');return;}
+  if(!pct||pct<1||pct>100){showMsg('promo-msg','err','Percent off must be 1-100.');return;}
+  if(promoCodes.some(function(c){return c.code===code;})){showMsg('promo-msg','err','That code already exists.');return;}
+  promoCodes.push({code:code,percentOff:pct,productId:prodEl.value,active:true});
+  codeEl.value='';pctEl.value='';
+  renderPromos();
+  savePromos();
+}
+function deletePromo(i){
+  promoCodes.splice(i,1);
+  renderPromos();
+  savePromos();
 }
 
 async function save(){
