@@ -218,7 +218,8 @@ html,body{overflow-x:hidden;max-width:100%;}
 .overlay-x{position:fixed;top:18px;right:18px;width:38px;height:38px;background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:50%;cursor:pointer;font-size:17px;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2;line-height:1;}
 .overlay-x:hover{background:var(--color-border);color:var(--color-text);}
 
-.success-wrap{max-width:540px;width:100%;margin:auto;text-align:center;padding:60px 32px;}
+.success-wrap{max-width:540px;width:100%;margin:auto;text-align:center;padding:44px 32px 40px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
+@media(max-width:520px){.success-wrap{padding:36px 22px 32px;border-radius:16px;}}
 .success-ring{width:84px;height:84px;background:rgba(67,160,71,0.1);border:2px solid rgba(67,160,71,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 26px;animation:ringPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;}
 @keyframes ringPop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
 .success-check-icon{font-size:42px;animation:checkIn 0.4s 0.15s cubic-bezier(0.175,0.885,0.32,1.275) both;}
