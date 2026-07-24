@@ -354,8 +354,8 @@ html,body{overflow-x:hidden;max-width:100%;}
 
         <div class="wt-card" id="wtc-purified" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('purified')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('purified')">
           <div class="wt-card-check" aria-hidden="true">&#10003;</div>
-          <div class="wt-title">Purified Water</div>
-          <p class="wt-desc">Clean, crisp, purified water. Perfect for everyday hydration and cooking.</p>
+          <div class="wt-title">Reverse Osmosis Water</div>
+          <p class="wt-desc">Clean, crisp reverse osmosis water. Perfect for everyday hydration and cooking.</p>
           <div class="wt-price">$11.99/bottle</div>
         </div>
 
@@ -829,8 +829,8 @@ function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperC
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
 const PRICES={purified:11.99,alkaline:13.99,hydrogen:10.99};
-const WT_LABELS={purified:'Purified Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'};
-function wtLabel(){return WT_LABELS[state.waterType]||'Purified Water';}
+const WT_LABELS={purified:'Reverse Osmosis Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'};
+function wtLabel(){return WT_LABELS[state.waterType]||'Reverse Osmosis Water';}
 function unitWord(){return state.waterType==='hydrogen'?'gallon':'bottle';}
 function qtyLabel(){return state.qty+' '+unitWord()+(state.qty>1?'s':'');}
 const BUNDLES_REG=[
@@ -857,7 +857,7 @@ function loadDraft(){try{var d=JSON.parse(sessionStorage.getItem(DRAFT_KEY));if(
 loadDraft();
 
 /* Pre-select water type from a ?water= link (e.g. the sticky order bar on
-   marketing pages). 'ro' (Reverse Osmosis) is this flow's Purified Water. */
+   marketing pages). 'ro' (Reverse Osmosis) maps to this flow's 'purified' key. */
 (function applyWaterParam(){
   try{
     var p=new URLSearchParams(location.search).get('water');
@@ -891,7 +891,8 @@ function updateProgress(n){
 }
 
 /* ── Step 1 ──────────────────────────────────────────────────── */
-function selectWaterType(type){
+function selectWaterType(type,opts){
+  opts=opts||{};
   state.waterType=type;
   state.bundleId=null;
   saveDraft();
@@ -908,8 +909,10 @@ function selectWaterType(type){
   if(qtyLabelEl)qtyLabelEl.textContent=isH?'gallons':'5-Gallon bottles';
   if(isH&&state.amtMode==='bundle')setAmtMode('onetime');
   updateQtyDisplay();
-  // Click to continue — auto-advance to Step 2 after a brief highlight
-  setTimeout(function(){goStep(2);},250);
+  // Click to continue — auto-advance to Step 2 after a brief highlight.
+  // Skipped when restoring a saved/linked-in water type on page load
+  // (opts.silent) so that flow doesn't invisibly skip the whole step.
+  if(!opts.silent)setTimeout(function(){goStep(2);},250);
 }
 
 /* ── Step 2 ──────────────────────────────────────────────────── */
@@ -943,7 +946,7 @@ function updateQtyDisplay(){
 
 function renderBundles(){
   var bundles=state.waterType==='alkaline'?BUNDLES_ALK:BUNDLES_REG;
-  var label=state.waterType==='alkaline'?'Alkaline Water Plans':'Purified RO Water Plans';
+  var label=state.waterType==='alkaline'?'Alkaline Water Plans':'Reverse Osmosis Water Plans';
   var grid=document.getElementById('bundle-grid');
   var labelEl=document.getElementById('bundle-type-label');
   if(labelEl)labelEl.textContent=label;
@@ -1255,7 +1258,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 
   /* Restore state UI */
-  if(state.waterType)selectWaterType(state.waterType);
+  if(state.waterType)selectWaterType(state.waterType,{silent:true});
   if(state.amtMode)setAmtMode(state.amtMode);
   if(state.delOpt)selectDelOpt(state.delOpt);
   if(state.calDate)refreshScheduledWindowAvailability();

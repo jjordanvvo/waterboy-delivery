@@ -39,6 +39,7 @@ const ONE_TIME = [
   { key: 'addon_zipfizz',     name: 'Zipfizz Energy Drink Mix (30-pack)',    amount: 39.99 },
   { key: 'addon_echo',        name: 'Echo Hydrogen Prebiotic Drink Mix',     amount: 4.99  },
   { key: 'addon_ice',         name: 'Ice Bag (10lb)',                        amount: 4.99  },
+  { key: 'addon_ice_20lb',    name: 'Ice Bag (20lb)',                        amount: 7.99  },
   // Dispensers
   { key: 'disp_brio_bottom',  name: 'Brio Bottom-Load Dispenser',            amount: 279.99 },
   { key: 'disp_brio_top',     name: 'Brio Top-Load Dispenser',               amount: 129.99 },

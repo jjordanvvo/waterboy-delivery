@@ -70,6 +70,14 @@
     .freq-card.selected { background: var(--color-primary); border-color: var(--color-primary); }
     .freq-title { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: var(--color-text); margin-bottom: 4px; }
     .freq-card.selected .freq-title { color: #FFFFFF; }
+    .freq-discount-badge { display: inline-block; background: var(--color-success, #16a34a); color: #FFFFFF; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.4px; padding: 2px 7px; border-radius: 20px; vertical-align: middle; margin-left: 2px; }
+    .freq-card.selected .freq-discount-badge { background: rgba(255,255,255,0.25); }
+    .price-preview { background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 20px; margin: 20px 0; display: none; }
+    .price-preview.visible { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .price-preview-label { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--color-text-muted); }
+    .price-preview-orig { font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--color-text-muted); text-decoration: line-through; margin-right: 8px; }
+    .price-preview-val { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 700; color: var(--color-primary); }
+    .price-preview-note { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--color-text-muted); width: 100%; }
     .freq-note { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--color-text-muted); }
     .freq-card.selected .freq-note { color: rgba(255,255,255,0.75); }
     .step-headline { font-family: 'Poppins', sans-serif; font-size: clamp(20px, 3vw, 28px); font-weight: 700; color: var(--color-text); margin-bottom: 6px; }
@@ -83,6 +91,9 @@
     .summary-label { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--color-text-muted); }
 
     /* Contact form row */
+    .addr-form { background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+    .addr-form-title { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: var(--color-text); margin: 0 0 22px; }
+    @media (max-width: 560px) { .addr-form { padding: 20px; } }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group.full { grid-column: 1/-1; }
@@ -248,6 +259,13 @@
       <h2 class="step-heading">Size &amp; Schedule.</h2>
       <p class="step-desc">Pick a bottle size, then choose how often you want delivery.</p>
       <div class="size-grid" id="size-grid"></div>
+      <div class="price-preview" id="price-preview">
+        <div>
+          <div class="price-preview-label">Price per delivery</div>
+          <div><span class="price-preview-orig" id="price-preview-orig"></span><span class="price-preview-val" id="price-preview-val"></span></div>
+        </div>
+        <div class="price-preview-note" id="price-preview-note">Plus a distance-based delivery fee, calculated from your address in the next step.</div>
+      </div>
       <h2 class="step-headline" style="margin-top:32px;">One-time or recurring?</h2>
       <p class="step-subtext">Choose how you want your deliveries. Skip, pause, or cancel anytime.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
@@ -282,15 +300,15 @@
         <span class="step-section-label" style="margin-bottom:14px;display:block;">How often?</span>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
           <div class="freq-card" data-recurring="weekly" data-recurring-label="Weekly" onclick="selectRecurring(this)">
-            <div class="freq-title">Weekly</div>
+            <div class="freq-title">Weekly <span class="freq-discount-badge">10% OFF</span></div>
             <div class="freq-note">Every 7 days</div>
           </div>
           <div class="freq-card" data-recurring="biweekly" data-recurring-label="Every 2 Weeks" onclick="selectRecurring(this)">
-            <div class="freq-title">Every 2 Weeks</div>
+            <div class="freq-title">Every 2 Weeks <span class="freq-discount-badge">15% OFF</span></div>
             <div class="freq-note">Most popular - Every 14 days</div>
           </div>
           <div class="freq-card" data-recurring="monthly" data-recurring-label="Monthly" onclick="selectRecurring(this)">
-            <div class="freq-title">Monthly</div>
+            <div class="freq-title">Monthly <span class="freq-discount-badge">5% OFF</span></div>
             <div class="freq-note">Every 30 days</div>
           </div>
         </div>
@@ -305,44 +323,51 @@
     <div class="step-panel" id="step-3">
       <h2 class="step-heading">Your Details.</h2>
       <p class="step-desc">We need your info to schedule and confirm delivery.</p>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" for="f-fname">First Name</label>
-          <input class="form-input" type="text" id="f-fname" name="fname" placeholder="John" autocomplete="given-name" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-lname">Last Name</label>
-          <input class="form-input" type="text" id="f-lname" name="lname" placeholder="Smith" autocomplete="family-name" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-phone">Phone Number</label>
-          <input class="form-input" type="tel" id="f-phone" name="phone" placeholder="(916) 555-0100" autocomplete="tel" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-email">Email Address</label>
-          <input class="form-input" type="email" id="f-email" name="email" placeholder="john@example.com" autocomplete="email" required>
-        </div>
-        <div class="form-group full">
-          <label class="form-label" for="f-address">Delivery Address</label>
-          <input class="form-input" type="text" id="f-address" name="address" placeholder="Start typing your address…" autocomplete="off" required>
-          <div id="zone-result" style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;margin-top:8px;"></div>
-          <p id="zone-note" style="font-size:13px;color:var(--color-text-muted);margin-top:8px;">Delivery fee is based on distance: $2.99 within 1 mile up to $11.99 at 9 miles. Beyond 9 miles: custom quote, call (916) 753-3866.</p>
-        </div>
-        <div class="form-group full">
-          <label class="form-label" for="f-day">Preferred Delivery Day (Recurring only)</label>
-          <select class="form-input" id="f-day" name="day">
-            <option value="">Select a preferred day (recurring orders)</option>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label class="form-label" for="f-notes">Notes (optional)</label>
-          <input class="form-input" type="text" id="f-notes" name="notes" placeholder="Gate code, leave at door, etc.">
+      <div class="addr-form">
+        <div class="addr-form-title">Contact &amp; Delivery Address</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-fname">First Name</label>
+            <input class="form-input" type="text" id="f-fname" name="fname" placeholder="John" autocomplete="given-name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-lname">Last Name</label>
+            <input class="form-input" type="text" id="f-lname" name="lname" placeholder="Smith" autocomplete="family-name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-phone">Phone Number</label>
+            <input class="form-input" type="tel" id="f-phone" name="phone" placeholder="(916) 555-0100" autocomplete="tel" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Email Address</label>
+            <input class="form-input" type="email" id="f-email" name="email" placeholder="john@example.com" autocomplete="email" required>
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="f-address">Delivery Address</label>
+            <input class="form-input" type="text" id="f-address" name="address" placeholder="Start typing your address…" autocomplete="off" required>
+            <div id="zone-result" style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;margin-top:8px;"></div>
+            <p id="zone-note" style="font-size:13px;color:var(--color-text-muted);margin-top:8px;">Delivery fee is based on distance: $2.99 within 1 mile up to $11.99 at 9 miles. Beyond 9 miles: custom quote, call (916) 753-3866.</p>
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="f-apt">Apt / Suite / Unit # (optional)</label>
+            <input class="form-input" type="text" id="f-apt" name="apt" placeholder="Apt 4B, Suite 200, Unit 12, etc.">
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="f-day">Preferred Delivery Day (Recurring only)</label>
+            <select class="form-input" id="f-day" name="day">
+              <option value="">Select a preferred day (recurring orders)</option>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="f-notes">Delivery Instructions / Notes (optional)</label>
+            <input class="form-input" type="text" id="f-notes" name="notes" placeholder="Gate code, leave at door, etc.">
+          </div>
         </div>
       </div>
       <div class="step-nav">
@@ -373,6 +398,7 @@
   </div>
   <h2 class="success-h2">Order Received.</h2>
   <p class="success-body">We'll call you at <strong id="confirm-phone"></strong> within 24 hours to confirm your delivery schedule.</p>
+  <div class="summary-block" id="success-recap" style="text-align:left;max-width:420px;margin:24px auto;"></div>
   <a href="/" class="btn-primary" style="margin: 0 auto;">Back to Home</a>
 </div>
 
@@ -382,7 +408,7 @@
   <input name="bot-field">
   <input name="water-type"><input name="size"><input name="frequency">
   <input name="fname"><input name="lname"><input name="phone"><input name="email">
-  <input name="address"><input name="day"><input name="time"><input name="notes">
+  <input name="address"><input name="apt"><input name="day"><input name="time"><input name="notes">
 </form>
 
 <footer id="footer">
@@ -448,6 +474,10 @@ const PRICING = {
   hydrogen: {'1 Gallon': 10.99, '3 Gallon': 32.97}
 };
 const WATER_NAMES = {ro: 'Reverse Osmosis', alkaline: 'Alkaline', hydrogen: 'Hydrogen'};
+const FREQ_DISCOUNT = {weekly: 0.10, biweekly: 0.15, monthly: 0.05};
+function currentUnitPrice(){ return (order.water && order.size) ? PRICING[order.water][order.size] : 0; }
+function currentDiscount(){ return (order.freqType === 'recurring' && order.freq) ? (FREQ_DISCOUNT[order.freq] || 0) : 0; }
+function currentPerDeliveryPrice(){ return currentUnitPrice() * (1 - currentDiscount()); }
 let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null, coords: null, dist: null, zoneFee: 0, outside: false, geocodeChecked: false};
 
 /* ── Delivery-area / distance logic ─────────────────────────── */
@@ -515,6 +545,7 @@ function selectSize(size) {
   var el = document.getElementById('sc-'+size.replace(' ',''));
   if (el) el.classList.add('selected');
   checkStep2();
+  updatePricePreview();
 }
 function selectFreqType(el, type) {
   document.querySelectorAll('[data-freq]').forEach(function(c){c.classList.remove('selected');});
@@ -523,12 +554,34 @@ function selectFreqType(el, type) {
   document.getElementById('onetime-options').style.display = type === 'one-time' ? 'block' : 'none';
   document.getElementById('recurring-options').style.display = type === 'recurring' ? 'block' : 'none';
   checkStep2();
+  updatePricePreview();
 }
 function selectRecurring(el) {
   document.querySelectorAll('[data-recurring]').forEach(function(c){c.classList.remove('selected');});
   el.classList.add('selected');
   order.freq = el.dataset.recurring; order.freqLabel = el.dataset.recurringLabel;
   checkStep2();
+  updatePricePreview();
+}
+function updatePricePreview() {
+  var box = document.getElementById('price-preview');
+  if (!box || !order.water || !order.size) { if (box) box.classList.remove('visible'); return; }
+  var unit = currentUnitPrice();
+  var discount = currentDiscount();
+  var final = currentPerDeliveryPrice();
+  var origEl = document.getElementById('price-preview-orig');
+  var valEl = document.getElementById('price-preview-val');
+  var noteEl = document.getElementById('price-preview-note');
+  if (discount > 0) {
+    origEl.textContent = '$' + unit.toFixed(2);
+    valEl.textContent = '$' + final.toFixed(2);
+    noteEl.textContent = (discount * 100).toFixed(0) + '% recurring discount applied. Plus a distance-based delivery fee, calculated from your address in the next step.';
+  } else {
+    origEl.textContent = '';
+    valEl.textContent = '$' + unit.toFixed(2);
+    noteEl.textContent = 'Plus a distance-based delivery fee, calculated from your address in the next step.';
+  }
+  box.classList.add('visible');
 }
 function checkStep2() {
   var valid = false;
@@ -567,14 +620,21 @@ function goToStep(n) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function buildSummary() {
-  var price = PRICING[order.water][order.size];
+  var unit = currentUnitPrice();
+  var discount = currentDiscount();
+  var price = currentPerDeliveryPrice();
   var fname = document.getElementById('f-fname').value.trim();
   var lname = document.getElementById('f-lname').value.trim();
   var phone = document.getElementById('f-phone').value.trim();
   var email = document.getElementById('f-email').value.trim();
   var address = document.getElementById('f-address').value.trim();
+  var apt = document.getElementById('f-apt').value.trim();
+  var fullAddress = address + (apt ? ', ' + apt : '');
   var day = document.getElementById('f-day').value;
   var notes = document.getElementById('f-notes').value.trim();
+  var priceRow = discount > 0
+    ? '<div class="summary-total-row"><span class="summary-total-key">Per Delivery ('+(discount*100).toFixed(0)+'% off)</span><span class="summary-total-val"><span style="text-decoration:line-through;color:var(--color-text-muted);font-size:14px;margin-right:6px;">$'+unit.toFixed(2)+'</span>$'+price.toFixed(2)+'</span></div>'
+    : '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
   document.getElementById('summary-block').innerHTML =
     '<div class="summary-row"><span class="summary-key">Water Type</span><span class="summary-val">'+WATER_NAMES[order.water]+'</span></div>'+
     '<div class="summary-row"><span class="summary-key">Size</span><span class="summary-val">'+order.size+'</span></div>'+
@@ -582,10 +642,10 @@ function buildSummary() {
     '<div class="summary-row"><span class="summary-key">Name</span><span class="summary-val">'+fname+' '+lname+'</span></div>'+
     '<div class="summary-row"><span class="summary-key">Phone</span><span class="summary-val">'+phone+'</span></div>'+
     '<div class="summary-row"><span class="summary-key">Email</span><span class="summary-val">'+email+'</span></div>'+
-    '<div class="summary-row"><span class="summary-key">Address</span><span class="summary-val">'+address+'</span></div>'+
+    '<div class="summary-row"><span class="summary-key">Address</span><span class="summary-val">'+fullAddress+'</span></div>'+
     (day ? '<div class="summary-row"><span class="summary-key">Preferred Day</span><span class="summary-val">'+day+'</span></div>' : '')+
-    (notes ? '<div class="summary-row"><span class="summary-key">Notes</span><span class="summary-val">'+notes+'</span></div>' : '')+
-    '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
+    (notes ? '<div class="summary-row"><span class="summary-key">Delivery Instructions</span><span class="summary-val">'+notes+'</span></div>' : '')+
+    priceRow;
 }
 function submitOrder() {
   if (order.outside) {
@@ -595,10 +655,29 @@ function submitOrder() {
   var btn = document.getElementById('btn-submit');
   btn.disabled = true; btn.textContent = 'Submitting...';
   var phone = document.getElementById('f-phone').value.trim();
-  var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':document.getElementById('f-fname').value.trim(),'lname':document.getElementById('f-lname').value.trim(),'phone':phone,'email':document.getElementById('f-email').value.trim(),'address':document.getElementById('f-address').value.trim(),'day':document.getElementById('f-day').value,'notes':document.getElementById('f-notes').value.trim()});
+  var apt = document.getElementById('f-apt').value.trim();
+  var address = document.getElementById('f-address').value.trim();
+  var notes = document.getElementById('f-notes').value.trim();
+  var day = document.getElementById('f-day').value;
+  var price = currentPerDeliveryPrice();
+  var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':document.getElementById('f-fname').value.trim(),'lname':document.getElementById('f-lname').value.trim(),'phone':phone,'email':document.getElementById('f-email').value.trim(),'address':address,'apt':apt,'day':day,'notes':notes,'price':price.toFixed(2)});
+  function showSuccess(){
+    document.getElementById('wizard-wrap').style.display='none';
+    document.getElementById('confirm-phone').textContent=phone;
+    var fullAddress = address + (apt ? ', ' + apt : '');
+    document.getElementById('success-recap').innerHTML =
+      '<div class="summary-row"><span class="summary-key">Water Type</span><span class="summary-val">'+WATER_NAMES[order.water]+' — '+order.size+'</span></div>'+
+      '<div class="summary-row"><span class="summary-key">Delivery</span><span class="summary-val">'+order.freqLabel+'</span></div>'+
+      '<div class="summary-row"><span class="summary-key">Address</span><span class="summary-val">'+fullAddress+'</span></div>'+
+      (day ? '<div class="summary-row"><span class="summary-key">Preferred Day</span><span class="summary-val">'+day+'</span></div>' : '')+
+      (notes ? '<div class="summary-row"><span class="summary-key">Delivery Instructions</span><span class="summary-val">'+notes+'</span></div>' : '')+
+      '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
+    document.getElementById('success-panel').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
   fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()})
-    .then(function(){document.getElementById('wizard-wrap').style.display='none';document.getElementById('confirm-phone').textContent=phone;document.getElementById('success-panel').style.display='block';window.scrollTo({top:0,behavior:'smooth'});})
-    .catch(function(){document.getElementById('wizard-wrap').style.display='none';document.getElementById('confirm-phone').textContent=phone;document.getElementById('success-panel').style.display='block';window.scrollTo({top:0,behavior:'smooth'});});
+    .then(showSuccess)
+    .catch(showSuccess);
 }
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});

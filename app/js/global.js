@@ -48,8 +48,8 @@ const WB = {
 // ============================================================
 const SUBSCRIPTION_PLANS = {
   monthly: [
-    { id:'plan_solo',       name:'Solo',      price:2100,  jugs:2,  freq:'Monthly', tag:'STARTER',    tagColor:'cyan',    features:['2 × 5-gal jugs','Purified water','Free delivery 0-3 mi'], savings:'Saves $26 vs Water.com' },
-    { id:'plan_family',     name:'Family',    price:4200,  jugs:4,  freq:'Monthly', tag:'MOST POPULAR',tagColor:'green',   features:['4 × 5-gal jugs','Purified or Spring','Priority scheduling'], savings:'Saves $7 vs Water.com' },
+    { id:'plan_solo',       name:'Solo',      price:2100,  jugs:2,  freq:'Monthly', tag:'STARTER',    tagColor:'cyan',    features:['2 × 5-gal jugs','Reverse Osmosis water','Free delivery 0-3 mi'], savings:'Saves $26 vs Water.com' },
+    { id:'plan_family',     name:'Family',    price:4200,  jugs:4,  freq:'Monthly', tag:'MOST POPULAR',tagColor:'green',   features:['4 × 5-gal jugs','Reverse Osmosis or Spring','Priority scheduling'], savings:'Saves $7 vs Water.com' },
     { id:'plan_household',  name:'Household', price:5700,  jugs:6,  freq:'Monthly', tag:'BEST VALUE',  tagColor:'yellow',  features:['6 × 5-gal jugs','Choice of water type','Cooler rental add-on'], savings:'Saves $9 vs Water.com' },
     { id:'plan_office',     name:'Office',    price:7200,  jugs:8,  freq:'Monthly', tag:'OFFICE',      tagColor:'blue',    features:['8 × 5-gal jugs','Bi-weekly option','Invoice billing'], savings:'Saves $10+ vs Water.com' },
     { id:'plan_max',        name:'Max Bundle',price:9500,  jugs:12, freq:'Monthly', tag:'PREMIUM',     tagColor:'purple',  features:['12 × 5-gal jugs','Alkaline or Spring','Cooler rental included'], savings:'Saves $22 vs Water.com' },
@@ -67,7 +67,7 @@ const SUBSCRIPTION_PLANS = {
 const WATER_TYPES = [
   {
     id:          'purified',
-    name:        'Purified',
+    name:        'Reverse Osmosis',
     ph:          '7.0',
     desc:        'Reverse osmosis filtered. Clean, crisp, and great for everyday drinking.',
     priceAdjust: 0,

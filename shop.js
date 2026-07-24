@@ -82,7 +82,8 @@ const PLANS = {
 
 /* Checkout add-on data */
 const CHECKOUT_ADDONS = [
-  { id:'ice-bags',       name:'Ice Bags',          price:4.99,  desc:'10lb bag. Parties and coolers.', img:'' },
+  { id:'ice-bags',       name:'Ice Bag (10lb)',    price:4.99,  desc:'10lb bag. Parties and coolers.', img:'' },
+  { id:'ice-bags-20lb',  name:'Ice Bag (20lb)',    price:7.99,  desc:'20lb bag. Great for bigger gatherings.', img:'' },
   { id:'lmnt-cans',      name:'LMNT Sparkling Cans', price:4.99,  desc:'16oz electrolyte drink. 1000mg sodium. Zero sugar.', img:'' },
   { id:'hydrogen-sticks',name:'Hydrogen Sticks',    price:29.99, desc:'Month of H2-infused water on the go.', img:'' },
   { id:'h2-tabs',        name:'H2 Tabs',            price:1.00,  desc:'Fast-dissolving hydrogen tablets.', img:'' },
@@ -500,7 +501,7 @@ function openProductDetailFromCard(card){
 
 function getProductDesc(name){
   const n=name.toLowerCase();
-  if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water bottle compatible with all standard top-load and bottom-load dispensers. Purified or alkaline available on every delivery.';
+  if(n.includes('5-gallon')||n.includes('5 gallon')) return '5-gallon BPA-free water bottle compatible with all standard top-load and bottom-load dispensers. Reverse Osmosis or alkaline available on every delivery.';
   if(n.includes('3-gallon')||n.includes('3 gallon')) return '3-Gallon bottle, ideal for smaller households or countertop dispensers. Lightweight and easy to handle.';
   if(n.includes('half-gallon')||n.includes('half gallon')) return 'Sleek 64oz glass bottle for daily hydration. Pure taste with zero plastic leach. Dishwasher safe, airtight lid. Great for home or office.';
   if(n.includes('32oz glass')) return 'Compact 32oz glass water bottle — perfect for on-the-go. Crystal clear, BPA-free, easy to clean, fits standard cup holders.';
@@ -926,7 +927,7 @@ function inject(){
     <div class="sub-plan-card" id="sub-plan-display"></div>
     <p style="margin:14px 0 8px;font-size:12px;font-weight:600;color:#8BB8D4;text-transform:uppercase;letter-spacing:.5px">Water Type</p>
     <div class="wtype-sel">
-     <button class="wtype-btn sel" data-wt="purified">Purified</button>
+     <button class="wtype-btn sel" data-wt="purified">Reverse Osmosis</button>
      <button class="wtype-btn" data-wt="alkaline">Alkaline (+$4/bottle)</button>
      <button class="wtype-btn" data-wt="distilled">Distilled</button>
     </div>
@@ -1317,7 +1318,7 @@ function wireSubscription(){
       $$('.wtype-btn',document.getElementById('sub-overlay')).forEach(b=>b.classList.toggle('sel',b===wb));
       subState.waterType=wb.dataset.wt;
       const ph=document.querySelector('#sub-overlay .wtype-ph');
-      if(ph){ const msgs={purified:'Standard purified water — clean, crisp taste.',alkaline:'Alkaline (pH 8.5+) — add $4/bottle to base price.',distilled:'Ultra-pure distilled water — great for appliances.'}; ph.textContent=msgs[subState.waterType]||''; }
+      if(ph){ const msgs={purified:'Standard reverse osmosis water — clean, crisp taste.',alkaline:'Alkaline (pH 8.5+) — add $4/bottle to base price.',distilled:'Ultra-pure distilled water — great for appliances.'}; ph.textContent=msgs[subState.waterType]||''; }
     }
   });
   document.getElementById('sub-next-0')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
