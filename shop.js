@@ -616,10 +616,15 @@ function dvChargeTotal(){
   var plan=PLANS[dvState.plan]||{};
   return (plan.price||0)+(zoneFeeDisplay(currentZone).fee||0);
 }
-/* Reusable real-Stripe payment for any checkout flow (co / sub / dv) */
-function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess){
+/* Reusable real-Stripe payment for any checkout flow (co / sub / dv).
+   opts.subscription:true routes payment through Stripe's hosted Checkout
+   in subscription mode instead of a one-time card charge -- the card UI
+   is skipped entirely since Stripe's page collects it. */
+function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess, opts){
+  opts = opts || {};
   var st={card:null,pr:null,setup:false};
   function doSetup(){
+    if(opts.subscription) return;
     if(st.setup) return; st.setup=true;
     loadStripe().then(function(stripe){
       if(!stripe){ st.setup=false; return; }
@@ -649,10 +654,20 @@ function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess){
   function pay(btn){
     var name=(document.getElementById(nameId)||{}).value||'';
     var errEl=document.getElementById(prefix+'-card-err'); if(errEl) errEl.textContent='';
-    if(!name.trim()){ if(errEl) errEl.textContent='Enter the name on the card.'; return; }
+    if(!name.trim()){ if(errEl) errEl.textContent='Enter your name.'; return; }
+    var email=(document.getElementById(emailId)||{}).value||'';
+    if(opts.subscription){
+      var origSub=btn.textContent; btn.disabled=true; btn.textContent='Redirecting…';
+      fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:opts.getPlanName?opts.getPlanName():'Monthly Water Delivery',amount:getTotal(),customerEmail:email,customerName:name})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(d.error||!d.url){ if(errEl) errEl.textContent=d.error||'Could not start subscription checkout.'; btn.disabled=false; btn.textContent=origSub; return; }
+          window.location.href=d.url;
+        }).catch(function(){ if(errEl) errEl.textContent='Checkout error. Please try again.'; btn.disabled=false; btn.textContent=origSub; });
+      return;
+    }
     if(!_wbStripe||!st.card){ if(errEl) errEl.textContent='Payment is still loading — try again in a moment.'; return; }
     var orig=btn.textContent; btn.disabled=true; btn.textContent='Processing…';
-    var email=(document.getElementById(emailId)||{}).value||'';
     fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:getTotal(),customerEmail:email,customerName:name})})
       .then(function(r){return r.json();})
       .then(function(pi){
@@ -955,9 +970,8 @@ function inject(){
    <!-- Step 3: Payment -->
    <div class="step-panel" id="sub-step-3">
     <p class="step-title">Payment</p>
-    <div id="sub-pr-wrap" style="display:none;margin-bottom:14px"><div id="sub-pr-btn"></div><div class="pay-or"><span>or pay with card</span></div></div>
-    <div class="wb-field"><label>Name on Card</label><input id="sub-cname" placeholder="Jane Smith"></div>
-    <div class="wb-field"><label>Card</label><div id="sub-stripe-card" style="background:#0B1B2B;border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:13px 12px"></div></div>
+    <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#B8E6FF;line-height:1.6;"><strong style="color:#fff;">Recurring monthly subscription.</strong> You'll be taken to Stripe's secure checkout to set it up — billed automatically every month until you cancel.</div>
+    <div class="wb-field"><label>Your Name</label><input id="sub-cname" placeholder="Jane Smith"></div>
     <div id="sub-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
     <div id="sub-order-summary" style="margin:14px 0"></div>
     <div class="terms-row">By subscribing you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</div>
@@ -1051,9 +1065,8 @@ function inject(){
    <div class="step-panel" id="dv-step-3">
     <p class="step-title">Payment</p>
     <div id="dv-plan-summary" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:12px;padding:14px;margin-bottom:18px"></div>
-    <div id="dv-pr-wrap" style="display:none;margin-bottom:14px"><div id="dv-pr-btn"></div><div class="pay-or"><span>or pay with card</span></div></div>
-    <div class="wb-field"><label>Name on Card</label><input id="dv-cname" placeholder="Jane Smith"></div>
-    <div class="wb-field"><label>Card</label><div id="dv-stripe-card" style="background:#0B1B2B;border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:13px 12px"></div></div>
+    <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#B8E6FF;line-height:1.6;"><strong style="color:#fff;">Recurring monthly subscription.</strong> You'll be taken to Stripe's secure checkout to set it up — billed automatically every month until you cancel.</div>
+    <div class="wb-field"><label>Your Name</label><input id="dv-cname" placeholder="Jane Smith"></div>
     <div id="dv-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
     <div class="wb-field"><label>Promo Code (optional)</label><input id="dv-promo" placeholder="WATERBOY10"></div>
     <div class="terms-row"><input type="checkbox" id="dv-terms"><label for="dv-terms">I agree to the <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</label></div>
@@ -1340,7 +1353,7 @@ function wireSubscription(){
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
   const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!',''); };
-  subFlowInst=makeFlowStripe('sub',subChargeTotal,'sub-email','sub-cname',doSubConfirm);
+  subFlowInst=makeFlowStripe('sub',subChargeTotal,'sub-email','sub-cname',doSubConfirm,{subscription:true,getPlanName:function(){return (subState.plan||'Water')+' Plan'+(subState.waterType==='alkaline'?' (Alkaline)':'');}});
   document.getElementById('sub-subscribe-btn')?.addEventListener('click',function(){ subFlowInst.pay(this); });
   document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
   wireZipField('sub-zip','sub-zone-result','sub-next-1');
@@ -1407,7 +1420,7 @@ function wireDeliveryModal(){
       +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
     toast('Delivery scheduled!','Welcome to Waterboy Delivery!','');
   };
-  dvFlowInst=makeFlowStripe('dv',dvChargeTotal,'dv-email','dv-cname',doDvConfirm);
+  dvFlowInst=makeFlowStripe('dv',dvChargeTotal,'dv-email','dv-cname',doDvConfirm,{subscription:true,getPlanName:function(){return (dvState.plan||'Water')+' Plan';}});
   document.getElementById('dv-subscribe-btn')?.addEventListener('click',function(){
     if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service',''); return; }
     dvFlowInst.pay(this);
