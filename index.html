@@ -1416,6 +1416,296 @@
   }, { threshold: 0.12 });
   reveals.forEach(function(el) { observer.observe(el); });
 </script>
+<!-- ══ CUSTOMIZE YOUR PLAN — subscription builder popup ══════════ -->
+<style>
+  #cp-overlay{position:fixed;inset:0;z-index:20000;background:rgba(10,31,68,0.6);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  #cp-overlay.open{display:flex;}
+  .cp-card{background:#FFFFFF;border-radius:20px;max-width:560px;width:100%;margin:24px auto;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.35);animation:cpPop .35s cubic-bezier(0.175,0.885,0.32,1.275) both;}
+  @keyframes cpPop{from{opacity:0;transform:scale(0.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .cp-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--color-surface-alt);border:1px solid var(--color-border);color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .15s;z-index:2;}
+  .cp-close:hover{background:var(--color-border);color:var(--color-text);}
+  .cp-body{padding:36px 32px 30px;}
+  @media(max-width:520px){.cp-body{padding:28px 20px 24px;}}
+  .cp-eyebrow{font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-primary);margin-bottom:6px;}
+  .cp-h{font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;color:var(--color-text);margin-bottom:6px;}
+  .cp-sub{font-family:'Poppins',sans-serif;font-size:14px;color:var(--color-text-muted);margin-bottom:24px;line-height:1.5;}
+  .cp-label{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:10px;display:block;}
+  .cp-section{margin-bottom:22px;}
+  .cp-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .cp-pills.cp-pills-2{grid-template-columns:repeat(2,1fr);}
+  .cp-pill{border:1.5px solid var(--color-border);border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;background:#FFFFFF;transition:all .15s;font-family:'Poppins',sans-serif;}
+  .cp-pill:hover{border-color:var(--color-primary-sky);}
+  .cp-pill.selected{background:var(--color-primary);border-color:var(--color-primary);}
+  .cp-pill-name{font-size:13.5px;font-weight:600;color:var(--color-text);}
+  .cp-pill.selected .cp-pill-name{color:#FFFFFF;}
+  .cp-pill-sub{font-size:11px;color:var(--color-text-muted);margin-top:2px;}
+  .cp-pill.selected .cp-pill-sub{color:rgba(255,255,255,0.8);}
+  .cp-qty-row{display:flex;align-items:center;gap:16px;}
+  .cp-qty-btn{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--color-border);background:#FFFFFF;font-size:20px;font-weight:700;color:var(--color-primary);cursor:pointer;transition:all .15s;}
+  .cp-qty-btn:hover{background:var(--color-surface-alt);}
+  .cp-qty-num{font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:var(--color-text);min-width:28px;text-align:center;}
+  .cp-qty-label{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);}
+  .cp-addr-wrap{position:relative;}
+  .cp-input{font-family:'Poppins',sans-serif;font-size:14px;color:var(--color-text);background:#FFFFFF;border:1.5px solid var(--color-border);border-radius:10px;padding:12px 14px;outline:none;width:100%;transition:border-color .2s;}
+  .cp-input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(13,71,161,0.1);}
+  .cp-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:480px){.cp-row-2{grid-template-columns:1fr;}}
+  .cp-fee-note{font-family:'Poppins',sans-serif;font-size:12.5px;margin-top:8px;min-height:16px;}
+  .cp-summary{background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:14px;padding:18px 20px;margin:22px 0;}
+  .cp-sum-row{display:flex;justify-content:space-between;font-family:'Poppins',sans-serif;font-size:13.5px;color:var(--color-text-muted);margin-bottom:8px;}
+  .cp-sum-row:last-child{margin-bottom:0;}
+  .cp-sum-row strong{color:var(--color-text);font-weight:600;}
+  .cp-sum-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--color-border);margin-top:10px;padding-top:12px;}
+  .cp-sum-total-lbl{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--color-text);}
+  .cp-sum-total-val{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:var(--color-primary);}
+  .cp-btn{display:block;width:100%;background:var(--color-primary);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;border:none;padding:17px;border-radius:12px;cursor:pointer;transition:transform .2s,box-shadow .2s;text-align:center;}
+  .cp-btn:hover:not(:disabled){transform:scale(1.015);box-shadow:0 8px 24px rgba(13,71,161,0.25);}
+  .cp-btn:disabled{opacity:.55;cursor:not-allowed;}
+  .cp-fine{font-family:'Poppins',sans-serif;font-size:11.5px;color:var(--color-text-muted);text-align:center;margin-top:12px;line-height:1.5;}
+  .cp-err{color:#dc2626;font-family:'Poppins',sans-serif;font-size:13px;min-height:16px;margin-top:8px;text-align:center;}
+  /* Floating reopen tab */
+  #cp-reopen-tab{position:fixed;right:0;top:50%;transform:translateY(-50%) translateX(0);z-index:9998;background:var(--color-primary);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:10px 0 0 10px;padding:14px 10px;cursor:pointer;writing-mode:vertical-rl;text-orientation:mixed;box-shadow:-4px 0 16px rgba(0,0,0,0.15);display:none;transition:padding .2s;}
+  #cp-reopen-tab:hover{padding-right:16px;}
+  #cp-reopen-tab.visible{display:block;}
+  @media(max-width:600px){#cp-reopen-tab{display:none!important;}}
+</style>
+
+<div id="cp-overlay" role="dialog" aria-modal="true" aria-label="Customize your subscription plan">
+  <div class="cp-card">
+    <button class="cp-close" id="cp-close" aria-label="Close">&#10005;</button>
+    <div class="cp-body">
+      <span class="cp-eyebrow">Build Your Own Plan</span>
+      <h2 class="cp-h">Customize Your Plan.</h2>
+      <p class="cp-sub">Pick your water, size, and how often you want it delivered — cancel anytime.</p>
+
+      <div class="cp-section">
+        <label class="cp-label">Water Type</label>
+        <div class="cp-pills" id="cp-water-pills"></div>
+      </div>
+
+      <div class="cp-section">
+        <label class="cp-label">Bottle Size</label>
+        <div class="cp-pills cp-pills-2" id="cp-size-pills"></div>
+      </div>
+
+      <div class="cp-section">
+        <label class="cp-label">Bottles Per Delivery</label>
+        <div class="cp-qty-row">
+          <button class="cp-qty-btn" id="cp-qty-minus" aria-label="Decrease">&minus;</button>
+          <span class="cp-qty-num" id="cp-qty-num">2</span>
+          <button class="cp-qty-btn" id="cp-qty-plus" aria-label="Increase">+</button>
+          <span class="cp-qty-label">bottles</span>
+        </div>
+      </div>
+
+      <div class="cp-section">
+        <label class="cp-label">Delivery Frequency</label>
+        <div class="cp-pills" id="cp-freq-pills"></div>
+      </div>
+
+      <div class="cp-section">
+        <label class="cp-label">Delivery Address <span style="text-transform:none;font-weight:500;color:var(--color-text-muted);">(optional — for an exact fee)</span></label>
+        <div class="cp-addr-wrap">
+          <input class="cp-input" id="cp-addr" type="text" placeholder="Start typing your address…" autocomplete="off">
+        </div>
+        <div class="cp-fee-note" id="cp-fee-note"></div>
+      </div>
+
+      <div class="cp-summary">
+        <div class="cp-sum-row"><span>Water (<span id="cp-sum-qty">2</span> &times; <span id="cp-sum-size">5 Gal</span> <span id="cp-sum-type">RO</span>)</span><strong id="cp-sum-water">$0.00</strong></div>
+        <div class="cp-sum-row" id="cp-sum-disc-row" style="display:none;color:#16a34a;"><span id="cp-sum-disc-label">Discount</span><strong id="cp-sum-disc" style="color:#16a34a;">&minus;$0.00</strong></div>
+        <div class="cp-sum-row"><span>Delivery Fee</span><strong id="cp-sum-fee">TBD at checkout</strong></div>
+        <div class="cp-sum-total"><span class="cp-sum-total-lbl">Per Delivery</span><span class="cp-sum-total-val" id="cp-sum-total">$0.00</span></div>
+      </div>
+
+      <div class="cp-row-2" style="margin-bottom:10px;">
+        <input class="cp-input" id="cp-name" type="text" placeholder="Your Name" autocomplete="name">
+        <input class="cp-input" id="cp-email" type="email" placeholder="Email Address" autocomplete="email">
+      </div>
+
+      <button class="cp-btn" id="cp-subscribe-btn">Subscribe Now &rarr;</button>
+      <div class="cp-err" id="cp-err"></div>
+      <p class="cp-fine">You'll finish secure payment setup on Stripe's checkout page. Cancel or change your plan anytime.</p>
+    </div>
+  </div>
+</div>
+
+<button id="cp-reopen-tab" onclick="window.__cpOpen()">Customize Your Plan</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+(function(){
+  var CP_PRICING = {
+    ro:       { name: 'Reverse Osmosis', sizes: {'3 Gallon': 9.99,  '5 Gallon': 11.99} },
+    alkaline: { name: 'Alkaline',        sizes: {'3 Gallon': 11.99, '5 Gallon': 13.99} },
+    hydrogen: { name: 'Hydrogen',        sizes: {'1 Gallon': 10.99, '3 Gallon': 32.97} }
+  };
+  var CP_FREQ = [
+    {id:'weekly',   label:'Weekly',      sub:'10% off', discount:0.10},
+    {id:'biweekly', label:'Every 2 Wks', sub:'15% off', discount:0.15},
+    {id:'monthly',  label:'Monthly',     sub:'5% off',  discount:0.05}
+  ];
+  var STORE_LAT=38.4088, STORE_LNG=-121.4208;
+  function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,x=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
+  function feeForDist(d){if(d<=1)return 2.99;if(d<=2)return 3.99;if(d<=3)return 5.99;if(d<=4)return 6.99;if(d<=5)return 7.99;if(d<=6)return 8.99;if(d<=7)return 9.99;if(d<=8)return 10.99;if(d<=9)return 11.99;return null;}
+
+  var cp = { water:'ro', size:'5 Gallon', qty:2, freq:'biweekly', fee:null, outside:false };
+
+  function sizesFor(water){ return Object.keys(CP_PRICING[water].sizes); }
+  function unitPrice(){ return CP_PRICING[cp.water].sizes[cp.size] || 0; }
+  function discount(){ var f=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0]; return f?f.discount:0; }
+  function waterTotal(){ return unitPrice()*cp.qty*(1-discount()); }
+  function grandTotal(){ return waterTotal()+(cp.fee||0); }
+
+  function renderWaterPills(){
+    var el=document.getElementById('cp-water-pills');
+    el.innerHTML=Object.keys(CP_PRICING).map(function(w){
+      return '<div class="cp-pill'+(cp.water===w?' selected':'')+'" data-w="'+w+'"><div class="cp-pill-name">'+CP_PRICING[w].name+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
+      p.addEventListener('click',function(){
+        cp.water=p.getAttribute('data-w');
+        var szs=sizesFor(cp.water);
+        if(szs.indexOf(cp.size)===-1) cp.size=szs[szs.length-1];
+        renderWaterPills(); renderSizePills(); renderSummary();
+      });
+    });
+  }
+  function renderSizePills(){
+    var el=document.getElementById('cp-size-pills');
+    var szs=sizesFor(cp.water);
+    el.innerHTML=szs.map(function(s){
+      return '<div class="cp-pill'+(cp.size===s?' selected':'')+'" data-s="'+s+'"><div class="cp-pill-name">'+s+'</div><div class="cp-pill-sub">$'+CP_PRICING[cp.water].sizes[s].toFixed(2)+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
+      p.addEventListener('click',function(){ cp.size=p.getAttribute('data-s'); renderSizePills(); renderSummary(); });
+    });
+  }
+  function renderFreqPills(){
+    var el=document.getElementById('cp-freq-pills');
+    el.innerHTML=CP_FREQ.map(function(f){
+      return '<div class="cp-pill'+(cp.freq===f.id?' selected':'')+'" data-f="'+f.id+'"><div class="cp-pill-name">'+f.label+'</div><div class="cp-pill-sub">'+f.sub+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
+      p.addEventListener('click',function(){ cp.freq=p.getAttribute('data-f'); renderFreqPills(); renderSummary(); });
+    });
+  }
+  function renderSummary(){
+    document.getElementById('cp-sum-qty').textContent=cp.qty;
+    document.getElementById('cp-sum-size').textContent=cp.size;
+    document.getElementById('cp-sum-type').textContent=CP_PRICING[cp.water].name;
+    document.getElementById('cp-sum-water').textContent='$'+(unitPrice()*cp.qty).toFixed(2);
+    var d=discount();
+    var discRow=document.getElementById('cp-sum-disc-row');
+    if(d>0){
+      discRow.style.display='flex';
+      document.getElementById('cp-sum-disc-label').textContent=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0].sub+' discount';
+      document.getElementById('cp-sum-disc').textContent='−$'+(unitPrice()*cp.qty*d).toFixed(2);
+    } else { discRow.style.display='none'; }
+    document.getElementById('cp-sum-fee').textContent = cp.fee!=null ? '$'+cp.fee.toFixed(2) : 'TBD at checkout';
+    document.getElementById('cp-sum-total').textContent='$'+grandTotal().toFixed(2);
+    var btn=document.getElementById('cp-subscribe-btn');
+    btn.textContent = cp.outside ? "Outside Delivery Area" : ('Subscribe — $'+grandTotal().toFixed(2)+'/'+({weekly:'wk',biweekly:'2wk',monthly:'mo'}[cp.freq]||'mo')+' →');
+    btn.disabled = cp.outside;
+  }
+
+  document.getElementById('cp-qty-minus').addEventListener('click',function(){ cp.qty=Math.max(1,cp.qty-1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
+  document.getElementById('cp-qty-plus').addEventListener('click',function(){ cp.qty=Math.min(20,cp.qty+1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
+
+  /* Address autocomplete (keyless Photon/OSM) + zone-fee calculation */
+  (function(){
+    var addr=document.getElementById('cp-addr');
+    var box=null, items=[], activeIdx=-1, timer=null;
+    function ensureBox(){ if(box)return; addr.parentElement.style.position='relative'; box=document.createElement('div'); box.setAttribute('role','listbox'); box.style.cssText='position:absolute;z-index:99999;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin-top:4px;max-height:220px;overflow-y:auto;display:none;'; addr.parentElement.appendChild(box); }
+    function place(){ ensureBox(); box.style.left=addr.offsetLeft+'px'; box.style.top=(addr.offsetTop+addr.offsetHeight)+'px'; box.style.width=addr.offsetWidth+'px'; }
+    function hide(){ if(box)box.style.display='none'; activeIdx=-1; }
+    function draw(){
+      place();
+      if(!items.length){ hide(); return; }
+      box.innerHTML=items.map(function(f,i){
+        var p=f.properties; var main=p.name||''; if(p.housenumber&&main)main=p.housenumber+' '+main;
+        var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', '); if(!main){main=sub;sub='';}
+        return '<div class="as-item" data-i="'+i+'" style="padding:9px 12px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'"><div style="font-size:13px;color:#0A1F44;font-weight:600;">'+main+'</div>'+(sub?'<div style="font-size:11px;color:#64748B;">'+sub+'</div>':'')+'</div>';
+      }).join('');
+      box.style.display='block';
+      Array.prototype.forEach.call(box.querySelectorAll('.as-item'),function(el){ el.addEventListener('mousedown',function(e){ e.preventDefault(); pick(parseInt(el.getAttribute('data-i'),10)); }); });
+    }
+    function applyDist(lat,lng){
+      var dist=haversine(STORE_LAT,STORE_LNG,lat,lng);
+      var fee=feeForDist(dist);
+      cp.outside=(fee===null); cp.fee=fee;
+      var note=document.getElementById('cp-fee-note');
+      if(cp.outside){ note.style.color='#dc2626'; note.innerHTML='Beyond our 9-mile delivery area ('+dist.toFixed(1)+' mi). Call <a href="tel:+19167533866" style="color:#dc2626;font-weight:700;">(916) 753-3866</a>.'; }
+      else { note.style.color='#0A47A1'; note.innerHTML='&#10003; Delivery fee: $'+fee.toFixed(2)+' ('+dist.toFixed(1)+' mi)'; }
+      renderSummary();
+    }
+    function pick(i){
+      var f=items[i]; if(!f)return;
+      var p=f.properties; var main=p.name||''; if(p.housenumber&&main)main=p.housenumber+' '+main;
+      var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', ');
+      addr.value=(main+(sub?', '+sub:'')).trim();
+      var c=f.geometry.coordinates;
+      applyDist(c[1],c[0]);
+      hide();
+    }
+    function query(q){
+      fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat='+STORE_LAT+'&lon='+STORE_LNG+'&q='+encodeURIComponent(q))
+        .then(function(r){return r.json();})
+        .then(function(j){ items=(j.features||[]).filter(function(f){return f.geometry&&f.geometry.coordinates;}); activeIdx=-1; draw(); })
+        .catch(function(){ hide(); });
+    }
+    addr.addEventListener('input',function(){
+      cp.fee=null; cp.outside=false;
+      document.getElementById('cp-fee-note').innerHTML='';
+      renderSummary();
+      var q=addr.value.trim(); clearTimeout(timer);
+      if(q.length<3){ hide(); return; }
+      timer=setTimeout(function(){ query(q); },150);
+    });
+    addr.addEventListener('keydown',function(e){
+      if(!box||box.style.display==='none')return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); activeIdx=Math.min(activeIdx+1,items.length-1); draw(); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); activeIdx=Math.max(activeIdx-1,0); draw(); }
+      else if(e.key==='Enter'&&activeIdx>=0){ e.preventDefault(); pick(activeIdx); }
+      else if(e.key==='Escape'){ hide(); }
+    });
+    addr.addEventListener('blur',function(){ setTimeout(hide,150); });
+  })();
+
+  /* Subscribe -> real recurring Stripe Checkout */
+  document.getElementById('cp-subscribe-btn').addEventListener('click',function(){
+    var errEl=document.getElementById('cp-err'); errEl.textContent='';
+    var name=document.getElementById('cp-name').value.trim();
+    var email=document.getElementById('cp-email').value.trim();
+    if(!name){ errEl.textContent='Please enter your name.'; return; }
+    if(!email||email.indexOf('@')<0){ errEl.textContent='Please enter a valid email.'; return; }
+    var btn=this, orig=btn.textContent; btn.disabled=true; btn.textContent='Redirecting…';
+    var freqLabel=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0].label;
+    var planName=cp.qty+'x '+cp.size+' '+CP_PRICING[cp.water].name+' — '+freqLabel;
+    fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:grandTotal(),customerEmail:email,customerName:name})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d.error||!d.url){ errEl.textContent=d.error||'Could not start checkout. Please try again.'; btn.disabled=false; btn.textContent=orig; return; }
+        window.location.href=d.url;
+      })
+      .catch(function(){ errEl.textContent='Network error. Please try again.'; btn.disabled=false; btn.textContent=orig; });
+  });
+
+  /* Open / close + first-visit auto-show */
+  function openCp(){ document.getElementById('cp-overlay').classList.add('open'); if(typeof lockBodyScroll==='function')lockBodyScroll(); document.getElementById('cp-reopen-tab').classList.remove('visible'); }
+  function closeCp(){ document.getElementById('cp-overlay').classList.remove('open'); if(typeof unlockBodyScroll==='function')unlockBodyScroll(); try{localStorage.setItem('wb_custom_plan_seen','1');}catch(e){} document.getElementById('cp-reopen-tab').classList.add('visible'); }
+  document.getElementById('cp-close').addEventListener('click',closeCp);
+  document.getElementById('cp-overlay').addEventListener('click',function(e){ if(e.target===this)closeCp(); });
+  window.__cpOpen=openCp;
+
+  renderWaterPills(); renderSizePills(); renderFreqPills(); renderSummary();
+
+  var seen=false; try{ seen=localStorage.getItem('wb_custom_plan_seen')==='1'; }catch(e){}
+  if(!seen){ setTimeout(openCp,2500); }
+  else { document.getElementById('cp-reopen-tab').classList.add('visible'); }
+})();
+</script>
+
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
 <script src="shop.js"></script>
