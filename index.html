@@ -1612,20 +1612,21 @@
   document.getElementById('cp-qty-minus').addEventListener('click',function(){ cp.qty=Math.max(1,cp.qty-1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
   document.getElementById('cp-qty-plus').addEventListener('click',function(){ cp.qty=Math.min(20,cp.qty+1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
 
-  /* Address autocomplete (keyless Photon/OSM) + zone-fee calculation */
+  /* Address autocomplete — Google Places when GOOGLE_MAPS_API_KEY is
+     configured (server-side proxy keeps the key off the client), falling
+     back automatically to keyless Photon/OSM if it isn't set up. Same
+     pattern as order.html / water-delivery.html. */
   (function(){
     var addr=document.getElementById('cp-addr');
-    var box=null, items=[], activeIdx=-1, timer=null;
+    var box=null, items=[], activeIdx=-1, timer=null, googleConfigured=null;
     function ensureBox(){ if(box)return; addr.parentElement.style.position='relative'; box=document.createElement('div'); box.setAttribute('role','listbox'); box.style.cssText='position:absolute;z-index:99999;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin-top:4px;max-height:220px;overflow-y:auto;display:none;'; addr.parentElement.appendChild(box); }
     function place(){ ensureBox(); box.style.left=addr.offsetLeft+'px'; box.style.top=(addr.offsetTop+addr.offsetHeight)+'px'; box.style.width=addr.offsetWidth+'px'; }
     function hide(){ if(box)box.style.display='none'; activeIdx=-1; }
     function draw(){
       place();
       if(!items.length){ hide(); return; }
-      box.innerHTML=items.map(function(f,i){
-        var p=f.properties; var main=p.name||''; if(p.housenumber&&main)main=p.housenumber+' '+main;
-        var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', '); if(!main){main=sub;sub='';}
-        return '<div class="as-item" data-i="'+i+'" style="padding:9px 12px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'"><div style="font-size:13px;color:#0A1F44;font-weight:600;">'+main+'</div>'+(sub?'<div style="font-size:11px;color:#64748B;">'+sub+'</div>':'')+'</div>';
+      box.innerHTML=items.map(function(it,i){
+        return '<div class="as-item" data-i="'+i+'" style="padding:9px 12px;cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:Poppins,sans-serif;'+(i===activeIdx?'background:#F0F6FF;':'')+'"><div style="font-size:13px;color:#0A1F44;font-weight:600;">'+it.main+'</div>'+(it.sub?'<div style="font-size:11px;color:#64748B;">'+it.sub+'</div>':'')+'</div>';
       }).join('');
       box.style.display='block';
       Array.prototype.forEach.call(box.querySelectorAll('.as-item'),function(el){ el.addEventListener('mousedown',function(e){ e.preventDefault(); pick(parseInt(el.getAttribute('data-i'),10)); }); });
@@ -1640,27 +1641,51 @@
       renderSummary();
     }
     function pick(i){
-      var f=items[i]; if(!f)return;
-      var p=f.properties; var main=p.name||''; if(p.housenumber&&main)main=p.housenumber+' '+main;
-      var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', ');
-      addr.value=(main+(sub?', '+sub:'')).trim();
-      var c=f.geometry.coordinates;
+      var it=items[i]; if(!it)return;
+      if(it.source==='google'){
+        fetch('/api/place-details?placeId='+encodeURIComponent(it.placeId)).then(function(r){return r.json();}).then(function(d){
+          if(!d.ok)return;
+          var full=[d.street,d.city,d.state].filter(Boolean).join(', ')+(d.zip?(' '+d.zip):'');
+          addr.value=full||it.main;
+          if(typeof d.lat==='number'&&typeof d.lng==='number') applyDist(d.lat,d.lng);
+          hide();
+        }).catch(function(){});
+        return;
+      }
+      addr.value=(it.main+(it.sub?', '+it.sub:'')).trim();
+      var c=it.raw.geometry.coordinates; // [lng, lat]
       applyDist(c[1],c[0]);
       hide();
     }
-    function query(q){
+    function queryPhoton(q){
       fetch('https://photon.komoot.io/api/?limit=5&lang=en&lat='+STORE_LAT+'&lon='+STORE_LNG+'&q='+encodeURIComponent(q))
         .then(function(r){return r.json();})
-        .then(function(j){ items=(j.features||[]).filter(function(f){return f.geometry&&f.geometry.coordinates;}); activeIdx=-1; draw(); })
+        .then(function(j){
+          items=(j.features||[]).filter(function(f){return f.geometry&&f.geometry.coordinates;}).map(function(f){
+            var p=f.properties; var main=p.name||''; if(p.housenumber&&main)main=p.housenumber+' '+main;
+            var sub=[p.city,p.state,p.postcode].filter(Boolean).join(', '); if(!main){main=sub;sub='';}
+            return {source:'photon',main:main,sub:sub,raw:f};
+          });
+          activeIdx=-1; draw();
+        })
         .catch(function(){ hide(); });
     }
+    function queryGoogle(q){
+      fetch('/api/places-autocomplete?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(d){
+        if(googleConfigured===null) googleConfigured=!!d.configured;
+        if(!d.configured){ queryPhoton(q); return; }
+        items=(d.predictions||[]).map(function(p){ return {source:'google',main:p.main,sub:p.sub,placeId:p.placeId}; });
+        activeIdx=-1; draw();
+      }).catch(function(){ queryPhoton(q); });
+    }
+    function query(q){ googleConfigured===false ? queryPhoton(q) : queryGoogle(q); }
     addr.addEventListener('input',function(){
       cp.fee=null; cp.outside=false;
       document.getElementById('cp-fee-note').innerHTML='';
       renderSummary();
       var q=addr.value.trim(); clearTimeout(timer);
       if(q.length<3){ hide(); return; }
-      timer=setTimeout(function(){ query(q); },150);
+      timer=setTimeout(function(){ query(q); },120);
     });
     addr.addEventListener('keydown',function(e){
       if(!box||box.style.display==='none')return;
