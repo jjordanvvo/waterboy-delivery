@@ -148,6 +148,16 @@
     @media (max-width: 480px) {
       .size-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* Payment (Step 4) */
+    .stripe-field { background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 10px; padding: 14px; transition: border-color .15s, box-shadow .15s; }
+    .stripe-field.StripeElement--focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(13,71,161,0.12); }
+    .stripe-field.StripeElement--invalid { border-color: #dc2626; }
+    .sc-label { display: block; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--color-text); margin-bottom: 6px; }
+    .pay-form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .pay-form-row-2 { grid-template-columns: 1fr; } }
+    .stripe-err { color: #dc2626; font-family: 'Poppins', sans-serif; font-size: 13px; min-height: 18px; margin-top: 4px; }
+    .pay-field { margin-bottom: 16px; }
   </style>
 </head>
 <body>
@@ -379,12 +389,35 @@
     <!-- STEP 4: Confirm -->
     <div class="step-panel" id="step-4">
       <h2 class="step-heading">Confirm Order.</h2>
-      <p class="step-desc">Review your order below. We'll call to confirm delivery details.</p>
+      <p class="step-desc">Review your order and pay securely below.</p>
       <div class="summary-block" id="summary-block"></div>
-      <p style="font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);margin-bottom:24px;">By placing this order you agree to be contacted at the number provided. No payment is taken online - we invoice on delivery.</p>
+
+      <h2 class="step-heading" style="font-size:22px;margin-top:36px;">Payment</h2>
+      <div class="pay-field">
+        <label class="sc-label" for="p-cname">Cardholder Name</label>
+        <input class="form-input" type="text" id="p-cname" placeholder="Jane Smith" autocomplete="cc-name">
+      </div>
+      <div class="pay-field">
+        <label class="sc-label" for="p-number">Card Number</label>
+        <div id="p-number" class="stripe-field"></div>
+      </div>
+      <div class="pay-form-row-2">
+        <div class="pay-field">
+          <label class="sc-label" for="p-expiry">Expiry</label>
+          <div id="p-expiry" class="stripe-field"></div>
+        </div>
+        <div class="pay-field">
+          <label class="sc-label" for="p-cvc">CVC</label>
+          <div id="p-cvc" class="stripe-field"></div>
+        </div>
+      </div>
+      <div class="stripe-err" id="stripe-err"></div>
+      <p style="font-family:'Poppins',sans-serif;font-size:12px;color:var(--color-text-muted);margin:14px 0 24px;">Your payment info is encrypted and never stored on our servers. By placing this order you agree to be contacted at the number provided.</p>
       <div class="step-nav">
         <button class="btn-back" onclick="goToStep(3)">&larr; Back</button>
-        <button class="btn-submit" id="btn-submit" onclick="submitOrder()">Place Order &rarr;</button>
+        <button class="btn-submit" id="btn-submit" onclick="submitOrder()">
+          <span id="btn-submit-text">Pay &amp; Place Order &rarr;</span>
+        </button>
       </div>
     </div>
 
@@ -467,6 +500,7 @@
 </aside>
 <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="-1 -1 26 26" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="m18 15-6-6-6 6"/></svg></button>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 const PRICING = {
   ro:       {'3 Gallon': 9.99,  '5 Gallon': 11.99},
@@ -478,6 +512,8 @@ const FREQ_DISCOUNT = {weekly: 0.10, biweekly: 0.15, monthly: 0.05};
 function currentUnitPrice(){ return (order.water && order.size) ? PRICING[order.water][order.size] : 0; }
 function currentDiscount(){ return (order.freqType === 'recurring' && order.freq) ? (FREQ_DISCOUNT[order.freq] || 0) : 0; }
 function currentPerDeliveryPrice(){ return currentUnitPrice() * (1 - currentDiscount()); }
+function currentDeliveryFee(){ return (order.coords && !order.outside) ? (order.zoneFee||0) : 0; }
+function currentGrandTotal(){ return currentPerDeliveryPrice() + currentDeliveryFee(); }
 let order = {water: null, size: null, freq: null, freqType: null, freqLabel: null, coords: null, dist: null, zoneFee: 0, outside: false, geocodeChecked: false};
 
 /* ── Delivery-area / distance logic ─────────────────────────── */
@@ -614,6 +650,7 @@ function goToStep(n) {
       return;
     }
     buildSummary();
+    setTimeout(initStripe,50);
   }
   document.querySelectorAll('.step-panel').forEach(function(p,i){p.classList.toggle('active',i+1===n);});
   document.querySelectorAll('.step-tab').forEach(function(t,i){t.classList.remove('active','done');if(i+1===n)t.classList.add('active');else if(i+1<n)t.classList.add('done');});
@@ -623,6 +660,8 @@ function buildSummary() {
   var unit = currentUnitPrice();
   var discount = currentDiscount();
   var price = currentPerDeliveryPrice();
+  var fee = currentDeliveryFee();
+  var total = currentGrandTotal();
   var fname = document.getElementById('f-fname').value.trim();
   var lname = document.getElementById('f-lname').value.trim();
   var phone = document.getElementById('f-phone').value.trim();
@@ -632,9 +671,10 @@ function buildSummary() {
   var fullAddress = address + (apt ? ', ' + apt : '');
   var day = document.getElementById('f-day').value;
   var notes = document.getElementById('f-notes').value.trim();
-  var priceRow = discount > 0
-    ? '<div class="summary-total-row"><span class="summary-total-key">Per Delivery ('+(discount*100).toFixed(0)+'% off)</span><span class="summary-total-val"><span style="text-decoration:line-through;color:var(--color-text-muted);font-size:14px;margin-right:6px;">$'+unit.toFixed(2)+'</span>$'+price.toFixed(2)+'</span></div>'
-    : '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
+  var waterPriceRow = discount > 0
+    ? '<div class="summary-row"><span class="summary-key">Water Price ('+(discount*100).toFixed(0)+'% off)</span><span class="summary-val"><span style="text-decoration:line-through;color:var(--color-text-muted);font-size:13px;margin-right:6px;">$'+unit.toFixed(2)+'</span>$'+price.toFixed(2)+'</span></div>'
+    : '<div class="summary-row"><span class="summary-key">Water Price</span><span class="summary-val">$'+price.toFixed(2)+'</span></div>';
+  var feeRow = '<div class="summary-row"><span class="summary-key">Delivery Fee</span><span class="summary-val">'+(order.coords?('$'+fee.toFixed(2)):'<span style="color:#dc2626">Enter address in Step 3</span>')+'</span></div>';
   document.getElementById('summary-block').innerHTML =
     '<div class="summary-row"><span class="summary-key">Water Type</span><span class="summary-val">'+WATER_NAMES[order.water]+'</span></div>'+
     '<div class="summary-row"><span class="summary-key">Size</span><span class="summary-val">'+order.size+'</span></div>'+
@@ -645,39 +685,82 @@ function buildSummary() {
     '<div class="summary-row"><span class="summary-key">Address</span><span class="summary-val">'+fullAddress+'</span></div>'+
     (day ? '<div class="summary-row"><span class="summary-key">Preferred Day</span><span class="summary-val">'+day+'</span></div>' : '')+
     (notes ? '<div class="summary-row"><span class="summary-key">Delivery Instructions</span><span class="summary-val">'+notes+'</span></div>' : '')+
-    priceRow;
+    waterPriceRow+feeRow+
+    '<div class="summary-total-row"><span class="summary-total-key">Total</span><span class="summary-total-val">$'+total.toFixed(2)+'</span></div>';
+  var payBtnText=document.getElementById('btn-submit-text');
+  if(payBtnText)payBtnText.textContent='Pay $'+total.toFixed(2)+' & Place Order →';
+}
+/* ── Payment (Step 4) ────────────────────────────────────────── */
+var wdStripe=null,wdCardNumber=null,wdCardExpiry=null,wdCardCvc=null,wdStripeReady=false;
+function initStripe(){
+  if(wdStripeReady||typeof Stripe==='undefined')return;
+  wdStripeReady=true;
+  wdStripe=Stripe('pk_live_51Tqi6kLXa6QDwCZAvbMmFTcFOaLMaNQOApvlYV2GBUnH90DXSJySe23wyFW4wogkwhyswHdHnnyg5mXIvC8yY4Wm00LxlXeDfz');
+  var elements=wdStripe.elements();
+  var style={base:{color:'#0A1F44',fontFamily:'Poppins, sans-serif',fontSize:'15px','::placeholder':{color:'#94A3B8'}},invalid:{color:'#dc2626'}};
+  wdCardNumber=elements.create('cardNumber',{style:style});
+  wdCardExpiry=elements.create('cardExpiry',{style:style});
+  wdCardCvc=elements.create('cardCvc',{style:style});
+  wdCardNumber.mount('#p-number');wdCardExpiry.mount('#p-expiry');wdCardCvc.mount('#p-cvc');
+  wdCardNumber.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
 }
 function submitOrder() {
   if (order.outside) {
     alert('This address is outside our delivery area. Call (916) 753-3866 for a custom quote.');
     return;
   }
+  if (!order.coords) {
+    alert('Please go back to Step 3 and select your address from the suggestions so we can confirm your delivery fee.');
+    return;
+  }
+  var errEl=document.getElementById('stripe-err');
+  if(errEl)errEl.textContent='';
+  var cname=(document.getElementById('p-cname')||{}).value.trim();
+  if(!cname){ if(errEl)errEl.textContent='Please enter the cardholder name.'; return; }
+  if(!wdStripe||!wdCardNumber){ if(errEl)errEl.textContent='Payment is still loading — please try again in a moment.'; return; }
+
   var btn = document.getElementById('btn-submit');
-  btn.disabled = true; btn.textContent = 'Submitting...';
+  var btnText = document.getElementById('btn-submit-text');
+  var origText = btnText ? btnText.textContent : '';
+  btn.disabled = true; if(btnText) btnText.textContent = 'Processing…';
   var phone = document.getElementById('f-phone').value.trim();
   var apt = document.getElementById('f-apt').value.trim();
   var address = document.getElementById('f-address').value.trim();
   var notes = document.getElementById('f-notes').value.trim();
   var day = document.getElementById('f-day').value;
-  var price = currentPerDeliveryPrice();
-  var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':document.getElementById('f-fname').value.trim(),'lname':document.getElementById('f-lname').value.trim(),'phone':phone,'email':document.getElementById('f-email').value.trim(),'address':address,'apt':apt,'day':day,'notes':notes,'price':price.toFixed(2)});
-  function showSuccess(){
+  var email = document.getElementById('f-email').value.trim();
+  var fee = currentDeliveryFee();
+  var total = currentGrandTotal();
+
+  function finish(){
+    var fullAddress = address + (apt ? ', ' + apt : '');
+    var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':document.getElementById('f-fname').value.trim(),'lname':document.getElementById('f-lname').value.trim(),'phone':phone,'email':email,'address':address,'apt':apt,'day':day,'notes':notes,'price':total.toFixed(2)});
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}).catch(function(){});
     document.getElementById('wizard-wrap').style.display='none';
     document.getElementById('confirm-phone').textContent=phone;
-    var fullAddress = address + (apt ? ', ' + apt : '');
     document.getElementById('success-recap').innerHTML =
       '<div class="summary-row"><span class="summary-key">Water Type</span><span class="summary-val">'+WATER_NAMES[order.water]+' — '+order.size+'</span></div>'+
       '<div class="summary-row"><span class="summary-key">Delivery</span><span class="summary-val">'+order.freqLabel+'</span></div>'+
       '<div class="summary-row"><span class="summary-key">Address</span><span class="summary-val">'+fullAddress+'</span></div>'+
       (day ? '<div class="summary-row"><span class="summary-key">Preferred Day</span><span class="summary-val">'+day+'</span></div>' : '')+
       (notes ? '<div class="summary-row"><span class="summary-key">Delivery Instructions</span><span class="summary-val">'+notes+'</span></div>' : '')+
-      '<div class="summary-total-row"><span class="summary-total-key">Per Delivery</span><span class="summary-total-val">$'+price.toFixed(2)+'</span></div>';
+      '<div class="summary-row"><span class="summary-key">Delivery Fee</span><span class="summary-val">$'+fee.toFixed(2)+'</span></div>'+
+      '<div class="summary-total-row"><span class="summary-total-key">Total Paid</span><span class="summary-total-val">$'+total.toFixed(2)+'</span></div>';
     document.getElementById('success-panel').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()})
-    .then(showSuccess)
-    .catch(showSuccess);
+
+  fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:email,customerName:cname})})
+    .then(function(r){return r.json();})
+    .then(function(piData){
+      if(piData.error){ if(errEl)errEl.textContent=piData.error; btn.disabled=false; if(btnText)btnText.textContent=origText; return; }
+      return wdStripe.confirmCardPayment(piData.clientSecret,{payment_method:{card:wdCardNumber,billing_details:{name:cname,email:email,phone:phone}}}).then(function(result){
+        if(result.error){ if(errEl)errEl.textContent=result.error.message; btn.disabled=false; if(btnText)btnText.textContent=origText; return; }
+        btn.disabled=false; if(btnText)btnText.textContent=origText;
+        finish();
+      });
+    })
+    .catch(function(){ if(errEl)errEl.textContent='Payment error. Please try again.'; btn.disabled=false; if(btnText)btnText.textContent=origText; });
 }
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});
