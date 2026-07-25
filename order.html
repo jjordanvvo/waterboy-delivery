@@ -502,6 +502,10 @@ html,body{overflow-x:hidden;max-width:100%;}
               <label for="f-addr">Street Address</label>
               <input class="fi" id="f-addr" type="text" placeholder="1234 Oak Street" autocomplete="off" />
             </div>
+            <div class="fg">
+              <label for="f-apt">Apt / Suite / Unit # (optional)</label>
+              <input class="fi" id="f-apt" type="text" placeholder="Apt 4B, Suite 200, Unit 12, etc." autocomplete="off" />
+            </div>
             <div class="form-row-2">
               <div class="fg">
                 <label for="f-city">City</label>
@@ -981,7 +985,7 @@ function selectBundle(id){
 /* ── Promo codes ─────────────────────────────────────────────
    activePromo: {code, percentOff, productId} once a valid code is applied.
    productId is a water type, an add-on id, or 'all' (whole subtotal).
-   Discounts apply to one-time orders only, not subscription bundles. */
+   Discounts apply to one-time orders AND subscription bundles. */
 var activePromo=null;
 
 function getBasePrice(){
@@ -993,14 +997,14 @@ function getBasePrice(){
   } else {
     price=state.qty*(PRICES[state.waterType||'purified']);
   }
-  if(activePromo&&state.amtMode!=='bundle'&&(activePromo.productId==='all'||activePromo.productId===state.waterType)){
+  if(activePromo&&(activePromo.productId==='all'||activePromo.productId===state.waterType)){
     price=Math.max(0,price*(1-activePromo.percentOff/100));
   }
   return price;
 }
 
 function addonPrice(a){
-  if(activePromo&&state.amtMode!=='bundle'&&(activePromo.productId==='all'||activePromo.productId===a.id)){
+  if(activePromo&&(activePromo.productId==='all'||activePromo.productId===a.id)){
     return Math.max(0,a.price*(1-activePromo.percentOff/100));
   }
   return a.price;
@@ -1016,9 +1020,6 @@ async function applyPromoCode(){
   var msg=document.getElementById('co-promo-msg');
   var code=(inp.value||'').trim().toUpperCase();
   if(!code)return;
-  if(state.amtMode==='bundle'){
-    msg.style.color='#dc2626';msg.textContent='Promo codes apply to one-time orders only.';return;
-  }
   msg.style.color='#64748B';msg.textContent='Checking…';
   var productIds=[state.waterType].concat(alsoAddons.map(function(a){return a.id;}));
   try{

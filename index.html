@@ -1511,9 +1511,19 @@
         <div class="cp-fee-note" id="cp-fee-note"></div>
       </div>
 
+      <div class="cp-section">
+        <label class="cp-label">Promo Code <span style="text-transform:none;font-weight:500;color:var(--color-text-muted);">(optional)</span></label>
+        <div style="display:flex;gap:8px;">
+          <input class="cp-input" id="cp-promo-input" type="text" placeholder="Promo code" maxlength="30" style="flex:1;text-transform:uppercase;">
+          <button type="button" id="cp-promo-apply" style="padding:0 16px;border-radius:8px;border:1.5px solid var(--color-border);background:none;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:var(--color-text);cursor:pointer;white-space:nowrap;">Apply</button>
+        </div>
+        <div id="cp-promo-msg" style="font-size:12px;margin-top:6px;"></div>
+      </div>
+
       <div class="cp-summary">
         <div class="cp-sum-row"><span>Water (<span id="cp-sum-qty">2</span> &times; <span id="cp-sum-size">5 Gal</span> <span id="cp-sum-type">RO</span>)</span><strong id="cp-sum-water">$0.00</strong></div>
         <div class="cp-sum-row" id="cp-sum-disc-row" style="display:none;color:#16a34a;"><span id="cp-sum-disc-label">Discount</span><strong id="cp-sum-disc" style="color:#16a34a;">&minus;$0.00</strong></div>
+        <div class="cp-sum-row" id="cp-sum-promo-row" style="display:none;color:#16a34a;"><span id="cp-sum-promo-label">Promo</span><strong id="cp-sum-promo" style="color:#16a34a;">&minus;$0.00</strong></div>
         <div class="cp-sum-row"><span>Delivery Fee</span><strong id="cp-sum-fee">TBD at checkout</strong></div>
         <div class="cp-sum-total"><span class="cp-sum-total-lbl">Per Delivery</span><span class="cp-sum-total-val" id="cp-sum-total">$0.00</span></div>
       </div>
@@ -1550,12 +1560,34 @@
   function feeForDist(d){if(d<=1)return 2.99;if(d<=2)return 3.99;if(d<=3)return 5.99;if(d<=4)return 6.99;if(d<=5)return 7.99;if(d<=6)return 8.99;if(d<=7)return 9.99;if(d<=8)return 10.99;if(d<=9)return 11.99;return null;}
 
   var cp = { water:'ro', size:'5 Gallon', qty:2, freq:'biweekly', fee:null, outside:false };
+  var activePromo=null;
 
   function sizesFor(water){ return Object.keys(CP_PRICING[water].sizes); }
   function unitPrice(){ return CP_PRICING[cp.water].sizes[cp.size] || 0; }
   function discount(){ var f=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0]; return f?f.discount:0; }
-  function waterTotal(){ return unitPrice()*cp.qty*(1-discount()); }
+  function freqDiscountedTotal(){ return unitPrice()*cp.qty*(1-discount()); }
+  function promoAmount(){
+    if(!activePromo||(activePromo.productId!=='all'&&activePromo.productId!==cp.water))return 0;
+    return freqDiscountedTotal()*(activePromo.percentOff/100);
+  }
+  function waterTotal(){ return Math.max(0,freqDiscountedTotal()-promoAmount()); }
   function grandTotal(){ return waterTotal()+(cp.fee||0); }
+
+  function applyPromoCode(){
+    var inp=document.getElementById('cp-promo-input');
+    var msg=document.getElementById('cp-promo-msg');
+    var code=(inp.value||'').trim().toUpperCase();
+    if(!code)return;
+    msg.style.color='#64748B';msg.textContent='Checking…';
+    fetch('/api/validate-promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,productIds:[cp.water]})})
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data.valid){ activePromo=null; msg.style.color='#dc2626'; msg.textContent=data.error||'Invalid code.'; }
+        else { activePromo={code:data.code,percentOff:data.percentOff,productId:data.productId}; msg.style.color='#16a34a'; msg.textContent=data.percentOff+'% off applied!'; }
+        renderSummary();
+      })
+      .catch(function(){ activePromo=null; msg.style.color='#dc2626'; msg.textContent='Network error — try again.'; renderSummary(); });
+  }
 
   function renderWaterPills(){
     var el=document.getElementById('cp-water-pills');
@@ -1602,12 +1634,22 @@
       document.getElementById('cp-sum-disc-label').textContent=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0].sub+' discount';
       document.getElementById('cp-sum-disc').textContent='−$'+(unitPrice()*cp.qty*d).toFixed(2);
     } else { discRow.style.display='none'; }
+    var promoRow=document.getElementById('cp-sum-promo-row');
+    var pAmt=promoAmount();
+    if(activePromo&&pAmt>0){
+      promoRow.style.display='flex';
+      document.getElementById('cp-sum-promo-label').textContent='Promo '+activePromo.code;
+      document.getElementById('cp-sum-promo').textContent='−$'+pAmt.toFixed(2);
+    } else { promoRow.style.display='none'; }
     document.getElementById('cp-sum-fee').textContent = cp.fee!=null ? '$'+cp.fee.toFixed(2) : 'TBD at checkout';
     document.getElementById('cp-sum-total').textContent='$'+grandTotal().toFixed(2);
     var btn=document.getElementById('cp-subscribe-btn');
     btn.textContent = cp.outside ? "Outside Delivery Area" : ('Subscribe — $'+grandTotal().toFixed(2)+'/'+({weekly:'wk',biweekly:'2wk',monthly:'mo'}[cp.freq]||'mo')+' →');
     btn.disabled = cp.outside;
   }
+
+  document.getElementById('cp-promo-apply').addEventListener('click',applyPromoCode);
+  document.getElementById('cp-promo-input').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); applyPromoCode(); } });
 
   document.getElementById('cp-qty-minus').addEventListener('click',function(){ cp.qty=Math.max(1,cp.qty-1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
   document.getElementById('cp-qty-plus').addEventListener('click',function(){ cp.qty=Math.min(20,cp.qty+1); document.getElementById('cp-qty-num').textContent=cp.qty; renderSummary(); });
@@ -1716,17 +1758,16 @@
       .catch(function(){ errEl.textContent='Network error. Please try again.'; btn.disabled=false; btn.textContent=orig; });
   });
 
-  /* Open / close + first-visit auto-show */
+  /* Open / close + auto-show on every visit */
   function openCp(){ document.getElementById('cp-overlay').classList.add('open'); if(typeof lockBodyScroll==='function')lockBodyScroll(); document.getElementById('cp-reopen-tab').classList.remove('visible'); }
-  function closeCp(){ document.getElementById('cp-overlay').classList.remove('open'); if(typeof unlockBodyScroll==='function')unlockBodyScroll(); try{localStorage.setItem('wb_custom_plan_seen','1');}catch(e){} document.getElementById('cp-reopen-tab').classList.add('visible'); }
+  function closeCp(){ document.getElementById('cp-overlay').classList.remove('open'); if(typeof unlockBodyScroll==='function')unlockBodyScroll(); document.getElementById('cp-reopen-tab').classList.add('visible'); }
   document.getElementById('cp-close').addEventListener('click',closeCp);
   document.getElementById('cp-overlay').addEventListener('click',function(e){ if(e.target===this)closeCp(); });
   window.__cpOpen=openCp;
 
   renderWaterPills(); renderSizePills(); renderFreqPills(); renderSummary();
 
-  var seen=false; try{ seen=localStorage.getItem('wb_custom_plan_seen')==='1'; }catch(e){}
-  if(!seen){ setTimeout(openCp,2500); }
+  setTimeout(openCp,2500);
   else { document.getElementById('cp-reopen-tab').classList.add('visible'); }
 })();
 </script>

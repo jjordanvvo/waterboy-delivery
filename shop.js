@@ -558,8 +558,8 @@ function openAuthModal(tab){
 
 /* ── Checkout & Subscription State ────────────────────────────── */
 let coState  = { date:null, time:null, orderType:'one-time', freq:'bi-weekly' };
-let subState = { plan:'Family', waterType:'purified', date:null, time:null };
-let dvState  = { plan:null, date:null, time:null, freq:'bi-weekly', day:'Monday', window:'Morning' };
+let subState = { plan:'Family', waterType:'purified', date:null, time:null, promo:null };
+let dvState  = { plan:null, date:null, time:null, freq:'bi-weekly', day:'Monday', window:'Morning', promo:null };
 
 function buildOrderSummary(containerId){
   const c=document.getElementById(containerId); if(!c) return;
@@ -607,14 +607,37 @@ function coOrderSuccess(){
   cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
   toast('Order placed!','Payment successful','✓');
 }
+function applyPromoDiscount(amount,promo,productId){
+  if(!promo||(promo.productId!=='all'&&promo.productId!==productId))return amount;
+  return Math.max(0,amount*(1-promo.percentOff/100));
+}
 function subChargeTotal(){
   var plan=PLANS[subState.plan]||{};
   var extra=subState.waterType==='alkaline'?(plan.bottles||0)*4:0;
-  return (plan.price||0)+extra+(zoneFeeDisplay(currentZone).fee||0);
+  var water=applyPromoDiscount((plan.price||0)+extra,subState.promo,subState.waterType);
+  return water+(zoneFeeDisplay(currentZone).fee||0);
 }
 function dvChargeTotal(){
   var plan=PLANS[dvState.plan]||{};
-  return (plan.price||0)+(zoneFeeDisplay(currentZone).fee||0);
+  var water=applyPromoDiscount(plan.price||0,dvState.promo,dvState.waterType||'purified');
+  return water+(zoneFeeDisplay(currentZone).fee||0);
+}
+function makePromoApplier(stateObj,inputId,msgId,updateFn){
+  return function(){
+    var inp=document.getElementById(inputId);
+    var msg=document.getElementById(msgId);
+    var code=((inp&&inp.value)||'').trim().toUpperCase();
+    if(!code)return;
+    if(msg){ msg.style.color='#8BB8D4'; msg.textContent='Checking…'; }
+    fetch('/api/validate-promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,productIds:[stateObj.waterType||'all']})})
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data.valid){ stateObj.promo=null; if(msg){ msg.style.color='#FF6B6B'; msg.textContent=data.error||'Invalid code.'; } }
+        else { stateObj.promo={code:data.code,percentOff:data.percentOff,productId:data.productId}; if(msg){ msg.style.color='#4ADE80'; msg.textContent=data.percentOff+'% off applied!'; } }
+        if(updateFn)updateFn();
+      })
+      .catch(function(){ stateObj.promo=null; if(msg){ msg.style.color='#FF6B6B'; msg.textContent='Network error — try again.'; } if(updateFn)updateFn(); });
+  };
 }
 /* Reusable real-Stripe payment for any checkout flow (co / sub / dv).
    opts.subscription:true routes payment through Stripe's hosted Checkout
@@ -841,6 +864,7 @@ function inject(){
     <div class="wb-field"><label>Phone</label><input id="co-phone" type="tel" placeholder="(916) 555-0000"></div>
     <div class="wb-field"><label>Email</label><input id="co-email" type="email" placeholder="you@email.com"></div>
     <div class="wb-field"><label>Street Address</label><input id="co-addr" placeholder="123 Main St, Sacramento CA"></div>
+    <div class="wb-field"><label>Apt / Suite / Unit # (optional)</label><input id="co-apt" placeholder="Apt 4B, Suite 200, Unit 12, etc."></div>
     <div class="wb-row"><div class="wb-field"><label>City</label><input id="co-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>ZIP</label><input id="co-zip" placeholder="95814"></div></div>
     <div class="wb-field"><label>Notes (optional)</label><textarea id="co-notes" style="min-height:56px" placeholder="Gate code, drop-off location…"></textarea></div>
     <div class="step-nav"><button class="wb-btn" id="co-next-0">Next: Schedule →</button></div>
@@ -956,6 +980,7 @@ function inject(){
     <div class="wb-field"><label>Phone</label><input id="sub-phone" type="tel" placeholder="(916) 555-0000"></div>
     <div class="wb-field"><label>Email</label><input id="sub-email" type="email" placeholder="you@email.com"></div>
     <div class="wb-field"><label>Street Address</label><input id="sub-addr" placeholder="123 Main St"></div>
+    <div class="wb-field"><label>Apt / Suite / Unit # (optional)</label><input id="sub-apt" placeholder="Apt 4B, Suite 200, Unit 12, etc."></div>
     <div class="wb-row"><div class="wb-field"><label>City</label><input id="sub-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>ZIP</label><input id="sub-zip" placeholder="95814"></div></div>
     <div class="step-nav"><button class="wb-btn-ghost step-back" id="sub-back-1">← Back</button><button class="wb-btn" id="sub-next-1">Next: Schedule →</button></div>
    </div>
@@ -973,6 +998,13 @@ function inject(){
     <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#B8E6FF;line-height:1.6;"><strong style="color:#fff;">Recurring monthly subscription.</strong> You'll be taken to Stripe's secure checkout to set it up — billed automatically every month until you cancel.</div>
     <div class="wb-field"><label>Your Name</label><input id="sub-cname" placeholder="Jane Smith"></div>
     <div id="sub-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
+    <div class="wb-field"><label>Promo Code (optional)</label>
+     <div style="display:flex;gap:8px;">
+      <input id="sub-promo" placeholder="WATERBOY10" style="flex:1">
+      <button type="button" id="sub-promo-apply" class="wb-btn-ghost" style="padding:0 16px;white-space:nowrap;">Apply</button>
+     </div>
+     <div id="sub-promo-msg" style="font-size:12px;margin-top:6px;"></div>
+    </div>
     <div id="sub-order-summary" style="margin:14px 0"></div>
     <div class="terms-row">By subscribing you agree to our <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</div>
     <div class="stripe-badge">🔒 Secured by Stripe</div>
@@ -1012,6 +1044,7 @@ function inject(){
     <div class="wb-field"><label>Email</label><input id="dv-email" type="email" placeholder="you@email.com"></div>
     <div class="wb-field"><label>Phone</label><input id="dv-phone" type="tel" placeholder="(916) 555-0000"></div>
     <div class="wb-field"><label>Street Address</label><input id="dv-addr" placeholder="123 Main St"></div>
+    <div class="wb-field"><label>Apt / Suite / Unit # (optional)</label><input id="dv-apt" placeholder="Apt 4B, Suite 200, Unit 12, etc."></div>
     <div class="wb-row"><div class="wb-field"><label>City</label><input id="dv-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>State / ZIP</label><input id="dv-zip" placeholder="CA 95814"></div></div>
     <div class="wb-row"><div class="wb-field"><label>Gate Code (optional)</label><input id="dv-gate" placeholder="#1234"></div><div class="wb-field"><label>Drop-off Preference</label><select id="dv-location"><option>Front Door</option><option>Side Gate</option><option>Garage</option><option>Back Door</option><option>Other</option></select></div></div>
     <div class="wb-field"><label>Delivery Notes (optional)</label><textarea id="dv-notes" style="min-height:56px" placeholder="Any instructions for your driver…"></textarea></div>
@@ -1068,7 +1101,13 @@ function inject(){
     <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#B8E6FF;line-height:1.6;"><strong style="color:#fff;">Recurring monthly subscription.</strong> You'll be taken to Stripe's secure checkout to set it up — billed automatically every month until you cancel.</div>
     <div class="wb-field"><label>Your Name</label><input id="dv-cname" placeholder="Jane Smith"></div>
     <div id="dv-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
-    <div class="wb-field"><label>Promo Code (optional)</label><input id="dv-promo" placeholder="WATERBOY10"></div>
+    <div class="wb-field"><label>Promo Code (optional)</label>
+     <div style="display:flex;gap:8px;">
+      <input id="dv-promo" placeholder="WATERBOY10" style="flex:1">
+      <button type="button" id="dv-promo-apply" class="wb-btn-ghost" style="padding:0 16px;white-space:nowrap;">Apply</button>
+     </div>
+     <div id="dv-promo-msg" style="font-size:12px;margin-top:6px;"></div>
+    </div>
     <div class="terms-row"><input type="checkbox" id="dv-terms"><label for="dv-terms">I agree to the <a href="#" style="color:#00D4FF">Terms of Service</a>. Cancel anytime.</label></div>
     <div class="stripe-badge">🔒 Secured by Stripe</div>
     <div class="step-nav"><button class="wb-btn-ghost step-back" id="dv-back-3">← Back</button><button class="wb-btn" id="dv-subscribe-btn">Subscribe — $<span id="dv-price-btn">--</span>/month</button></div>
@@ -1340,15 +1379,20 @@ function wireSubscription(){
     gotoStep('sub-overlay',2); buildCalendar('sub-calendar',3,d=>{ subState.date=d; }); buildTimeWindows('sub-time-wins',t=>{ subState.time=t; });
   });
   document.getElementById('sub-back-1')?.addEventListener('click',()=>gotoStep('sub-overlay',0));
+  function renderSubOrderSummary(){
+    const plan=PLANS[subState.plan]||{}; const bottles=plan.bottles||0; const extra=subState.waterType==='alkaline'?bottles*4:0;
+    const water=applyPromoDiscount((plan.price||0)+extra,subState.promo,subState.waterType);
+    const zd=zoneFeeDisplay(currentZone); const total=water+zd.fee;
+    const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
+    const promoRow=(subState.promo&&water<(plan.price||0)+extra)?`<div class="ob-row" style="color:#4ADE80"><span>Promo ${esc(subState.promo.code)}</span><span>-${subState.promo.percentOff}%</span></div>`:'';
+    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${bottles} bottles)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}${promoRow}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
+    if(subFlowInst) subFlowInst.updateTotal();
+  }
   document.getElementById('sub-next-2')?.addEventListener('click',()=>{
     if(!subState.date){ toast('Pick a date','Select your first delivery date',''); return; }
     if(!subState.time){ toast('Pick a time','Select a time window',''); return; }
     gotoStep('sub-overlay',3);
-    const plan=PLANS[subState.plan]||{}; const bottles=plan.bottles||0; const extra=subState.waterType==='alkaline'?bottles*4:0;
-    const zd=zoneFeeDisplay(currentZone); const total=(plan.price||0)+extra+zd.fee;
-    const zoneTag=zd.tag?` <span style="font-size:10px;color:#8BB8D4">(${zd.tag})</span>`:'';
-    const c=document.getElementById('sub-order-summary'); if(c) c.innerHTML=`<div class="ob-row"><span>${esc(subState.plan)} Plan (${bottles} bottles)</span><span>$${(plan.price||0).toFixed(2)}/mo</span></div>${extra?`<div class="ob-row"><span>Alkaline upgrade</span><span>+$${extra.toFixed(2)}</span></div>`:''}<div class="ob-row"><span>Delivery${zoneTag}</span><span style="color:${zd.color}">${zd.text}</span></div><div class="ob-row grand"><span>Monthly Total</span><span>$${total.toFixed(2)}/mo</span></div>`;
-    if(subFlowInst) subFlowInst.updateTotal();
+    renderSubOrderSummary();
   });
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
@@ -1357,6 +1401,9 @@ function wireSubscription(){
   document.getElementById('sub-subscribe-btn')?.addEventListener('click',function(){ subFlowInst.pay(this); });
   document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
   wireZipField('sub-zip','sub-zone-result','sub-next-1');
+  const applySubPromo=makePromoApplier(subState,'sub-promo','sub-promo-msg',renderSubOrderSummary);
+  document.getElementById('sub-promo-apply')?.addEventListener('click',applySubPromo);
+  document.getElementById('sub-promo')?.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); applySubPromo(); } });
 }
 
 /* ── Wire Delivery Modal ────────────────────────────────────────── */
@@ -1368,6 +1415,7 @@ function wireDeliveryModal(){
       $$('.dv-plan-card',document.getElementById('delivery-overlay')).forEach(c=>{ c.style.borderColor='rgba(0,212,255,.15)'; c.style.background='rgba(0,212,255,.04)'; });
       pc.style.borderColor='#00D4FF'; pc.style.background='rgba(0,212,255,.12)';
       dvState.plan=pc.dataset.plan;
+      dvState.waterType=dvState.plan.indexOf('Alkaline')===0?'alkaline':'purified';
     }
     // Freq buttons in delivery
     const fb=e.target.closest('.freq-btn');
@@ -1397,16 +1445,21 @@ function wireDeliveryModal(){
     buildCalendar('dv-calendar',3,d=>{ dvState.date=d; });
   });
   document.getElementById('dv-back-2')?.addEventListener('click',()=>gotoStep('delivery-overlay',1));
+  function renderDvPlanSummary(){
+    const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
+    const water=applyPromoDiscount(price,dvState.promo,dvState.waterType||'purified');
+    const zd=zoneFeeDisplay(currentZone); const total=water+zd.fee;
+    const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
+    const promoRow=(dvState.promo&&water<price)?`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#4ADE80;font-size:13px">Promo ${esc(dvState.promo.code)}</span><span style="color:#4ADE80;font-size:13px;font-weight:700">-${dvState.promo.percentOff}%</span></div>`:'';
+    const sumEl=document.getElementById('dv-plan-summary');
+    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.bottles||0)} bottles/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div>${promoRow}<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
+    const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
+    if(dvFlowInst) dvFlowInst.updateTotal();
+  }
   document.getElementById('dv-next-2')?.addEventListener('click',()=>{
     if(!dvState.date){ toast('Pick a date','Select your first delivery date',''); return; }
     gotoStep('delivery-overlay',3);
-    const plan=PLANS[dvState.plan]||{}; const price=plan.price||0;
-    const zd=zoneFeeDisplay(currentZone); const total=price+zd.fee;
-    const zoneTag=zd.tag?` <span style="font-size:10px">(${zd.tag})</span>`:'';
-    const sumEl=document.getElementById('dv-plan-summary');
-    if(sumEl) sumEl.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(dvState.plan)}</div><div style="color:#8BB8D4;font-size:13px;line-height:1.9">${(plan.bottles||0)} bottles/delivery &nbsp;·&nbsp; ${esc(dvState.freq)} &nbsp;·&nbsp; ${esc(dvState.day)} ${esc(dvState.window)}<br>First delivery: ${dvState.date?dvState.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'TBD'}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center"><span style="color:#8BB8D4;font-size:13px">Plan price</span><span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700">$${price}/mo</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:#8BB8D4;font-size:13px">Delivery${zoneTag}</span><span style="color:${zd.color};font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700">${zd.text}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">$${total.toFixed(2)}/mo</span></div>`;
-    const priceBtn=document.getElementById('dv-price-btn'); if(priceBtn) priceBtn.textContent=total.toFixed(2);
-    if(dvFlowInst) dvFlowInst.updateTotal();
+    renderDvPlanSummary();
   });
   document.getElementById('dv-back-3')?.addEventListener('click',()=>gotoStep('delivery-overlay',2));
   const doDvConfirm=()=>{
@@ -1427,6 +1480,9 @@ function wireDeliveryModal(){
   });
   document.getElementById('dv-done-btn')?.addEventListener('click',()=>closeOverlay('delivery-overlay'));
   wireZipField('dv-zip','dv-zone-result','dv-next-0');
+  const applyDvPromo=makePromoApplier(dvState,'dv-promo','dv-promo-msg',renderDvPlanSummary);
+  document.getElementById('dv-promo-apply')?.addEventListener('click',applyDvPromo);
+  document.getElementById('dv-promo')?.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); applyDvPromo(); } });
 }
 
 /* ── Wire Pricing & Subscription Buttons ───────────────────────── */
