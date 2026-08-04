@@ -734,8 +734,29 @@ function submitOrder() {
 
   function finish(){
     var fullAddress = address + (apt ? ', ' + apt : '');
-    var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':document.getElementById('f-fname').value.trim(),'lname':document.getElementById('f-lname').value.trim(),'phone':phone,'email':email,'address':address,'apt':apt,'day':day,'notes':notes,'price':total.toFixed(2)});
+    var fname = document.getElementById('f-fname').value.trim();
+    var lname = document.getElementById('f-lname').value.trim();
+    var body = new URLSearchParams({'form-name':'water-order','water-type':WATER_NAMES[order.water],'size':order.size,'frequency':order.freqLabel,'fname':fname,'lname':lname,'phone':phone,'email':email,'address':address,'apt':apt,'day':day,'notes':notes,'price':total.toFixed(2)});
     fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}).catch(function(){});
+    // Auto-add delivery to business Google Calendar (fire-and-forget, matches order.html)
+    (function(){
+      var calDate = '', calWindow = '';
+      if (order.freqType === 'one-time') {
+        calDate = (document.getElementById('onetime-date')||{}).value || '';
+        calWindow = (document.getElementById('onetime-time')||{}).value || '';
+      } else if (day) {
+        // Recurring plan: no single delivery date captured, so calendar the
+        // next occurrence of the customer's preferred day of week.
+        var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var target=days.indexOf(day);
+        if (target>=0) {
+          var d=new Date(); var diff=(target-d.getDay()+7)%7 || 7;
+          d.setDate(d.getDate()+diff);
+          calDate = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        }
+      }
+      fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:'WD-'+Date.now(),customerName:(fname+' '+lname).trim(),phone:phone,email:email,address:fullAddress,bundle:WATER_NAMES[order.water]+' — '+order.size+' ('+order.freqLabel+')',waterType:WATER_NAMES[order.water],deliveryDate:calDate,deliveryWindow:calWindow})}).catch(function(){});
+    })();
     document.getElementById('wizard-wrap').style.display='none';
     document.getElementById('confirm-phone').textContent=phone;
     document.getElementById('success-recap').innerHTML =
