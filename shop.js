@@ -681,7 +681,11 @@ function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess, opts){
     var email=(document.getElementById(emailId)||{}).value||'';
     if(opts.subscription){
       var origSub=btn.textContent; btn.disabled=true; btn.textContent='Redirecting…';
-      fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:opts.getPlanName?opts.getPlanName():'Monthly Water Delivery',amount:getTotal(),customerEmail:email,customerName:name})})
+      var subApt=(document.getElementById(prefix+'-apt')||{}).value||'';
+      var subAddr=((document.getElementById(prefix+'-addr')||{}).value||'')+(subApt.trim()?', '+subApt.trim():'')+', '+((document.getElementById(prefix+'-city')||{}).value||'')+' '+((document.getElementById(prefix+'-zip')||{}).value||'');
+      var subPhone=(document.getElementById(prefix+'-phone')||{}).value||'';
+      var delivInfo=opts.getDeliveryInfo?opts.getDeliveryInfo():{day:'',window:''};
+      fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:opts.getPlanName?opts.getPlanName():'Monthly Water Delivery',amount:getTotal(),customerEmail:email,customerName:name,address:subAddr,phone:subPhone,deliveryDay:delivInfo.day||'',deliveryWindow:delivInfo.window||''})})
         .then(function(r){return r.json();})
         .then(function(d){
           if(d.error||!d.url){ if(errEl) errEl.textContent=d.error||'Could not start subscription checkout.'; btn.disabled=false; btn.textContent=origSub; return; }
@@ -1397,7 +1401,7 @@ function wireSubscription(){
   document.getElementById('sub-back-2')?.addEventListener('click',()=>gotoStep('sub-overlay',1));
   document.getElementById('sub-back-3')?.addEventListener('click',()=>gotoStep('sub-overlay',2));
   const doSubConfirm=()=>{ gotoStep('sub-overlay',4); const n=document.getElementById('sub-order-num'); if(n) n.textContent=genId(); toast('Subscribed!','Welcome to Waterboy Delivery!',''); };
-  subFlowInst=makeFlowStripe('sub',subChargeTotal,'sub-email','sub-cname',doSubConfirm,{subscription:true,getPlanName:function(){return (subState.plan||'Water')+' Plan'+(subState.waterType==='alkaline'?' (Alkaline)':'');}});
+  subFlowInst=makeFlowStripe('sub',subChargeTotal,'sub-email','sub-cname',doSubConfirm,{subscription:true,getPlanName:function(){return (subState.plan||'Water')+' Plan'+(subState.waterType==='alkaline'?' (Alkaline)':'');},getDeliveryInfo:function(){return {day: subState.date?(subState.date.getFullYear()+'-'+String(subState.date.getMonth()+1).padStart(2,'0')+'-'+String(subState.date.getDate()).padStart(2,'0')):'', window: subState.time||''};}});
   document.getElementById('sub-subscribe-btn')?.addEventListener('click',function(){ subFlowInst.pay(this); });
   document.getElementById('sub-done-btn')?.addEventListener('click',()=>closeOverlay('sub-overlay'));
   wireZipField('sub-zip','sub-zone-result','sub-next-1');
@@ -1473,7 +1477,7 @@ function wireDeliveryModal(){
       +`<span style="color:#00D4FF;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700">$${price}/month</span>`;
     toast('Delivery scheduled!','Welcome to Waterboy Delivery!','');
   };
-  dvFlowInst=makeFlowStripe('dv',dvChargeTotal,'dv-email','dv-cname',doDvConfirm,{subscription:true,getPlanName:function(){return (dvState.plan||'Water')+' Plan';}});
+  dvFlowInst=makeFlowStripe('dv',dvChargeTotal,'dv-email','dv-cname',doDvConfirm,{subscription:true,getPlanName:function(){return (dvState.plan||'Water')+' Plan';},getDeliveryInfo:function(){return {day: dvState.day||'', window: dvState.window||''};}});
   document.getElementById('dv-subscribe-btn')?.addEventListener('click',function(){
     if(!document.getElementById('dv-terms')?.checked){ toast('Terms','Please accept the terms of service',''); return; }
     dvFlowInst.pay(this);

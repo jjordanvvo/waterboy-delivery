@@ -22,7 +22,10 @@ module.exports = async (req, res) => {
 
   try {
     const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-    const { planName, amount, customerEmail, customerName, successUrl, cancelUrl } = req.body || {};
+    const {
+      planName, amount, customerEmail, customerName, successUrl, cancelUrl,
+      address, phone, deliveryDay, deliveryWindow,
+    } = req.body || {};
 
     const amt = Number(amount);
     if (!planName || !amt || amt <= 0) {
@@ -30,6 +33,17 @@ module.exports = async (req, res) => {
     }
 
     const origin = req.headers.origin || 'https://www.elkgrovewaterboy.com';
+
+    // Stored on the Subscription so the /api/stripe-webhook handler can build
+    // a Google Calendar event for every renewal, not just the first delivery.
+    const deliveryMeta = {
+      customerName: customerName || '',
+      planName,
+      address: address || '',
+      phone: phone || '',
+      deliveryDay: deliveryDay || '',
+      deliveryWindow: deliveryWindow || '',
+    };
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -48,9 +62,9 @@ module.exports = async (req, res) => {
         quantity: 1,
       }],
       subscription_data: {
-        metadata: { customerName: customerName || '', planName },
+        metadata: deliveryMeta,
       },
-      metadata: { customerName: customerName || '', planName },
+      metadata: deliveryMeta,
       allow_promotion_codes: true,
       success_url: successUrl || (origin + '/my-orders?subscribed=1'),
       cancel_url: cancelUrl || (origin + '/order'),

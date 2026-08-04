@@ -1494,7 +1494,9 @@ async function handlePayment(){
   if(state.amtMode==='bundle'&&state.bundleId){
     try{
       var planName=(getBundleName()||{}).name?getBundleName().name+' Bundle':'Monthly Water Delivery';
-      var scResp=await fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:getGrandTotal(),customerEmail:state.email,customerName:name.trim()})});
+      var bundleApt=(document.getElementById('f-apt')||{}).value||'';
+      var bundleAddr=state.addr+(bundleApt.trim()?', '+bundleApt.trim():'')+', '+state.city+', '+state.stateField+' '+state.zip;
+      var scResp=await fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:getGrandTotal(),customerEmail:state.email,customerName:name.trim(),address:bundleAddr,phone:state.phone||''})});
       var scData=await scResp.json();
       if(scData.error||!scData.url){if(errEl)errEl.textContent=scData.error||'Could not start subscription checkout.';btn.classList.remove('loading');btn.disabled=false;return;}
       saveDraft();

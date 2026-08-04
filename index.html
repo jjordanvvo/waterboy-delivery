@@ -1749,7 +1749,8 @@
     var btn=this, orig=btn.textContent; btn.disabled=true; btn.textContent='Redirecting…';
     var freqLabel=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0].label;
     var planName=cp.qty+'x '+cp.size+' '+CP_PRICING[cp.water].name+' — '+freqLabel;
-    fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:grandTotal(),customerEmail:email,customerName:name})})
+    var cpAddr=(document.getElementById('cp-addr')||{}).value||'';
+    fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:grandTotal(),customerEmail:email,customerName:name,address:cpAddr})})
       .then(function(r){return r.json();})
       .then(function(d){
         if(d.error||!d.url){ errEl.textContent=d.error||'Could not start checkout. Please try again.'; btn.disabled=false; btn.textContent=orig; return; }
