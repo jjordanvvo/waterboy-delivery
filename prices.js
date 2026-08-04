@@ -5,10 +5,10 @@
 
 var WB_PRICES = {
   water: {
-    ro5:        { name: '5-Gallon RO Water',       price: 11.99,  unit: 'per bottle' },
-    alkaline5:  { name: '5-Gallon Alkaline Water', price: 13.99,  unit: 'per bottle' },
-    hydrogen1:  { name: '1-Gallon Hydrogen Water', price: 10.99, unit: 'per gallon' },
-    hydrogen3:  { name: '3-Gallon Hydrogen Water', price: 32.97, unit: 'per fill' },
+    ro5:        { name: '5-Gallon RO Water',       price: 8.99,  unit: 'per bottle' },
+    alkaline5:  { name: '5-Gallon Alkaline Water', price: 10.99,  unit: 'per bottle' },
+    hydrogen1:  { name: '1-Gallon Hydrogen Water', price: 6.99, unit: 'per gallon' },
+    hydrogen3:  { name: '3-Gallon Hydrogen Water', price: 20.97, unit: 'per fill' },
     ro3:        { name: '3-Gallon RO Water',        price: 4.99,  unit: 'per bottle' },
     bottle5empty:  { name: '5-Gallon bottle (Empty)',     price: 12.99, unit: 'each' },
     bottle3empty:  { name: '3-Gallon bottle (Empty)',     price: 9.99,  unit: 'each' }

@@ -27,12 +27,12 @@ const stripe = Stripe(KEY);
 /* ── Catalog (mirrors prices.js) ───────────────────────────── */
 // One-time products: { key, name, amount(USD) }
 const ONE_TIME = [
-  { key: 'ro_5gal',        name: '5-Gallon RO Water',            amount: 11.99 },
+  { key: 'ro_5gal',        name: '5-Gallon RO Water',            amount: 8.99 },
   { key: 'ro_3gal',        name: '3-Gallon RO Water',            amount: 9.99  },
-  { key: 'alkaline_5gal',  name: '5-Gallon Alkaline Water',      amount: 13.99 },
+  { key: 'alkaline_5gal',  name: '5-Gallon Alkaline Water',      amount: 10.99 },
   { key: 'alkaline_3gal',  name: '3-Gallon Alkaline Water',      amount: 11.99 },
-  { key: 'hydrogen_1gal',  name: '1-Gallon Hydrogen Water',      amount: 10.99 },
-  { key: 'hydrogen_3gal',  name: '3-Gallon Hydrogen Water',      amount: 32.97 },
+  { key: 'hydrogen_1gal',  name: '1-Gallon Hydrogen Water',      amount: 6.99 },
+  { key: 'hydrogen_3gal',  name: '3-Gallon Hydrogen Water',      amount: 20.97 },
   // Add-ons
   { key: 'addon_lmnt_can',    name: 'LMNT Sparkling Electrolyte Can (16oz)', amount: 4.99  },
   { key: 'addon_lmnt_packet', name: 'LMNT Zero-Sugar Electrolyte Packets',   amount: 2.99  },

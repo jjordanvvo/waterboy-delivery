@@ -356,7 +356,7 @@ html,body{overflow-x:hidden;max-width:100%;}
           <div class="wt-card-check" aria-hidden="true">&#10003;</div>
           <div class="wt-title">Reverse Osmosis Water</div>
           <p class="wt-desc">Clean, crisp reverse osmosis water. Perfect for everyday hydration and cooking.</p>
-          <div class="wt-price">$11.99/bottle</div>
+          <div class="wt-price">$8.99/bottle</div>
         </div>
 
         <div class="wt-card" id="wtc-alkaline" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('alkaline')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('alkaline')">
@@ -364,14 +364,14 @@ html,body{overflow-x:hidden;max-width:100%;}
           <span class="wt-badge">ONLY US!</span>
           <div class="wt-title">Alkaline Water</div>
           <p class="wt-desc">pH 8.5+ alkaline water. Enhanced hydration, smoother taste - the only local delivery option.</p>
-          <div class="wt-price">$13.99/bottle</div>
+          <div class="wt-price">$10.99/bottle</div>
         </div>
 
         <div class="wt-card" id="wtc-hydrogen" role="button" tabindex="0" aria-pressed="false" onclick="selectWaterType('hydrogen')" onkeydown="if(event.key==='Enter'||event.key===' ')selectWaterType('hydrogen')">
           <div class="wt-card-check" aria-hidden="true">&#10003;</div>
           <div class="wt-title">Hydrogen Water</div>
           <p class="wt-desc">Hydrogen-infused water rich in antioxidants. Sold by the gallon (1 &amp; 3 gal).</p>
-          <div class="wt-price">$10.99/gallon</div>
+          <div class="wt-price">$6.99/gallon</div>
         </div>
 
       </div>
@@ -837,7 +837,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
-const PRICES={purified:11.99,alkaline:13.99,hydrogen:10.99};
+const PRICES={purified:8.99,alkaline:10.99,hydrogen:6.99};
 const WT_LABELS={purified:'Reverse Osmosis Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'};
 function wtLabel(){return WT_LABELS[state.waterType]||'Reverse Osmosis Water';}
 function unitWord(){return state.waterType==='hydrogen'?'gallon':'bottle';}

@@ -12,7 +12,7 @@ const WATERBOY_PRICING = {
     'Office':     { bottles:8,  ro:94.99,  alkaline:99.99,  hydrogen:0 },
     'Max Bundle': { bottles:12, ro:140.99, alkaline:149.99, hydrogen:0 },
   },
-  perBottle: { ro:11.99, alkaline:13.99, hydrogen:10.99 },
+  perBottle: { ro:8.99, alkaline:10.99, hydrogen:6.99 },
 };
 
 /* ── Global Water State ────────────────────────────────────────── */
