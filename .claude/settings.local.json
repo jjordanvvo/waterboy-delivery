@@ -46,7 +46,14 @@
       "Bash(git stat *)",
       "Bash(git --no-pager diff --stat)",
       "Bash(echo \"---ORIGIN EXIT: $?---\")",
-      "Bash(echo \"---MINE EXIT: $?---\")"
+      "Bash(echo \"---MINE EXIT: $?---\")",
+      "Bash(netlify --version)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(npx netlify dev)",
+      "PowerShell(Get-Item *)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(try { $r=Invoke-WebRequest http://localhost:3999/ -UseBasicParsing -TimeoutSec 10; \"3999 root -> \" + $r.StatusCode + \" \\(\" + $r.RawContentLength + \" bytes\\)\" } catch { \"ERR root: \" + $_.Exception.Message })"
     ]
   }
 }

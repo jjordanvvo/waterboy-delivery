@@ -1,0 +1,6 @@
+# Local Netlify folder
+.netlify
+
+# npm deps (local testing only)
+node_modules/
+package-lock.json

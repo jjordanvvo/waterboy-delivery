@@ -15,6 +15,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
+  <script src="account.js"></script>
+
+<style>
+.subs-section{margin-bottom:36px;}
+.subs-h{font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:var(--color-text);margin:0 0 14px;display:flex;align-items:center;gap:8px;}
+.sub-card{background:linear-gradient(135deg,rgba(13,71,161,0.04),rgba(30,136,229,0.07));border:1px solid rgba(13,71,161,0.18);border-radius:16px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:14px;}
+.sub-plan{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:var(--color-text);margin:0 0 4px;}
+.sub-meta{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);line-height:1.6;}
+.sub-price{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--color-primary);white-space:nowrap;}
+.sub-price small{font-size:13px;font-weight:500;color:var(--color-text-muted);}
+.sub-badge{font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;padding:4px 11px;border-radius:100px;background:rgba(4,120,87,0.08);color:#047857;border:1px solid rgba(4,120,87,0.25);display:inline-block;margin-left:10px;vertical-align:middle;}
+.sub-badge.warn{background:rgba(217,119,6,0.08);color:#b45309;border-color:rgba(217,119,6,0.25);}
+.sub-manage{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;background:var(--color-primary);color:#fff;border:none;border-radius:9px;padding:11px 20px;cursor:pointer;text-decoration:none;display:inline-block;min-height:42px;line-height:20px;}
+.mo-signout{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);cursor:pointer;text-decoration:underline;margin-left:14px;}
+.mo-signout:hover{color:var(--color-text);}
+.sync-note{background:rgba(13,71,161,0.05);border:1px solid rgba(13,71,161,0.15);border-radius:12px;padding:13px 16px;margin-bottom:20px;font-family:'Poppins',sans-serif;font-size:13.5px;color:var(--color-text);line-height:1.55;}
+</style>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;}
@@ -156,8 +173,8 @@
 <!-- Hero -->
 <header class="mo-hero">
   <div class="mo-hero-inner">
-    <h1>My Orders</h1>
-    <p class="mo-hero-email" id="mo-email"></p>
+    <h1 id="mo-title">My Orders</h1>
+    <p class="mo-hero-email"><span id="mo-email"></span><a class="mo-signout" id="mo-signout" style="display:none;" onclick="WBAccount.signOut()">Sign out</a></p>
   </div>
 </header>
 
@@ -183,11 +200,18 @@
       <div class="empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
       <h2>Please sign in to view your orders</h2>
       <p>Your orders are saved to your account. Sign in to track, reschedule, or reorder.</p>
-      <a href="javascript:void(0)" class="btn-signin-gate" onclick="typeof openAuthModal==='function'&&openAuthModal('signin')">Sign In</a>
+      <a href="javascript:void(0)" class="btn-signin-gate" onclick="moOpenAuth('signin')">Sign In</a>
+      <p style="font-family:'Poppins',sans-serif;font-size:13.5px;color:var(--color-text-muted);margin-top:14px;">New here? <a href="javascript:void(0)" onclick="moOpenAuth('signup')" style="color:var(--color-primary);font-weight:600;">Create an account</a></p>
     </div>
 
     <!-- Orders view -->
     <div id="orders-view">
+
+      <!-- Active subscriptions (live from Stripe) -->
+      <div class="subs-section hidden" id="subs-section">
+        <h2 class="subs-h">Your Subscription</h2>
+        <div id="subs-list"></div>
+      </div>
 
       <!-- Filter tabs -->
       <div class="filter-tabs" role="group" aria-label="Filter orders">
@@ -313,6 +337,19 @@ var reschDate=null,reschTime=null;
 function loadOrders(){try{return JSON.parse(localStorage.getItem('wb_orders_v1')||'[]');}catch(e){return[];}}
 function saveOrders(o){try{localStorage.setItem('wb_orders_v1',JSON.stringify(o));}catch(e){}}
 
+var serverOrders=[]; // account orders fetched from /api/auth {action:'orders'}
+
+/* Server orders win on orderId collision; device-local orders (guest /
+   pre-account purchases on this device) fill in the rest. */
+function mergedOrders(){
+  var seen={};
+  serverOrders.forEach(function(o){seen[o.orderId]=1;});
+  var locals=loadOrders().filter(function(o){return !seen[o.orderId];}).map(function(o){o._local=true;return o;});
+  return serverOrders.concat(locals).sort(function(a,b){return (b.placedAt||0)-(a.placedAt||0);});
+}
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
 var currentFilter='all';
 function setFilter(f){
   currentFilter=f;
@@ -321,12 +358,11 @@ function setFilter(f){
 }
 
 function renderOrders(){
-  var orders=loadOrders();
-  var filtered=orders.filter(function(o){
+  var filtered=mergedOrders().filter(function(o){
     if(currentFilter==='all')return true;
     if(currentFilter==='active')return o.status==='confirmed'||o.status==='out';
     return o.status===currentFilter;
-  }).reverse();
+  });
   var list=document.getElementById('orders-list');
   var empty=document.getElementById('empty-state');
   if(!filtered.length){if(list)list.innerHTML='';if(empty)empty.classList.remove('hidden');return;}
@@ -335,25 +371,61 @@ function renderOrders(){
   list.innerHTML=filtered.map(function(o){
     var placed=new Date(o.placedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     var statusLabel=o.status==='confirmed'?'Confirmed':o.status==='out'?'Out for Delivery':o.status==='delivered'?'Delivered':'Cancelled';
-    var canReschedule=o.status==='confirmed'&&(o.canRescheduleUntil||0)>Date.now();
-    var canCancel=o.status==='confirmed';
+    var isLocal=!!o._local;
+    var isSub=o.source==='subscription';
+    var canReschedule=isLocal&&o.status==='confirmed'&&(o.canRescheduleUntil||0)>Date.now();
+    var canCancel=isLocal&&o.status==='confirmed';
+    var amount=typeof o.amount==='number'?o.amount:(typeof o.price==='number'?o.price:0);
+    // Server orders carry a combined "items" string; local ones have waterType/quantity.
+    var itemFields=isLocal
+      ?'<div class="oc-field"><span class="oc-field-lbl">Water</span><span class="oc-field-val">'+esc(o.waterType)+'</span></div>'
+       +'<div class="oc-field"><span class="oc-field-lbl">Amount</span><span class="oc-field-val">'+esc(o.quantity)+'</span></div>'
+      :'<div class="oc-field"><span class="oc-field-lbl">Items</span><span class="oc-field-val">'+esc(o.items||'Water delivery')+'</span></div>';
     return '<div class="order-card">'
       +'<div class="oc-top">'
-      +'<div><div class="oc-id">'+o.orderId+'</div><div class="oc-placed">Placed '+placed+'</div></div>'
-      +'<span class="status-badge '+o.status+'">'+statusLabel+'</span>'
+      +'<div><div class="oc-id">'+esc(o.orderId)+(isSub?' <span class="sub-badge" style="margin-left:6px;">Subscription</span>':'')+'</div><div class="oc-placed">Placed '+placed+'</div></div>'
+      +'<span class="status-badge '+esc(o.status)+'">'+statusLabel+'</span>'
       +'</div>'
       +'<div class="oc-grid">'
-      +'<div class="oc-field"><span class="oc-field-lbl">Water</span><span class="oc-field-val">'+o.waterType+'</span></div>'
-      +'<div class="oc-field"><span class="oc-field-lbl">Amount</span><span class="oc-field-val">'+o.quantity+'</span></div>'
-      +'<div class="oc-field"><span class="oc-field-lbl">Delivery</span><span class="oc-field-val">'+o.deliveryDate+'</span></div>'
-      +'<div class="oc-field"><span class="oc-field-lbl">Window</span><span class="oc-field-val">'+o.deliveryTime+'</span></div>'
-      +'<div class="oc-field"><span class="oc-field-lbl">Total</span><span class="oc-field-val mono">$'+o.price.toFixed(2)+'</span></div>'
-      +'<div class="oc-field"><span class="oc-field-lbl">Address</span><span class="oc-field-val" style="font-size:12px">'+o.address+'</span></div>'
+      +itemFields
+      +'<div class="oc-field"><span class="oc-field-lbl">Delivery</span><span class="oc-field-val">'+esc(o.deliveryDate||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Window</span><span class="oc-field-val">'+esc(o.deliveryTime||o.deliveryWindow||'—')+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Total</span><span class="oc-field-val mono">$'+amount.toFixed(2)+'</span></div>'
+      +'<div class="oc-field"><span class="oc-field-lbl">Address</span><span class="oc-field-val" style="font-size:12px">'+esc(o.address||'—')+'</span></div>'
       +'</div>'
       +'<div class="oc-actions">'
-      +(canReschedule?'<button class="oc-btn reschedule" onclick="openReschedule(\''+o.orderId+'\')">Reschedule</button>':'')
-      +(canCancel?'<button class="oc-btn cancel" onclick="openCancel(\''+o.orderId+'\')">Cancel</button>':'')
-      +'<button class="oc-btn reorder" onclick="reorder(\''+o.orderId+'\')">Reorder</button>'
+      +(canReschedule?'<button class="oc-btn reschedule" onclick="openReschedule(\''+esc(o.orderId)+'\')">Reschedule</button>':'')
+      +(canCancel?'<button class="oc-btn cancel" onclick="openCancel(\''+esc(o.orderId)+'\')">Cancel</button>':'')
+      +(isSub?'':'<button class="oc-btn reorder" onclick="reorder(\''+esc(o.orderId)+'\')">Reorder</button>')
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function renderSubscriptions(subs){
+  var section=document.getElementById('subs-section');
+  var listEl=document.getElementById('subs-list');
+  if(!section||!listEl)return;
+  if(!subs||!subs.length){section.classList.add('hidden');return;}
+  section.classList.remove('hidden');
+  listEl.innerHTML=subs.map(function(s){
+    var renew=s.currentPeriodEnd?new Date(s.currentPeriodEnd).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):null;
+    var badge=s.cancelAtPeriodEnd
+      ?'<span class="sub-badge warn">Ends '+(renew||'soon')+'</span>'
+      :(s.status==='past_due'?'<span class="sub-badge warn">Payment issue</span>':'<span class="sub-badge">Active</span>');
+    var cadence=s.interval==='month'?'Billed monthly':'Billed every '+esc(s.interval);
+    return '<div class="sub-card">'
+      +'<div>'
+      +'<p class="sub-plan">'+esc(s.planName)+badge+'</p>'
+      +'<div class="sub-meta">'+cadence
+      +(renew&&!s.cancelAtPeriodEnd?' · Renews '+renew:'')
+      +(s.deliveryDay?' · Delivers '+esc(s.deliveryDay)+'s':'')
+      +(s.address?'<br>'+esc(s.address):'')
+      +'</div>'
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">'
+      +'<span class="sub-price">$'+(s.amount!=null?s.amount.toFixed(2):'—')+'<small>/'+esc(s.interval)+'</small></span>'
+      +'<a class="sub-manage" href="/manage-subscription">Manage</a>'
       +'</div>'
       +'</div>';
   }).join('');
@@ -442,21 +514,67 @@ function showToast(msg){
   clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove('show');},3500);
 }
 
-document.addEventListener('DOMContentLoaded',function(){
-  // Check sign-in state
-  var user=null;try{user=JSON.parse(localStorage.getItem('wb_user_v1'));}catch(e){}
+function moOpenAuth(mode){
+  if(!window.WBAccount)return;
+  WBAccount.openModal(mode,{onAuth:function(){location.reload();}});
+}
+
+function apiAcct(action){
+  return fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action:action})})
+    .then(function(r){return r.json();});
+}
+
+function showAccountView(user){
   var gate=document.getElementById('signin-gate');
   var view=document.getElementById('orders-view');
+  if(gate)gate.classList.add('hidden');
+  if(view)view.style.display='';
   var emailEl=document.getElementById('mo-email');
-  if(user){
-    if(gate)gate.classList.add('hidden');
-    if(view)view.style.display='';
-    if(emailEl)emailEl.textContent=user.email||'';
-    renderOrders();
-  } else {
-    if(gate)gate.classList.remove('hidden');
-    if(view)view.style.display='none';
-  }
+  if(emailEl)emailEl.textContent=user.email||'';
+  var title=document.getElementById('mo-title');
+  var first=(user.firstName||user.name||'').split(' ')[0];
+  if(title&&first)title.textContent=first+"'s Orders";
+  var so=document.getElementById('mo-signout');
+  if(so)so.style.display='inline';
+  renderOrders();
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var gate=document.getElementById('signin-gate');
+  var view=document.getElementById('orders-view');
+  // Hide both until the session check resolves — no empty-state flash.
+  if(view)view.style.display='none';
+
+  WBAccount.ready(function(user){
+    if(user){
+      // Real session: show local orders immediately, then merge in the
+      // account's server-side history and live Stripe subscriptions.
+      showAccountView(user);
+      apiAcct('orders').then(function(d){
+        if(d&&d.orders){serverOrders=d.orders;renderOrders();}
+      }).catch(function(){});
+      apiAcct('subscriptions').then(function(d){
+        if(d&&d.subscriptions)renderSubscriptions(d.subscriptions);
+      }).catch(function(){});
+    } else {
+      var legacy=WBAccount.legacyUser();
+      if(legacy){
+        // Signed in on this device before server sessions existed —
+        // keep showing their device-local orders, invite a real sign-in.
+        showAccountView(legacy);
+        var tabs=document.querySelector('.filter-tabs');
+        if(tabs){
+          var note=document.createElement('div');
+          note.className='sync-note';
+          note.innerHTML='<a href="javascript:void(0)" onclick="moOpenAuth(\'signin\')" style="color:var(--color-primary);font-weight:600;">Sign in</a> to sync your full order history and subscriptions to your account.';
+          tabs.parentNode.insertBefore(note,tabs);
+        }
+      } else {
+        if(gate)gate.classList.remove('hidden');
+        if(view)view.style.display='none';
+      }
+    }
+  });
   // Close modals on backdrop click
   document.getElementById('reschedule-modal').addEventListener('click',function(e){if(e.target===this)closeReschedule();});
   document.getElementById('cancel-modal').addEventListener('click',function(e){if(e.target===this)closeCancelModal();});

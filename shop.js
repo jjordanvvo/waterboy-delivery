@@ -203,6 +203,8 @@ function $(sel, ctx){ return (ctx||document).querySelector(sel); }
 function $$(sel, ctx){ return [...(ctx||document).querySelectorAll(sel)]; }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function genId(){ return 'WB-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2,5).toUpperCase(); }
+/* Clears the httpOnly session cookie server-side (fire and forget). */
+function serverSignOut(){ try{ fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action:'logout'})}).catch(function(){}); }catch(e){} }
 
 /* ── Toast ─────────────────────────────────────────────────────── */
 function toast(title, msg, icon){
@@ -543,7 +545,7 @@ function updateNavUser(){
     drop.innerHTML = user
       ? `<button class="nud-item" id="nud-account">My Account</button><button class="nud-item" id="nud-orders">My Orders</button><button class="nud-item nud-out" id="nud-signout">Sign Out</button>`
       : `<button class="nud-item" id="nud-signin">Sign In</button><button class="nud-item" id="nud-signup">Create Account</button>`;
-    drop.querySelector('#nud-signout')?.addEventListener('click',()=>{ user=null; saveUser(null); updateNavUser(); toast('Signed out','See you next time!',''); });
+    drop.querySelector('#nud-signout')?.addEventListener('click',()=>{ user=null; saveUser(null); serverSignOut(); updateNavUser(); toast('Signed out','See you next time!',''); });
     drop.querySelector('#nud-signin')?.addEventListener('click',()=>openAuthModal('signin'));
     drop.querySelector('#nud-signup')?.addEventListener('click',()=>openAuthModal('signup'));
   });
@@ -601,9 +603,20 @@ function loadStripe(){
   return _wbStripePromise;
 }
 function coChargeTotal(){ return cartTotal()+(zoneFeeDisplay(currentZone).fee||0); }
+var _coOrderId=null;
+/* Order details attached to the PaymentIntent so /api/stripe-webhook can
+   record cart orders to the customer's account history (keyed by email). */
+function coOrderMeta(){
+  _coOrderId=genId();
+  var items=cart.map(function(it){ return (it.qty||1)+'× '+(it.name||'item'); }).join(', ');
+  var addr=((document.getElementById('co-addr')||{}).value||'')+', '+((document.getElementById('co-city')||{}).value||'')+' '+((document.getElementById('co-zip')||{}).value||'');
+  var d=coState.date;
+  var dateStr=d?(d instanceof Date?d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):String(d)):'';
+  return { orderId:_coOrderId, items:items, address:addr, phone:(document.getElementById('co-phone')||{}).value||'', deliveryDate:dateStr, deliveryWindow:coState.time||'' };
+}
 function coOrderSuccess(){
   gotoStep('checkout-overlay',4);
-  var n=document.getElementById('co-order-num'); if(n) n.textContent=genId();
+  var n=document.getElementById('co-order-num'); if(n) n.textContent=_coOrderId||genId();
   cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
   toast('Order placed!','Payment successful','✓');
 }
@@ -660,7 +673,7 @@ function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess, opts){
       st.pr.canMakePayment().then(function(res){ var wrap=document.getElementById(prefix+'-pr-wrap'); if(res){ if(wrap) wrap.style.display='block'; prBtn.mount('#'+prefix+'-pr-btn'); } else if(wrap){ wrap.style.display='none'; } });
       st.pr.on('paymentmethod',function(ev){
         var email=ev.payerEmail||(document.getElementById(emailId)||{}).value||'';
-        fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:getTotal(),customerEmail:email,customerName:ev.payerName||''})})
+        fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({amount:getTotal(),customerEmail:email,customerName:ev.payerName||''},opts.getOrderMeta?opts.getOrderMeta():{}))})
           .then(function(r){return r.json();})
           .then(function(pi){
             if(pi.error||!pi.clientSecret){ ev.complete('fail'); return; }
@@ -695,7 +708,7 @@ function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess, opts){
     }
     if(!_wbStripe||!st.card){ if(errEl) errEl.textContent='Payment is still loading — try again in a moment.'; return; }
     var orig=btn.textContent; btn.disabled=true; btn.textContent='Processing…';
-    fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:getTotal(),customerEmail:email,customerName:name})})
+    fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({amount:getTotal(),customerEmail:email,customerName:name},opts.getOrderMeta?opts.getOrderMeta():{}))})
       .then(function(r){return r.json();})
       .then(function(pi){
         if(pi.error||!pi.clientSecret){ if(errEl) errEl.textContent=pi.error||'Could not start payment.'; btn.disabled=false; btn.textContent=orig; return; }
@@ -709,7 +722,7 @@ function makeFlowStripe(prefix, getTotal, emailId, nameId, onSuccess, opts){
   return { setup:doSetup, pay:pay, updateTotal:updateTotal };
 }
 var _coFlow=null;
-function coFlow(){ if(!_coFlow) _coFlow=makeFlowStripe('co',coChargeTotal,'co-email','co-cname',coOrderSuccess); return _coFlow; }
+function coFlow(){ if(!_coFlow) _coFlow=makeFlowStripe('co',coChargeTotal,'co-email','co-cname',coOrderSuccess,{getOrderMeta:coOrderMeta}); return _coFlow; }
 function setupCheckoutStripe(){ coFlow().setup(); }
 function updateCoPRTotal(){ coFlow().updateTotal(); }
 
@@ -1807,7 +1820,7 @@ function updateNavUser(){
     if(user){
       drop.innerHTML=`<button class="nud-item" style="display:block;width:100%;text-align:left;padding:8px 13px;color:#C8E8F8;font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-orders">My Orders</button><button class="nud-item nud-out" style="display:block;width:100%;text-align:left;padding:8px 13px;color:rgba(255,100,100,.8);font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:'Inter',sans-serif;transition:background .15s;box-sizing:border-box" id="nud-signout">Sign Out</button>`;
       drop.querySelector('#nud-signout')?.addEventListener('click',()=>{
-        user=null; saveUser(null); updateNavUser();
+        user=null; saveUser(null); serverSignOut(); updateNavUser();
         drop.style.display='none';
         toast('Signed out','See you next time!','');
       });
@@ -1826,7 +1839,7 @@ function updateNavUser(){
         const drop=document.createElement('div');
         drop.style.cssText='display:none;position:absolute;top:calc(100% + 8px);right:0;background:#0D2137;border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:7px;min-width:150px;z-index:9999;box-shadow:0 12px 40px rgba(0,0,0,.55)';
         drop.innerHTML='<button style="display:block;width:100%;text-align:left;padding:8px 13px;color:rgba(255,100,100,.8);font-size:13px;border:none;background:none;cursor:pointer;border-radius:7px;font-family:\'Inter\',sans-serif;">Sign Out</button>';
-        drop.querySelector('button').addEventListener('click',()=>{ user=null; saveUser(null); drop.style.display='none'; updateNavUser(); toast('Signed out','See you next time!',''); });
+        drop.querySelector('button').addEventListener('click',()=>{ user=null; saveUser(null); serverSignOut(); drop.style.display='none'; updateNavUser(); toast('Signed out','See you next time!',''); });
         wrap.appendChild(drop);
         el._wbDrop=drop;
         el.addEventListener('click',e=>{ e.stopPropagation(); drop.style.display=drop.style.display==='none'?'block':'none'; });
@@ -1883,3 +1896,20 @@ function init(){
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+/* ── Server-session sync ─────────────────────────────────────────
+   The real sign-in state lives in an httpOnly cookie (/api/auth).
+   On load, refresh the local wb_user_v1 mirror from it so the nav
+   matches reality across devices/tabs. A legacy localStorage-only
+   user (no cookie) is left alone. */
+document.addEventListener('DOMContentLoaded', function(){
+  fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action:'me'})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d&&d.user){
+        user={ name:((d.user.firstName||'')+' '+(d.user.lastName||'')).trim()||(d.user.email||'').split('@')[0], email:d.user.email, phone:d.user.phone||'', addr:d.user.addr||'', city:d.user.city||'', zip:d.user.zip||'' };
+        saveUser(user);
+        updateNavUser();
+      }
+    }).catch(function(){});
+});

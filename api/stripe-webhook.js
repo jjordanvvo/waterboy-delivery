@@ -141,6 +141,50 @@ module.exports = async (req, res) => {
     return res.status(400).send('Webhook Error: ' + err.message);
   }
 
+  /* ── payment_intent.succeeded → record one-time orders to account
+     history (wb_orders:<email> Redis hash, field = pi id so Stripe
+     retries simply overwrite the same record — no dedupe key needed).
+     Only PaymentIntents stamped wb_order:'1' by /api/create-payment-intent
+     are recorded. Requires the payment_intent.succeeded event to be
+     added to the same Stripe webhook endpoint as invoice.payment_succeeded. */
+  if (event.type === 'payment_intent.succeeded') {
+    const pi = event.data.object;
+    const meta = pi.metadata || {};
+    if (meta.wb_order !== '1') {
+      return res.status(200).json({ received: true, skipped: 'not_wb_order' });
+    }
+    const orderEmail = (meta.email || pi.receipt_email || '').trim().toLowerCase();
+    if (!orderEmail) {
+      return res.status(200).json({ received: true, skipped: 'no_email' });
+    }
+    const redis2 = getRedis();
+    if (!redis2) {
+      console.error('stripe-webhook: no Redis — order not recorded:', pi.id);
+      return res.status(200).json({ received: true, skipped: 'no_redis' });
+    }
+    try {
+      const order = {
+        orderId: meta.orderId || pi.id,
+        source: 'one-time',
+        items: meta.items || '',
+        amount: pi.amount_received != null ? pi.amount_received / 100 : pi.amount / 100,
+        status: 'confirmed',
+        deliveryDate: meta.deliveryDate || '',
+        deliveryWindow: meta.deliveryWindow || '',
+        address: meta.address || '',
+        phone: meta.phone || '',
+        name: meta.name || '',
+        placedAt: (pi.created || Math.floor(Date.now() / 1000)) * 1000,
+        ref: pi.id,
+      };
+      await redis2.hset('wb_orders:' + orderEmail, pi.id, JSON.stringify(order));
+      return res.status(200).json({ received: true, recorded: pi.id });
+    } catch (err) {
+      console.error('stripe-webhook order record error:', err.message);
+      return res.status(500).json({ error: err.message }); // Stripe retries; hset is idempotent
+    }
+  }
+
   if (event.type !== 'invoice.payment_succeeded') {
     return res.status(200).json({ received: true, skipped: event.type });
   }
@@ -163,6 +207,29 @@ module.exports = async (req, res) => {
     const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
     const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
     const meta = subscription.metadata || {};
+
+    // Record this subscription payment in the customer's account order
+    // history too (field = invoice id, so retries overwrite in place).
+    // Non-fatal: history must never block the calendar event below.
+    if (redis && invoice.customer_email) {
+      try {
+        const histOrder = {
+          orderId: invoice.number || invoice.id,
+          source: 'subscription',
+          items: meta.planName || 'Monthly Water Delivery',
+          amount: invoice.amount_paid / 100,
+          status: 'confirmed',
+          deliveryDate: resolveDeliveryDate(meta.deliveryDay),
+          deliveryWindow: meta.deliveryWindow || '',
+          address: meta.address || '',
+          phone: meta.phone || '',
+          name: meta.customerName || '',
+          placedAt: (invoice.created || Math.floor(Date.now() / 1000)) * 1000,
+          ref: invoice.id,
+        };
+        await redis.hset('wb_orders:' + invoice.customer_email.trim().toLowerCase(), 'inv_' + invoice.id, JSON.stringify(histOrder));
+      } catch (e) { /* non-fatal */ }
+    }
 
     const accessToken = await getGoogleAccessToken();
     if (!accessToken) {

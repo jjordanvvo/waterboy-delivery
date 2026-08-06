@@ -23,6 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="shop.css">
+  <script src="account.js"></script>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;}
@@ -491,6 +492,9 @@ html,body{overflow-x:hidden;max-width:100%;}
           <h2 class="step-heading">Review &amp; place your order</h2>
           <p class="step-sub">Enter your delivery details below, then continue to secure checkout.</p>
 
+          <!-- Account strip: sign in for auto-fill, or continue as guest -->
+          <div id="acct-strip" style="display:none;font-family:'Poppins',sans-serif;font-size:13.5px;background:rgba(13,71,161,0.05);border:1px solid rgba(13,71,161,0.15);border-radius:12px;padding:13px 16px;margin-bottom:18px;line-height:1.55;"></div>
+
           <!-- Address form -->
           <div class="addr-form">
             <div class="addr-form-title">Delivery Address</div>
@@ -669,6 +673,16 @@ html,body{overflow-x:hidden;max-width:100%;}
     <h2 class="success-h">Order Confirmed!</h2>
     <div class="success-id" id="success-order-id">WB-XXXXXX</div>
     <div class="success-dets" id="success-details"></div>
+    <!-- Post-purchase account offer: reuses the info already entered — one password, no re-typing -->
+    <div id="success-acct" style="display:none;font-family:'Poppins',sans-serif;background:rgba(13,71,161,0.05);border:1px solid rgba(13,71,161,0.15);border-radius:12px;padding:16px 18px;margin:18px 0 4px;text-align:left;">
+      <div style="font-size:14px;font-weight:600;color:var(--color-text);margin-bottom:4px;">Save this order to an account</div>
+      <p style="font-size:12.5px;color:var(--color-text-muted);margin:0 0 12px;line-height:1.5;">We'll use the details you just entered — pick a password and you're done. Track this order and check out faster next time.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input type="password" id="sa-password" placeholder="Password (8+ characters)" autocomplete="new-password" style="flex:1;min-width:180px;font-family:'Poppins',sans-serif;font-size:15px;padding:11px 13px;border:1.5px solid var(--color-border);border-radius:9px;outline:none;">
+        <button type="button" id="sa-create-btn" onclick="createAccountFromOrder()" style="font-family:'Poppins',sans-serif;font-size:13.5px;font-weight:600;background:var(--color-primary);color:#fff;border:none;border-radius:9px;padding:11px 18px;cursor:pointer;min-height:44px;">Create Account</button>
+      </div>
+      <div id="sa-msg" style="font-size:12.5px;margin-top:8px;display:none;line-height:1.45;"></div>
+    </div>
     <div class="success-btns">
       <a class="btn-gcal" id="btn-add-cal" href="#" target="_blank" rel="noopener">Add to Calendar</a>
       <a class="btn-view-orders" href="/my-orders">View My Orders</a>
@@ -1462,8 +1476,9 @@ function initStripe(){
   window._wbPR=pr;
   pr.on('paymentmethod',async function(ev){
     var grandTotal=getGrandTotal();
+    var orderId=genOrderId();
     try{
-      var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:grandTotal,customerEmail:ev.payerEmail||state.email||'',customerName:ev.payerName||state.name||''})});
+      var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({amount:grandTotal,customerEmail:ev.payerEmail||state.email||'',customerName:ev.payerName||state.name||''},orderMeta(orderId)))});
       var piData=await piResp.json();
       if(piData.error){ev.complete('fail');return;}
       var cr=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false});
@@ -1473,7 +1488,7 @@ function initStripe(){
         var ar=await stripe.confirmCardPayment(piData.clientSecret);
         if(ar.error){var errEl=document.getElementById('stripe-err');if(errEl)errEl.textContent=ar.error.message;return;}
       }
-      closeCheckout();showSuccess(genOrderId());
+      closeCheckout();showSuccess(orderId);
     }catch(e){ev.complete('fail');}
   });
   cardNumber.on('change',function(e){var el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
@@ -1512,13 +1527,30 @@ async function handlePayment(){
   }
   try{
     var total=getGrandTotal();
-    var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:state.email,customerName:name.trim()})});
+    var orderId=genOrderId();
+    var piResp=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({amount:total,customerEmail:state.email,customerName:name.trim()},orderMeta(orderId)))});
     var piData=await piResp.json();
     if(piData.error){if(errEl)errEl.textContent=piData.error;btn.classList.remove('loading');btn.disabled=false;return;}
     var result=await stripe.confirmCardPayment(piData.clientSecret,{payment_method:{card:cardNumber,billing_details:{name:name.trim(),email:state.email,phone:state.phone}}});
     if(result.error){if(errEl)errEl.textContent=result.error.message;btn.classList.remove('loading');btn.disabled=false;return;}
-    btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(genOrderId());
+    btn.classList.remove('loading');btn.disabled=false;closeCheckout();showSuccess(orderId);
   }catch(e){if(errEl)errEl.textContent='Payment error. Please try again.';btn.classList.remove('loading');btn.disabled=false;}
+}
+
+/* Order details attached to the PaymentIntent so /api/stripe-webhook can
+   record this order to the customer's account history (keyed by email). */
+function orderMeta(orderId){
+  var apt=(document.getElementById('f-apt')||{}).value||'';
+  var fullAddr=state.addr+(apt.trim()?', '+apt.trim():'')+', '+state.city+', '+state.stateField+' '+state.zip;
+  var itemsStr=(state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel())+' — '+wtLabel();
+  return {
+    orderId:orderId,
+    items:itemsStr,
+    address:fullAddr,
+    phone:state.phone||'',
+    deliveryDate:state.delOpt==='asap'?'As Soon As Possible':(state.calDate||''),
+    deliveryWindow:timeLabel(state.timePref)
+  };
 }
 
 function showSuccess(orderId){
@@ -1538,6 +1570,11 @@ function showSuccess(orderId){
   if(succDet)succDet.innerHTML='<div class="sdr"><span>Water Type</span><strong>'+wtLbl+'</strong></div>'+'<div class="sdr"><span>Amount</span><strong>'+amtLbl+'</strong></div>'+'<div class="sdr"><span>Delivery</span><strong>'+delivDate+'</strong></div>'+'<div class="sdr"><span>Window</span><strong>'+timeLbl+'</strong></div>'+'<div class="sdr"><span>Address</span><strong>'+fullAddr+'</strong></div>'+'<div class="sdr"><span>Total</span><strong>$'+total.toFixed(2)+'</strong></div>';
   var calBtn=document.getElementById('btn-add-cal');if(calBtn)calBtn.href=buildCalLink(order,timeLbl,delivDate);
   var succOv=document.getElementById('success-overlay');if(succOv){succOv.classList.add('open');lockBodyScroll();}
+  // Offer to save this order to a new account (hidden for signed-in customers)
+  var acctBox=document.getElementById('success-acct');
+  if(acctBox&&window.WBAccount){
+    WBAccount.ready(function(u){acctBox.style.display=(u||WBAccount.legacyUser())?'none':'block';});
+  }
   
   // Auto-add delivery to business Google Calendar
   (function(){fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId:orderId,customerName:state.name,phone:state.phone,email:state.email,address:fullAddr,bundle:amtLbl+' - '+wtLbl,waterType:wtLbl,deliveryDate:delivDate,deliveryWindow:timeLbl})}).catch(function(){});})();(function(){fetch('https://hooks.zapier.com/hooks/catch/27705724/4oqmtig/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:orderId,customer_name:state.name,phone:state.phone,address:fullAddr,bundle:amtLbl+' - '+wtLbl,delivery_date:delivDate,delivery_window:timeLbl,zone:state.zone.zone||'unknown'})}).catch(function(){});})();
@@ -1553,6 +1590,80 @@ function buildCalLink(order,timeLbl,delivDate){
   function fmt(dt){return dt.getFullYear()+''+pad(dt.getMonth()+1)+''+pad(dt.getDate())+'T'+pad(dt.getHours())+'0000';}
   var start=fmt(d);d.setHours(startH+3);var end=fmt(d);
   return 'https://www.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Water Delivery — Waterboy')+'&dates='+start+'/'+end+'&details='+encodeURIComponent('Order: '+order.orderId+'\nWater: '+order.waterType+'\nAmount: '+order.quantity+'\nTotal: $'+order.price.toFixed(2)+'\nPhone: '+order.phone+'\nEmail: '+order.email)+'&location='+encodeURIComponent(order.address);
+}
+
+/* ── Customer account integration (account.js) ─────────────────────
+   Guest checkout is untouched — the strip and pre-fill are additive. */
+function fillIfEmpty(id,v){var el=document.getElementById(id);if(el&&v&&!el.value.trim()){el.value=v;}}
+
+function renderAcctStrip(u){
+  var strip=document.getElementById('acct-strip');
+  if(!strip)return;
+  if(u){
+    var first=(u.firstName||u.name||'').split(' ')[0]||'there';
+    strip.innerHTML='Signed in as <strong>'+first+'</strong> ('+(u.email||'')+') — your saved details are filled in below. <a href="/my-orders" style="color:var(--color-primary);font-weight:600;">My Orders</a> &nbsp;·&nbsp; <a href="javascript:void(0)" onclick="WBAccount.signOut()" style="color:var(--color-text-muted);">Sign out</a>';
+  }else{
+    strip.innerHTML='<strong>Have an account?</strong> <a href="javascript:void(0)" onclick="acctSignIn(\'signin\')" style="color:var(--color-primary);font-weight:600;">Sign in</a> to auto-fill your details, or <a href="javascript:void(0)" onclick="acctSignIn(\'signup\')" style="color:var(--color-primary);font-weight:600;">create one</a> — or just continue as a guest below. No account needed.';
+  }
+  strip.style.display='block';
+}
+
+function acctSignIn(mode){
+  if(!window.WBAccount)return;
+  WBAccount.openModal(mode,{
+    prefill:{
+      firstName:((document.getElementById('f-name')||{}).value||'').split(' ')[0]||'',
+      lastName:(((document.getElementById('f-name')||{}).value||'').split(' ').slice(1).join(' '))||'',
+      email:(document.getElementById('f-email')||{}).value||'',
+      phone:(document.getElementById('f-phone')||{}).value||'',
+      addr:(document.getElementById('f-addr')||{}).value||'',
+      city:(document.getElementById('f-city')||{}).value||'',
+      zip:(document.getElementById('f-zip')||{}).value||''
+    },
+    onAuth:function(u){renderAcctStrip(u);prefillFromUser(u);}
+  });
+}
+
+function prefillFromUser(u){
+  if(!u)return;
+  var fullName=((u.firstName||'')+' '+(u.lastName||'')).trim()||u.name||'';
+  fillIfEmpty('f-name',fullName);
+  fillIfEmpty('f-addr',u.addr);
+  fillIfEmpty('f-city',u.city);
+  fillIfEmpty('f-phone',u.phone);
+  fillIfEmpty('f-email',u.email);
+  var zipEl=document.getElementById('f-zip');
+  if(zipEl&&u.zip&&!zipEl.value.trim()){zipEl.value=u.zip;zipEl.dispatchEvent(new Event('input',{bubbles:true}));}
+}
+
+function createAccountFromOrder(){
+  var pw=(document.getElementById('sa-password')||{}).value||'';
+  var msg=document.getElementById('sa-msg');
+  var btn=document.getElementById('sa-create-btn');
+  function say(t,ok){if(msg){msg.textContent=t;msg.style.display='block';msg.style.color=ok?'#047857':'#dc2626';}}
+  if(pw.length<8){say('Password must be at least 8 characters.');return;}
+  if(!state.email){say('We could not find the email from your order — please use the Sign In link in the menu.');return;}
+  var parts=(state.name||'').split(' ');
+  btn.disabled=true;btn.textContent='Creating…';
+  WBAccount.signup({
+    firstName:parts[0]||state.email.split('@')[0],
+    lastName:parts.slice(1).join(' '),
+    email:state.email,phone:state.phone||'',
+    addr:state.addr||'',city:state.city||'',zip:state.zip||'',
+    password:pw
+  }).then(function(){
+    var box=document.getElementById('success-acct');
+    if(box)box.innerHTML='<div style="font-family:\'Poppins\',sans-serif;font-size:13.5px;color:#047857;font-weight:600;">✓ Account created! This order is saved — see it any time in <a href="/my-orders" style="color:var(--color-primary);">My Orders</a>.</div>';
+  }).catch(function(err){
+    say(err.message);btn.disabled=false;btn.textContent='Create Account';
+  });
+}
+
+if(window.WBAccount){
+  WBAccount.ready(function(u){
+    renderAcctStrip(u);
+    if(u)prefillFromUser(u);
+  });
 }
 </script>
 

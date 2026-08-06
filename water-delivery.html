@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
+  <script src="account.js"></script>
   <title>Schedule Water Delivery | Water Boy Delivery Elk Grove</title>
   <meta name="description" content="Schedule recurring water delivery in Elk Grove. RO, Alkaline, and Hydrogen water delivered to your door. Delivery from $2.99.">
   <style>
@@ -771,7 +772,18 @@ function submitOrder() {
     window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,customerEmail:email,customerName:cname})})
+  // Order details on the PaymentIntent let /api/stripe-webhook record this
+  // order to the customer's account history (keyed by email).
+  var wdOrderId='WD-'+Date.now();
+  var wdMeta={
+    orderId:wdOrderId,
+    items:WATER_NAMES[order.water]+' — '+order.size+' ('+order.freqLabel+')',
+    address:address+(apt?', '+apt:''),
+    phone:phone,
+    deliveryDate:order.freqType==='one-time'?(((document.getElementById('onetime-date')||{}).value)||''):(day||''),
+    deliveryWindow:order.freqType==='one-time'?(((document.getElementById('onetime-time')||{}).value)||''):''
+  };
+  fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({amount:total,customerEmail:email,customerName:cname},wdMeta))})
     .then(function(r){return r.json();})
     .then(function(piData){
       if(piData.error){ if(errEl)errEl.textContent=piData.error; btn.disabled=false; if(btnText)btnText.textContent=origText; return; }
@@ -782,6 +794,15 @@ function submitOrder() {
       });
     })
     .catch(function(){ if(errEl)errEl.textContent='Payment error. Please try again.'; btn.disabled=false; if(btnText)btnText.textContent=origText; });
+}
+// Pre-fill the booking form for signed-in customers (empty fields only —
+// guest checkout is untouched).
+if(window.WBAccount){
+  WBAccount.ready(function(u){
+    if(!u)return;
+    function f(id,v){var el=document.getElementById(id);if(el&&v&&!el.value.trim())el.value=v;}
+    f('f-fname',u.firstName);f('f-lname',u.lastName);f('f-phone',u.phone);f('f-email',u.email);f('f-address',u.addr);
+  });
 }
 window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 document.getElementById('hamburger-btn').addEventListener('click',function(){document.getElementById('mobile-menu').classList.add('open');lockBodyScroll();});
