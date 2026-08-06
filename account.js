@@ -62,7 +62,55 @@
   function setUser(u) {
     user = u;
     if (u) syncLegacy(u);
+    updateNavState();
     announce();
+  }
+
+  /* ── Navbar Sign In button (all pages) ─────────────────────── */
+  function knownUser() {
+    if (user) return user;
+    try { return JSON.parse(localStorage.getItem('wb_user_v1')) || null; } catch (e) { return null; }
+  }
+
+  function navClick(e) {
+    e.preventDefault();
+    if (knownUser()) { location.href = '/my-orders'; return; }
+    openModal('signin', { onAuth: function () { updateNavState(); } });
+  }
+
+  function updateNavState() {
+    var u = knownUser();
+    var label = u ? (((u.firstName || u.name || '').split(' ')[0]) || 'Account') : 'Sign In';
+    ['wba-nav-btn', 'wba-nav-btn-m'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = label;
+      el.setAttribute('aria-label', u ? 'My account' : 'Sign in');
+    });
+  }
+
+  function injectNavButton() {
+    var right = document.querySelector('#navbar .nav-right');
+    if (right && !document.getElementById('wba-nav-btn')) {
+      var btn = document.createElement('a');
+      btn.id = 'wba-nav-btn';
+      btn.className = 'wba-nav-signin';
+      btn.href = '/my-orders';
+      btn.textContent = 'Sign In';
+      btn.addEventListener('click', navClick);
+      right.insertBefore(btn, right.querySelector('.nav-order-btn') || right.firstChild);
+    }
+    var mobileLinks = document.querySelector('#mobile-menu .mobile-nav-links');
+    if (mobileLinks && !document.getElementById('wba-nav-btn-m')) {
+      var m = document.createElement('a');
+      m.id = 'wba-nav-btn-m';
+      m.className = 'mobile-nav-link';
+      m.href = '/my-orders';
+      m.textContent = 'Sign In';
+      m.addEventListener('click', navClick);
+      mobileLinks.appendChild(m);
+    }
+    updateNavState();
   }
 
   /* ── Modal ─────────────────────────────────────────────────── */
@@ -92,6 +140,11 @@
     '.wba-switch a{color:var(--color-primary,#0D47A1);cursor:pointer;font-weight:600;text-decoration:none;}',
     '.wba-switch a:hover{text-decoration:underline;}',
     '@media(max-width:480px){#wba-modal{padding:26px 18px;}}',
+    /* Navbar Sign In button — outline twin of .nav-order-btn; the mobile
+       menu link covers ≤768px where the navbar collapses to hamburger. */
+    '.wba-nav-signin{background:none;color:var(--color-primary,#0D47A1) !important;font-family:"Poppins",sans-serif;font-weight:600;font-size:15px;border-radius:12px;padding:9px 18px;border:1.5px solid var(--color-primary,#0D47A1);cursor:pointer;text-decoration:none !important;min-height:44px;display:flex;align-items:center;justify-content:center;transition:background 0.2s ease,color 0.2s ease;white-space:nowrap;box-sizing:border-box;}',
+    '.wba-nav-signin:hover{background:var(--color-primary,#0D47A1);color:#FFFFFF !important;}',
+    '@media(max-width:768px){.wba-nav-signin{display:none !important;}}',
   ].join('');
 
   function buildModal() {
@@ -270,6 +323,7 @@
     div.innerHTML = buildModal();
     document.body.appendChild(div.firstChild);
     bind();
+    injectNavButton();
 
     api({ action: 'me' }).then(function (d) {
       setUser(d.user || null);
