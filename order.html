@@ -34,6 +34,11 @@ html,body{overflow-x:hidden;max-width:100%;}
 .order-page-hero h1{font-family:'Poppins',sans-serif;font-size:36px;font-weight:700;color:var(--color-text);margin:0 0 8px;}
 .order-page-hero p{font-family:'Poppins',sans-serif;font-size:16px;color:var(--color-text-muted);margin:0;}
 
+/* Free-delivery offer banner (shown only when the /free-delivery flag is set) */
+.offer-banner{font-family:'Poppins',sans-serif;background:#E9F8EF;border-bottom:1px solid #BBE5C9;color:#137A3D;text-align:center;padding:12px 20px;font-size:14.5px;font-weight:500;}
+.offer-banner strong{font-weight:700;}
+.offer-banner-off{background:#FFF7E6;border-bottom-color:#F0DCA8;color:#8A6410;}
+
 /* Progress */
 .order-progress-bar{background:#FFFFFF;border-bottom:1px solid var(--color-border);padding:20px 24px;position:sticky;top:70px;z-index:99;}
 .progress-track{display:flex;align-items:center;justify-content:center;max-width:480px;margin:0 auto;}
@@ -273,6 +278,24 @@ html,body{overflow-x:hidden;max-width:100%;}
 .bm-btn:hover{background:#083b8e;}
 .bundle-type-label{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-primary);background:rgba(13,71,161,0.08);border:1px solid rgba(13,71,161,0.2);border-radius:20px;padding:4px 14px;display:inline-block;margin-bottom:14px;}
 </style>
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1048330378091916');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1048330378091916&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -312,6 +335,9 @@ html,body{overflow-x:hidden;max-width:100%;}
   </nav>
   <a href="/order" class="mobile-order-btn">ORDER NOW</a>
 </div>
+
+<!-- Free-delivery offer banner (hidden unless the offer flag is active) -->
+<div id="offer-banner" class="offer-banner" style="display:none;"></div>
 
 <!-- Page hero -->
 <header class="order-page-hero">
@@ -810,7 +836,7 @@ function initAddressAutocomplete(){
     state.zip=zip||state.zip;state.zone=zr;
     if(typeof saveDraft==='function')saveDraft();
     var res=document.getElementById('zone-result');
-    if(res){if(zr.unknown)res.innerHTML='';else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles &mdash; Custom Quote. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';else res.innerHTML='<span class="z'+zr.zone+'">&check; Delivery fee: $'+zr.fee.toFixed(2)+'</span>';}
+    if(res){if(zr.unknown)res.innerHTML='';else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles &mdash; Custom Quote. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';else if(offerActive())res.innerHTML='<span class="z1">&check; First delivery FREE <s style="opacity:.6">$'+zr.fee.toFixed(2)+'</s></span>';else res.innerHTML='<span class="z'+zr.zone+'">&check; Delivery fee: $'+zr.fee.toFixed(2)+'</span>';}
     if(typeof updateS3Summary==='function')updateS3Summary();
     hide();
   }
@@ -889,6 +915,49 @@ loadDraft();
   }catch(_){}
 })();
 
+/* ── Free-delivery first-order offer (ad landing page /free-delivery) ──
+   Arriving via /order?offer=free-delivery stores the offer flag in
+   sessionStorage so it survives the multi-step flow. While active, the
+   delivery fee counts as $0 — ONE-TIME orders only, never bundles
+   (bundle amounts recur monthly and would bake the discount in forever).
+   Eligibility is checked server-side against wb_orders:<email> history;
+   returning customers quietly revert to the standard fee. The check
+   fails open: if it can't run, the discount stands. */
+var OFFER_KEY='wb_offer';
+(function applyOfferParam(){
+  try{if(new URLSearchParams(location.search).get('offer')==='free-delivery')sessionStorage.setItem(OFFER_KEY,'free-delivery');}catch(_){}
+})();
+var offerEligible=null; /* null = unchecked (treated as eligible), false = has prior orders */
+function offerFlagSet(){try{return sessionStorage.getItem(OFFER_KEY)==='free-delivery';}catch(_){return false;}}
+function offerActive(){return offerFlagSet()&&state.amtMode!=='bundle'&&offerEligible!==false;}
+function rawZoneFee(){return state.zone.unknown||state.zone.outside?0:state.zone.fee;}
+function effectiveZoneFee(){return offerActive()?0:rawZoneFee();}
+
+var _foCheckedEmail='';
+function checkFirstOrderEligibility(){
+  if(!offerFlagSet())return;
+  var em=(state.email||'').trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||em===_foCheckedEmail)return;
+  _foCheckedEmail=em;
+  fetch('/api/validate-promo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstOrderCheck:true,email:em})})
+    .then(function(r){return r.json();})
+    .then(function(d){if(d&&d.checked){offerEligible=!!d.firstOrder;refreshOfferUI();}})
+    .catch(function(){});
+}
+
+function refreshOfferUI(){
+  var b=document.getElementById('offer-banner');
+  if(b){
+    if(!offerFlagSet()||state.amtMode==='bundle'){b.style.display='none';}
+    else if(offerEligible===false){b.className='offer-banner offer-banner-off';b.style.display='block';b.innerHTML='Welcome back! Free delivery is for first orders &mdash; standard delivery applies.';}
+    else{b.className='offer-banner';b.style.display='block';b.innerHTML='&#127881; Your first delivery is <strong>FREE</strong> &mdash; discount applied automatically at checkout.';}
+  }
+  try{if(document.getElementById('s3-summary-content'))updateS3Summary();}catch(_){}
+  var ov=document.getElementById('checkout-overlay');
+  if(ov&&ov.classList.contains('open')){try{buildCheckoutSummary();updateCoTotal();}catch(_){}}
+  if(window._wbPR){try{window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)}});}catch(_){}}
+}
+
 /* ── Step navigation ─────────────────────────────────────────── */
 function goStep(n){
   if(n<1||n>3)return;
@@ -951,6 +1020,7 @@ function setAmtMode(mode){
   if(mode==='bundle')renderBundles();
   else document.getElementById('s2-next').disabled=false;
   updateS2Summary();
+  refreshOfferUI(); /* offer applies to one-time only — hide/show banner on mode switch */
 }
 
 function adjustQty(delta){
@@ -1025,8 +1095,7 @@ function addonPrice(a){
 }
 function addonsTotal(){ return alsoAddons.reduce(function(s,a){return s+addonPrice(a);},0); }
 function getGrandTotal(){
-  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
-  return getBasePrice()+zoneFee+addonsTotal();
+  return getBasePrice()+effectiveZoneFee()+addonsTotal();
 }
 
 async function applyPromoCode(){
@@ -1047,7 +1116,7 @@ async function applyPromoCode(){
   if(window._wbPR)window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)}});
 }
 
-function getTotal(){return getBasePrice()+(state.zone.unknown||state.zone.outside?0:state.zone.fee);}
+function getTotal(){return getBasePrice()+effectiveZoneFee();}
 
 function getBundleName(){
   if(state.amtMode!=='bundle'||!state.bundleId)return null;
@@ -1257,6 +1326,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(res){
       if(zr.unknown)res.innerHTML='<span style="color:#8BB8D4">Delivery fee will be confirmed</span>';
       else if(zr.outside)res.innerHTML='<span class="zout">Beyond 9 miles - Custom Quote. We may still be able to help. Call <a href="tel:+19167533866" style="color:#FF6B6B">(916) 753-3866</a>.</span>';
+      else if(offerActive())res.innerHTML='<span class="z1">First delivery FREE <s style="opacity:.6">$'+zr.fee.toFixed(2)+'</s></span>';
       else if(zr.zone===1)res.innerHTML='<span class="z1">Zone 1 - $2.99 delivery fee</span>';
       else if(zr.zone===2)res.innerHTML='<span class="z2">Zone 2 - $5.99 delivery fee</span>';
       else res.innerHTML='<span class="z3">Zone 3 - $8.99 delivery fee</span>';
@@ -1284,6 +1354,13 @@ document.addEventListener('DOMContentLoaded',function(){
   if(state.calDate)refreshScheduledWindowAvailability();
   if(state.timePref)updateTimePillUI();
   goStep(state.step||1);
+
+  /* Free-delivery offer: show banner, re-check eligibility when the
+     email is entered (blur) or restored from a draft. */
+  var emailInp=document.getElementById('f-email');
+  if(emailInp)emailInp.addEventListener('blur',checkFirstOrderEligibility);
+  refreshOfferUI();
+  checkFirstOrderEligibility();
 });
 
 /* ── S3 Summary ──────────────────────────────────────────────── */
@@ -1291,11 +1368,14 @@ function updateS3Summary(){
   var wtLbl=wtLabel();
   var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   var base=getBasePrice();
-  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var zoneFee=effectiveZoneFee();
+  var rawFee=rawZoneFee();
   var total=base+zoneFee;
   var delLbl=!state.delOpt?'Not selected':state.delOpt==='asap'?'As Soon As Possible':'Scheduled: '+(state.calDate||'Pick date');
   var timeLbl=timeLabel(state.timePref);
-  var feeDisplay=(state.zone.unknown||state.zone.outside)?'<span style="color:#dc2626;font-weight:600">Not available &mdash; call (916) 753-3866</span>':'$'+zoneFee.toFixed(2);
+  var feeDisplay=(state.zone.unknown||state.zone.outside)?'<span style="color:#dc2626;font-weight:600">Not available &mdash; call (916) 753-3866</span>'
+    :(offerActive()&&rawFee>0)?'<span style="color:#16a34a;font-weight:600"><s style="color:var(--color-text-muted);font-weight:400">$'+rawFee.toFixed(2)+'</s> FREE</span>'
+    :'$'+zoneFee.toFixed(2);
   document.getElementById('s3-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+(state.waterType?wtLbl:'-')+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+(state.waterType?amtLbl:'-')+'</span></div>'
@@ -1421,6 +1501,7 @@ function acknowledgeBottlePolicy(){
   state.phone=document.getElementById('f-phone').value.trim();
   state.email=document.getElementById('f-email').value.trim();
   saveDraft();
+  checkFirstOrderEligibility(); /* async — refreshOfferUI() re-renders the open checkout if the fee reverts */
   buildCheckoutSummary();
   if(window._wbPR){window._wbPR.update({total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)}});}
   document.getElementById('checkout-overlay').classList.add('open');
@@ -1436,20 +1517,26 @@ function buildCheckoutSummary(){
   var wtLbl=wtLabel();
   var amtLbl=state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel();
   var base=getBasePrice();
-  var zoneFee=state.zone.unknown||state.zone.outside?0:state.zone.fee;
+  var zoneFee=effectiveZoneFee();
+  var rawFee=rawZoneFee();
   var total=base+zoneFee;
   var timeLbl=timeLabel(state.timePref);
   var delLbl=state.delOpt==='asap'?'ASAP - '+timeLbl:'Scheduled: '+(state.calDate||'')+' - '+timeLbl;
   var promoRow=activePromo?'<div class="sp-row" style="color:#16a34a"><span>Promo '+activePromo.code+'</span><span>-'+activePromo.percentOff+'%</span></div>':'';
+  var offerRow=(offerActive()&&rawFee>0)?'<div class="sp-row" style="color:#16a34a;font-weight:600"><span>First delivery</span><span>FREE</span></div>':'';
+  var feeCell=state.zone.unknown?'TBD':state.zone.outside?'Custom Quote'
+    :(offerActive()&&rawFee>0)?'<span style="color:#16a34a;font-weight:600"><s style="color:var(--color-text-muted);font-weight:400">$'+rawFee.toFixed(2)+'</s> $0.00</span>'
+    :'$'+zoneFee.toFixed(2);
   document.getElementById('co-summary-content').innerHTML=
     '<div class="sp-row"><span>Water</span><span>'+wtLbl+'</span></div>'
     +'<div class="sp-row"><span>Amount</span><span>'+amtLbl+'</span></div>'
     +'<div class="sp-row"><span>Delivery</span><span>'+delLbl+'</span></div>'
     +'<div class="sp-row"><span>Address</span><span style="font-size:12px">'+state.addr+', '+state.city+', '+state.stateField+' '+state.zip+'</span></div>'
     +promoRow
+    +offerRow
     +'<hr class="sp-div">'
     +'<div class="sp-row"><span>Subtotal</span><span>$'+base.toFixed(2)+'</span></div>'
-    +'<div class="sp-row"><span>Delivery</span><span>'+(state.zone.unknown?'TBD':state.zone.outside?'Custom Quote':'$'+zoneFee.toFixed(2))+'</span></div>'
+    +'<div class="sp-row"><span>Delivery</span><span>'+feeCell+'</span></div>'
     +'<div class="sp-total-row" style="margin-top:14px"><span class="sp-total-lbl">Total</span><span class="sp-total-val">$'+total.toFixed(2)+'</span></div>';
 }
 
@@ -1555,6 +1642,11 @@ function orderMeta(orderId){
 
 function showSuccess(orderId){
   var total=getGrandTotal();
+  /* Free-delivery offer is one order only — clear the flag now that it's used.
+     (Total above was computed while the flag was still active.) */
+  try{sessionStorage.removeItem(OFFER_KEY);}catch(_){}
+  /* Meta Pixel ad conversion */
+  if(typeof fbq==='function'){try{fbq('track','Purchase',{value:total,currency:'USD'});}catch(_){}}
   var timeLbl=timeLabel(state.timePref);
   var delivDate=state.delOpt==='asap'?'As Soon As Possible':(state.calDate||'Scheduled');
   var fullAddr=state.addr+', '+state.city+', '+state.stateField+' '+state.zip;

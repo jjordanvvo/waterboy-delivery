@@ -1,6 +1,15 @@
 /* ============================================================
    validate-promo.js — Customer-facing discount code check
    POST { code, productIds: string[] } -> { valid, percentOff, productId }
+
+   Also serves the free-delivery landing-page offer (folded in here
+   because Vercel's 12-function cap is full):
+   POST { firstOrderCheck: true, email } -> { checked, firstOrder }
+   firstOrder is true when wb_orders:<email> has no recorded orders
+   (one-time AND subscription orders both land in that hash via
+   /api/stripe-webhook). Any failure returns checked:false and the
+   client keeps the discount (fail-open — never block a checkout
+   on this lookup).
    productIds is every product in the current order (water type + any
    add-ons). A code matches if it's set to 'all' (whole-order discount) or
    targets one of the given product ids — the response's productId tells
@@ -35,6 +44,20 @@ module.exports = async (req, res) => {
   if (!redis) return res.status(200).json({ valid: false, error: 'Promo codes are not available right now.' });
 
   const body = req.body || {};
+
+  if (body.firstOrderCheck) {
+    const email = (body.email || '').trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return res.status(200).json({ checked: false });
+    }
+    try {
+      const existing = await redis.exists('wb_orders:' + email);
+      return res.status(200).json({ checked: true, firstOrder: existing === 0 });
+    } catch (err) {
+      return res.status(200).json({ checked: false });
+    }
+  }
+
   const code = (body.code || '').trim().toUpperCase();
   const productIds = Array.isArray(body.productIds) ? body.productIds : [];
   if (!code) return res.status(200).json({ valid: false, error: 'Enter a promo code.' });
