@@ -14,16 +14,17 @@
   <script src="account.js"></script>
   <link rel="stylesheet" href="shop.css">
   <title>Water Dispensers | Water Boy Delivery</title>
-  <meta name="description" content="Purchase or rent a Brio water dispenser for your home or office. Bottom-load from $279.99, top-load from $129.99. Rentals available from $10/mo.">
+  <meta name="description" content="Purchase or rent a Brio water dispenser for your home or office. Bottom-load $339, top-load $300. Rentals available from $12/mo.">
   <link rel="canonical" href="https://www.elkgrovewaterboy.com/dispensers">
   <meta property="og:title" content="Water Dispensers | Water Boy Delivery">
-  <meta property="og:description" content="Purchase or rent a Brio water dispenser for your home or office. Bottom-load from $279.99, top-load from $129.99.">
+  <meta property="og:description" content="Purchase or rent a Brio water dispenser for your home or office. Bottom-load $339, top-load $300.">
   <meta property="og:image" content="https://www.elkgrovewaterboy.com/favicon-512.png">
   <meta property="og:url" content="https://www.elkgrovewaterboy.com/dispensers">
   <meta property="og:type" content="website">
   <style>
     .disp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .disp-card { background: #FFFFFF; border-radius: 16px; border: 1px solid var(--color-border); box-shadow: 0 8px 24px rgba(0,0,0,0.06); padding: 36px; }
+    .disp-img { display: block; width: 100%; max-width: 180px; height: auto; margin: 0 auto 24px; }
     .disp-badge { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-primary); margin-bottom: 12px; font-family: 'Poppins', sans-serif; }
     .disp-name { font-size: 22px; font-weight: 600; color: var(--color-text); margin-bottom: 8px; font-family: 'Poppins', sans-serif; }
     .disp-price { font-size: 36px; font-weight: 700; color: var(--color-primary); line-height: 1; margin-bottom: 4px; font-family: 'Poppins', sans-serif; }
@@ -114,9 +115,10 @@
     <h2 style="margin-bottom:40px;">Own your dispenser.</h2>
     <div class="disp-grid">
       <div class="disp-card">
+        <img src="/bottom-load-dispenser.jpg" alt="Brio bottom-load water dispenser" class="disp-img" width="427" height="900" loading="lazy">
         <div class="disp-badge">Bottom-Load</div>
         <div class="disp-name">Brio Bottom-Load Dispenser</div>
-        <div class="disp-price">$279.99</div>
+        <div class="disp-price" data-wb-price="brioBottom.buy">$339</div>
         <div class="disp-price-sub">One-time purchase</div>
         <ul class="disp-features">
           <li>Bottom-loading - no heavy lifting</li>
@@ -126,12 +128,13 @@
           <li>Fits standard 5-gallon bottles</li>
           <li>Self-cleaning UV function</li>
         </ul>
-        <a href="/contact" class="btn-primary">Order by Phone</a>
+        <button type="button" class="btn-primary" data-wb-buy="brioBottom">Buy Now</button>
       </div>
       <div class="disp-card">
+        <img src="/top-load-dispenser.jpg" alt="Brio top-load water dispenser" class="disp-img" width="427" height="900" loading="lazy">
         <div class="disp-badge">Top-Load</div>
         <div class="disp-name">Brio Top-Load Dispenser</div>
-        <div class="disp-price">$129.99</div>
+        <div class="disp-price" data-wb-price="brioTop.buy">$300</div>
         <div class="disp-price-sub">One-time purchase</div>
         <ul class="disp-features">
           <li>Classic top-load design</li>
@@ -141,7 +144,7 @@
           <li>Fits standard 5-gallon bottles</li>
           <li>Easy bottle replacement</li>
         </ul>
-        <a href="/contact" class="btn-primary">Order by Phone</a>
+        <button type="button" class="btn-primary" data-wb-buy="brioTop">Buy Now</button>
       </div>
     </div>
   </div>
@@ -155,15 +158,17 @@
     <div class="rental-grid">
       <div class="rental-card">
         <div class="rental-label">Bottom-Load Rental</div>
-        <div class="rental-price">$25<span>/mo</span></div>
+        <div class="rental-price"><span data-wb-price="brioBottom.rent">$15</span><span>/mo</span></div>
         <div class="rental-price-sub">Includes free maintenance</div>
         <p class="rental-desc">Brio bottom-load dispenser rented monthly. We handle any repairs or replacements at no additional cost. Cancel with 30 days notice.</p>
+        <button type="button" class="btn-inverted" data-wb-rent="brioBottom" style="margin-top:20px;">Rent for $15/mo</button>
       </div>
       <div class="rental-card">
         <div class="rental-label">Top-Load Rental</div>
-        <div class="rental-price">$10<span>/mo</span></div>
+        <div class="rental-price"><span data-wb-price="brioTop.rent">$12</span><span>/mo</span></div>
         <div class="rental-price-sub">Includes free maintenance</div>
         <p class="rental-desc">Brio top-load dispenser rented monthly. Perfect for smaller households or offices with limited floor space. Cancel with 30 days notice.</p>
+        <button type="button" class="btn-inverted" data-wb-rent="brioTop" style="margin-top:20px;">Rent for $12/mo</button>
       </div>
     </div>
     <div style="margin-top:48px;text-align:center;">
@@ -240,6 +245,7 @@
   document.getElementById('mobile-menu-close').addEventListener('click',function(){document.getElementById('mobile-menu').classList.remove('open');unlockBodyScroll();});
   window.addEventListener('scroll',function(){var b=document.getElementById('back-to-top');if(b)b.classList.toggle('visible',window.scrollY>400);});
 </script>
+<script src="prices.js"></script>
 <script src="shop.js"></script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>

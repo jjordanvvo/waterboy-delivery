@@ -3,7 +3,8 @@ export default async function handler(req, res) {
 
   const {
     orderId, customerName, phone, email,
-    address, bundle, waterType, deliveryDate, deliveryWindow
+    address, bundle, waterType, deliveryDate, deliveryWindow,
+    startHour, endHour
   } = req.body || {};
 
   const CLIENT_ID     = process.env.GOOGLE_CLIENT_ID;
@@ -30,12 +31,19 @@ export default async function handler(req, res) {
     if (!tokenData.access_token) throw new Error('Token error: ' + (tokenData.error || 'unknown'));
 
     const isAsap = !deliveryDate || deliveryDate === 'As Soon As Possible';
-    const startH = deliveryWindow && deliveryWindow.includes('Morning')   ? 8
+    /* startHour/endHour are optional. Callers whose delivery windows are named
+       periods ("Morning (8am–12pm)") omit them and keep the 3-hour bucket
+       below; callers with exact ranges ("10 AM – 12 PM") send the real hours
+       so the event is blocked when the driver actually arrives. */
+    const validHour = (h) => Number.isFinite(h) && h >= 0 && h <= 23;
+    const startH = validHour(startHour) ? startHour
+                 : deliveryWindow && deliveryWindow.includes('Morning')   ? 8
                  : deliveryWindow && deliveryWindow.includes('Afternoon') ? 12 : 16;
+    const endH = validHour(endHour) && endHour > startH ? endHour : startH + 3;
 
     const base  = isAsap ? new Date() : new Date(deliveryDate + 'T00:00:00');
     const start = new Date(base); start.setHours(startH, 0, 0, 0);
-    const end   = new Date(base); end.setHours(startH + 3, 0, 0, 0);
+    const end   = new Date(base); end.setHours(endH, 0, 0, 0);
 
     const event = {
       summary:  (isAsap ? '⚡ ASAP' : '📅 Delivery') + ' — ' + (customerName || '') + ' — ' + (address || ''),

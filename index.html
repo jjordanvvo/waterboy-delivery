@@ -1523,6 +1523,16 @@
       </div>
 
       <div class="cp-section">
+        <label class="cp-label">Preferred Delivery Day</label>
+        <div class="cp-pills" id="cp-day-pills"></div>
+      </div>
+
+      <div class="cp-section">
+        <label class="cp-label">Time Window</label>
+        <div class="cp-pills" id="cp-window-pills"></div>
+      </div>
+
+      <div class="cp-section">
         <label class="cp-label">Delivery Address <span style="text-transform:none;font-weight:500;color:var(--color-text-muted);">(optional — for an exact fee)</span></label>
         <div class="cp-addr-wrap">
           <input class="cp-input" id="cp-addr" type="text" placeholder="Start typing your address…" autocomplete="off">
@@ -1551,6 +1561,7 @@
         <input class="cp-input" id="cp-name" type="text" placeholder="Your Name" autocomplete="name">
         <input class="cp-input" id="cp-email" type="email" placeholder="Email Address" autocomplete="email">
       </div>
+      <input class="cp-input" id="cp-phone" type="tel" placeholder="Phone Number" autocomplete="tel" style="width:100%;margin-bottom:10px;">
 
       <button class="cp-btn" id="cp-subscribe-btn">Subscribe Now &rarr;</button>
       <div class="cp-err" id="cp-err"></div>
@@ -1560,6 +1571,98 @@
 </div>
 
 <button id="cp-reopen-tab" onclick="window.__cpOpen()">Customize Your Plan</button>
+
+<!-- ── Dispenser welcome pop-up (shows once per session) ─────────────── -->
+<style>
+  #dp-overlay{position:fixed;inset:0;z-index:20001;background:rgba(10,31,68,0.6);display:none;align-items:center;justify-content:center;padding:20px;}
+  #dp-overlay.open{display:flex;}
+  .dp-card{background:#FFFFFF;border-radius:18px;max-width:460px;width:100%;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.28);max-height:calc(100vh - 40px);overflow-y:auto;}
+  .dp-body{padding:32px 28px 28px;text-align:center;}
+  .dp-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(10,31,68,0.06);color:var(--color-text);font-size:15px;line-height:1;cursor:pointer;transition:background .15s;z-index:2;}
+  .dp-close:hover{background:rgba(10,31,68,0.13);}
+  .dp-eyebrow{display:block;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-primary);margin-bottom:10px;}
+  .dp-h{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:var(--color-text);margin:0 0 10px;line-height:1.25;}
+  .dp-sub{font-family:'Poppins',sans-serif;font-size:15px;color:var(--color-text-muted);margin:0 0 22px;line-height:1.55;}
+  .dp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;}
+  .dp-item{border:1px solid var(--color-border);border-radius:12px;padding:14px 10px;}
+  .dp-item img{width:100%;height:120px;object-fit:contain;display:block;margin-bottom:10px;}
+  .dp-item-name{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:4px;}
+  .dp-item-price{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:var(--color-primary);}
+  .dp-item-price span{font-weight:500;color:var(--color-text-muted);}
+  .dp-btn{display:block;width:100%;padding:15px;background:var(--color-primary);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;border:none;border-radius:11px;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;min-height:48px;}
+  .dp-btn:hover{transform:scale(1.02);box-shadow:0 8px 22px rgba(13,71,161,0.28);}
+  .dp-dismiss{display:inline-block;margin-top:14px;background:none;border:none;font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);cursor:pointer;text-decoration:underline;}
+  @media(max-width:480px){
+    .dp-body{padding:28px 20px 22px;}
+    .dp-h{font-size:22px;}
+    .dp-sub{font-size:14px;margin-bottom:18px;}
+    .dp-item img{height:96px;}
+    .dp-grid{gap:10px;}
+  }
+</style>
+
+<div id="dp-overlay" role="dialog" aria-modal="true" aria-labelledby="dp-heading">
+  <div class="dp-card">
+    <button class="dp-close" id="dp-close" aria-label="Close">&#10005;</button>
+    <div class="dp-body">
+      <span class="dp-eyebrow">Now Available</span>
+      <h2 class="dp-h" id="dp-heading">Never lift a bottle again.</h2>
+      <p class="dp-sub">Hot and cold water on demand. Rent a Brio dispenser monthly, or buy one outright — we deliver and set it up.</p>
+      <div class="dp-grid">
+        <div class="dp-item">
+          <img data-wb-img="brioBottom" src="bottom-load-dispenser.jpg" alt="Brio bottom-load water dispenser" width="427" height="900" loading="lazy">
+          <div class="dp-item-name">Bottom Load</div>
+          <div class="dp-item-price"><span data-wb-price="brioBottom.rent">$15</span><span>/mo</span></div>
+        </div>
+        <div class="dp-item">
+          <img data-wb-img="brioTop" src="top-load-dispenser.jpg" alt="Brio top-load water dispenser" width="427" height="900" loading="lazy">
+          <div class="dp-item-name">Top Load</div>
+          <div class="dp-item-price"><span data-wb-price="brioTop.rent">$12</span><span>/mo</span></div>
+        </div>
+      </div>
+      <a href="/shop#dispensers" class="dp-btn">See Dispensers &rarr;</a>
+      <button type="button" class="dp-dismiss" id="dp-dismiss">No thanks</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* Show once per browsing session — same try/catch sessionStorage pattern as
+     sticky-order-bar.js's sob_dismissed, so it never nags on every page view
+     and never throws where storage is blocked. */
+  var KEY='wb_disp_popup';
+  function seen(){ try{ return sessionStorage.getItem(KEY)==='1'; }catch(e){ return false; } }
+  function markSeen(){ try{ sessionStorage.setItem(KEY,'1'); }catch(e){} }
+
+  var ov=document.getElementById('dp-overlay');
+  if(!ov||seen()) return;
+
+  function open(){
+    if(seen()) return;
+    /* Don't stack on top of the plan builder if the visitor opened it first. */
+    var cp=document.getElementById('cp-overlay');
+    if(cp&&cp.classList.contains('open')) return;
+    ov.classList.add('open');
+    if(typeof lockBodyScroll==='function') lockBodyScroll();
+    markSeen();
+  }
+  function close(){
+    ov.classList.remove('open');
+    if(typeof unlockBodyScroll==='function') unlockBodyScroll();
+    markSeen();
+  }
+
+  document.getElementById('dp-close').addEventListener('click',close);
+  document.getElementById('dp-dismiss').addEventListener('click',close);
+  ov.addEventListener('click',function(e){ if(e.target===this) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ov.classList.contains('open')) close(); });
+  /* Let the CTA navigate without the unlock/close race. */
+  ov.querySelector('.dp-btn').addEventListener('click',markSeen);
+
+  setTimeout(open,1500);
+})();
+</script>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
@@ -1578,8 +1681,14 @@
   function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,x=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
   function feeForDist(d){if(d<=1)return 2.99;if(d<=2)return 3.99;if(d<=3)return 5.99;if(d<=4)return 6.99;if(d<=5)return 7.99;if(d<=6)return 8.99;if(d<=7)return 9.99;if(d<=8)return 10.99;if(d<=9)return 11.99;return null;}
 
-  var cp = { water:'ro', size:'5 Gallon', qty:2, freq:'biweekly', fee:null, outside:false };
+  var cp = { water:'ro', size:'5 Gallon', qty:2, freq:'biweekly', fee:null, outside:false, day:'Monday', window:'Morning' };
   var activePromo=null;
+  var CP_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var CP_WINDOWS = [
+    {id:'Morning',   label:'Morning',   sub:'8–12'},
+    {id:'Afternoon', label:'Afternoon', sub:'12–4'},
+    {id:'Evening',   label:'Evening',   sub:'4–6'}
+  ];
 
   function sizesFor(water){ return Object.keys(CP_PRICING[water].sizes); }
   function unitPrice(){ return CP_PRICING[cp.water].sizes[cp.size] || 0; }
@@ -1639,6 +1748,30 @@
     }).join('');
     Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
       p.addEventListener('click',function(){ cp.freq=p.getAttribute('data-f'); renderFreqPills(); renderSummary(); });
+    });
+  }
+  /* Preferred day is submitted as a weekday NAME, not a date: /api/stripe-webhook
+     recomputes the next occurrence of that weekday for every renewal, so month
+     two onward lands on a real upcoming date instead of the "3 days out"
+     fallback that a stale ISO date would trigger. */
+  function renderDayPills(){
+    var el=document.getElementById('cp-day-pills');
+    if(!el) return;
+    el.innerHTML=CP_DAYS.map(function(d){
+      return '<div class="cp-pill'+(cp.day===d?' selected':'')+'" data-d="'+d+'"><div class="cp-pill-name">'+d.slice(0,3)+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
+      p.addEventListener('click',function(){ cp.day=p.getAttribute('data-d'); renderDayPills(); });
+    });
+  }
+  function renderWindowPills(){
+    var el=document.getElementById('cp-window-pills');
+    if(!el) return;
+    el.innerHTML=CP_WINDOWS.map(function(w){
+      return '<div class="cp-pill'+(cp.window===w.id?' selected':'')+'" data-win="'+w.id+'"><div class="cp-pill-name">'+w.label+'</div><div class="cp-pill-sub">'+w.sub+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.cp-pill'),function(p){
+      p.addEventListener('click',function(){ cp.window=p.getAttribute('data-win'); renderWindowPills(); });
     });
   }
   function renderSummary(){
@@ -1769,7 +1902,11 @@
     var freqLabel=CP_FREQ.filter(function(x){return x.id===cp.freq;})[0].label;
     var planName=cp.qty+'x '+cp.size+' '+CP_PRICING[cp.water].name+' — '+freqLabel;
     var cpAddr=(document.getElementById('cp-addr')||{}).value||'';
-    fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:grandTotal(),customerEmail:email,customerName:name,address:cpAddr})})
+    var cpPhone=(document.getElementById('cp-phone')||{}).value||'';
+    /* phone/deliveryDay/deliveryWindow ride along as Subscription metadata so
+       /api/stripe-webhook can build a complete calendar event for the first
+       delivery AND every monthly renewal. */
+    fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:grandTotal(),customerEmail:email,customerName:name,address:cpAddr,phone:cpPhone,deliveryDay:cp.day,deliveryWindow:cp.window})})
       .then(function(r){return r.json();})
       .then(function(d){
         if(d.error||!d.url){ errEl.textContent=d.error||'Could not start checkout. Please try again.'; btn.disabled=false; btn.textContent=orig; return; }
@@ -1778,21 +1915,24 @@
       .catch(function(){ errEl.textContent='Network error. Please try again.'; btn.disabled=false; btn.textContent=orig; });
   });
 
-  /* Open / close + auto-show on every visit */
+  /* Open / close. This builder no longer auto-opens — the on-load slot now
+     belongs to the dispenser pop-up below, and this one is always reachable
+     from its side tab (which used to appear only after a dismissal). */
   function openCp(){ document.getElementById('cp-overlay').classList.add('open'); if(typeof lockBodyScroll==='function')lockBodyScroll(); document.getElementById('cp-reopen-tab').classList.remove('visible'); }
   function closeCp(){ document.getElementById('cp-overlay').classList.remove('open'); if(typeof unlockBodyScroll==='function')unlockBodyScroll(); document.getElementById('cp-reopen-tab').classList.add('visible'); }
   document.getElementById('cp-close').addEventListener('click',closeCp);
   document.getElementById('cp-overlay').addEventListener('click',function(e){ if(e.target===this)closeCp(); });
   window.__cpOpen=openCp;
 
-  renderWaterPills(); renderSizePills(); renderFreqPills(); renderSummary();
+  renderWaterPills(); renderSizePills(); renderFreqPills(); renderDayPills(); renderWindowPills(); renderSummary();
 
-  setTimeout(openCp,2500);
+  document.getElementById('cp-reopen-tab').classList.add('visible');
 })();
 </script>
 
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<script src="prices.js"></script>
 <script src="shop.js"></script>
 <script src="sticky-order-bar.js"></script>
 <a href="/order" class="sticky-order-btn">ORDER WATER</a>

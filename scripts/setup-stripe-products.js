@@ -41,8 +41,8 @@ const ONE_TIME = [
   { key: 'addon_ice',         name: 'Ice Bag (10lb)',                        amount: 4.99  },
   { key: 'addon_ice_20lb',    name: 'Ice Bag (20lb)',                        amount: 7.99  },
   // Dispensers
-  { key: 'disp_brio_bottom',  name: 'Brio Bottom-Load Dispenser',            amount: 279.99 },
-  { key: 'disp_brio_top',     name: 'Brio Top-Load Dispenser',               amount: 129.99 },
+  { key: 'disp_brio_bottom',  name: 'Brio Bottom-Load Dispenser',            amount: 339 },
+  { key: 'disp_brio_top',     name: 'Brio Top-Load Dispenser',               amount: 300 },
   // Bottle deposits
   { key: 'bottle_5gal_empty', name: '5-Gallon Bottle (Empty / Deposit)',     amount: 12.99 },
   { key: 'bottle_3gal_empty', name: '3-Gallon Bottle (Empty / Deposit)',     amount: 9.99  },
@@ -60,6 +60,9 @@ const MONTHLY = [
   { key: 'sub_alk_household', name: 'Alkaline Household Bundle (6×5-gal / mo)', amount: 74.99  },
   { key: 'sub_alk_office',    name: 'Alkaline Office Bundle (8×5-gal / mo)',    amount: 99.99  },
   { key: 'sub_alk_max',       name: 'Alkaline Max Bundle (12×5-gal / mo)',      amount: 149.99 },
+  // Dispenser rentals — standalone, not bundled with water
+  { key: 'sub_disp_bottom',   name: 'Brio Bottom-Load Dispenser Rental',        amount: 15 },
+  { key: 'sub_disp_top',      name: 'Brio Top-Load Dispenser Rental',           amount: 12 },
 ];
 
 /* ── Helpers ───────────────────────────────────────────────── */

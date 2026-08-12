@@ -80,6 +80,39 @@ const PLANS = {
   'Alkaline Max':       { bottles:12, price:149.99, alkaline:true  },
 };
 
+/* ── Dispensers — buy once or rent monthly ──────────────────────────
+   Prices, images and copy live in prices.js (WB_PRICES.dispensers) so
+   there is exactly one source of truth sitewide. This fallback only
+   applies on a page that doesn't load prices.js, and must be kept
+   identical to it. */
+const DISPENSER_FALLBACK = {
+  brioBottom:{ name:'Brio Bottom-Load Dispenser', buy:339, rent:15, img:'bottom-load-dispenser.jpg',
+    desc:'Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.' },
+  brioTop:{ name:'Brio Top-Load Dispenser', buy:300, rent:12, img:'top-load-dispenser.jpg',
+    desc:'Top-load water dispenser — hot and cold water, classic reliable top-loading design.' },
+};
+function dispenser(key){
+  const src=(typeof WB_PRICES!=='undefined'&&WB_PRICES&&WB_PRICES.dispensers)||DISPENSER_FALLBACK;
+  return src[key]||DISPENSER_FALLBACK[key]||null;
+}
+function money(v){ return '$'+(v%1?v.toFixed(2):String(v)); }
+/* Rewrites any static dispenser price/image markup from prices.js, so the
+   figures printed on shop.html and dispensers.html can never drift from the
+   ones actually charged. The HTML carries correct values too, so this is a
+   consistency guarantee, not a dependency — nothing flashes or breaks if JS
+   is slow or off. */
+function syncDispenserPrices(){
+  $$('[data-wb-price]').forEach(el=>{
+    const [key,field]=(el.getAttribute('data-wb-price')||'').split('.');
+    const d=dispenser(key);
+    if(d&&typeof d[field]==='number') el.textContent=money(d[field]);
+  });
+  $$('[data-wb-img]').forEach(el=>{
+    const d=dispenser(el.getAttribute('data-wb-img'));
+    if(d&&d.img) el.setAttribute('src',d.img);
+  });
+}
+
 /* Checkout add-on data */
 const CHECKOUT_ADDONS = [
   { id:'ice-bags',       name:'Ice Bag (10lb)',    price:4.99,  desc:'10lb bag. Parties and coolers.', img:'' },
@@ -604,6 +637,7 @@ function loadStripe(){
 }
 function coChargeTotal(){ return cartTotal()+(zoneFeeDisplay(currentZone).fee||0); }
 var _coOrderId=null;
+var _coNotify=null;
 /* Order details attached to the PaymentIntent so /api/stripe-webhook can
    record cart orders to the customer's account history (keyed by email). */
 function coOrderMeta(){
@@ -612,11 +646,70 @@ function coOrderMeta(){
   var addr=((document.getElementById('co-addr')||{}).value||'')+', '+((document.getElementById('co-city')||{}).value||'')+' '+((document.getElementById('co-zip')||{}).value||'');
   var d=coState.date;
   var dateStr=d?(d instanceof Date?d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):String(d)):'';
-  return { orderId:_coOrderId, items:items, address:addr, phone:(document.getElementById('co-phone')||{}).value||'', deliveryDate:dateStr, deliveryWindow:coState.time||'' };
+  /* Snapshot for coOrderSuccess() — the cart is emptied and the fields may be
+     reset before the notifications below fire, so capture everything now. */
+  _coNotify={
+    orderId:_coOrderId,
+    items:items,
+    address:addr,
+    phone:(document.getElementById('co-phone')||{}).value||'',
+    email:(document.getElementById('co-email')||{}).value||'',
+    name:coCustomerName(),
+    dateStr:dateStr,
+    isoDate:toIsoDate(d),
+    window:coState.time||'',
+    total:coChargeTotal()
+  };
+  return { orderId:_coOrderId, items:items, address:addr, phone:_coNotify.phone, deliveryDate:dateStr, deliveryWindow:coState.time||'' };
+}
+function coCustomerName(){
+  var f=((document.getElementById('co-fname')||{}).value||'').trim();
+  var l=((document.getElementById('co-lname')||{}).value||'').trim();
+  var full=(f+' '+l).trim();
+  return full||((document.getElementById('co-cname')||{}).value||'').trim();
+}
+/* YYYY-MM-DD — /api/add-calendar-event parses `deliveryDate + 'T00:00:00'`,
+   so a localised string like "Mar 5, 2026" would produce an Invalid Date. */
+function toIsoDate(d){
+  if(!(d instanceof Date)||isNaN(d.getTime())) return '';
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+/* The cart's time windows are exact ranges ("10 AM – 12 PM"), unlike the named
+   periods ("Morning") the calendar endpoint buckets by. Parse the real hours
+   and send them as startHour/endHour so the event is blocked when the driver
+   actually arrives, instead of falling into the wrong bucket. */
+function windowHours(win){
+  const m=/^\s*(\d{1,2})\s*(AM|PM)\s*[–-]\s*(\d{1,2})\s*(AM|PM)/i.exec(win||'');
+  if(!m) return null;
+  const to24=(h,ap)=>{ h=parseInt(h,10)%12; return /pm/i.test(ap)?h+12:h; };
+  const s=to24(m[1],m[2]), e=to24(m[3],m[4]);
+  return (e>s)?{start:s,end:e}:null;
+}
+/* Notify the business the same way order.html's showSuccess() does: business
+   Google Calendar event + confirmation/owner SMS. Both are fire-and-forget and
+   must never block or break the confirmation UI. */
+function notifyOrderPlaced(n){
+  if(!n) return;
+  try{
+    var hrs=windowHours(n.window);
+    fetch('/api/add-calendar-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      orderId:n.orderId, customerName:n.name, phone:n.phone, email:n.email,
+      address:n.address, bundle:n.items, waterType:'',
+      deliveryDate:n.isoDate||n.dateStr, deliveryWindow:n.window,
+      startHour:hrs?hrs.start:undefined, endHour:hrs?hrs.end:undefined
+    })}).catch(function(){});
+  }catch(e){}
+  try{
+    fetch('/api/send-order-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      to:n.phone, orderId:n.orderId, deliveryDate:n.dateStr, deliveryWindow:n.window,
+      customerName:n.name, address:n.address, total:(n.total||0).toFixed(2)
+    })}).catch(function(){});
+  }catch(e){}
 }
 function coOrderSuccess(){
   gotoStep('checkout-overlay',4);
   var n=document.getElementById('co-order-num'); if(n) n.textContent=_coOrderId||genId();
+  notifyOrderPlaced(_coNotify); _coNotify=null;
   cart=[]; coAddonQtys={}; saveCart(cart); updateBadge();
   toast('Order placed!','Payment successful','✓');
 }
@@ -1143,6 +1236,64 @@ function inject(){
  </div>
 </div>
 
+<!-- Dispenser Rental Overlay (3 steps) — standalone monthly subscription -->
+<div class="wb-overlay" id="rent-overlay" style="display:none">
+ <div class="wb-modal wide" id="rent-modal">
+  <div class="wb-mhead"><h2 id="rt-title">Rent a Dispenser</h2><button class="wb-mclose">✕</button></div>
+  <div class="wb-mbody">
+   <div class="step-bar">
+    <div class="step-dot active"></div><div class="step-line"></div>
+    <div class="step-dot"></div><div class="step-line"></div>
+    <div class="step-dot"></div>
+   </div>
+   <!-- Step 0: Info -->
+   <div class="step-panel active" id="rt-step-0">
+    <p class="step-title">Your Information</p>
+    <div class="wb-row"><div class="wb-field"><label>First Name</label><input id="rt-fname" placeholder="Jane"></div><div class="wb-field"><label>Last Name</label><input id="rt-lname" placeholder="Smith"></div></div>
+    <div class="wb-field"><label>Email</label><input id="rt-email" type="email" placeholder="you@email.com"></div>
+    <div class="wb-field"><label>Phone</label><input id="rt-phone" type="tel" placeholder="(916) 555-0000"></div>
+    <div class="wb-field"><label>Street Address</label><input id="rt-addr" placeholder="123 Main St"></div>
+    <div class="wb-field"><label>Apt / Suite / Unit # (optional)</label><input id="rt-apt" placeholder="Apt 4B, Suite 200, Unit 12, etc."></div>
+    <div class="wb-row"><div class="wb-field"><label>City</label><input id="rt-city" placeholder="Sacramento" value="Sacramento"></div><div class="wb-field"><label>ZIP</label><input id="rt-zip" placeholder="95758"></div></div>
+    <div id="rt-zone-result"></div>
+    <div class="step-nav"><button class="wb-btn" id="rt-next-0">Next: Schedule →</button></div>
+   </div>
+   <!-- Step 1: Schedule -->
+   <div class="step-panel" id="rt-step-1">
+    <p class="step-title">Delivery Schedule</p>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Preferred Day</p>
+    <div class="freq-btns" style="margin-bottom:18px">
+     <button class="freq-btn sel" data-rday="Monday">Mon</button>
+     <button class="freq-btn" data-rday="Tuesday">Tue</button>
+     <button class="freq-btn" data-rday="Wednesday">Wed</button>
+     <button class="freq-btn" data-rday="Thursday">Thu</button>
+     <button class="freq-btn" data-rday="Friday">Fri</button>
+     <button class="freq-btn" data-rday="Saturday">Sat</button>
+    </div>
+    <p style="font-size:12px;color:#8BB8D4;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Time Window</p>
+    <div class="freq-btns" style="margin-bottom:18px">
+     <button class="freq-btn sel" data-rwin="Morning">Morning (8–12)</button>
+     <button class="freq-btn" data-rwin="Afternoon">Afternoon (12–4)</button>
+     <button class="freq-btn" data-rwin="Evening">Evening (4–6)</button>
+    </div>
+    <p style="font-size:12.5px;color:#8BB8D4;line-height:1.6">We'll deliver and set up your dispenser on the next available day that matches, then keep the same slot each month.</p>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="rt-back-1">← Back</button><button class="wb-btn" id="rt-next-1">Next: Payment →</button></div>
+   </div>
+   <!-- Step 2: Payment -->
+   <div class="step-panel" id="rt-step-2">
+    <p class="step-title">Payment</p>
+    <div id="rt-summary" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:12px;padding:14px;margin-bottom:18px"></div>
+    <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#B8E6FF;line-height:1.6;"><strong style="color:#fff;">Recurring monthly rental.</strong> You'll be taken to Stripe's secure checkout to set it up — billed automatically every month until you cancel. Maintenance and replacement are included.</div>
+    <div class="wb-field"><label>Your Name</label><input id="rt-cname" placeholder="Jane Smith"></div>
+    <div id="rt-card-err" style="color:#FF6B6B;font-size:12px;min-height:15px;margin-top:5px"></div>
+    <div class="terms-row"><input type="checkbox" id="rt-terms"><label for="rt-terms">I agree to the <a href="/app/rental-agreement" target="_blank" rel="noopener" style="color:#00D4FF">rental agreement</a>. Cancel anytime.</label></div>
+    <div class="stripe-badge">🔒 Secured by Stripe</div>
+    <div class="step-nav"><button class="wb-btn-ghost step-back" id="rt-back-2">← Back</button><button class="wb-btn" id="rt-subscribe-btn">Rent — $<span id="rt-price-btn">--</span>/month</button></div>
+   </div>
+  </div>
+ </div>
+</div>
+
 <!-- Pay Sim Sheet -->
 <div id="pay-sim" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:flex-end;justify-content:center">
  <div class="pay-sheet">
@@ -1325,7 +1476,7 @@ function wireCheckout(){
       const brSection=document.getElementById('co-bottle-return-section');
       const brNote=document.getElementById('co-recurring-note');
       if(fw) fw.style.display=coState.orderType==='recurring'?'block':'none';
-      if(brSection) brSection.style.display=coState.orderType==='one-time'?'block':'none';
+      if(brSection) brSection.style.display=(coState.orderType==='one-time'&&!cartIsDispensersOnly())?'block':'none';
       if(brNote) brNote.style.display=coState.orderType==='recurring'?'flex':'none';
     }
     const fb=e.target.closest('.freq-btn');
@@ -1364,7 +1515,7 @@ function wireCheckout(){
   document.getElementById('co-next-1')?.addEventListener('click',()=>{
     if(!coState.date){ toast('Pick a date','Select a delivery date',''); return; }
     if(!coState.time){ toast('Pick a time','Select a time window',''); return; }
-    if(coState.orderType==='one-time'&&!coState.bottleReturn){
+    if(coState.orderType==='one-time'&&!coState.bottleReturn&&!cartIsDispensersOnly()){
       toast('Bottle return','Please select how you\'ll return empty bottles',''); return;
     }
     // Step 1 → add-ons step → payment
@@ -1751,19 +1902,128 @@ function wireLeftMenu(){
 }
 
 /* ── Wire Dispenser Rental CTAs ─────────────────────────────────── */
+/* ── Dispensers: buy once, or rent monthly ──────────────────────────
+   BUY adds to the normal cart, so it settles through the existing one-time
+   Stripe path and is recorded, calendared and texted exactly like a water
+   order. RENT goes through the existing subscription path (Stripe hosted
+   Checkout -> invoice.payment_succeeded -> /api/stripe-webhook), which
+   creates the delivery calendar event at signup AND on every monthly
+   renewal, and stops by itself when the customer cancels.
+
+   The preferred DAY is sent as a weekday name, not a date: the webhook
+   recomputes the next occurrence of that weekday for every renewal, which
+   is what keeps month two onwards landing on a real upcoming date instead
+   of the "3 days out" fallback. */
+let rtState={ key:'brioBottom', day:'Monday', window:'Morning' };
+let rtFlowInst=null;
+
+function rtChargeTotal(){ const d=dispenser(rtState.key); return d?d.rent:0; }
+function rtAddress(){
+  const v=id=>((document.getElementById(id)||{}).value||'').trim();
+  const apt=v('rt-apt');
+  return v('rt-addr')+(apt?', '+apt:'')+', '+v('rt-city')+' '+v('rt-zip');
+}
+
+/* A cart holding nothing but dispensers has no empty bottles to return, so the
+   bottle-return question is hidden and not required for it. Any cart with a
+   water/add-on line keeps the existing behaviour untouched. */
+function cartIsDispensersOnly(){
+  if(!cart.length) return false;
+  const names=Object.keys(DISPENSER_FALLBACK).map(k=>(dispenser(k)||{}).name);
+  return cart.every(i=>names.indexOf(i.name)>=0);
+}
+
+function buyDispenser(key){
+  const d=dispenser(key); if(!d) return;
+  addToCartRaw(d.name, d.buy, d.img||'', 1);
+  toast(d.name,'Added to your cart','✓');
+  if(typeof openCartDrawer==='function') openCartDrawer();
+}
+
+function openDispenserRent(key){
+  const d=dispenser(key); if(!d) return;
+  rtState={ key:key, day:'Monday', window:'Morning' };
+  const t=document.getElementById('rt-title'); if(t) t.textContent='Rent the '+d.name;
+  const p=document.getElementById('rt-price-btn'); if(p) p.textContent=String(d.rent);
+  $$('#rent-overlay .freq-btn[data-rday]').forEach(b=>b.classList.toggle('sel',b.dataset.rday==='Monday'));
+  $$('#rent-overlay .freq-btn[data-rwin]').forEach(b=>b.classList.toggle('sel',b.dataset.rwin==='Morning'));
+  const err=document.getElementById('rt-card-err'); if(err) err.textContent='';
+  if(user){
+    const f=(id,val)=>{ const el=document.getElementById(id); if(el&&val&&!el.value.trim()) el.value=val; };
+    const parts=(user.name||'').split(' ');
+    f('rt-fname',parts[0]); f('rt-lname',parts.slice(1).join(' '));
+    f('rt-email',user.email||''); f('rt-phone',user.phone||'');
+    f('rt-addr',user.addr||''); f('rt-city',user.city||''); f('rt-zip',user.zip||'');
+    f('rt-cname',user.name||'');
+  }
+  gotoStep('rent-overlay',0);
+  openOverlay('rent-overlay');
+}
+
+function renderRtSummary(){
+  const d=dispenser(rtState.key); if(!d) return;
+  const el=document.getElementById('rt-summary');
+  if(el) el.innerHTML=`<div style="font-weight:800;font-size:17px;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:6px">${esc(d.name)}</div>`
+    +`<div style="color:#8BB8D4;font-size:13px;line-height:1.9">Monthly rental &nbsp;·&nbsp; ${esc(rtState.day)} ${esc(rtState.window)}<br>${esc(rtAddress())}</div>`
+    +`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-top:1px solid rgba(0,212,255,.15);padding-top:8px"><span style="color:#fff;font-size:14px;font-weight:700">Total</span><span style="color:#fff;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800">${money(d.rent)}/mo</span></div>`;
+  const p=document.getElementById('rt-price-btn'); if(p) p.textContent=String(d.rent);
+}
+
 function wireDispenserRental(){
-  document.querySelectorAll('.dr-cta[data-rental]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const type=btn.dataset.rental==='top-load'?'Top-Load Dispenser Rental':'Bottom-Load Dispenser Rental';
-      const price=btn.dataset.rental==='top-load'?10:25;
-      addToCartRaw(type, price, '', 1);
-      btn.textContent='Added to Order ✓';
-      btn.style.background='rgba(109,207,112,.14)';
-      btn.style.borderColor='rgba(109,207,112,.35)';
-      btn.style.color='#6DCF70';
-      toast(type,'Added to your order','✓');
-    });
+  document.addEventListener('click',e=>{
+    const buyEl=e.target.closest('[data-wb-buy]');
+    if(buyEl){ e.preventDefault(); buyDispenser(buyEl.dataset.wbBuy); return; }
+    const rentEl=e.target.closest('[data-wb-rent]');
+    if(rentEl){ e.preventDefault(); openDispenserRent(rentEl.dataset.wbRent); return; }
+    /* Legacy markup: previously added a RENTAL to the one-time cart, which
+       charged one month and never renewed. Route it to the real rental. */
+    const legacy=e.target.closest('.dr-cta[data-rental]');
+    if(legacy){ e.preventDefault(); openDispenserRent(legacy.dataset.rental==='top-load'?'brioTop':'brioBottom'); }
   });
+
+  const ov=document.getElementById('rent-overlay');
+  if(!ov) return;
+  ov.addEventListener('click',e=>{
+    const b=e.target.closest('.freq-btn'); if(!b) return;
+    if(b.dataset.rday){
+      $$('.freq-btn[data-rday]',ov).forEach(x=>x.classList.toggle('sel',x===b));
+      rtState.day=b.dataset.rday;
+    }
+    if(b.dataset.rwin){
+      $$('.freq-btn[data-rwin]',ov).forEach(x=>x.classList.toggle('sel',x===b));
+      rtState.window=b.dataset.rwin;
+    }
+  });
+
+  document.getElementById('rt-next-0')?.addEventListener('click',()=>{
+    const v=id=>((document.getElementById(id)||{}).value||'').trim();
+    if(!v('rt-fname')||!v('rt-email')){ toast('Missing info','Name and email required',''); return; }
+    if(!v('rt-phone')){ toast('Missing info','Phone number required for delivery',''); return; }
+    if(!v('rt-addr')||!v('rt-zip')){ toast('Missing info','Delivery address and ZIP required',''); return; }
+    gotoStep('rent-overlay',1);
+  });
+  document.getElementById('rt-back-1')?.addEventListener('click',()=>gotoStep('rent-overlay',0));
+  document.getElementById('rt-next-1')?.addEventListener('click',()=>{
+    const cn=document.getElementById('rt-cname');
+    if(cn&&!cn.value.trim()){
+      const v=id=>((document.getElementById(id)||{}).value||'').trim();
+      cn.value=(v('rt-fname')+' '+v('rt-lname')).trim();
+    }
+    renderRtSummary();
+    gotoStep('rent-overlay',2);
+  });
+  document.getElementById('rt-back-2')?.addEventListener('click',()=>gotoStep('rent-overlay',1));
+
+  rtFlowInst=makeFlowStripe('rt',rtChargeTotal,'rt-email','rt-cname',function(){},{
+    subscription:true,
+    getPlanName:function(){ const d=dispenser(rtState.key); return (d?d.name:'Dispenser')+' Rental'; },
+    getDeliveryInfo:function(){ return { day:rtState.day||'', window:rtState.window||'' }; },
+  });
+  document.getElementById('rt-subscribe-btn')?.addEventListener('click',function(){
+    if(!document.getElementById('rt-terms')?.checked){ toast('Terms','Please accept the rental agreement',''); return; }
+    rtFlowInst.pay(this);
+  });
+  wireZipField('rt-zip','rt-zone-result','rt-next-0');
 }
 
 /* ── Inject Nav Buttons ─────────────────────────────────────────── */
@@ -1890,6 +2150,7 @@ function init(){
   wireWaterTypeModal();
   wireLeftMenu();
   wireDispenserRental();
+  syncDispenserPrices();
   // Render prices for saved water type on page load
   renderPriceTags();
   syncWaterPillsUI();

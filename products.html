@@ -112,8 +112,8 @@
         <span class="product-badge featured">Most Popular</span>
         <div class="product-name">Brio Bottom-Load</div>
         <div class="product-subtitle">Professional-grade dispenser - bottle stays out of sight</div>
-        <div class="product-price">$279.99</div>
-        <div class="product-price-note">One-time purchase - or rent for $25/mo</div>
+        <div class="product-price" data-wb-price="brioBottom.buy">$339</div>
+        <div class="product-price-note">One-time purchase - or rent for <span data-wb-price="brioBottom.rent">$15</span>/mo</div>
         <ul class="product-features">
           <li>Bottom-loading design - no heavy lifting</li>
           <li>Hot &amp; cold temperature options</li>
@@ -122,14 +122,17 @@
           <li>Child-safe hot water lock</li>
           <li>Fits all standard 3 &amp; 5 gallon bottles</li>
         </ul>
-        <button class="btn-primary" onclick="if(typeof openCartDrawer==='function')openCartDrawer()" style="width:100%;justify-content:center;">Add to Cart</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-primary" data-wb-rent="brioBottom" style="flex:1;justify-content:center;">Rent Monthly</button>
+          <button class="btn-primary" data-wb-buy="brioBottom" style="flex:1;justify-content:center;background:#FFFFFF;color:var(--color-primary);border:1px solid var(--color-primary);">Buy</button>
+        </div>
       </div>
       <div class="product-card">
         <span class="product-badge">Top-Load</span>
         <div class="product-name">Brio Top-Load</div>
         <div class="product-subtitle">Classic countertop dispenser - simple and reliable</div>
-        <div class="product-price">$129.99</div>
-        <div class="product-price-note">One-time purchase - or rent for $10/mo</div>
+        <div class="product-price" data-wb-price="brioTop.buy">$300</div>
+        <div class="product-price-note">One-time purchase - or rent for <span data-wb-price="brioTop.rent">$12</span>/mo</div>
         <ul class="product-features">
           <li>Compact countertop footprint</li>
           <li>Hot &amp; cold temperature options</li>
@@ -137,7 +140,10 @@
           <li>Drip tray included</li>
           <li>Fits all standard 3 &amp; 5 gallon bottles</li>
         </ul>
-        <button class="btn-primary" onclick="if(typeof openCartDrawer==='function')openCartDrawer()" style="width:100%;justify-content:center;">Add to Cart</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-primary" data-wb-rent="brioTop" style="flex:1;justify-content:center;">Rent Monthly</button>
+          <button class="btn-primary" data-wb-buy="brioTop" style="flex:1;justify-content:center;background:#FFFFFF;color:var(--color-primary);border:1px solid var(--color-primary);">Buy</button>
+        </div>
       </div>
     </div>
   </div>
@@ -250,6 +256,7 @@
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<script src="prices.js"></script>
 <script src="shop.js"></script>
 <a href="/order" class="sticky-order-btn">ORDER WATER</a>
 </body>

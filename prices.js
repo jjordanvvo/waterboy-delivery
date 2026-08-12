@@ -33,9 +33,26 @@ var WB_PRICES = {
     zipfizz:     { name: 'Zipfizz Energy Drink Mix Combo Pack',   price: 39.99, unit: 'per 30-pack' },
     echo:        { name: 'Echo Hydrogen Prebiotic Drink Mix',      price: 4.99,  unit: 'per packet', bulk: 64.99, bulkQty: 30 }
   },
+  /* Dispensers — single source of truth for BOTH the buy price and the
+     monthly rent price. Anything on the site that shows a dispenser price
+     or image reads it from here at runtime via data-wb-price /
+     data-wb-img (wired in shop.js -> syncDispenserPrices).
+     TO SWAP A PRODUCT IMAGE: change the one `img` line below. */
   dispensers: {
-    brioBottom: { name: 'Brio Bottom-Load Dispenser', price: 279.99 },
-    brioTop:    { name: 'Brio Top-Load Dispenser',    price: 129.99 }
+    brioBottom: {
+      name: 'Brio Bottom-Load Dispenser',
+      buy:  339,
+      rent: 15,
+      img:  'bottom-load-dispenser.jpg',
+      desc: 'Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.'
+    },
+    brioTop: {
+      name: 'Brio Top-Load Dispenser',
+      buy:  300,
+      rent: 12,
+      img:  'top-load-dispenser.jpg',
+      desc: 'Top-load water dispenser — hot and cold water, classic reliable top-loading design.'
+    }
   },
   delivery: {
     mile1: { label: '1 Mile',  price: 2.99, display: '$2.99' },

@@ -31,8 +31,21 @@
     .shop-item-price { font-size: 26px; font-weight: 700; color: var(--color-primary); margin-bottom: 18px; font-family: 'Poppins', sans-serif; }
     .shop-add-btn { width: 100%; padding: 12px; background: var(--color-primary); color: #FFFFFF; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; min-height: 44px; }
     .shop-add-btn:hover { transform: scale(1.02); box-shadow: 0 6px 18px rgba(13,71,161,0.25); }
+    /* Dispensers — same card, with a rent/buy choice instead of one price */
+    .shop-grid-wide { max-width: 720px; }
+    .shop-item-img.tall { height: 210px; }
+    .shop-item-desc { font-size: 13px; line-height: 1.55; color: var(--color-text-muted); margin-bottom: 16px; font-family: 'Poppins', sans-serif; }
+    .shop-price-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .shop-price-col { flex: 1; }
+    .shop-price-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 2px; font-family: 'Poppins', sans-serif; }
+    .shop-price-val { font-size: 24px; font-weight: 700; color: var(--color-primary); font-family: 'Poppins', sans-serif; line-height: 1.2; }
+    .shop-price-val .shop-price-per { font-size: 13px; font-weight: 600; color: var(--color-text-muted); }
+    .shop-btn-row { display: flex; gap: 8px; }
+    .shop-btn-row .shop-add-btn { flex: 1; }
+    .shop-add-btn.secondary { background: #FFFFFF; color: var(--color-primary); border: 1px solid var(--color-primary); }
+    .shop-add-btn.secondary:hover { background: rgba(13,71,161,0.06); }
     @media (max-width: 900px) { .shop-grid { grid-template-columns: repeat(2,1fr); } .shop-category-header { flex-direction: column; gap: 4px; } }
-    @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } .shop-price-row { gap: 8px; } .shop-price-val { font-size: 21px; } }
   </style>
 
   <!-- Meta Pixel -->
@@ -179,6 +192,55 @@
       </div>
     </div>
 
+    <div class="shop-category" id="dispensers">
+      <div class="shop-category-header">
+        <span class="shop-category-title">Water Dispensers</span>
+        <span class="shop-category-desc">Hot and cold on demand - rent monthly or buy outright</span>
+      </div>
+      <div class="shop-grid shop-grid-wide">
+        <div class="shop-item">
+          <img class="shop-item-img tall" data-wb-img="brioBottom" src="bottom-load-dispenser.jpg" alt="Brio bottom-load water dispenser" width="427" height="900" loading="lazy">
+          <div class="shop-item-size">Bottom Load</div>
+          <div class="shop-item-name">Brio Bottom-Load Dispenser</div>
+          <div class="shop-item-desc">Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.</div>
+          <div class="shop-price-row">
+            <div class="shop-price-col">
+              <div class="shop-price-label">Rent</div>
+              <div class="shop-price-val"><span data-wb-price="brioBottom.rent">$15</span><span class="shop-price-per">/mo</span></div>
+            </div>
+            <div class="shop-price-col">
+              <div class="shop-price-label">Buy</div>
+              <div class="shop-price-val" data-wb-price="brioBottom.buy">$339</div>
+            </div>
+          </div>
+          <div class="shop-btn-row">
+            <button class="shop-add-btn" data-wb-rent="brioBottom">Rent Monthly</button>
+            <button class="shop-add-btn secondary" data-wb-buy="brioBottom">Buy</button>
+          </div>
+        </div>
+        <div class="shop-item">
+          <img class="shop-item-img tall" data-wb-img="brioTop" src="top-load-dispenser.jpg" alt="Brio top-load water dispenser" width="427" height="900" loading="lazy">
+          <div class="shop-item-size">Top Load</div>
+          <div class="shop-item-name">Brio Top-Load Dispenser</div>
+          <div class="shop-item-desc">Top-load water dispenser — hot and cold water, classic reliable top-loading design.</div>
+          <div class="shop-price-row">
+            <div class="shop-price-col">
+              <div class="shop-price-label">Rent</div>
+              <div class="shop-price-val"><span data-wb-price="brioTop.rent">$12</span><span class="shop-price-per">/mo</span></div>
+            </div>
+            <div class="shop-price-col">
+              <div class="shop-price-label">Buy</div>
+              <div class="shop-price-val" data-wb-price="brioTop.buy">$300</div>
+            </div>
+          </div>
+          <div class="shop-btn-row">
+            <button class="shop-add-btn" data-wb-rent="brioTop">Rent Monthly</button>
+            <button class="shop-add-btn secondary" data-wb-buy="brioTop">Buy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -255,6 +317,7 @@
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
+<script src="prices.js"></script>
 <script src="shop.js"></script>
 <a href="/order" class="sticky-order-btn">ORDER WATER</a>
 </body>

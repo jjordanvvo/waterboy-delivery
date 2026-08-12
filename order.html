@@ -1598,7 +1598,18 @@ async function handlePayment(){
       var planName=(getBundleName()||{}).name?getBundleName().name+' Bundle':'Monthly Water Delivery';
       var bundleApt=(document.getElementById('f-apt')||{}).value||'';
       var bundleAddr=state.addr+(bundleApt.trim()?', '+bundleApt.trim():'')+', '+state.city+', '+state.stateField+' '+state.zip;
-      var scResp=await fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:getGrandTotal(),customerEmail:state.email,customerName:name.trim(),address:bundleAddr,phone:state.phone||''})});
+      /* Send the preferred day as a weekday NAME rather than the picked date:
+         /api/stripe-webhook recomputes the next occurrence of that weekday on
+         every renewal, so month two onward lands on a real upcoming date
+         instead of the "3 days out" fallback a stale date would trigger.
+         ASAP orders send nothing and keep the existing fallback. */
+      var WEEKDAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var bundleDay='';
+      if(state.delOpt!=='asap'&&state.calDate){
+        var bundleDate=new Date(state.calDate+'T00:00:00');
+        if(!isNaN(bundleDate.getTime())) bundleDay=WEEKDAY_NAMES[bundleDate.getDay()];
+      }
+      var scResp=await fetch('/api/create-subscription-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planName:planName,amount:getGrandTotal(),customerEmail:state.email,customerName:name.trim(),address:bundleAddr,phone:state.phone||'',deliveryDay:bundleDay,deliveryWindow:timeLabel(state.timePref)})});
       var scData=await scResp.json();
       if(scData.error||!scData.url){if(errEl)errEl.textContent=scData.error||'Could not start subscription checkout.';btn.classList.remove('loading');btn.disabled=false;return;}
       saveDraft();
