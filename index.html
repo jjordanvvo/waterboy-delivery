@@ -1608,14 +1608,17 @@
       <span class="dp-eyebrow">Now Available</span>
       <h2 class="dp-h" id="dp-heading">Never lift a bottle again.</h2>
       <p class="dp-sub">Hot and cold water on demand. Rent a Brio dispenser monthly, or buy one outright — we deliver and set it up.</p>
+      <!-- These two images are deliberately NOT loading="lazy": the pop-up starts
+           display:none, and Chrome never resolves a lazy image that was hidden at
+           parse time, so they stayed blank when the pop-up opened. -->
       <div class="dp-grid">
         <div class="dp-item">
-          <img data-wb-img="brioBottom" src="bottom-load-dispenser.jpg" alt="Brio bottom-load water dispenser" width="427" height="900" loading="lazy">
+          <img data-wb-img="brioBottom" src="bottom-load-dispenser.jpg" alt="Brio bottom-load water dispenser" width="427" height="900">
           <div class="dp-item-name">Bottom Load</div>
           <div class="dp-item-price"><span data-wb-price="brioBottom.rent">$15</span><span>/mo</span></div>
         </div>
         <div class="dp-item">
-          <img data-wb-img="brioTop" src="top-load-dispenser.jpg" alt="Brio top-load water dispenser" width="427" height="900" loading="lazy">
+          <img data-wb-img="brioTop" src="top-load-dispenser.jpg" alt="Brio top-load water dispenser" width="427" height="900">
           <div class="dp-item-name">Top Load</div>
           <div class="dp-item-price"><span data-wb-price="brioTop.rent">$12</span><span>/mo</span></div>
         </div>
