@@ -428,6 +428,10 @@ html,body{overflow-x:hidden;max-width:100%;}
 
           <!-- One-time section -->
           <div id="onetime-section">
+            <div id="size-toggle" style="display:flex;gap:10px;margin-bottom:16px;">
+              <button type="button" class="size-btn active" data-size="5" onclick="selectBottleSize(5)" style="flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--color-primary);background:var(--color-primary);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;">5 Gallon</button>
+              <button type="button" class="size-btn" data-size="3" onclick="selectBottleSize(3)" style="flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--color-border);background:#fff;color:var(--color-text);font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;">3 Gallon</button>
+            </div>
             <div class="qty-card">
               <div class="qty-row">
                 <button class="qty-btn" onclick="adjustQty(-1)" aria-label="Decrease quantity">−</button>
@@ -655,6 +659,18 @@ html,body{overflow-x:hidden;max-width:100%;}
             <p class="co-also-price">$1.99</p>
             <button class="co-also-add" onclick="addAlsoBought('Echo Hydrogen Prebiotic Packet',1.99,'echo-hydrogen',this)">+ Add</button>
           </div>
+          <div class="co-also-card" data-addon-id="dispenser-bottom">
+            <img src="bottom-load-dispenser.jpg" class="co-also-img" alt="Brio Bottom-Load Dispenser" width="80" height="80" loading="lazy" />
+            <p class="co-also-name">Brio Bottom-Load Dispenser</p>
+            <p class="co-also-price">$339.00</p>
+            <button class="co-also-add" onclick="addAlsoBought('Brio Bottom-Load Dispenser',339,'dispenser-bottom',this)">+ Add</button>
+          </div>
+          <div class="co-also-card" data-addon-id="dispenser-top">
+            <img src="top-load-dispenser.jpg" class="co-also-img" alt="Brio Top-Load Dispenser" width="80" height="80" loading="lazy" />
+            <p class="co-also-name">Brio Top-Load Dispenser</p>
+            <p class="co-also-price">$300.00</p>
+            <button class="co-also-add" onclick="addAlsoBought('Brio Top-Load Dispenser',300,'dispenser-top',this)">+ Add</button>
+          </div>
         </div>
       </div>
     </div>
@@ -877,29 +893,38 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 
 /* ── Prices & Bundles ────────────────────────────────────────── */
-const PRICES={purified:8.99,alkaline:10.99,hydrogen:6.99};
+/* purified/alkaline are size-dependent (3-Gallon vs 5-Gallon); hydrogen
+   stays flat (sold by the gallon, no 3/5-gallon bottle choice here). */
+const PRICES={purified:{3:6.99,5:8.99},alkaline:{3:8.99,5:10.99},hydrogen:6.99};
+function unitPrice(){
+  var p=PRICES[state.waterType||'purified'];
+  return (typeof p==='object')?(p[state.bottleSize]||p[5]):p;
+}
 const WT_LABELS={purified:'Reverse Osmosis Water',alkaline:'Alkaline Water',hydrogen:'Hydrogen Water'};
-function wtLabel(){return WT_LABELS[state.waterType]||'Reverse Osmosis Water';}
+function wtLabel(){
+  var base=WT_LABELS[state.waterType]||'Reverse Osmosis Water';
+  return state.waterType==='hydrogen'?base:(state.bottleSize||5)+'-Gallon '+base;
+}
 function unitWord(){return state.waterType==='hydrogen'?'gallon':'bottle';}
 function qtyLabel(){return state.qty+' '+unitWord()+(state.qty>1?'s':'');}
 const BUNDLES_REG=[
-  {id:'solo',      name:'RO Solo',       price:24.99,  bottles:2,  pop:false},
-  {id:'family',    name:'RO Family',     price:45.99,  bottles:4,  pop:true},
-  {id:'household', name:'RO Household',  price:69.99,  bottles:6,  pop:false},
-  {id:'office',    name:'RO Office',     price:94.99,  bottles:8,  pop:false},
-  {id:'max',       name:'RO Max Bundle', price:140.99, bottles:12, pop:false},
+  {id:'solo',      name:'RO Solo',       price:17.98,  bottles:2,  pop:false},
+  {id:'family',    name:'RO Family',     price:35.96,  bottles:4,  pop:true},
+  {id:'household', name:'RO Household',  price:53.94,  bottles:6,  pop:false},
+  {id:'office',    name:'RO Office',     price:71.92,  bottles:8,  pop:false},
+  {id:'max',       name:'RO Max Bundle', price:107.88, bottles:12, pop:false},
 ];
 const BUNDLES_ALK=[
-  {id:'alk-solo',      name:'Alkaline Solo',      price:27.99,  bottles:2,  pop:false},
-  {id:'alk-family',    name:'Alkaline Family',    price:54.99,  bottles:4,  pop:true},
-  {id:'alk-household', name:'Alkaline Household', price:74.99,  bottles:6,  pop:false},
-  {id:'alk-office',    name:'Alkaline Office',    price:99.99,  bottles:8,  pop:false},
-  {id:'alk-max',       name:'Alkaline Max',       price:149.99, bottles:12, pop:false},
+  {id:'alk-solo',      name:'Alkaline Solo',      price:21.98,  bottles:2,  pop:false},
+  {id:'alk-family',    name:'Alkaline Family',    price:43.96,  bottles:4,  pop:true},
+  {id:'alk-household', name:'Alkaline Household', price:65.94,  bottles:6,  pop:false},
+  {id:'alk-office',    name:'Alkaline Office',    price:87.92,  bottles:8,  pop:false},
+  {id:'alk-max',       name:'Alkaline Max',       price:131.88, bottles:12, pop:false},
 ];
 
 /* ── State ───────────────────────────────────────────────────── */
 const DRAFT_KEY='wb_order_draft';
-let state={step:1,waterType:null,amtMode:'onetime',qty:1,bundleId:null,delOpt:null,timePref:null,calDate:null,calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),name:'',addr:'',city:'Elk Grove',stateField:'CA',zip:'',phone:'',email:'',zone:{zone:0,fee:0,outside:false,unknown:true}};
+let state={step:1,waterType:null,bottleSize:5,amtMode:'onetime',qty:1,bundleId:null,delOpt:null,timePref:null,calDate:null,calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),name:'',addr:'',city:'Elk Grove',stateField:'CA',zip:'',phone:'',email:'',zone:{zone:0,fee:0,outside:false,unknown:true}};
 
 function saveDraft(){try{sessionStorage.setItem(DRAFT_KEY,JSON.stringify(state));}catch(_){}}
 function loadDraft(){try{var d=JSON.parse(sessionStorage.getItem(DRAFT_KEY));if(d){state=Object.assign(state,d);}}catch(_){}}
@@ -1032,9 +1057,27 @@ function adjustQty(delta){
 }
 
 function updateQtyDisplay(){
-  var price=PRICES[state.waterType||'purified'];
+  var price=unitPrice();
   document.getElementById('qty-display').textContent=state.qty;
   document.getElementById('qty-total-line').textContent=qtyLabel()+' × $'+price.toFixed(2)+' = $'+(state.qty*price).toFixed(2);
+  var sizeToggle=document.getElementById('size-toggle');
+  if(sizeToggle)sizeToggle.style.display=(state.waterType==='hydrogen')?'none':'flex';
+  var qtyLabelEl=document.querySelector('.qty-label');
+  if(qtyLabelEl&&state.waterType!=='hydrogen')qtyLabelEl.textContent=(state.bottleSize||5)+'-Gallon bottles';
+}
+
+function selectBottleSize(size){
+  state.bottleSize=size;
+  saveDraft();
+  document.querySelectorAll('.size-btn').forEach(function(b){
+    var active=Number(b.dataset.size)===size;
+    b.classList.toggle('active',active);
+    b.style.background=active?'var(--color-primary)':'#fff';
+    b.style.color=active?'#fff':'var(--color-text)';
+    b.style.borderColor=active?'var(--color-primary)':'var(--color-border)';
+  });
+  updateQtyDisplay();
+  updateS2Summary();
 }
 
 function renderBundles(){
@@ -1079,7 +1122,7 @@ function getBasePrice(){
     var b=bundles.find(function(x){return x.id===state.bundleId;});
     price=b?b.price:0;
   } else {
-    price=state.qty*(PRICES[state.waterType||'purified']);
+    price=state.qty*unitPrice();
   }
   if(activePromo&&(activePromo.productId==='all'||activePromo.productId===state.waterType)){
     price=Math.max(0,price*(1-activePromo.percentOff/100));
@@ -1641,6 +1684,7 @@ function orderMeta(orderId){
   var apt=(document.getElementById('f-apt')||{}).value||'';
   var fullAddr=state.addr+(apt.trim()?', '+apt.trim():'')+', '+state.city+', '+state.stateField+' '+state.zip;
   var itemsStr=(state.amtMode==='bundle'&&state.bundleId?getBundleName().name+' Bundle':qtyLabel())+' — '+wtLabel();
+  if(alsoAddons.length)itemsStr+=' + '+alsoAddons.map(function(a){return a.name;}).join(', ');
   return {
     orderId:orderId,
     items:itemsStr,

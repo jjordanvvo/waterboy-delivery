@@ -9,23 +9,24 @@ var WB_PRICES = {
     alkaline5:  { name: '5-Gallon Alkaline Water', price: 10.99,  unit: 'per bottle' },
     hydrogen1:  { name: '1-Gallon Hydrogen Water', price: 6.99, unit: 'per gallon' },
     hydrogen3:  { name: '3-Gallon Hydrogen Water', price: 20.97, unit: 'per fill' },
-    ro3:        { name: '3-Gallon RO Water',        price: 4.99,  unit: 'per bottle' },
+    ro3:        { name: '3-Gallon RO Water',        price: 6.99,  unit: 'per bottle' },
+    alkaline3:  { name: '3-Gallon Alkaline Water',   price: 8.99,  unit: 'per bottle' },
     bottle5empty:  { name: '5-Gallon bottle (Empty)',     price: 12.99, unit: 'each' },
     bottle3empty:  { name: '3-Gallon bottle (Empty)',     price: 9.99,  unit: 'each' }
   },
   bundles: {
-    solo:      { name: 'Solo Bundle',      price: 24.99,  bottles: 2,  desc: '2×5-gal / mo' },
-    family:    { name: 'Family Bundle',    price: 45.99,  bottles: 4,  desc: '4×5-gal / mo' },
-    household: { name: 'Household Bundle', price: 69.99,  bottles: 6,  desc: '6×5-gal / mo' },
-    office:    { name: 'Office Bundle',    price: 94.99,  bottles: 8,  desc: '8×5-gal / mo' },
-    max:       { name: 'Max Bundle',       price: 140.99,  bottles: 12, desc: '12×5-gal / mo' }
+    solo:      { name: 'Solo Bundle',      price: 17.98,  bottles: 2,  desc: '2×5-gal / mo' },
+    family:    { name: 'Family Bundle',    price: 35.96,  bottles: 4,  desc: '4×5-gal / mo' },
+    household: { name: 'Household Bundle', price: 53.94,  bottles: 6,  desc: '6×5-gal / mo' },
+    office:    { name: 'Office Bundle',    price: 71.92,  bottles: 8,  desc: '8×5-gal / mo' },
+    max:       { name: 'Max Bundle',       price: 107.88,  bottles: 12, desc: '12×5-gal / mo' }
   },
   alkalineBundles: {
-    solo:   { name: 'Alkaline Solo',      price: 27.99, bottles: 2,  desc: '2×5-gal / mo' },
-    family: { name: 'Alkaline Family',    price: 54.99, bottles: 4,  desc: '4×5-gal / mo' },
-    household: { name: 'Alkaline Household', price: 74.99,  bottles: 6,  desc: '6×5-gal / mo' },
-    office:    { name: 'Alkaline Office',    price: 99.99,  bottles: 8,  desc: '8×5-gal / mo' },
-    max:       { name: 'Alkaline Max',       price: 149.99, bottles: 12, desc: '12×5-gal / mo' }
+    solo:   { name: 'Alkaline Solo',      price: 21.98, bottles: 2,  desc: '2×5-gal / mo' },
+    family: { name: 'Alkaline Family',    price: 43.96, bottles: 4,  desc: '4×5-gal / mo' },
+    household: { name: 'Alkaline Household', price: 65.94,  bottles: 6,  desc: '6×5-gal / mo' },
+    office:    { name: 'Alkaline Office',    price: 87.92,  bottles: 8,  desc: '8×5-gal / mo' },
+    max:       { name: 'Alkaline Max',       price: 131.88, bottles: 12, desc: '12×5-gal / mo' }
   },
   addons: {
     lmntCan:     { name: 'LMNT Sparkling Electrolyte Can (16oz)', price: 4.99,  unit: 'per can' },

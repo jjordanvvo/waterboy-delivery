@@ -50,16 +50,16 @@ const ONE_TIME = [
 
 // Recurring monthly subscription bundles: { key, name, amount(USD) }
 const MONTHLY = [
-  { key: 'sub_ro_solo',       name: 'RO Solo Bundle (2×5-gal / mo)',        amount: 24.99  },
-  { key: 'sub_ro_family',     name: 'RO Family Bundle (4×5-gal / mo)',      amount: 45.99  },
-  { key: 'sub_ro_household',  name: 'RO Household Bundle (6×5-gal / mo)',   amount: 69.99  },
-  { key: 'sub_ro_office',     name: 'RO Office Bundle (8×5-gal / mo)',      amount: 94.99  },
-  { key: 'sub_ro_max',        name: 'RO Max Bundle (12×5-gal / mo)',        amount: 140.99 },
-  { key: 'sub_alk_solo',      name: 'Alkaline Solo Bundle (2×5-gal / mo)',      amount: 27.99  },
-  { key: 'sub_alk_family',    name: 'Alkaline Family Bundle (4×5-gal / mo)',    amount: 54.99  },
-  { key: 'sub_alk_household', name: 'Alkaline Household Bundle (6×5-gal / mo)', amount: 74.99  },
-  { key: 'sub_alk_office',    name: 'Alkaline Office Bundle (8×5-gal / mo)',    amount: 99.99  },
-  { key: 'sub_alk_max',       name: 'Alkaline Max Bundle (12×5-gal / mo)',      amount: 149.99 },
+  { key: 'sub_ro_solo',       name: 'RO Solo Bundle (2×5-gal / mo)',        amount: 17.98  },
+  { key: 'sub_ro_family',     name: 'RO Family Bundle (4×5-gal / mo)',      amount: 35.96  },
+  { key: 'sub_ro_household',  name: 'RO Household Bundle (6×5-gal / mo)',   amount: 53.94  },
+  { key: 'sub_ro_office',     name: 'RO Office Bundle (8×5-gal / mo)',      amount: 71.92  },
+  { key: 'sub_ro_max',        name: 'RO Max Bundle (12×5-gal / mo)',        amount: 107.88 },
+  { key: 'sub_alk_solo',      name: 'Alkaline Solo Bundle (2×5-gal / mo)',      amount: 21.98  },
+  { key: 'sub_alk_family',    name: 'Alkaline Family Bundle (4×5-gal / mo)',    amount: 43.96  },
+  { key: 'sub_alk_household', name: 'Alkaline Household Bundle (6×5-gal / mo)', amount: 65.94  },
+  { key: 'sub_alk_office',    name: 'Alkaline Office Bundle (8×5-gal / mo)',    amount: 87.92  },
+  { key: 'sub_alk_max',       name: 'Alkaline Max Bundle (12×5-gal / mo)',      amount: 131.88 },
   // Dispenser rentals — standalone, not bundled with water
   { key: 'sub_disp_bottom',   name: 'Brio Bottom-Load Dispenser Rental',        amount: 15 },
   { key: 'sub_disp_top',      name: 'Brio Top-Load Dispenser Rental',           amount: 12 },

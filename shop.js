@@ -68,16 +68,16 @@ function syncWaterPillsUI(){
 
 /* ── Constants & Plans ─────────────────────────────────────────── */
 const PLANS = {
-  'Solo':               { bottles:2,  price:24.99,  alkaline:false },
-  'Family':             { bottles:4,  price:45.99,  alkaline:false },
-  'Household':          { bottles:6,  price:69.99,  alkaline:false },
-  'Office':             { bottles:8,  price:94.99,  alkaline:false },
-  'Max Bundle':         { bottles:12, price:140.99, alkaline:false },
-  'Alkaline Solo':      { bottles:2,  price:27.99,  alkaline:true  },
-  'Alkaline Family':    { bottles:4,  price:54.99,  alkaline:true  },
-  'Alkaline Household': { bottles:6,  price:74.99,  alkaline:true  },
-  'Alkaline Office':    { bottles:8,  price:99.99,  alkaline:true  },
-  'Alkaline Max':       { bottles:12, price:149.99, alkaline:true  },
+  'Solo':               { bottles:2,  price:17.98,  alkaline:false },
+  'Family':             { bottles:4,  price:35.96,  alkaline:false },
+  'Household':          { bottles:6,  price:53.94,  alkaline:false },
+  'Office':             { bottles:8,  price:71.92,  alkaline:false },
+  'Max Bundle':         { bottles:12, price:107.88, alkaline:false },
+  'Alkaline Solo':      { bottles:2,  price:21.98,  alkaline:true  },
+  'Alkaline Family':    { bottles:4,  price:43.96,  alkaline:true  },
+  'Alkaline Household': { bottles:6,  price:65.94,  alkaline:true  },
+  'Alkaline Office':    { bottles:8,  price:87.92,  alkaline:true  },
+  'Alkaline Max':       { bottles:12, price:131.88, alkaline:true  },
 };
 
 /* ── Dispensers — buy once or rent monthly ──────────────────────────

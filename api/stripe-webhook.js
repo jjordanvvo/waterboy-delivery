@@ -65,15 +65,32 @@ async function getGoogleAccessToken() {
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 /* deliveryDay may be an actual ISO date (first delivery, picked on a
-   calendar) or a weekday name (recurring day-of-week preference, in
-   which case every renewal needs the NEXT occurrence recomputed, not
-   the original signup date). Falls back to 3 days out if neither. */
-function resolveDeliveryDate(deliveryDay) {
-  if (deliveryDay && /^\d{4}-\d{2}-\d{2}$/.test(deliveryDay)) {
+   calendar) or a weekday name (recurring day-of-week preference).
+   BUG FIXED HERE: on every renewal after the first, the ISO-date branch
+   below used to fail its "still in the future" check (the original
+   signup date is long past by the time a renewal fires), and
+   deliveryDay isn't a weekday name either — so it silently fell through
+   to "3 days from now" for EVERY renewal, regardless of the customer's
+   actual recurring day. That's what made calendar dates drift/not
+   update for subscription customers. Fix: derive the weekday-of-week
+   from the original ISO date once, then always resolve renewals to the
+   next occurrence of that weekday — same logic already used when the
+   customer picked a weekday name directly. */
+function resolveDeliveryDate(deliveryDay, isFirstDelivery) {
+  // First delivery, and the picked date hasn't passed — use it exactly.
+  if (isFirstDelivery && deliveryDay && /^\d{4}-\d{2}-\d{2}$/.test(deliveryDay)) {
     const d = new Date(deliveryDay + 'T00:00:00');
     if (!isNaN(d.getTime()) && d.getTime() >= Date.now() - 86400000) return deliveryDay;
   }
-  const weekdayIdx = WEEKDAYS.indexOf(deliveryDay);
+
+  let weekdayIdx = WEEKDAYS.indexOf(deliveryDay);
+  if (weekdayIdx < 0 && deliveryDay && /^\d{4}-\d{2}-\d{2}$/.test(deliveryDay)) {
+    // Not a weekday name — derive the weekday from the original signup date
+    // so renewals keep landing on the customer's actual recurring day.
+    const orig = new Date(deliveryDay + 'T00:00:00');
+    if (!isNaN(orig.getTime())) weekdayIdx = orig.getDay();
+  }
+
   const d = new Date();
   if (weekdayIdx >= 0) {
     const diff = (weekdayIdx - d.getDay() + 7) % 7 || 7;
@@ -87,7 +104,7 @@ function resolveDeliveryDate(deliveryDay) {
 async function createCalendarEvent(accessToken, meta, invoice) {
   const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'primary';
   const isFirstDelivery = invoice.billing_reason === 'subscription_create';
-  const deliveryDateStr = resolveDeliveryDate(meta.deliveryDay);
+  const deliveryDateStr = resolveDeliveryDate(meta.deliveryDay, isFirstDelivery);
   const startH = meta.deliveryWindow && meta.deliveryWindow.includes('Morning') ? 8
     : meta.deliveryWindow && meta.deliveryWindow.includes('Afternoon') ? 12 : 16;
 
@@ -219,7 +236,7 @@ module.exports = async (req, res) => {
           items: meta.planName || 'Monthly Water Delivery',
           amount: invoice.amount_paid / 100,
           status: 'confirmed',
-          deliveryDate: resolveDeliveryDate(meta.deliveryDay),
+          deliveryDate: resolveDeliveryDate(meta.deliveryDay, invoice.billing_reason === 'subscription_create'),
           deliveryWindow: meta.deliveryWindow || '',
           address: meta.address || '',
           phone: meta.phone || '',
