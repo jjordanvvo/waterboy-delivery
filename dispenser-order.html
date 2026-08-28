@@ -833,9 +833,9 @@ function genOrderId(){return'WB-'+Math.random().toString(36).slice(2,8).toUpperC
    sitewide single source of truth. The fallback below only applies if
    prices.js fails to load and must be kept identical to it. */
 const DISP_FALLBACK={
-  brioBottom:{name:'Brio Bottom-Load Dispenser',buy:339,rent:15,img:'bottom-load-dispenser.jpg',
+  brioBottom:{name:'Brio Bottom-Load Dispenser',buy:339,rent:25,img:'bottom-load-dispenser.jpg',
     desc:'Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.'},
-  brioTop:{name:'Brio Top-Load Dispenser',buy:300,rent:12,img:'top-load-dispenser.jpg',
+  brioTop:{name:'Brio Top-Load Dispenser',buy:300,rent:15,img:'top-load-dispenser.jpg',
     desc:'Top-load water dispenser — hot and cold water, classic reliable top-loading design.'},
 };
 function DISPENSERS(){return (typeof WB_PRICES!=='undefined'&&WB_PRICES&&WB_PRICES.dispensers)||DISP_FALLBACK;}

@@ -86,9 +86,9 @@ const PLANS = {
    applies on a page that doesn't load prices.js, and must be kept
    identical to it. */
 const DISPENSER_FALLBACK = {
-  brioBottom:{ name:'Brio Bottom-Load Dispenser', buy:339, rent:15, img:'bottom-load-dispenser.jpg',
+  brioBottom:{ name:'Brio Bottom-Load Dispenser', buy:339, rent:25, img:'bottom-load-dispenser.jpg',
     desc:'Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.' },
-  brioTop:{ name:'Brio Top-Load Dispenser', buy:300, rent:12, img:'top-load-dispenser.jpg',
+  brioTop:{ name:'Brio Top-Load Dispenser', buy:300, rent:15, img:'top-load-dispenser.jpg',
     desc:'Top-load water dispenser — hot and cold water, classic reliable top-loading design.' },
 };
 function dispenser(key){

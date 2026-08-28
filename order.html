@@ -1598,13 +1598,29 @@ function initStripe(){
   cardCvc=elements.create('cardCvc',{style:_scStyle});
   cardNumber.mount('#sc-number');cardExpiry.mount('#sc-expiry');cardCvc.mount('#sc-cvc');
   // ── Apple Pay / Google Pay via Stripe Payment Request ──
+  // BUNDLE/SUBSCRIPTION PURCHASES NEVER USE THIS BUTTON. It only knows how
+  // to confirm a one-time PaymentIntent — routing a subscription through it
+  // would charge the customer once and silently never bill them again
+  // (no Stripe Subscription object ever gets created). Subscription
+  // customers are sent through handlePayment()'s regular card flow, which
+  // redirects to Stripe's own hosted Checkout — Apple Pay/Google Pay are
+  // still available there, just on Stripe's page instead of this embedded
+  // button. This was previously unguarded and was silently failing to bill
+  // subscription customers a second time.
   var pr=stripe.paymentRequest({country:'US',currency:'usd',total:{label:'Water Boy Delivery',amount:Math.round(getGrandTotal()*100)},requestPayerName:true,requestPayerEmail:true});
   var prBtn=elements.create('paymentRequestButton',{paymentRequest:pr,style:{paymentRequestButton:{type:'buy',theme:'dark',height:'52px'}}});
+  var isBundlePurchase=state.amtMode==='bundle'&&state.bundleId;
   pr.canMakePayment().then(function(result){
-    if(result){document.getElementById('apple-pay-wrap').style.display='block';prBtn.mount('#stripe-payment-request-btn');}
+    if(result&&!isBundlePurchase){document.getElementById('apple-pay-wrap').style.display='block';prBtn.mount('#stripe-payment-request-btn');}
   });
   window._wbPR=pr;
   pr.on('paymentmethod',async function(ev){
+    if(state.amtMode==='bundle'&&state.bundleId){
+      ev.complete('fail');
+      var errEl2=document.getElementById('stripe-err');
+      if(errEl2)errEl2.textContent='Please use the card form below to start a subscription.';
+      return;
+    }
     var grandTotal=getGrandTotal();
     var orderId=genOrderId();
     try{

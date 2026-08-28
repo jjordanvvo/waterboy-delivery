@@ -61,8 +61,8 @@ const MONTHLY = [
   { key: 'sub_alk_office',    name: 'Alkaline Office Bundle (8×5-gal / mo)',    amount: 87.92  },
   { key: 'sub_alk_max',       name: 'Alkaline Max Bundle (12×5-gal / mo)',      amount: 131.88 },
   // Dispenser rentals — standalone, not bundled with water
-  { key: 'sub_disp_bottom',   name: 'Brio Bottom-Load Dispenser Rental',        amount: 15 },
-  { key: 'sub_disp_top',      name: 'Brio Top-Load Dispenser Rental',           amount: 12 },
+  { key: 'sub_disp_bottom',   name: 'Brio Bottom-Load Dispenser Rental',        amount: 25 },
+  { key: 'sub_disp_top',      name: 'Brio Top-Load Dispenser Rental',           amount: 15 },
 ];
 
 /* ── Helpers ───────────────────────────────────────────────── */

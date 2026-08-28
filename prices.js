@@ -43,14 +43,14 @@ var WB_PRICES = {
     brioBottom: {
       name: 'Brio Bottom-Load Dispenser',
       buy:  339,
-      rent: 15,
+      rent: 25,
       img:  'bottom-load-dispenser.jpg',
       desc: 'Bottom-load water dispenser — hot and cold water, easy bottom-loading design so there’s no heavy lifting.'
     },
     brioTop: {
       name: 'Brio Top-Load Dispenser',
       buy:  300,
-      rent: 12,
+      rent: 15,
       img:  'top-load-dispenser.jpg',
       desc: 'Top-load water dispenser — hot and cold water, classic reliable top-loading design.'
     }
