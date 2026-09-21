@@ -22,6 +22,18 @@
     .ms-msg{font-family:'Poppins',sans-serif;font-size:13px;padding:11px 14px;border-radius:8px;margin-top:14px;display:none;line-height:1.5;}
     .ms-msg.ok{background:#ecfdf5;color:#047857;display:block;}
     .ms-msg.err{background:#fef2f2;color:#dc2626;display:block;}
+    .nd-sub-block{margin-top:22px;padding-top:22px;border-top:1px solid var(--color-border);}
+    .nd-sub-block:first-child{margin-top:0;padding-top:0;border-top:none;}
+    .nd-plan-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;color:var(--color-text);margin-bottom:4px;}
+    .nd-detail{font-family:'Poppins',sans-serif;font-size:13px;color:var(--color-text-muted);margin-bottom:2px;}
+    .nd-cal-wrap{margin-top:14px;max-width:260px;}
+    .nd-cal-head{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;text-align:center;margin-bottom:8px;color:var(--color-text);}
+    .nd-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+    .nd-cal-dow{font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;color:var(--color-text-muted);text-align:center;padding-bottom:2px;}
+    .nd-cal-day{font-family:'Poppins',sans-serif;font-size:12px;text-align:center;padding:6px 0;border-radius:6px;color:var(--color-text);}
+    .nd-cal-day.nd-empty{visibility:hidden;}
+    .nd-cal-day.nd-today{box-shadow:inset 0 0 0 1px var(--color-border);}
+    .nd-cal-day.nd-delivery{background:var(--color-primary);color:#fff;font-weight:700;}
   </style>
 
   <!-- Meta Pixel -->
@@ -101,6 +113,18 @@
       </div>
       <button class="form-submit" id="ms-btn" onclick="openPortal()" style="margin-top:16px;">Manage My Subscription &rarr;</button>
       <div class="ms-msg" id="ms-msg"></div>
+    </div>
+
+    <div class="ms-card" style="margin-top:24px;">
+      <div class="section-label" style="margin-bottom:8px;">Your Next Delivery</div>
+      <p style="font-family:'Poppins',sans-serif;font-size:14px;color:var(--color-text-muted);margin-bottom:20px;line-height:1.6;">See exactly which day your next delivery lands on — same email as above.</p>
+      <div class="form-field">
+        <label class="form-label" for="nd-email">Email Address</label>
+        <input class="form-input" type="email" id="nd-email" placeholder="jane@example.com" autocomplete="email">
+      </div>
+      <button class="form-submit" id="nd-btn" onclick="checkNextDelivery()" style="margin-top:16px;">Show My Delivery Date &rarr;</button>
+      <div class="ms-msg" id="nd-msg"></div>
+      <div id="nd-results"></div>
     </div>
   </div>
 </section>
@@ -184,6 +208,76 @@
     }
   }
   document.getElementById('ms-email').addEventListener('keydown',function(e){ if(e.key==='Enter') openPortal(); });
+
+  var ND_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var ND_DOW=['Mo','Tu','We','Th','Fr','Sa','Su'];
+
+  function setNdMsg(type,text){
+    var el=document.getElementById('nd-msg');
+    el.className='ms-msg '+type;
+    el.textContent=text;
+  }
+
+  /* Renders a single-month mini calendar for the given ISO date string,
+     with that date highlighted. Monday-first, matching the order-flow
+     calendar elsewhere on the site. */
+  function renderMiniCal(dateStr){
+    var d=new Date(dateStr+'T00:00:00');
+    var year=d.getFullYear(), month=d.getMonth();
+    var today=new Date();today.setHours(0,0,0,0);
+    var firstDay=new Date(year,month,1);
+    var lastDay=new Date(year,month+1,0);
+    var offset=(firstDay.getDay()+6)%7;
+    var total=Math.ceil((offset+lastDay.getDate())/7)*7;
+    var html='<div class="nd-cal-head">'+ND_MONTHS[month]+' '+year+'</div><div class="nd-cal-grid">';
+    ND_DOW.forEach(function(dow){html+='<div class="nd-cal-dow">'+dow+'</div>';});
+    for(var i=0;i<total;i++){
+      var dayNum=i-offset+1;
+      if(dayNum<1||dayNum>lastDay.getDate()){html+='<div class="nd-cal-day nd-empty">.</div>';continue;}
+      var thisDate=new Date(year,month,dayNum);
+      var isToday=thisDate.getTime()===today.getTime();
+      var isDelivery=dayNum===d.getDate();
+      html+='<div class="nd-cal-day'+(isToday?' nd-today':'')+(isDelivery?' nd-delivery':'')+'">'+dayNum+'</div>';
+    }
+    html+='</div>';
+    return html;
+  }
+
+  function fmtDate(dateStr){
+    var d=new Date(dateStr+'T00:00:00');
+    return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  }
+
+  async function checkNextDelivery(){
+    var email=document.getElementById('nd-email').value.trim();
+    var btn=document.getElementById('nd-btn');
+    var results=document.getElementById('nd-results');
+    results.innerHTML='';
+    if(!email){ setNdMsg('err','Please enter your email address.'); return; }
+    btn.disabled=true; var orig=btn.textContent; btn.textContent='Looking up…';
+    setNdMsg('','');
+    try{
+      var r=await fetch('/api/get-next-delivery',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+      var d=await r.json();
+      if(!r.ok||d.error){ setNdMsg('err',d.error||'Something went wrong. Please try again.'); btn.disabled=false; btn.textContent=orig; return; }
+      setNdMsg('','');
+      results.innerHTML=d.subscriptions.map(function(sub){
+        var html='<div class="nd-sub-block">';
+        html+='<div class="nd-plan-name">'+sub.planName+'</div>';
+        html+='<div class="nd-detail"><strong>Next delivery:</strong> '+fmtDate(sub.nextDeliveryDate)+'</div>';
+        if(sub.deliveryWindow)html+='<div class="nd-detail"><strong>Window:</strong> '+sub.deliveryWindow+'</div>';
+        if(sub.address)html+='<div class="nd-detail"><strong>Address:</strong> '+sub.address+'</div>';
+        html+='<div class="nd-cal-wrap">'+renderMiniCal(sub.nextDeliveryDate)+'</div>';
+        html+='</div>';
+        return html;
+      }).join('');
+      btn.disabled=false; btn.textContent=orig;
+    }catch(e){
+      setNdMsg('err','Network error. Please try again.');
+      btn.disabled=false; btn.textContent=orig;
+    }
+  }
+  document.getElementById('nd-email').addEventListener('keydown',function(e){ if(e.key==='Enter') checkNextDelivery(); });
 </script>
 <script src="left-menu.js"></script>
 <script src="shared.js"></script>
