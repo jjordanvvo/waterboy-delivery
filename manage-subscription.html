@@ -257,9 +257,10 @@
     btn.disabled=true; var orig=btn.textContent; btn.textContent='Looking up…';
     setNdMsg('','');
     try{
-      var r=await fetch('/api/get-next-delivery',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+      var r=await fetch('/api/create-portal-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,skipPortal:true})});
       var d=await r.json();
       if(!r.ok||d.error){ setNdMsg('err',d.error||'Something went wrong. Please try again.'); btn.disabled=false; btn.textContent=orig; return; }
+      if(!d.subscriptions||!d.subscriptions.length){ setNdMsg('err','No active subscription found for that email.'); btn.disabled=false; btn.textContent=orig; return; }
       setNdMsg('','');
       results.innerHTML=d.subscriptions.map(function(sub){
         var html='<div class="nd-sub-block">';
